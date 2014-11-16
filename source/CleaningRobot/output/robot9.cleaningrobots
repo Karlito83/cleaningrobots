@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ASCII"?>
+<org.dagstuhl.cleaningrobots:Robot xmlns:org.dagstuhl.cleaningrobots="http://www.not.yet" name="Robot_9">
+  <map xdim="6" ydim="10">
+    <fields ypos="22" state="//@knownStates.0"/>
+    <fields ypos="23" state="//@knownStates.0"/>
+    <fields ypos="24" state="//@knownStates.0"/>
+    <fields ypos="25" state="//@knownStates.0"/>
+    <fields ypos="26" state="//@knownStates.0"/>
+    <fields ypos="27" state="//@knownStates.0"/>
+    <fields ypos="28" state="//@knownStates.0"/>
+    <fields ypos="29" state="//@knownStates.0"/>
+    <fields ypos="30" state="//@knownStates.1"/>
+    <fields ypos="31" state="//@knownStates.1"/>
+    <fields ypos="32" state="//@knownStates.1"/>
+    <fields xpos="1" ypos="22" state="//@knownStates.0"/>
+    <fields xpos="1" ypos="23" state="//@knownStates.0"/>
+    <fields xpos="1" ypos="24" state="//@knownStates.0"/>
+    <fields xpos="1" ypos="25" state="//@knownStates.0"/>
+    <fields xpos="1" ypos="26" state="//@knownStates.0"/>
+    <fields xpos="1" ypos="27" state="//@knownStates.0"/>
+    <fields xpos="1" ypos="28" state="//@knownStates.0"/>
+    <fields xpos="1" ypos="29" state="//@knownStates.0"/>
+    <fields xpos="1" ypos="30" state="//@knownStates.1"/>
+    <fields xpos="1" ypos="31" state="//@knownStates.1"/>
+    <fields xpos="1" ypos="32" state="//@knownStates.1"/>
+    <fields xpos="2" ypos="22" state="//@knownStates.0"/>
+    <fields xpos="2" ypos="23" state="//@knownStates.0"/>
+    <fields xpos="2" ypos="24" state="//@knownStates.0"/>
+    <fields xpos="2" ypos="25" state="//@knownStates.0"/>
+    <fields xpos="2" ypos="26" state="//@knownStates.0"/>
+    <fields xpos="2" ypos="27" state="//@knownStates.0"/>
+    <fields xpos="2" ypos="28" state="//@knownStates.0"/>
+    <fields xpos="2" ypos="29" state="//@knownStates.0"/>
+    <fields xpos="2" ypos="30" state="//@knownStates.1"/>
+    <fields xpos="2" ypos="31" state="//@knownStates.1"/>
+    <fields xpos="2" ypos="32" state="//@knownStates.1"/>
+    <fields xpos="3" ypos="22" state="//@knownStates.0"/>
+    <fields xpos="3" ypos="23" state="//@knownStates.0"/>
+    <fields xpos="3" ypos="24" state="//@knownStates.0"/>
+    <fields xpos="3" ypos="25" state="//@knownStates.0"/>
+    <fields xpos="3" ypos="26" state="//@knownStates.0"/>
+    <fields xpos="3" ypos="27" state="//@knownStates.0"/>
+    <fields xpos="3" ypos="28" state="//@knownStates.0"/>
+    <fields xpos="3" ypos="29" state="//@knownStates.0"/>
+    <fields xpos="3" ypos="30" state="//@knownStates.1"/>
+    <fields xpos="3" ypos="31" state="//@knownStates.1"/>
+    <fields xpos="3" ypos="32" state="//@knownStates.1"/>
+    <fields xpos="4" ypos="22" state="//@knownStates.1"/>
+    <fields xpos="4" ypos="23" state="//@knownStates.1"/>
+    <fields xpos="4" ypos="24" state="//@knownStates.1"/>
+    <fields xpos="4" ypos="25" state="//@knownStates.0"/>
+    <fields xpos="4" ypos="26" state="//@knownStates.0"/>
+    <fields xpos="4" ypos="27" state="//@knownStates.0"/>
+    <fields xpos="4" ypos="28" state="//@knownStates.0"/>
+    <fields xpos="4" ypos="29" state="//@knownStates.0"/>
+    <fields xpos="4" ypos="30" state="//@knownStates.1"/>
+    <fields xpos="4" ypos="31" state="//@knownStates.1"/>
+    <fields xpos="4" ypos="32" state="//@knownStates.1"/>
+    <fields xpos="5" ypos="22" state="//@knownStates.1"/>
+    <fields xpos="5" ypos="23" state="//@knownStates.1"/>
+    <fields xpos="5" ypos="24" state="//@knownStates.1"/>
+    <fields xpos="5" ypos="25" state="//@knownStates.0"/>
+    <fields xpos="5" ypos="26" state="//@knownStates.0"/>
+    <fields xpos="5" ypos="27" state="//@knownStates.0"/>
+    <fields xpos="5" ypos="28" state="//@knownStates.0"/>
+    <fields xpos="5" ypos="29" state="//@knownStates.0"/>
+    <fields xpos="5" ypos="30" state="//@knownStates.1"/>
+    <fields xpos="5" ypos="31" state="//@knownStates.1"/>
+    <fields xpos="5" ypos="32" state="//@knownStates.1"/>
+    <fields xpos="6" ypos="22" state="//@knownStates.1"/>
+    <fields xpos="6" ypos="23" state="//@knownStates.1"/>
+    <fields xpos="6" ypos="24" state="//@knownStates.1"/>
+    <fields xpos="6" ypos="25" state="//@knownStates.0"/>
+    <fields xpos="6" ypos="26" state="//@knownStates.0"/>
+    <fields xpos="6" ypos="27" state="//@knownStates.0"/>
+    <fields xpos="6" ypos="28" state="//@knownStates.0"/>
+    <fields xpos="6" ypos="29" state="//@knownStates.0"/>
+    <fields xpos="6" ypos="30" state="//@knownStates.1"/>
+    <fields xpos="6" ypos="31" state="//@knownStates.1"/>
+    <fields xpos="6" ypos="32" state="//@knownStates.1"/>
+  </map>
+  <knownStates name="Free"/>
+  <knownStates name="Blocked"/>
+</org.dagstuhl.cleaningrobots:Robot>

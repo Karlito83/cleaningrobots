@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="ASCII"?>
+<org.dagstuhl.cleaningrobots:Robot xmlns:org.dagstuhl.cleaningrobots="http://www.not.yet" name="Robot_3">
+  <map xdim="7" ydim="8">
+    <fields state="//@knownStates.0"/>
+    <fields ypos="1" state="//@knownStates.0"/>
+    <fields ypos="2" state="//@knownStates.0"/>
+    <fields ypos="3" state="//@knownStates.0"/>
+    <fields ypos="4" state="//@knownStates.0"/>
+    <fields ypos="5" state="//@knownStates.0"/>
+    <fields ypos="6" state="//@knownStates.0"/>
+    <fields ypos="7" state="//@knownStates.0"/>
+    <fields ypos="8" state="//@knownStates.0"/>
+    <fields xpos="1" state="//@knownStates.0"/>
+    <fields xpos="1" ypos="1" state="//@knownStates.0"/>
+    <fields xpos="1" ypos="2" state="//@knownStates.0"/>
+    <fields xpos="1" ypos="3" state="//@knownStates.0"/>
+    <fields xpos="1" ypos="4" state="//@knownStates.0"/>
+    <fields xpos="1" ypos="5" state="//@knownStates.0"/>
+    <fields xpos="1" ypos="6" state="//@knownStates.0"/>
+    <fields xpos="1" ypos="7" state="//@knownStates.0"/>
+    <fields xpos="1" ypos="8" state="//@knownStates.0"/>
+    <fields xpos="2" state="//@knownStates.0"/>
+    <fields xpos="2" ypos="1" state="//@knownStates.0"/>
+    <fields xpos="2" ypos="2" state="//@knownStates.0"/>
+    <fields xpos="2" ypos="3" state="//@knownStates.0"/>
+    <fields xpos="2" ypos="4" state="//@knownStates.0"/>
+    <fields xpos="2" ypos="5" state="//@knownStates.0"/>
+    <fields xpos="2" ypos="6" state="//@knownStates.0"/>
+    <fields xpos="2" ypos="7" state="//@knownStates.0"/>
+    <fields xpos="2" ypos="8" state="//@knownStates.0"/>
+    <fields xpos="3" state="//@knownStates.0"/>
+    <fields xpos="3" ypos="1" state="//@knownStates.0"/>
+    <fields xpos="3" ypos="2" state="//@knownStates.0"/>
+    <fields xpos="3" ypos="3" state="//@knownStates.0"/>
+    <fields xpos="3" ypos="4" state="//@knownStates.0"/>
+    <fields xpos="3" ypos="5" state="//@knownStates.0"/>
+    <fields xpos="3" ypos="6" state="//@knownStates.0"/>
+    <fields xpos="3" ypos="7" state="//@knownStates.0"/>
+    <fields xpos="3" ypos="8" state="//@knownStates.0"/>
+    <fields xpos="4" state="//@knownStates.0"/>
+    <fields xpos="4" ypos="1" state="//@knownStates.0"/>
+    <fields xpos="4" ypos="2" state="//@knownStates.0"/>
+    <fields xpos="4" ypos="3" state="//@knownStates.0"/>
+    <fields xpos="4" ypos="4" state="//@knownStates.1"/>
+    <fields xpos="4" ypos="5" state="//@knownStates.1"/>
+    <fields xpos="4" ypos="6" state="//@knownStates.1"/>
+    <fields xpos="4" ypos="7" state="//@knownStates.1"/>
+    <fields xpos="4" ypos="8" state="//@knownStates.1"/>
+    <fields xpos="5" state="//@knownStates.0"/>
+    <fields xpos="5" ypos="1" state="//@knownStates.0"/>
+    <fields xpos="5" ypos="2" state="//@knownStates.0"/>
+    <fields xpos="5" ypos="3" state="//@knownStates.0"/>
+    <fields xpos="5" ypos="4" state="//@knownStates.1"/>
+    <fields xpos="5" ypos="5" state="//@knownStates.1"/>
+    <fields xpos="5" ypos="6" state="//@knownStates.1"/>
+    <fields xpos="5" ypos="7" state="//@knownStates.1"/>
+    <fields xpos="5" ypos="8" state="//@knownStates.1"/>
+    <fields xpos="6" state="//@knownStates.0"/>
+    <fields xpos="6" ypos="1" state="//@knownStates.0"/>
+    <fields xpos="6" ypos="2" state="//@knownStates.0"/>
+    <fields xpos="6" ypos="3" state="//@knownStates.0"/>
+    <fields xpos="6" ypos="4" state="//@knownStates.1"/>
+    <fields xpos="6" ypos="5" state="//@knownStates.1"/>
+    <fields xpos="6" ypos="6" state="//@knownStates.1"/>
+    <fields xpos="6" ypos="7" state="//@knownStates.1"/>
+    <fields xpos="6" ypos="8" state="//@knownStates.1"/>
+    <fields xpos="7" state="//@knownStates.0"/>
+    <fields xpos="7" ypos="1" state="//@knownStates.0"/>
+    <fields xpos="7" ypos="2" state="//@knownStates.0"/>
+    <fields xpos="7" ypos="3" state="//@knownStates.0"/>
+    <fields xpos="7" ypos="4" state="//@knownStates.1"/>
+    <fields xpos="7" ypos="5" state="//@knownStates.1"/>
+    <fields xpos="7" ypos="6" state="//@knownStates.1"/>
+    <fields xpos="7" ypos="7" state="//@knownStates.1"/>
+    <fields xpos="7" ypos="8" state="//@knownStates.1"/>
+  </map>
+  <knownStates name="Clean"/>
+  <knownStates name="Dirty"/>
+</org.dagstuhl.cleaningrobots:Robot>
