@@ -1,12 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>CleaningRobot</groupId>
 	<artifactId>CleaningRobot</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
 	
 	<properties>
-		<tycho.version>0.20.0</tycho.version>
+		<tycho.version>0.22.0</tycho.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<luna-repo.url>http://download.eclipse.org/releases/luna</luna-repo.url>
 	</properties>
@@ -79,4 +78,11 @@
 
 
 	<packaging>eclipse-plugin</packaging>
+	<parent>
+		<groupId>tu-dresden</groupId>
+		<artifactId>CleaningRobotParent</artifactId>
+		<relativePath>mavenParent</relativePath>
+		<version>0.0.1</version>
+	</parent>
+	<dependencies></dependencies>
 </project>
