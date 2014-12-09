@@ -78,11 +78,5 @@
 
 
 	<packaging>eclipse-plugin</packaging>
-	<parent>
-		<groupId>tu-dresden</groupId>
-		<artifactId>CleaningRobotParent</artifactId>
-		<relativePath>mavenParent</relativePath>
-		<version>0.0.1</version>
-	</parent>
-	<dependencies></dependencies>
+	<groupId>tu-dresden</groupId>
 </project>
