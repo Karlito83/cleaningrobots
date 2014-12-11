@@ -97,6 +97,27 @@ public class AgentModel extends BaseAgentModel {
 	 * @return the created agents
 	 */
 	public ArrayList<Agent> createAgents() {
+		
+		ArrayList<Agent> agents = new ArrayList<Agent>();
+		
+		try
+		{
+			Agent cleaningRobot = new CleaningRobotAgent(world.getRandomPlaceOfType("Nowhere")
+					.getPos(), "HumanMagenta", world); 
+			agents.add(cleaningRobot);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			System.out.println(ex);
+		}
+		
+		
+		if(true)
+		{
+			return agents;
+		}
+		
 		System.out.println("Creating " + POPULATION + " people.");
 		ArrayList<Agent> people =
 				AgentGenerator.createRandomPopulation(POPULATION, world);
@@ -209,7 +230,9 @@ public class AgentModel extends BaseAgentModel {
 			break;
 
 		case WALKING:
-			a.wander();
+			//a.wander();
+			a.setDir(a.getDir()+1%8);
+			a.moveInDirection(1);
 			break;
 		default:
 			throw new RuntimeException("Unable to handle activity "
