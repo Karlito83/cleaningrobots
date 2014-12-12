@@ -16,6 +16,7 @@
 			<id>swt-repo</id>
 			<url>https://swt-repo.googlecode.com/svn/repo/</url>
 		</repository>
+		<!--
 		<repository>
 			<id>nexus testing</id>
 			<name>Nexus Testing</name>
@@ -25,6 +26,7 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		-->
 	</repositories>
 
 	<build>
