@@ -21,7 +21,7 @@ public class ImageCreator {
 		}
 		
 		try {
-			File f = new File("test.png");
+			File f = new File("output" + System.getProperty("file.separator") + "test.png");
 			ImageIO.write(image, "png", f);
 		} catch (Exception e) {
 			e.printStackTrace();
