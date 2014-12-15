@@ -20,10 +20,5 @@
 			<artifactId>CleaningRobot</artifactId>
 			<version>0.1.0-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>ecore</artifactId>
-			<version>2.3.0-v200706262000</version>
-		</dependency>
 	</dependencies>
 </project>

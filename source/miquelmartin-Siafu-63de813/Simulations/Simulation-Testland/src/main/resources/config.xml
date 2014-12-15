@@ -39,6 +39,7 @@
 	<overlays>
 		<AtCenter type="binary" thresholdvalue="1000"/>
 		<AtStart  type="binary" thresholdvalue="8000000"/>
+		<Dirt type="binary" thresholdvalue="1"/>
 		<Temperature  type="discrete">
 			<threshold tag="cold" pixelvalue="3355443"/>
 			<threshold tag="chilly" pixelvalue="6710886"/>

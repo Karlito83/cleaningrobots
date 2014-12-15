@@ -69,10 +69,19 @@ public class Constants {
 	 * class, they could also have been coded directly in the model
 	 */
 	enum Activity implements Publishable {
+		
+		
 		/** The agent's waiting. */
-		WAITING("Waiting"),
+		
+		//WAITING("Waiting"),
 		/** The agent's walking. */
-		WALKING("Walking");
+		//WALKING("Walking");
+		
+		SEARCHING_DIRT("Searching dirt"),
+		SEARCHING_WET("Searching wet"),
+		CLEANING_DIRT("Cleaning dirt"),
+		DRYING_WET("Drying wet");
+		
 
 		/** Human readable desription of the activity. */
 		private String description;

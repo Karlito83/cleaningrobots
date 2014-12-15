@@ -28,7 +28,22 @@ public class CleaningRobotAgent extends Agent {
 		this.robotsWorld.setYdim(siafuWorld.getHeight());
 		
 		this.cleaningRobot.setMap(robotsWorld);
-		
+	}
+	
+	@Override
+	public void wander() {
+		// TODO Auto-generated method stub
+		super.wander();
+	}
+
+	public Robot getCleaningRobot() {
+		return this.cleaningRobot;
+	}
+	
+	@Override
+	public void setName(String name) {
+		this.cleaningRobot.setName(name);
+		super.setName(name);
 	}
 
 }

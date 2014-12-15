@@ -102,9 +102,7 @@ public class AgentModel extends BaseAgentModel {
 		
 		try
 		{
-			Agent cleaningRobot = new CleaningRobotAgent(world.getRandomPlaceOfType("Nowhere")
-					.getPos(), "HumanMagenta", world); 
-			agents.add(cleaningRobot);
+			agents = new RandomCleaningRobotGenerator().createRandomPopulation(POPULATION, world);
 		}
 		catch(Exception ex)
 		{
@@ -113,11 +111,11 @@ public class AgentModel extends BaseAgentModel {
 		}
 		
 		
-		if(true)
-		{
-			return agents;
-		}
 		
+		return agents;
+		
+		
+		/*
 		System.out.println("Creating " + POPULATION + " people.");
 		ArrayList<Agent> people =
 				AgentGenerator.createRandomPopulation(POPULATION, world);
@@ -176,6 +174,7 @@ public class AgentModel extends BaseAgentModel {
 			throw new RuntimeException(e);
 		}
 		return people;
+		*/
 	}
 
 	/**
@@ -189,8 +188,14 @@ public class AgentModel extends BaseAgentModel {
 		Calendar time = world.getTime();
 		now =
 				new EasyTime(time.get(Calendar.HOUR_OF_DAY), time
-						.get(Calendar.MINUTE));
-		handlePostman();
+					.get(Calendar.MINUTE));
+		
+		for (Agent a : agents)
+		{
+			a.wander();
+		}
+		/*
+		//handlePostman();
 		for (Agent a : agents) {
 			if (!a.isOnAuto()) {
 				continue; // This guy's being managed by the user interface
@@ -200,6 +205,7 @@ public class AgentModel extends BaseAgentModel {
 			}
 			handlePerson(a);
 		}
+		*/
 	}
 
 	/**
@@ -225,6 +231,7 @@ public class AgentModel extends BaseAgentModel {
 	 * @param a the agent to zombiefy
 	 */
 	private void handlePerson(final Agent a) {
+		/*
 		switch ((Activity) a.get(ACTIVITY)) {
 		case WAITING:
 			break;
@@ -239,5 +246,6 @@ public class AgentModel extends BaseAgentModel {
 					+ (Activity) a.get(ACTIVITY));
 		}
 
+		 */
 	}
 }
