@@ -16,6 +16,8 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link cleaningrobots.Robot#getName <em>Name</em>}</li>
  *   <li>{@link cleaningrobots.Robot#getMap <em>Map</em>}</li>
  *   <li>{@link cleaningrobots.Robot#getKnownStates <em>Known States</em>}</li>
+ *   <li>{@link cleaningrobots.Robot#getSensor <em>Sensor</em>}</li>
+ *   <li>{@link cleaningrobots.Robot#getActuator <em>Actuator</em>}</li>
  * </ul>
  * </p>
  *
@@ -91,5 +93,57 @@ public interface Robot extends EObject {
 	 * @generated
 	 */
 	EList<State> getKnownStates();
+
+	/**
+	 * Returns the value of the '<em><b>Sensor</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Sensor</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Sensor</em>' reference.
+	 * @see #setSensor(Sensor)
+	 * @see cleaningrobots.CleaningrobotsPackage#getRobot_Sensor()
+	 * @model
+	 * @generated
+	 */
+	Sensor getSensor();
+
+	/**
+	 * Sets the value of the '{@link cleaningrobots.Robot#getSensor <em>Sensor</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Sensor</em>' reference.
+	 * @see #getSensor()
+	 * @generated
+	 */
+	void setSensor(Sensor value);
+
+	/**
+	 * Returns the value of the '<em><b>Actuator</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Actuator</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Actuator</em>' reference.
+	 * @see #setActuator(Actuator)
+	 * @see cleaningrobots.CleaningrobotsPackage#getRobot_Actuator()
+	 * @model
+	 * @generated
+	 */
+	Actuator getActuator();
+
+	/**
+	 * Sets the value of the '{@link cleaningrobots.Robot#getActuator <em>Actuator</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Actuator</em>' reference.
+	 * @see #getActuator()
+	 * @generated
+	 */
+	void setActuator(Actuator value);
 
 } // Robot

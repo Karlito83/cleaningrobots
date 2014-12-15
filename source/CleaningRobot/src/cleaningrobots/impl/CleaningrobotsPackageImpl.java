@@ -2,15 +2,18 @@
  */
 package cleaningrobots.impl;
 
+import cleaningrobots.Actuator;
 import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.CleaningrobotsPackage;
 import cleaningrobots.Field;
 import cleaningrobots.Map;
 import cleaningrobots.Robot;
+import cleaningrobots.Sensor;
 import cleaningrobots.State;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -50,6 +53,20 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 	 * @generated
 	 */
 	private EClass stateEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass sensorEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass actuatorEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -146,6 +163,24 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 	 */
 	public EReference getRobot_KnownStates() {
 		return (EReference)robotEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRobot_Sensor() {
+		return (EReference)robotEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRobot_Actuator() {
+		return (EReference)robotEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -252,6 +287,42 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getSensor() {
+		return sensorEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getSensor_KnownStates() {
+		return (EReference)sensorEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getSensor__GetData() {
+		return sensorEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getActuator() {
+		return actuatorEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public CleaningrobotsFactory getCleaningrobotsFactory() {
 		return (CleaningrobotsFactory)getEFactoryInstance();
 	}
@@ -279,6 +350,8 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 		createEAttribute(robotEClass, ROBOT__NAME);
 		createEReference(robotEClass, ROBOT__MAP);
 		createEReference(robotEClass, ROBOT__KNOWN_STATES);
+		createEReference(robotEClass, ROBOT__SENSOR);
+		createEReference(robotEClass, ROBOT__ACTUATOR);
 
 		mapEClass = createEClass(MAP);
 		createEAttribute(mapEClass, MAP__XDIM);
@@ -293,6 +366,12 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 		stateEClass = createEClass(STATE);
 		createEAttribute(stateEClass, STATE__NAME);
 		createEReference(stateEClass, STATE__TRANSITION);
+
+		sensorEClass = createEClass(SENSOR);
+		createEReference(sensorEClass, SENSOR__KNOWN_STATES);
+		createEOperation(sensorEClass, SENSOR___GET_DATA);
+
+		actuatorEClass = createEClass(ACTUATOR);
 	}
 
 	/**
@@ -329,6 +408,8 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 		initEAttribute(getRobot_Name(), ecorePackage.getEString(), "name", null, 0, 1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRobot_Map(), this.getMap(), null, "map", null, 1, 1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRobot_KnownStates(), this.getState(), null, "knownStates", null, 1, -1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRobot_Sensor(), this.getSensor(), null, "Sensor", null, 0, 1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRobot_Actuator(), this.getActuator(), null, "Actuator", null, 0, 1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(mapEClass, Map.class, "Map", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getMap_Xdim(), ecorePackage.getEInt(), "xdim", null, 0, 1, Map.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -343,6 +424,13 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 		initEClass(stateEClass, State.class, "State", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getState_Name(), ecorePackage.getEString(), "name", null, 0, 1, State.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getState_Transition(), this.getState(), null, "transition", null, 0, -1, State.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(sensorEClass, Sensor.class, "Sensor", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getSensor_KnownStates(), this.getState(), null, "knownStates", null, 0, 1, Sensor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getSensor__GetData(), this.getField(), "getData", 0, -1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(actuatorEClass, Actuator.class, "Actuator", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

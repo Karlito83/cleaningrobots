@@ -4,6 +4,7 @@ package cleaningrobots;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -94,13 +95,31 @@ public interface CleaningrobotsPackage extends EPackage {
 	int ROBOT__KNOWN_STATES = 2;
 
 	/**
+	 * The feature id for the '<em><b>Sensor</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROBOT__SENSOR = 3;
+
+	/**
+	 * The feature id for the '<em><b>Actuator</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROBOT__ACTUATOR = 4;
+
+	/**
 	 * The number of structural features of the '<em>Robot</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ROBOT_FEATURE_COUNT = 3;
+	int ROBOT_FEATURE_COUNT = 5;
 
 	/**
 	 * The number of operations of the '<em>Robot</em>' class.
@@ -269,6 +288,81 @@ public interface CleaningrobotsPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link cleaningrobots.Sensor <em>Sensor</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see cleaningrobots.Sensor
+	 * @see cleaningrobots.impl.CleaningrobotsPackageImpl#getSensor()
+	 * @generated
+	 */
+	int SENSOR = 4;
+
+	/**
+	 * The feature id for the '<em><b>Known States</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SENSOR__KNOWN_STATES = 0;
+
+	/**
+	 * The number of structural features of the '<em>Sensor</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SENSOR_FEATURE_COUNT = 1;
+
+	/**
+	 * The operation id for the '<em>Get Data</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SENSOR___GET_DATA = 0;
+
+	/**
+	 * The number of operations of the '<em>Sensor</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SENSOR_OPERATION_COUNT = 1;
+
+	/**
+	 * The meta object id for the '{@link cleaningrobots.Actuator <em>Actuator</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see cleaningrobots.Actuator
+	 * @see cleaningrobots.impl.CleaningrobotsPackageImpl#getActuator()
+	 * @generated
+	 */
+	int ACTUATOR = 5;
+
+	/**
+	 * The number of structural features of the '<em>Actuator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTUATOR_FEATURE_COUNT = 0;
+
+	/**
+	 * The number of operations of the '<em>Actuator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTUATOR_OPERATION_COUNT = 0;
+
+
+	/**
 	 * Returns the meta object for class '{@link cleaningrobots.Robot <em>Robot</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -310,6 +404,28 @@ public interface CleaningrobotsPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getRobot_KnownStates();
+
+	/**
+	 * Returns the meta object for the reference '{@link cleaningrobots.Robot#getSensor <em>Sensor</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Sensor</em>'.
+	 * @see cleaningrobots.Robot#getSensor()
+	 * @see #getRobot()
+	 * @generated
+	 */
+	EReference getRobot_Sensor();
+
+	/**
+	 * Returns the meta object for the reference '{@link cleaningrobots.Robot#getActuator <em>Actuator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Actuator</em>'.
+	 * @see cleaningrobots.Robot#getActuator()
+	 * @see #getRobot()
+	 * @generated
+	 */
+	EReference getRobot_Actuator();
 
 	/**
 	 * Returns the meta object for class '{@link cleaningrobots.Map <em>Map</em>}'.
@@ -430,6 +546,47 @@ public interface CleaningrobotsPackage extends EPackage {
 	EReference getState_Transition();
 
 	/**
+	 * Returns the meta object for class '{@link cleaningrobots.Sensor <em>Sensor</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Sensor</em>'.
+	 * @see cleaningrobots.Sensor
+	 * @generated
+	 */
+	EClass getSensor();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link cleaningrobots.Sensor#getKnownStates <em>Known States</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Known States</em>'.
+	 * @see cleaningrobots.Sensor#getKnownStates()
+	 * @see #getSensor()
+	 * @generated
+	 */
+	EReference getSensor_KnownStates();
+
+	/**
+	 * Returns the meta object for the '{@link cleaningrobots.Sensor#getData() <em>Get Data</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Data</em>' operation.
+	 * @see cleaningrobots.Sensor#getData()
+	 * @generated
+	 */
+	EOperation getSensor__GetData();
+
+	/**
+	 * Returns the meta object for class '{@link cleaningrobots.Actuator <em>Actuator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Actuator</em>'.
+	 * @see cleaningrobots.Actuator
+	 * @generated
+	 */
+	EClass getActuator();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -485,6 +642,22 @@ public interface CleaningrobotsPackage extends EPackage {
 		 * @generated
 		 */
 		EReference ROBOT__KNOWN_STATES = eINSTANCE.getRobot_KnownStates();
+
+		/**
+		 * The meta object literal for the '<em><b>Sensor</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ROBOT__SENSOR = eINSTANCE.getRobot_Sensor();
+
+		/**
+		 * The meta object literal for the '<em><b>Actuator</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ROBOT__ACTUATOR = eINSTANCE.getRobot_Actuator();
 
 		/**
 		 * The meta object literal for the '{@link cleaningrobots.impl.MapImpl <em>Map</em>}' class.
@@ -579,6 +752,42 @@ public interface CleaningrobotsPackage extends EPackage {
 		 * @generated
 		 */
 		EReference STATE__TRANSITION = eINSTANCE.getState_Transition();
+
+		/**
+		 * The meta object literal for the '{@link cleaningrobots.Sensor <em>Sensor</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see cleaningrobots.Sensor
+		 * @see cleaningrobots.impl.CleaningrobotsPackageImpl#getSensor()
+		 * @generated
+		 */
+		EClass SENSOR = eINSTANCE.getSensor();
+
+		/**
+		 * The meta object literal for the '<em><b>Known States</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SENSOR__KNOWN_STATES = eINSTANCE.getSensor_KnownStates();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Data</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation SENSOR___GET_DATA = eINSTANCE.getSensor__GetData();
+
+		/**
+		 * The meta object literal for the '{@link cleaningrobots.Actuator <em>Actuator</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see cleaningrobots.Actuator
+		 * @see cleaningrobots.impl.CleaningrobotsPackageImpl#getActuator()
+		 * @generated
+		 */
+		EClass ACTUATOR = eINSTANCE.getActuator();
 
 	}
 
