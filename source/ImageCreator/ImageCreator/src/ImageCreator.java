@@ -16,7 +16,7 @@ public class ImageCreator {
 		{
 			for(int y=0; y<image.getHeight(); y++)
 			{
-				image.setRGB(x, y, rand.nextFloat()>=0.5?Color.BLACK.getRGB():Color.WHITE.getRGB());
+				image.setRGB(x, y, rand.nextFloat()>=0.8?Color.BLACK.getRGB():Color.WHITE.getRGB());
 			}
 		}
 		
