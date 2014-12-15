@@ -7,8 +7,9 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="knownStates" lowerBound="1"
         upperBound="-1" eType="#//State" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Sensor" eType="#//Sensor"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Actuator" eType="#//Actuator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Sensor" upperBound="-1"
+        eType="#//Sensor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Actuator" eType="#//Motor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Map">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xdim" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
@@ -28,8 +29,15 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Sensor" abstract="true" interface="true">
     <eOperations name="getData" upperBound="-1" eType="#//Field"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="knownStates" eType="#//State"
-        containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Actuator" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Motor" abstract="true" interface="true">
+    <eOperations name="move"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="direction" eType="#//Direction"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Direction">
+    <eLiterals name="North"/>
+    <eLiterals name="East" value="1"/>
+    <eLiterals name="South" value="2"/>
+    <eLiterals name="West" value="4"/>
+  </eClassifiers>
 </ecore:EPackage>

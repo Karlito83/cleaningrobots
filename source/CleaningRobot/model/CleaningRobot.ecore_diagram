@@ -116,11 +116,19 @@
   <children xmi:type="notation:Shape" xmi:id="_V-YUEIRvEeSMk6_VpeYSlg" type="2001" fontName="Ubuntu">
     <children xmi:type="notation:DecorationNode" xmi:id="_V-Y7IIRvEeSMk6_VpeYSlg" type="5001"/>
     <children xmi:type="notation:BasicCompartment" xmi:id="_V-Y7IYRvEeSMk6_VpeYSlg" type="7001">
+      <children xmi:type="notation:Node" xmi:id="_jVnosIR0EeSMk6_VpeYSlg" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CleaningRobot.ecore#//Motor/direction"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_jVnosYR0EeSMk6_VpeYSlg"/>
+      </children>
       <styles xmi:type="notation:SortingStyle" xmi:id="_V-Y7IoRvEeSMk6_VpeYSlg"/>
       <styles xmi:type="notation:FilteringStyle" xmi:id="_V-Y7I4RvEeSMk6_VpeYSlg"/>
       <layoutConstraint xmi:type="notation:Ratio" xmi:id="_cWLjoIRvEeSMk6_VpeYSlg" value="0.23076923076923078"/>
     </children>
     <children xmi:type="notation:BasicCompartment" xmi:id="_V-ZiMIRvEeSMk6_VpeYSlg" type="7002">
+      <children xmi:type="notation:Node" xmi:id="_VMTaEIRzEeSMk6_VpeYSlg" type="3002">
+        <element xmi:type="ecore:EOperation" href="CleaningRobot.ecore#//Motor/move"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_VMTaEYRzEeSMk6_VpeYSlg"/>
+      </children>
       <styles xmi:type="notation:SortingStyle" xmi:id="_V-ZiMYRvEeSMk6_VpeYSlg"/>
       <styles xmi:type="notation:FilteringStyle" xmi:id="_V-ZiMoRvEeSMk6_VpeYSlg"/>
       <layoutConstraint xmi:type="notation:Ratio" xmi:id="_cWMKsIRvEeSMk6_VpeYSlg" value="0.23076923076923078"/>
@@ -130,8 +138,37 @@
       <styles xmi:type="notation:FilteringStyle" xmi:id="_V-ZiNYRvEeSMk6_VpeYSlg"/>
       <layoutConstraint xmi:type="notation:Ratio" xmi:id="_cWMxwIRvEeSMk6_VpeYSlg" value="0.23076923076923078"/>
     </children>
-    <element xmi:type="ecore:EClass" href="CleaningRobot.ecore#//Actuator"/>
+    <element xmi:type="ecore:EClass" href="CleaningRobot.ecore#//Motor"/>
     <layoutConstraint xmi:type="notation:Bounds" xmi:id="_V-YUEYRvEeSMk6_VpeYSlg" x="432"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_m1SC8IRzEeSMk6_VpeYSlg" type="2005" fontName="Ubuntu">
+    <children xmi:type="notation:DecorationNode" xmi:id="_m1SqAIRzEeSMk6_VpeYSlg" type="5005"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_m1SqAYRzEeSMk6_VpeYSlg" type="7011">
+      <children xmi:type="notation:Node" xmi:id="_tvsQUIRzEeSMk6_VpeYSlg" type="3009">
+        <element xmi:type="ecore:EEnumLiteral" href="CleaningRobot.ecore#//Direction/North"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_tvsQUYRzEeSMk6_VpeYSlg"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_vG5T0IRzEeSMk6_VpeYSlg" type="3009">
+        <element xmi:type="ecore:EEnumLiteral" href="CleaningRobot.ecore#//Direction/East"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_vG5T0YRzEeSMk6_VpeYSlg"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_xFPP0IRzEeSMk6_VpeYSlg" type="3009">
+        <element xmi:type="ecore:EEnumLiteral" href="CleaningRobot.ecore#//Direction/South"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_xFPP0YRzEeSMk6_VpeYSlg"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_x1m80IRzEeSMk6_VpeYSlg" type="3009">
+        <element xmi:type="ecore:EEnumLiteral" href="CleaningRobot.ecore#//Direction/West"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_x1m80YRzEeSMk6_VpeYSlg"/>
+      </children>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_m1SqAoRzEeSMk6_VpeYSlg"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_m1SqA4RzEeSMk6_VpeYSlg"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_m1SqBIRzEeSMk6_VpeYSlg" type="7012">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_m1SqBYRzEeSMk6_VpeYSlg"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_m1SqBoRzEeSMk6_VpeYSlg"/>
+    </children>
+    <element xmi:type="ecore:EEnum" href="CleaningRobot.ecore#//Direction"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_m1SC8YRzEeSMk6_VpeYSlg" x="660"/>
   </children>
   <styles xmi:type="notation:DiagramStyle" xmi:id="_UGecwWWuEeSJ-ZQpDegE1w"/>
   <element xmi:type="ecore:EPackage" href="CleaningRobot.ecore#/"/>
@@ -197,18 +234,6 @@
     <styles xmi:type="notation:FontStyle" xmi:id="_D-jsEWWwEeSJ-ZQpDegE1w" fontName="Segoe UI"/>
     <element xmi:type="ecore:EReference" href="CleaningRobot.ecore#//Robot/knownStates"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_D-jsEmWwEeSJ-ZQpDegE1w" points="[53, 0, 53, -390]$[122, 0, 122, -390]$[122, 381, 122, -9]$[53, 381, 53, -9]"/>
-  </edges>
-  <edges xmi:type="notation:Connector" xmi:id="_i97loIRtEeSMk6_VpeYSlg" type="4003" source="_p7N9UIRsEeSMk6_VpeYSlg" target="_qXNT4GWuEeSJ-ZQpDegE1w">
-    <children xmi:type="notation:DecorationNode" xmi:id="_i98MsIRtEeSMk6_VpeYSlg" type="6002">
-      <layoutConstraint xmi:type="notation:Location" xmi:id="_i98MsYRtEeSMk6_VpeYSlg" y="40"/>
-    </children>
-    <children xmi:type="notation:DecorationNode" xmi:id="_i98zwIRtEeSMk6_VpeYSlg" type="6004">
-      <layoutConstraint xmi:type="notation:Location" xmi:id="_i98zwYRtEeSMk6_VpeYSlg" y="60"/>
-    </children>
-    <styles xmi:type="notation:FontStyle" xmi:id="_i97loYRtEeSMk6_VpeYSlg" fontName="Ubuntu"/>
-    <element xmi:type="ecore:EReference" href="CleaningRobot.ecore#//Sensor/knownStates"/>
-    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_i97looRtEeSMk6_VpeYSlg" points="[0, 24, 243, -148]$[0, 179, 243, 7]$[-183, 179, 60, 7]"/>
-    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_i-BsQIRtEeSMk6_VpeYSlg" id="(0.2231404958677686,0.6065573770491803)"/>
   </edges>
   <edges xmi:type="notation:Connector" xmi:id="_PUOJMIRvEeSMk6_VpeYSlg" type="4002" source="_UoTXcGWuEeSJ-ZQpDegE1w" target="_p7N9UIRsEeSMk6_VpeYSlg">
     <children xmi:type="notation:DecorationNode" xmi:id="_PUOwQIRvEeSMk6_VpeYSlg" type="6001">

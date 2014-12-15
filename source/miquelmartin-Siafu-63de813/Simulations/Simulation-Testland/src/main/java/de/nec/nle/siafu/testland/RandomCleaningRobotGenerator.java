@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import cleaningrobots.Actuator;
 import cleaningrobots.CleaningrobotsFactory;
+import cleaningrobots.Sensor;
 import cleaningrobots.State;
 import de.nec.nle.siafu.exceptions.PlaceNotFoundException;
 import de.nec.nle.siafu.model.Agent;
@@ -52,6 +54,8 @@ public class RandomCleaningRobotGenerator {
 			
 			String image;
 			State a,b;
+			Sensor sensor;
+			Actuator actuator;
 			
 			if(rand.nextBoolean()){
 				image = "HumanMagenta";
@@ -59,14 +63,15 @@ public class RandomCleaningRobotGenerator {
 				b = stateClean;				
 			} else {
 				image = "HumanYellow";
-				a = stateDirty;
-				b = stateClean;
+				a = stateWet;
+				b = stateDry;
+				
 			}
 			CleaningRobotAgent agent = 
 					new CleaningRobotAgent(world.getRandomPlaceOfType("Nowhere").getPos(), image, world);
 			
 			counter++;
-			agent.setName("Robbi_" + counter);
+			agent.setName("Robby_" + counter);
 			
 			agent.getCleaningRobot().getKnownStates().add(a);
 			agent.getCleaningRobot().getKnownStates().add(b);
