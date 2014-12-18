@@ -289,10 +289,10 @@ public interface CleaningrobotsPackage extends EPackage {
 
 
 	/**
-	 * The meta object id for the '{@link cleaningrobots.Sensor <em>Sensor</em>}' class.
+	 * The meta object id for the '{@link cleaningrobots.impl.SensorImpl <em>Sensor</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see cleaningrobots.Sensor
+	 * @see cleaningrobots.impl.SensorImpl
 	 * @see cleaningrobots.impl.CleaningrobotsPackageImpl#getSensor()
 	 * @generated
 	 */
@@ -793,10 +793,10 @@ public interface CleaningrobotsPackage extends EPackage {
 		EReference STATE__TRANSITION = eINSTANCE.getState_Transition();
 
 		/**
-		 * The meta object literal for the '{@link cleaningrobots.Sensor <em>Sensor</em>}' class.
+		 * The meta object literal for the '{@link cleaningrobots.impl.SensorImpl <em>Sensor</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see cleaningrobots.Sensor
+		 * @see cleaningrobots.impl.SensorImpl
 		 * @see cleaningrobots.impl.CleaningrobotsPackageImpl#getSensor()
 		 * @generated
 		 */

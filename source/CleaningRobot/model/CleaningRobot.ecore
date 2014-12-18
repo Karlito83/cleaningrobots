@@ -27,7 +27,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="transition" upperBound="-1"
         eType="#//State"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Sensor" abstract="true" interface="true">
+  <eClassifiers xsi:type="ecore:EClass" name="Sensor" abstract="true">
     <eOperations name="getData" upperBound="-1" eType="#//Field"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Motor" abstract="true" interface="true">
@@ -35,12 +35,12 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="direction" eType="#//Direction"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="Direction">
-    <eLiterals name="North" value ="0" />
+    <eLiterals name="North"/>
     <eLiterals name="NorthEast" value="1"/>
     <eLiterals name="East" value="2"/>
     <eLiterals name="SouthEast" value="3"/>
     <eLiterals name="South" value="4"/>
-    <eLiterals name="SouthWest" value="5" />
+    <eLiterals name="SouthWest" value="5"/>
     <eLiterals name="West" value="6"/>
     <eLiterals name="NorthWest" value="7"/>
   </eClassifiers>

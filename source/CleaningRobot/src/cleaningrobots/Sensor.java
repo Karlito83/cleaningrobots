@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  *
  * @see cleaningrobots.CleaningrobotsPackage#getSensor()
- * @model interface="true" abstract="true"
+ * @model abstract="true"
  * @generated
  */
 public interface Sensor extends EObject {
