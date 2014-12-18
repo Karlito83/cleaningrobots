@@ -160,6 +160,10 @@
         <element xmi:type="ecore:EEnumLiteral" href="CleaningRobot.ecore#//Direction/West"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_x1m80YRzEeSMk6_VpeYSlg"/>
       </children>
+      <children xmi:type="notation:Node" xmi:id="_sh9YEIbHEeSBdtIJcUDhkA" type="3009">
+        <element xmi:type="ecore:EEnumLiteral" href="CleaningRobot.ecore#//Direction/NorthEast"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_sh9YEYbHEeSBdtIJcUDhkA"/>
+      </children>
       <styles xmi:type="notation:SortingStyle" xmi:id="_m1SqAoRzEeSMk6_VpeYSlg"/>
       <styles xmi:type="notation:FilteringStyle" xmi:id="_m1SqA4RzEeSMk6_VpeYSlg"/>
     </children>

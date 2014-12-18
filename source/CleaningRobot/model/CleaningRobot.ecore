@@ -35,9 +35,13 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="direction" eType="#//Direction"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="Direction">
-    <eLiterals name="North"/>
-    <eLiterals name="East" value="1"/>
-    <eLiterals name="South" value="2"/>
-    <eLiterals name="West" value="4"/>
+    <eLiterals name="North" value ="0" />
+    <eLiterals name="NorthEast" value="1"/>
+    <eLiterals name="East" value="2"/>
+    <eLiterals name="SouthEast" value="3"/>
+    <eLiterals name="South" value="4"/>
+    <eLiterals name="SouthWest" value="5" />
+    <eLiterals name="West" value="6"/>
+    <eLiterals name="NorthWest" value="7"/>
   </eClassifiers>
 </ecore:EPackage>

@@ -95,30 +95,20 @@ public interface Robot extends EObject {
 	EList<State> getKnownStates();
 
 	/**
-	 * Returns the value of the '<em><b>Sensor</b></em>' reference.
+	 * Returns the value of the '<em><b>Sensor</b></em>' reference list.
+	 * The list contents are of type {@link cleaningrobots.Sensor}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Sensor</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Sensor</em>' reference.
-	 * @see #setSensor(Sensor)
+	 * @return the value of the '<em>Sensor</em>' reference list.
 	 * @see cleaningrobots.CleaningrobotsPackage#getRobot_Sensor()
 	 * @model
 	 * @generated
 	 */
-	Sensor getSensor();
-
-	/**
-	 * Sets the value of the '{@link cleaningrobots.Robot#getSensor <em>Sensor</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Sensor</em>' reference.
-	 * @see #getSensor()
-	 * @generated
-	 */
-	void setSensor(Sensor value);
+	EList<Sensor> getSensor();
 
 	/**
 	 * Returns the value of the '<em><b>Actuator</b></em>' reference.
@@ -129,12 +119,12 @@ public interface Robot extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Actuator</em>' reference.
-	 * @see #setActuator(Actuator)
+	 * @see #setActuator(Motor)
 	 * @see cleaningrobots.CleaningrobotsPackage#getRobot_Actuator()
 	 * @model
 	 * @generated
 	 */
-	Actuator getActuator();
+	Motor getActuator();
 
 	/**
 	 * Sets the value of the '{@link cleaningrobots.Robot#getActuator <em>Actuator</em>}' reference.
@@ -144,6 +134,6 @@ public interface Robot extends EObject {
 	 * @see #getActuator()
 	 * @generated
 	 */
-	void setActuator(Actuator value);
+	void setActuator(Motor value);
 
 } // Robot

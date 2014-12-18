@@ -4,6 +4,7 @@ package cleaningrobots;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -95,7 +96,7 @@ public interface CleaningrobotsPackage extends EPackage {
 	int ROBOT__KNOWN_STATES = 2;
 
 	/**
-	 * The feature id for the '<em><b>Sensor</b></em>' reference.
+	 * The feature id for the '<em><b>Sensor</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -298,22 +299,13 @@ public interface CleaningrobotsPackage extends EPackage {
 	int SENSOR = 4;
 
 	/**
-	 * The feature id for the '<em><b>Known States</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SENSOR__KNOWN_STATES = 0;
-
-	/**
 	 * The number of structural features of the '<em>Sensor</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SENSOR_FEATURE_COUNT = 1;
+	int SENSOR_FEATURE_COUNT = 0;
 
 	/**
 	 * The operation id for the '<em>Get Data</em>' operation.
@@ -334,33 +326,60 @@ public interface CleaningrobotsPackage extends EPackage {
 	int SENSOR_OPERATION_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link cleaningrobots.Actuator <em>Actuator</em>}' class.
+	 * The meta object id for the '{@link cleaningrobots.Motor <em>Motor</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see cleaningrobots.Actuator
-	 * @see cleaningrobots.impl.CleaningrobotsPackageImpl#getActuator()
+	 * @see cleaningrobots.Motor
+	 * @see cleaningrobots.impl.CleaningrobotsPackageImpl#getMotor()
 	 * @generated
 	 */
-	int ACTUATOR = 5;
+	int MOTOR = 5;
 
 	/**
-	 * The number of structural features of the '<em>Actuator</em>' class.
+	 * The feature id for the '<em><b>Direction</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTUATOR_FEATURE_COUNT = 0;
+	int MOTOR__DIRECTION = 0;
 
 	/**
-	 * The number of operations of the '<em>Actuator</em>' class.
+	 * The number of structural features of the '<em>Motor</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ACTUATOR_OPERATION_COUNT = 0;
+	int MOTOR_FEATURE_COUNT = 1;
 
+	/**
+	 * The operation id for the '<em>Move</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MOTOR___MOVE = 0;
+
+	/**
+	 * The number of operations of the '<em>Motor</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MOTOR_OPERATION_COUNT = 1;
+
+	/**
+	 * The meta object id for the '{@link cleaningrobots.Direction <em>Direction</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see cleaningrobots.Direction
+	 * @see cleaningrobots.impl.CleaningrobotsPackageImpl#getDirection()
+	 * @generated
+	 */
+	int DIRECTION = 6;
 
 	/**
 	 * Returns the meta object for class '{@link cleaningrobots.Robot <em>Robot</em>}'.
@@ -406,10 +425,10 @@ public interface CleaningrobotsPackage extends EPackage {
 	EReference getRobot_KnownStates();
 
 	/**
-	 * Returns the meta object for the reference '{@link cleaningrobots.Robot#getSensor <em>Sensor</em>}'.
+	 * Returns the meta object for the reference list '{@link cleaningrobots.Robot#getSensor <em>Sensor</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Sensor</em>'.
+	 * @return the meta object for the reference list '<em>Sensor</em>'.
 	 * @see cleaningrobots.Robot#getSensor()
 	 * @see #getRobot()
 	 * @generated
@@ -556,17 +575,6 @@ public interface CleaningrobotsPackage extends EPackage {
 	EClass getSensor();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link cleaningrobots.Sensor#getKnownStates <em>Known States</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Known States</em>'.
-	 * @see cleaningrobots.Sensor#getKnownStates()
-	 * @see #getSensor()
-	 * @generated
-	 */
-	EReference getSensor_KnownStates();
-
-	/**
 	 * Returns the meta object for the '{@link cleaningrobots.Sensor#getData() <em>Get Data</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -577,14 +585,45 @@ public interface CleaningrobotsPackage extends EPackage {
 	EOperation getSensor__GetData();
 
 	/**
-	 * Returns the meta object for class '{@link cleaningrobots.Actuator <em>Actuator</em>}'.
+	 * Returns the meta object for class '{@link cleaningrobots.Motor <em>Motor</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Actuator</em>'.
-	 * @see cleaningrobots.Actuator
+	 * @return the meta object for class '<em>Motor</em>'.
+	 * @see cleaningrobots.Motor
 	 * @generated
 	 */
-	EClass getActuator();
+	EClass getMotor();
+
+	/**
+	 * Returns the meta object for the attribute '{@link cleaningrobots.Motor#getDirection <em>Direction</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Direction</em>'.
+	 * @see cleaningrobots.Motor#getDirection()
+	 * @see #getMotor()
+	 * @generated
+	 */
+	EAttribute getMotor_Direction();
+
+	/**
+	 * Returns the meta object for the '{@link cleaningrobots.Motor#move() <em>Move</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Move</em>' operation.
+	 * @see cleaningrobots.Motor#move()
+	 * @generated
+	 */
+	EOperation getMotor__Move();
+
+	/**
+	 * Returns the meta object for enum '{@link cleaningrobots.Direction <em>Direction</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Direction</em>'.
+	 * @see cleaningrobots.Direction
+	 * @generated
+	 */
+	EEnum getDirection();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -644,7 +683,7 @@ public interface CleaningrobotsPackage extends EPackage {
 		EReference ROBOT__KNOWN_STATES = eINSTANCE.getRobot_KnownStates();
 
 		/**
-		 * The meta object literal for the '<em><b>Sensor</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Sensor</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -764,14 +803,6 @@ public interface CleaningrobotsPackage extends EPackage {
 		EClass SENSOR = eINSTANCE.getSensor();
 
 		/**
-		 * The meta object literal for the '<em><b>Known States</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference SENSOR__KNOWN_STATES = eINSTANCE.getSensor_KnownStates();
-
-		/**
 		 * The meta object literal for the '<em><b>Get Data</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -780,14 +811,40 @@ public interface CleaningrobotsPackage extends EPackage {
 		EOperation SENSOR___GET_DATA = eINSTANCE.getSensor__GetData();
 
 		/**
-		 * The meta object literal for the '{@link cleaningrobots.Actuator <em>Actuator</em>}' class.
+		 * The meta object literal for the '{@link cleaningrobots.Motor <em>Motor</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see cleaningrobots.Actuator
-		 * @see cleaningrobots.impl.CleaningrobotsPackageImpl#getActuator()
+		 * @see cleaningrobots.Motor
+		 * @see cleaningrobots.impl.CleaningrobotsPackageImpl#getMotor()
 		 * @generated
 		 */
-		EClass ACTUATOR = eINSTANCE.getActuator();
+		EClass MOTOR = eINSTANCE.getMotor();
+
+		/**
+		 * The meta object literal for the '<em><b>Direction</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MOTOR__DIRECTION = eINSTANCE.getMotor_Direction();
+
+		/**
+		 * The meta object literal for the '<em><b>Move</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation MOTOR___MOVE = eINSTANCE.getMotor__Move();
+
+		/**
+		 * The meta object literal for the '{@link cleaningrobots.Direction <em>Direction</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see cleaningrobots.Direction
+		 * @see cleaningrobots.impl.CleaningrobotsPackageImpl#getDirection()
+		 * @generated
+		 */
+		EEnum DIRECTION = eINSTANCE.getDirection();
 
 	}
 

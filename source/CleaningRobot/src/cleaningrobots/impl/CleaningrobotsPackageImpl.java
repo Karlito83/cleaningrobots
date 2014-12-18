@@ -2,21 +2,21 @@
  */
 package cleaningrobots.impl;
 
-import cleaningrobots.Actuator;
 import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.CleaningrobotsPackage;
+import cleaningrobots.Direction;
 import cleaningrobots.Field;
 import cleaningrobots.Map;
+import cleaningrobots.Motor;
 import cleaningrobots.Robot;
 import cleaningrobots.Sensor;
 import cleaningrobots.State;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -66,7 +66,14 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass actuatorEClass = null;
+	private EClass motorEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum directionEEnum = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -296,15 +303,6 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getSensor_KnownStates() {
-		return (EReference)sensorEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EOperation getSensor__GetData() {
 		return sensorEClass.getEOperations().get(0);
 	}
@@ -314,8 +312,35 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getActuator() {
-		return actuatorEClass;
+	public EClass getMotor() {
+		return motorEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getMotor_Direction() {
+		return (EAttribute)motorEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getMotor__Move() {
+		return motorEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EEnum getDirection() {
+		return directionEEnum;
 	}
 
 	/**
@@ -368,10 +393,14 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 		createEReference(stateEClass, STATE__TRANSITION);
 
 		sensorEClass = createEClass(SENSOR);
-		createEReference(sensorEClass, SENSOR__KNOWN_STATES);
 		createEOperation(sensorEClass, SENSOR___GET_DATA);
 
-		actuatorEClass = createEClass(ACTUATOR);
+		motorEClass = createEClass(MOTOR);
+		createEAttribute(motorEClass, MOTOR__DIRECTION);
+		createEOperation(motorEClass, MOTOR___MOVE);
+
+		// Create enums
+		directionEEnum = createEEnum(DIRECTION);
 	}
 
 	/**
@@ -408,8 +437,8 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 		initEAttribute(getRobot_Name(), ecorePackage.getEString(), "name", null, 0, 1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRobot_Map(), this.getMap(), null, "map", null, 1, 1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRobot_KnownStates(), this.getState(), null, "knownStates", null, 1, -1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRobot_Sensor(), this.getSensor(), null, "Sensor", null, 0, 1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRobot_Actuator(), this.getActuator(), null, "Actuator", null, 0, 1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRobot_Sensor(), this.getSensor(), null, "Sensor", null, 0, -1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRobot_Actuator(), this.getMotor(), null, "Actuator", null, 0, 1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(mapEClass, Map.class, "Map", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getMap_Xdim(), ecorePackage.getEInt(), "xdim", null, 0, 1, Map.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -426,11 +455,24 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 		initEReference(getState_Transition(), this.getState(), null, "transition", null, 0, -1, State.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(sensorEClass, Sensor.class, "Sensor", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getSensor_KnownStates(), this.getState(), null, "knownStates", null, 0, 1, Sensor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getSensor__GetData(), this.getField(), "getData", 0, -1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(actuatorEClass, Actuator.class, "Actuator", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(motorEClass, Motor.class, "Motor", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getMotor_Direction(), this.getDirection(), "direction", null, 0, 1, Motor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getMotor__Move(), null, "move", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		// Initialize enums and add enum literals
+		initEEnum(directionEEnum, Direction.class, "Direction");
+		addEEnumLiteral(directionEEnum, Direction.NORTH);
+		addEEnumLiteral(directionEEnum, Direction.NORTH_EAST);
+		addEEnumLiteral(directionEEnum, Direction.EAST);
+		addEEnumLiteral(directionEEnum, Direction.SOUTH_EAST);
+		addEEnumLiteral(directionEEnum, Direction.SOUTH);
+		addEEnumLiteral(directionEEnum, Direction.SOUTH_WEST);
+		addEEnumLiteral(directionEEnum, Direction.WEST);
+		addEEnumLiteral(directionEEnum, Direction.NORTH_WEST);
 
 		// Create resource
 		createResource(eNS_URI);
