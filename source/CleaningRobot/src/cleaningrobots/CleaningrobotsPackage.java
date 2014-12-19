@@ -96,7 +96,7 @@ public interface CleaningrobotsPackage extends EPackage {
 	int ROBOT__KNOWN_STATES = 2;
 
 	/**
-	 * The feature id for the '<em><b>Sensor</b></em>' reference list.
+	 * The feature id for the '<em><b>Sensor</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -105,13 +105,22 @@ public interface CleaningrobotsPackage extends EPackage {
 	int ROBOT__SENSOR = 3;
 
 	/**
-	 * The feature id for the '<em><b>Actuator</b></em>' reference.
+	 * The feature id for the '<em><b>Drive</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ROBOT__ACTUATOR = 4;
+	int ROBOT__DRIVE = 4;
+
+	/**
+	 * The feature id for the '<em><b>Current Behaviour</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROBOT__CURRENT_BEHAVIOUR = 5;
 
 	/**
 	 * The number of structural features of the '<em>Robot</em>' class.
@@ -120,7 +129,16 @@ public interface CleaningrobotsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROBOT_FEATURE_COUNT = 5;
+	int ROBOT_FEATURE_COUNT = 6;
+
+	/**
+	 * The operation id for the '<em>Action</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ROBOT___ACTION = 0;
 
 	/**
 	 * The number of operations of the '<em>Robot</em>' class.
@@ -129,7 +147,7 @@ public interface CleaningrobotsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ROBOT_OPERATION_COUNT = 0;
+	int ROBOT_OPERATION_COUNT = 1;
 
 	/**
 	 * The meta object id for the '{@link cleaningrobots.impl.MapImpl <em>Map</em>}' class.
@@ -371,6 +389,117 @@ public interface CleaningrobotsPackage extends EPackage {
 	int DRIVE_OPERATION_COUNT = 1;
 
 	/**
+	 * The meta object id for the '{@link cleaningrobots.Behaviour <em>Behaviour</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see cleaningrobots.Behaviour
+	 * @see cleaningrobots.impl.CleaningrobotsPackageImpl#getBehaviour()
+	 * @generated
+	 */
+	int BEHAVIOUR = 6;
+
+	/**
+	 * The number of structural features of the '<em>Behaviour</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BEHAVIOUR_FEATURE_COUNT = 0;
+
+	/**
+	 * The operation id for the '<em>Action</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BEHAVIOUR___ACTION = 0;
+
+	/**
+	 * The number of operations of the '<em>Behaviour</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BEHAVIOUR_OPERATION_COUNT = 1;
+
+	/**
+	 * The meta object id for the '{@link cleaningrobots.impl.CleaningBehaviourImpl <em>Cleaning Behaviour</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see cleaningrobots.impl.CleaningBehaviourImpl
+	 * @see cleaningrobots.impl.CleaningrobotsPackageImpl#getCleaningBehaviour()
+	 * @generated
+	 */
+	int CLEANING_BEHAVIOUR = 7;
+
+	/**
+	 * The number of structural features of the '<em>Cleaning Behaviour</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CLEANING_BEHAVIOUR_FEATURE_COUNT = BEHAVIOUR_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Action</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CLEANING_BEHAVIOUR___ACTION = BEHAVIOUR___ACTION;
+
+	/**
+	 * The number of operations of the '<em>Cleaning Behaviour</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CLEANING_BEHAVIOUR_OPERATION_COUNT = BEHAVIOUR_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link cleaningrobots.impl.DiscoverBehaviourImpl <em>Discover Behaviour</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see cleaningrobots.impl.DiscoverBehaviourImpl
+	 * @see cleaningrobots.impl.CleaningrobotsPackageImpl#getDiscoverBehaviour()
+	 * @generated
+	 */
+	int DISCOVER_BEHAVIOUR = 8;
+
+	/**
+	 * The number of structural features of the '<em>Discover Behaviour</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DISCOVER_BEHAVIOUR_FEATURE_COUNT = BEHAVIOUR_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Action</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DISCOVER_BEHAVIOUR___ACTION = BEHAVIOUR___ACTION;
+
+	/**
+	 * The number of operations of the '<em>Discover Behaviour</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DISCOVER_BEHAVIOUR_OPERATION_COUNT = BEHAVIOUR_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link cleaningrobots.Direction <em>Direction</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -378,7 +507,7 @@ public interface CleaningrobotsPackage extends EPackage {
 	 * @see cleaningrobots.impl.CleaningrobotsPackageImpl#getDirection()
 	 * @generated
 	 */
-	int DIRECTION = 6;
+	int DIRECTION = 9;
 
 
 	/**
@@ -425,10 +554,10 @@ public interface CleaningrobotsPackage extends EPackage {
 	EReference getRobot_KnownStates();
 
 	/**
-	 * Returns the meta object for the reference list '{@link cleaningrobots.Robot#getSensor <em>Sensor</em>}'.
+	 * Returns the meta object for the containment reference list '{@link cleaningrobots.Robot#getSensor <em>Sensor</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Sensor</em>'.
+	 * @return the meta object for the containment reference list '<em>Sensor</em>'.
 	 * @see cleaningrobots.Robot#getSensor()
 	 * @see #getRobot()
 	 * @generated
@@ -436,15 +565,36 @@ public interface CleaningrobotsPackage extends EPackage {
 	EReference getRobot_Sensor();
 
 	/**
-	 * Returns the meta object for the reference '{@link cleaningrobots.Robot#getActuator <em>Actuator</em>}'.
+	 * Returns the meta object for the containment reference '{@link cleaningrobots.Robot#getDrive <em>Drive</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Actuator</em>'.
-	 * @see cleaningrobots.Robot#getActuator()
+	 * @return the meta object for the containment reference '<em>Drive</em>'.
+	 * @see cleaningrobots.Robot#getDrive()
 	 * @see #getRobot()
 	 * @generated
 	 */
-	EReference getRobot_Actuator();
+	EReference getRobot_Drive();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link cleaningrobots.Robot#getCurrentBehaviour <em>Current Behaviour</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Current Behaviour</em>'.
+	 * @see cleaningrobots.Robot#getCurrentBehaviour()
+	 * @see #getRobot()
+	 * @generated
+	 */
+	EReference getRobot_CurrentBehaviour();
+
+	/**
+	 * Returns the meta object for the '{@link cleaningrobots.Robot#action() <em>Action</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Action</em>' operation.
+	 * @see cleaningrobots.Robot#action()
+	 * @generated
+	 */
+	EOperation getRobot__Action();
 
 	/**
 	 * Returns the meta object for class '{@link cleaningrobots.Map <em>Map</em>}'.
@@ -616,6 +766,46 @@ public interface CleaningrobotsPackage extends EPackage {
 	EOperation getDrive__Move();
 
 	/**
+	 * Returns the meta object for class '{@link cleaningrobots.Behaviour <em>Behaviour</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Behaviour</em>'.
+	 * @see cleaningrobots.Behaviour
+	 * @generated
+	 */
+	EClass getBehaviour();
+
+	/**
+	 * Returns the meta object for the '{@link cleaningrobots.Behaviour#action() <em>Action</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Action</em>' operation.
+	 * @see cleaningrobots.Behaviour#action()
+	 * @generated
+	 */
+	EOperation getBehaviour__Action();
+
+	/**
+	 * Returns the meta object for class '{@link cleaningrobots.CleaningBehaviour <em>Cleaning Behaviour</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Cleaning Behaviour</em>'.
+	 * @see cleaningrobots.CleaningBehaviour
+	 * @generated
+	 */
+	EClass getCleaningBehaviour();
+
+	/**
+	 * Returns the meta object for class '{@link cleaningrobots.DiscoverBehaviour <em>Discover Behaviour</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Discover Behaviour</em>'.
+	 * @see cleaningrobots.DiscoverBehaviour
+	 * @generated
+	 */
+	EClass getDiscoverBehaviour();
+
+	/**
 	 * Returns the meta object for enum '{@link cleaningrobots.Direction <em>Direction</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -683,7 +873,7 @@ public interface CleaningrobotsPackage extends EPackage {
 		EReference ROBOT__KNOWN_STATES = eINSTANCE.getRobot_KnownStates();
 
 		/**
-		 * The meta object literal for the '<em><b>Sensor</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Sensor</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -691,12 +881,28 @@ public interface CleaningrobotsPackage extends EPackage {
 		EReference ROBOT__SENSOR = eINSTANCE.getRobot_Sensor();
 
 		/**
-		 * The meta object literal for the '<em><b>Actuator</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Drive</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference ROBOT__ACTUATOR = eINSTANCE.getRobot_Actuator();
+		EReference ROBOT__DRIVE = eINSTANCE.getRobot_Drive();
+
+		/**
+		 * The meta object literal for the '<em><b>Current Behaviour</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ROBOT__CURRENT_BEHAVIOUR = eINSTANCE.getRobot_CurrentBehaviour();
+
+		/**
+		 * The meta object literal for the '<em><b>Action</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation ROBOT___ACTION = eINSTANCE.getRobot__Action();
 
 		/**
 		 * The meta object literal for the '{@link cleaningrobots.impl.MapImpl <em>Map</em>}' class.
@@ -835,6 +1041,44 @@ public interface CleaningrobotsPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation DRIVE___MOVE = eINSTANCE.getDrive__Move();
+
+		/**
+		 * The meta object literal for the '{@link cleaningrobots.Behaviour <em>Behaviour</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see cleaningrobots.Behaviour
+		 * @see cleaningrobots.impl.CleaningrobotsPackageImpl#getBehaviour()
+		 * @generated
+		 */
+		EClass BEHAVIOUR = eINSTANCE.getBehaviour();
+
+		/**
+		 * The meta object literal for the '<em><b>Action</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation BEHAVIOUR___ACTION = eINSTANCE.getBehaviour__Action();
+
+		/**
+		 * The meta object literal for the '{@link cleaningrobots.impl.CleaningBehaviourImpl <em>Cleaning Behaviour</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see cleaningrobots.impl.CleaningBehaviourImpl
+		 * @see cleaningrobots.impl.CleaningrobotsPackageImpl#getCleaningBehaviour()
+		 * @generated
+		 */
+		EClass CLEANING_BEHAVIOUR = eINSTANCE.getCleaningBehaviour();
+
+		/**
+		 * The meta object literal for the '{@link cleaningrobots.impl.DiscoverBehaviourImpl <em>Discover Behaviour</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see cleaningrobots.impl.DiscoverBehaviourImpl
+		 * @see cleaningrobots.impl.CleaningrobotsPackageImpl#getDiscoverBehaviour()
+		 * @generated
+		 */
+		EClass DISCOVER_BEHAVIOUR = eINSTANCE.getDiscoverBehaviour();
 
 		/**
 		 * The meta object literal for the '{@link cleaningrobots.Direction <em>Direction</em>}' enum.

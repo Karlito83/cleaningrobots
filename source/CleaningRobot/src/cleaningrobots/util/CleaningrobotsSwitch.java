@@ -102,6 +102,26 @@ public class CleaningrobotsSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case CleaningrobotsPackage.BEHAVIOUR: {
+				Behaviour behaviour = (Behaviour)theEObject;
+				T result = caseBehaviour(behaviour);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CleaningrobotsPackage.CLEANING_BEHAVIOUR: {
+				CleaningBehaviour cleaningBehaviour = (CleaningBehaviour)theEObject;
+				T result = caseCleaningBehaviour(cleaningBehaviour);
+				if (result == null) result = caseBehaviour(cleaningBehaviour);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CleaningrobotsPackage.DISCOVER_BEHAVIOUR: {
+				DiscoverBehaviour discoverBehaviour = (DiscoverBehaviour)theEObject;
+				T result = caseDiscoverBehaviour(discoverBehaviour);
+				if (result == null) result = caseBehaviour(discoverBehaviour);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -193,6 +213,51 @@ public class CleaningrobotsSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseDrive(Drive object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Behaviour</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Behaviour</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseBehaviour(Behaviour object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cleaning Behaviour</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cleaning Behaviour</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseCleaningBehaviour(CleaningBehaviour object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Discover Behaviour</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Discover Behaviour</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDiscoverBehaviour(DiscoverBehaviour object) {
 		return null;
 	}
 

@@ -18,7 +18,8 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link cleaningrobots.Robot#getMap <em>Map</em>}</li>
  *   <li>{@link cleaningrobots.Robot#getKnownStates <em>Known States</em>}</li>
  *   <li>{@link cleaningrobots.Robot#getSensor <em>Sensor</em>}</li>
- *   <li>{@link cleaningrobots.Robot#getActuator <em>Actuator</em>}</li>
+ *   <li>{@link cleaningrobots.Robot#getDrive <em>Drive</em>}</li>
+ *   <li>{@link cleaningrobots.Robot#getCurrentBehaviour <em>Current Behaviour</em>}</li>
  * </ul>
  * </p>
  *
@@ -96,7 +97,7 @@ public interface Robot extends EObject {
 	EList<State> getKnownStates();
 
 	/**
-	 * Returns the value of the '<em><b>Sensor</b></em>' reference list.
+	 * Returns the value of the '<em><b>Sensor</b></em>' containment reference list.
 	 * The list contents are of type {@link cleaningrobots.Sensor}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -104,37 +105,60 @@ public interface Robot extends EObject {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Sensor</em>' reference list.
+	 * @return the value of the '<em>Sensor</em>' containment reference list.
 	 * @see cleaningrobots.CleaningrobotsPackage#getRobot_Sensor()
-	 * @model
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<Sensor> getSensor();
 
 	/**
-	 * Returns the value of the '<em><b>Actuator</b></em>' reference.
+	 * Returns the value of the '<em><b>Drive</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Actuator</em>' reference isn't clear,
+	 * If the meaning of the '<em>Drive</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Actuator</em>' reference.
-	 * @see #setActuator(Drive)
-	 * @see cleaningrobots.CleaningrobotsPackage#getRobot_Actuator()
+	 * @return the value of the '<em>Drive</em>' containment reference.
+	 * @see cleaningrobots.CleaningrobotsPackage#getRobot_Drive()
+	 * @model containment="true" required="true" changeable="false"
+	 * @generated
+	 */
+	Drive getDrive();
+
+	/**
+	 * Returns the value of the '<em><b>Current Behaviour</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Current Behaviour</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Current Behaviour</em>' containment reference.
+	 * @see #setCurrentBehaviour(Behaviour)
+	 * @see cleaningrobots.CleaningrobotsPackage#getRobot_CurrentBehaviour()
+	 * @model containment="true" required="true"
+	 * @generated
+	 */
+	Behaviour getCurrentBehaviour();
+
+	/**
+	 * Sets the value of the '{@link cleaningrobots.Robot#getCurrentBehaviour <em>Current Behaviour</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Current Behaviour</em>' containment reference.
+	 * @see #getCurrentBehaviour()
+	 * @generated
+	 */
+	void setCurrentBehaviour(Behaviour value);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */
-	Drive getActuator();
-
-	/**
-	 * Sets the value of the '{@link cleaningrobots.Robot#getActuator <em>Actuator</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Actuator</em>' reference.
-	 * @see #getActuator()
-	 * @generated
-	 */
-	void setActuator(Drive value);
+	void action();
 
 } // Robot

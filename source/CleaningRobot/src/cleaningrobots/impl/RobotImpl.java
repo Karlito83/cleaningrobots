@@ -2,28 +2,23 @@
  */
 package cleaningrobots.impl;
 
+import cleaningrobots.Behaviour;
 import cleaningrobots.CleaningrobotsPackage;
 import cleaningrobots.Drive;
 import cleaningrobots.Map;
 import cleaningrobots.Robot;
 import cleaningrobots.Sensor;
 import cleaningrobots.State;
-
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
@@ -37,7 +32,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link cleaningrobots.impl.RobotImpl#getMap <em>Map</em>}</li>
  *   <li>{@link cleaningrobots.impl.RobotImpl#getKnownStates <em>Known States</em>}</li>
  *   <li>{@link cleaningrobots.impl.RobotImpl#getSensor <em>Sensor</em>}</li>
- *   <li>{@link cleaningrobots.impl.RobotImpl#getActuator <em>Actuator</em>}</li>
+ *   <li>{@link cleaningrobots.impl.RobotImpl#getDrive <em>Drive</em>}</li>
+ *   <li>{@link cleaningrobots.impl.RobotImpl#getCurrentBehaviour <em>Current Behaviour</em>}</li>
  * </ul>
  * </p>
  *
@@ -85,7 +81,7 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	protected EList<State> knownStates;
 
 	/**
-	 * The cached value of the '{@link #getSensor() <em>Sensor</em>}' reference list.
+	 * The cached value of the '{@link #getSensor() <em>Sensor</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getSensor()
@@ -95,14 +91,24 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	protected EList<Sensor> sensor;
 
 	/**
-	 * The cached value of the '{@link #getActuator() <em>Actuator</em>}' reference.
+	 * The cached value of the '{@link #getDrive() <em>Drive</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getActuator()
+	 * @see #getDrive()
 	 * @generated
 	 * @ordered
 	 */
-	protected Drive actuator;
+	protected Drive drive;
+
+	/**
+	 * The cached value of the '{@link #getCurrentBehaviour() <em>Current Behaviour</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCurrentBehaviour()
+	 * @generated
+	 * @ordered
+	 */
+	protected Behaviour currentBehaviour;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -206,7 +212,7 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	 */
 	public EList<Sensor> getSensor() {
 		if (sensor == null) {
-			sensor = new EObjectResolvingEList<Sensor>(Sensor.class, this, CleaningrobotsPackage.ROBOT__SENSOR);
+			sensor = new EObjectContainmentEList<Sensor>(Sensor.class, this, CleaningrobotsPackage.ROBOT__SENSOR);
 		}
 		return sensor;
 	}
@@ -216,16 +222,23 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Drive getActuator() {
-		if (actuator != null && actuator.eIsProxy()) {
-			InternalEObject oldActuator = (InternalEObject)actuator;
-			actuator = (Drive)eResolveProxy(oldActuator);
-			if (actuator != oldActuator) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CleaningrobotsPackage.ROBOT__ACTUATOR, oldActuator, actuator));
-			}
+	public Drive getDrive() {
+		return drive;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetDrive(Drive newDrive, NotificationChain msgs) {
+		Drive oldDrive = drive;
+		drive = newDrive;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.ROBOT__DRIVE, oldDrive, newDrive);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
-		return actuator;
+		return msgs;
 	}
 
 	/**
@@ -233,8 +246,8 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Drive basicGetActuator() {
-		return actuator;
+	public Behaviour getCurrentBehaviour() {
+		return currentBehaviour;
 	}
 
 	/**
@@ -242,11 +255,44 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setActuator(Drive newActuator) {
-		Drive oldActuator = actuator;
-		actuator = newActuator;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.ROBOT__ACTUATOR, oldActuator, actuator));
+	public NotificationChain basicSetCurrentBehaviour(Behaviour newCurrentBehaviour, NotificationChain msgs) {
+		Behaviour oldCurrentBehaviour = currentBehaviour;
+		currentBehaviour = newCurrentBehaviour;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.ROBOT__CURRENT_BEHAVIOUR, oldCurrentBehaviour, newCurrentBehaviour);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setCurrentBehaviour(Behaviour newCurrentBehaviour) {
+		if (newCurrentBehaviour != currentBehaviour) {
+			NotificationChain msgs = null;
+			if (currentBehaviour != null)
+				msgs = ((InternalEObject)currentBehaviour).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - CleaningrobotsPackage.ROBOT__CURRENT_BEHAVIOUR, null, msgs);
+			if (newCurrentBehaviour != null)
+				msgs = ((InternalEObject)newCurrentBehaviour).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - CleaningrobotsPackage.ROBOT__CURRENT_BEHAVIOUR, null, msgs);
+			msgs = basicSetCurrentBehaviour(newCurrentBehaviour, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.ROBOT__CURRENT_BEHAVIOUR, newCurrentBehaviour, newCurrentBehaviour));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void action() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -261,6 +307,12 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 				return basicSetMap(null, msgs);
 			case CleaningrobotsPackage.ROBOT__KNOWN_STATES:
 				return ((InternalEList<?>)getKnownStates()).basicRemove(otherEnd, msgs);
+			case CleaningrobotsPackage.ROBOT__SENSOR:
+				return ((InternalEList<?>)getSensor()).basicRemove(otherEnd, msgs);
+			case CleaningrobotsPackage.ROBOT__DRIVE:
+				return basicSetDrive(null, msgs);
+			case CleaningrobotsPackage.ROBOT__CURRENT_BEHAVIOUR:
+				return basicSetCurrentBehaviour(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -281,9 +333,10 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 				return getKnownStates();
 			case CleaningrobotsPackage.ROBOT__SENSOR:
 				return getSensor();
-			case CleaningrobotsPackage.ROBOT__ACTUATOR:
-				if (resolve) return getActuator();
-				return basicGetActuator();
+			case CleaningrobotsPackage.ROBOT__DRIVE:
+				return getDrive();
+			case CleaningrobotsPackage.ROBOT__CURRENT_BEHAVIOUR:
+				return getCurrentBehaviour();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -311,8 +364,8 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 				getSensor().clear();
 				getSensor().addAll((Collection<? extends Sensor>)newValue);
 				return;
-			case CleaningrobotsPackage.ROBOT__ACTUATOR:
-				setActuator((Drive)newValue);
+			case CleaningrobotsPackage.ROBOT__CURRENT_BEHAVIOUR:
+				setCurrentBehaviour((Behaviour)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -338,8 +391,8 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 			case CleaningrobotsPackage.ROBOT__SENSOR:
 				getSensor().clear();
 				return;
-			case CleaningrobotsPackage.ROBOT__ACTUATOR:
-				setActuator((Drive)null);
+			case CleaningrobotsPackage.ROBOT__CURRENT_BEHAVIOUR:
+				setCurrentBehaviour((Behaviour)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -361,10 +414,27 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 				return knownStates != null && !knownStates.isEmpty();
 			case CleaningrobotsPackage.ROBOT__SENSOR:
 				return sensor != null && !sensor.isEmpty();
-			case CleaningrobotsPackage.ROBOT__ACTUATOR:
-				return actuator != null;
+			case CleaningrobotsPackage.ROBOT__DRIVE:
+				return drive != null;
+			case CleaningrobotsPackage.ROBOT__CURRENT_BEHAVIOUR:
+				return currentBehaviour != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case CleaningrobotsPackage.ROBOT___ACTION:
+				action();
+				return null;
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 	/**

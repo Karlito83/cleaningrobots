@@ -61,6 +61,8 @@ public class CleaningrobotsFactoryImpl extends EFactoryImpl implements Cleaningr
 			case CleaningrobotsPackage.MAP: return createMap();
 			case CleaningrobotsPackage.FIELD: return createField();
 			case CleaningrobotsPackage.STATE: return createState();
+			case CleaningrobotsPackage.CLEANING_BEHAVIOUR: return createCleaningBehaviour();
+			case CleaningrobotsPackage.DISCOVER_BEHAVIOUR: return createDiscoverBehaviour();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -134,6 +136,26 @@ public class CleaningrobotsFactoryImpl extends EFactoryImpl implements Cleaningr
 	public State createState() {
 		StateImpl state = new StateImpl();
 		return state;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public CleaningBehaviour createCleaningBehaviour() {
+		CleaningBehaviourImpl cleaningBehaviour = new CleaningBehaviourImpl();
+		return cleaningBehaviour;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public DiscoverBehaviour createDiscoverBehaviour() {
+		DiscoverBehaviourImpl discoverBehaviour = new DiscoverBehaviourImpl();
+		return discoverBehaviour;
 	}
 
 	/**

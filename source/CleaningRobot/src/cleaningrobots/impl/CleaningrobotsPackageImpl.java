@@ -2,9 +2,12 @@
  */
 package cleaningrobots.impl;
 
+import cleaningrobots.Behaviour;
+import cleaningrobots.CleaningBehaviour;
 import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.CleaningrobotsPackage;
 import cleaningrobots.Direction;
+import cleaningrobots.DiscoverBehaviour;
 import cleaningrobots.Drive;
 import cleaningrobots.Field;
 import cleaningrobots.Map;
@@ -69,6 +72,27 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 	 * @generated
 	 */
 	private EClass driveEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass behaviourEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass cleaningBehaviourEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass discoverBehaviourEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -188,8 +212,26 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRobot_Actuator() {
+	public EReference getRobot_Drive() {
 		return (EReference)robotEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRobot_CurrentBehaviour() {
+		return (EReference)robotEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getRobot__Action() {
+		return robotEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -341,6 +383,42 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getBehaviour() {
+		return behaviourEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getBehaviour__Action() {
+		return behaviourEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getCleaningBehaviour() {
+		return cleaningBehaviourEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getDiscoverBehaviour() {
+		return discoverBehaviourEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EEnum getDirection() {
 		return directionEEnum;
 	}
@@ -378,7 +456,9 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 		createEReference(robotEClass, ROBOT__MAP);
 		createEReference(robotEClass, ROBOT__KNOWN_STATES);
 		createEReference(robotEClass, ROBOT__SENSOR);
-		createEReference(robotEClass, ROBOT__ACTUATOR);
+		createEReference(robotEClass, ROBOT__DRIVE);
+		createEReference(robotEClass, ROBOT__CURRENT_BEHAVIOUR);
+		createEOperation(robotEClass, ROBOT___ACTION);
 
 		mapEClass = createEClass(MAP);
 		createEAttribute(mapEClass, MAP__XDIM);
@@ -400,6 +480,13 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 		driveEClass = createEClass(DRIVE);
 		createEAttribute(driveEClass, DRIVE__DIRECTION);
 		createEOperation(driveEClass, DRIVE___MOVE);
+
+		behaviourEClass = createEClass(BEHAVIOUR);
+		createEOperation(behaviourEClass, BEHAVIOUR___ACTION);
+
+		cleaningBehaviourEClass = createEClass(CLEANING_BEHAVIOUR);
+
+		discoverBehaviourEClass = createEClass(DISCOVER_BEHAVIOUR);
 
 		// Create enums
 		directionEEnum = createEEnum(DIRECTION);
@@ -433,14 +520,19 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		cleaningBehaviourEClass.getESuperTypes().add(this.getBehaviour());
+		discoverBehaviourEClass.getESuperTypes().add(this.getBehaviour());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(robotEClass, Robot.class, "Robot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getRobot_Name(), ecorePackage.getEString(), "name", null, 0, 1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRobot_Map(), this.getMap(), null, "map", null, 1, 1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRobot_KnownStates(), this.getState(), null, "knownStates", null, 1, -1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRobot_Sensor(), this.getSensor(), null, "Sensor", null, 0, -1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRobot_Actuator(), this.getDrive(), null, "Actuator", null, 0, 1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRobot_Sensor(), this.getSensor(), null, "sensor", null, 0, -1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRobot_Drive(), this.getDrive(), null, "drive", null, 1, 1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRobot_CurrentBehaviour(), this.getBehaviour(), null, "currentBehaviour", null, 1, 1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getRobot__Action(), null, "action", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(mapEClass, Map.class, "Map", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getMap_Xdim(), ecorePackage.getEInt(), "xdim", null, 0, 1, Map.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -464,6 +556,14 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 		initEAttribute(getDrive_Direction(), this.getDirection(), "direction", null, 0, 1, Drive.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getDrive__Move(), null, "move", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(behaviourEClass, Behaviour.class, "Behaviour", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEOperation(getBehaviour__Action(), null, "action", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(cleaningBehaviourEClass, CleaningBehaviour.class, "CleaningBehaviour", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(discoverBehaviourEClass, DiscoverBehaviour.class, "DiscoverBehaviour", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Initialize enums and add enum literals
 		initEEnum(directionEEnum, Direction.class, "Direction");

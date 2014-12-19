@@ -2,14 +2,18 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="cleaningrobots" nsURI="http://www.not.yet" nsPrefix="org.dagstuhl.cleaningrobots">
   <eClassifiers xsi:type="ecore:EClass" name="Robot">
+    <eOperations name="action"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="map" lowerBound="1" eType="#//Map"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="knownStates" lowerBound="1"
         upperBound="-1" eType="#//State" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Sensor" upperBound="-1"
-        eType="#//Sensor"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Actuator" eType="#//Drive"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sensor" upperBound="-1"
+        eType="#//Sensor" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="drive" lowerBound="1" eType="#//Drive"
+        changeable="false" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="currentBehaviour" lowerBound="1"
+        eType="#//Behaviour" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Map">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xdim" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
@@ -44,4 +48,9 @@
     <eLiterals name="West" value="6"/>
     <eLiterals name="NorthWest" value="7"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Behaviour" abstract="true" interface="true">
+    <eOperations name="action"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CleaningBehaviour" eSuperTypes="#//Behaviour"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DiscoverBehaviour" eSuperTypes="#//Behaviour"/>
 </ecore:EPackage>
