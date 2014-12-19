@@ -399,13 +399,22 @@ public interface CleaningrobotsPackage extends EPackage {
 	int BEHAVIOUR = 6;
 
 	/**
+	 * The feature id for the '<em><b>Robot</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BEHAVIOUR__ROBOT = 0;
+
+	/**
 	 * The number of structural features of the '<em>Behaviour</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BEHAVIOUR_FEATURE_COUNT = 0;
+	int BEHAVIOUR_FEATURE_COUNT = 1;
 
 	/**
 	 * The operation id for the '<em>Action</em>' operation.
@@ -434,6 +443,15 @@ public interface CleaningrobotsPackage extends EPackage {
 	 * @generated
 	 */
 	int CLEANING_BEHAVIOUR = 7;
+
+	/**
+	 * The feature id for the '<em><b>Robot</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CLEANING_BEHAVIOUR__ROBOT = BEHAVIOUR__ROBOT;
 
 	/**
 	 * The number of structural features of the '<em>Cleaning Behaviour</em>' class.
@@ -471,6 +489,15 @@ public interface CleaningrobotsPackage extends EPackage {
 	 * @generated
 	 */
 	int DISCOVER_BEHAVIOUR = 8;
+
+	/**
+	 * The feature id for the '<em><b>Robot</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DISCOVER_BEHAVIOUR__ROBOT = BEHAVIOUR__ROBOT;
 
 	/**
 	 * The number of structural features of the '<em>Discover Behaviour</em>' class.
@@ -776,6 +803,17 @@ public interface CleaningrobotsPackage extends EPackage {
 	EClass getBehaviour();
 
 	/**
+	 * Returns the meta object for the reference '{@link cleaningrobots.Behaviour#getRobot <em>Robot</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Robot</em>'.
+	 * @see cleaningrobots.Behaviour#getRobot()
+	 * @see #getBehaviour()
+	 * @generated
+	 */
+	EReference getBehaviour_Robot();
+
+	/**
 	 * Returns the meta object for the '{@link cleaningrobots.Behaviour#action() <em>Action</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1051,6 +1089,14 @@ public interface CleaningrobotsPackage extends EPackage {
 		 * @generated
 		 */
 		EClass BEHAVIOUR = eINSTANCE.getBehaviour();
+
+		/**
+		 * The meta object literal for the '<em><b>Robot</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference BEHAVIOUR__ROBOT = eINSTANCE.getBehaviour_Robot();
 
 		/**
 		 * The meta object literal for the '<em><b>Action</b></em>' operation.

@@ -347,4 +347,17 @@
     <element xmi:type="ecore:EReference" href="CleaningRobot.ecore#//Robot/drive"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_mwONcoeMEeSlye9J9n-iVw" points="[60, -14, -352, 16]$[66, -15, -346, 15]$[342, -27, -70, 3]"/>
   </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_bRbukIePEeSlye9J9n-iVw" type="4002" source="_VD-8kIeJEeSlye9J9n-iVw" target="_UoTXcGWuEeSJ-ZQpDegE1w">
+    <children xmi:type="notation:DecorationNode" xmi:id="_bRcVoIePEeSlye9J9n-iVw" type="6001">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_bRc8sIePEeSlye9J9n-iVw" y="40"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_bRc8sYePEeSlye9J9n-iVw" type="6003">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_bRc8soePEeSlye9J9n-iVw" y="60"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_bRbukYePEeSlye9J9n-iVw" fontName="Ubuntu"/>
+    <element xmi:type="ecore:EReference" href="CleaningRobot.ecore#//Behaviour/robot"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_bRbukoePEeSlye9J9n-iVw" points="[-2, 10, 0, -129]$[-7, 143, -5, 4]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_bRhOIIePEeSlye9J9n-iVw" id="(0.16,0.8305084745762712)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_bRhOIYePEeSlye9J9n-iVw" id="(0.23333333333333334,0.9393939393939394)"/>
+  </edges>
 </notation:Diagram>

@@ -50,6 +50,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Behaviour" abstract="true" interface="true">
     <eOperations name="action"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="robot" eType="#//Robot"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CleaningBehaviour" eSuperTypes="#//Behaviour"/>
   <eClassifiers xsi:type="ecore:EClass" name="DiscoverBehaviour" eSuperTypes="#//Behaviour"/>

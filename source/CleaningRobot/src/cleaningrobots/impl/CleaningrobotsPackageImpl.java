@@ -392,6 +392,15 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getBehaviour_Robot() {
+		return (EReference)behaviourEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EOperation getBehaviour__Action() {
 		return behaviourEClass.getEOperations().get(0);
 	}
@@ -482,6 +491,7 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 		createEOperation(driveEClass, DRIVE___MOVE);
 
 		behaviourEClass = createEClass(BEHAVIOUR);
+		createEReference(behaviourEClass, BEHAVIOUR__ROBOT);
 		createEOperation(behaviourEClass, BEHAVIOUR___ACTION);
 
 		cleaningBehaviourEClass = createEClass(CLEANING_BEHAVIOUR);
@@ -558,6 +568,7 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 		initEOperation(getDrive__Move(), null, "move", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(behaviourEClass, Behaviour.class, "Behaviour", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getBehaviour_Robot(), this.getRobot(), null, "robot", null, 0, 1, Behaviour.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getBehaviour__Action(), null, "action", 0, 1, IS_UNIQUE, IS_ORDERED);
 
