@@ -117,7 +117,7 @@
     <children xmi:type="notation:DecorationNode" xmi:id="_V-Y7IIRvEeSMk6_VpeYSlg" type="5001"/>
     <children xmi:type="notation:BasicCompartment" xmi:id="_V-Y7IYRvEeSMk6_VpeYSlg" type="7001">
       <children xmi:type="notation:Node" xmi:id="_jVnosIR0EeSMk6_VpeYSlg" type="3001">
-        <element xmi:type="ecore:EAttribute" href="CleaningRobot.ecore#//Motor/direction"/>
+        <element xmi:type="ecore:EAttribute" href="CleaningRobot.ecore#//Drive/direction"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_jVnosYR0EeSMk6_VpeYSlg"/>
       </children>
       <styles xmi:type="notation:SortingStyle" xmi:id="_V-Y7IoRvEeSMk6_VpeYSlg"/>
@@ -126,7 +126,7 @@
     </children>
     <children xmi:type="notation:BasicCompartment" xmi:id="_V-ZiMIRvEeSMk6_VpeYSlg" type="7002">
       <children xmi:type="notation:Node" xmi:id="_VMTaEIRzEeSMk6_VpeYSlg" type="3002">
-        <element xmi:type="ecore:EOperation" href="CleaningRobot.ecore#//Motor/move"/>
+        <element xmi:type="ecore:EOperation" href="CleaningRobot.ecore#//Drive/move"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_VMTaEYRzEeSMk6_VpeYSlg"/>
       </children>
       <styles xmi:type="notation:SortingStyle" xmi:id="_V-ZiMYRvEeSMk6_VpeYSlg"/>
@@ -138,7 +138,7 @@
       <styles xmi:type="notation:FilteringStyle" xmi:id="_V-ZiNYRvEeSMk6_VpeYSlg"/>
       <layoutConstraint xmi:type="notation:Ratio" xmi:id="_cWMxwIRvEeSMk6_VpeYSlg" value="0.23076923076923078"/>
     </children>
-    <element xmi:type="ecore:EClass" href="CleaningRobot.ecore#//Motor"/>
+    <element xmi:type="ecore:EClass" href="CleaningRobot.ecore#//Drive"/>
     <layoutConstraint xmi:type="notation:Bounds" xmi:id="_V-YUEYRvEeSMk6_VpeYSlg" x="432"/>
   </children>
   <children xmi:type="notation:Shape" xmi:id="_m1SC8IRzEeSMk6_VpeYSlg" type="2005" fontName="Ubuntu">

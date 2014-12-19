@@ -3,6 +3,7 @@
 package cleaningrobots;
 
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -99,7 +100,7 @@ public interface Robot extends EObject {
 	 * The list contents are of type {@link cleaningrobots.Sensor}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Sensor</em>' reference isn't clear,
+	 * If the meaning of the '<em>Sensor</em>' reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
@@ -119,12 +120,12 @@ public interface Robot extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Actuator</em>' reference.
-	 * @see #setActuator(Motor)
+	 * @see #setActuator(Drive)
 	 * @see cleaningrobots.CleaningrobotsPackage#getRobot_Actuator()
 	 * @model
 	 * @generated
 	 */
-	Motor getActuator();
+	Drive getActuator();
 
 	/**
 	 * Sets the value of the '{@link cleaningrobots.Robot#getActuator <em>Actuator</em>}' reference.
@@ -134,6 +135,6 @@ public interface Robot extends EObject {
 	 * @see #getActuator()
 	 * @generated
 	 */
-	void setActuator(Motor value);
+	void setActuator(Drive value);
 
 } // Robot

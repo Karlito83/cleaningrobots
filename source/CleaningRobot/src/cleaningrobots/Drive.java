@@ -6,21 +6,21 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Motor</b></em>'.
+ * A representation of the model object '<em><b>Drive</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link cleaningrobots.Motor#getDirection <em>Direction</em>}</li>
+ *   <li>{@link cleaningrobots.Drive#getDirection <em>Direction</em>}</li>
  * </ul>
  * </p>
  *
- * @see cleaningrobots.CleaningrobotsPackage#getMotor()
+ * @see cleaningrobots.CleaningrobotsPackage#getDrive()
  * @model interface="true" abstract="true"
  * @generated
  */
-public interface Motor extends EObject {
+public interface Drive extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Direction</b></em>' attribute.
 	 * The literals are from the enumeration {@link cleaningrobots.Direction}.
@@ -33,14 +33,14 @@ public interface Motor extends EObject {
 	 * @return the value of the '<em>Direction</em>' attribute.
 	 * @see cleaningrobots.Direction
 	 * @see #setDirection(Direction)
-	 * @see cleaningrobots.CleaningrobotsPackage#getMotor_Direction()
+	 * @see cleaningrobots.CleaningrobotsPackage#getDrive_Direction()
 	 * @model
 	 * @generated
 	 */
 	Direction getDirection();
 
 	/**
-	 * Sets the value of the '{@link cleaningrobots.Motor#getDirection <em>Direction</em>}' attribute.
+	 * Sets the value of the '{@link cleaningrobots.Drive#getDirection <em>Direction</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Direction</em>' attribute.
@@ -58,4 +58,4 @@ public interface Motor extends EObject {
 	 */
 	void move();
 
-} // Motor
+} // Drive

@@ -3,19 +3,25 @@
 package cleaningrobots.impl;
 
 import cleaningrobots.CleaningrobotsPackage;
+import cleaningrobots.Drive;
 import cleaningrobots.Map;
-import cleaningrobots.Motor;
 import cleaningrobots.Robot;
 import cleaningrobots.Sensor;
 import cleaningrobots.State;
+
 import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -96,7 +102,7 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	 * @generated
 	 * @ordered
 	 */
-	protected Motor actuator;
+	protected Drive actuator;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -210,10 +216,10 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Motor getActuator() {
+	public Drive getActuator() {
 		if (actuator != null && actuator.eIsProxy()) {
 			InternalEObject oldActuator = (InternalEObject)actuator;
-			actuator = (Motor)eResolveProxy(oldActuator);
+			actuator = (Drive)eResolveProxy(oldActuator);
 			if (actuator != oldActuator) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CleaningrobotsPackage.ROBOT__ACTUATOR, oldActuator, actuator));
@@ -227,7 +233,7 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Motor basicGetActuator() {
+	public Drive basicGetActuator() {
 		return actuator;
 	}
 
@@ -236,8 +242,8 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setActuator(Motor newActuator) {
-		Motor oldActuator = actuator;
+	public void setActuator(Drive newActuator) {
+		Drive oldActuator = actuator;
 		actuator = newActuator;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.ROBOT__ACTUATOR, oldActuator, actuator));
@@ -306,7 +312,7 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 				getSensor().addAll((Collection<? extends Sensor>)newValue);
 				return;
 			case CleaningrobotsPackage.ROBOT__ACTUATOR:
-				setActuator((Motor)newValue);
+				setActuator((Drive)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -333,7 +339,7 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 				getSensor().clear();
 				return;
 			case CleaningrobotsPackage.ROBOT__ACTUATOR:
-				setActuator((Motor)null);
+				setActuator((Drive)null);
 				return;
 		}
 		super.eUnset(featureID);

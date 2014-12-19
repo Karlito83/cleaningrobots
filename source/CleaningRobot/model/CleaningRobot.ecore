@@ -9,7 +9,7 @@
         upperBound="-1" eType="#//State" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="Sensor" upperBound="-1"
         eType="#//Sensor"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="Actuator" eType="#//Motor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Actuator" eType="#//Drive"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Map">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xdim" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
@@ -30,7 +30,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="Sensor" abstract="true">
     <eOperations name="getData" upperBound="-1" eType="#//Field"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Motor" abstract="true" interface="true">
+  <eClassifiers xsi:type="ecore:EClass" name="Drive" abstract="true" interface="true">
     <eOperations name="move"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="direction" eType="#//Direction"/>
   </eClassifiers>

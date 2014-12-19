@@ -96,9 +96,9 @@ public class CleaningrobotsSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case CleaningrobotsPackage.MOTOR: {
-				Motor motor = (Motor)theEObject;
-				T result = caseMotor(motor);
+			case CleaningrobotsPackage.DRIVE: {
+				Drive drive = (Drive)theEObject;
+				T result = caseDrive(drive);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -182,17 +182,17 @@ public class CleaningrobotsSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Motor</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Drive</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Motor</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Drive</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseMotor(Motor object) {
+	public T caseDrive(Drive object) {
 		return null;
 	}
 

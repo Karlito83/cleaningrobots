@@ -88,8 +88,8 @@ public class CleaningrobotsAdapterFactory extends AdapterFactoryImpl {
 				return createSensorAdapter();
 			}
 			@Override
-			public Adapter caseMotor(Motor object) {
-				return createMotorAdapter();
+			public Adapter caseDrive(Drive object) {
+				return createDriveAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -182,16 +182,16 @@ public class CleaningrobotsAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link cleaningrobots.Motor <em>Motor</em>}'.
+	 * Creates a new adapter for an object of class '{@link cleaningrobots.Drive <em>Drive</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see cleaningrobots.Motor
+	 * @see cleaningrobots.Drive
 	 * @generated
 	 */
-	public Adapter createMotorAdapter() {
+	public Adapter createDriveAdapter() {
 		return null;
 	}
 
