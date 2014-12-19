@@ -5,14 +5,18 @@ package cleaningrobots.impl;
 import cleaningrobots.Behaviour;
 import cleaningrobots.CleaningrobotsPackage;
 import cleaningrobots.Drive;
+import cleaningrobots.Field;
 import cleaningrobots.Map;
 import cleaningrobots.Robot;
 import cleaningrobots.Sensor;
 import cleaningrobots.State;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -293,6 +297,26 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
+	}
+
+	private void getSensorData() {
+		EList<Field> newMapData = new BasicEList<Field>();
+		//collect and aggregate sensor data
+		for (Sensor sensor: getSensor())
+		{
+			EList<Field> fields = sensor.getData();
+			for (Field field : fields){
+				getKnownStates().addAll(field.getState());
+				if (newMapData.contains(field)){
+					int index = newMapData.indexOf(field);
+					newMapData.get(index).getState().addAll(field.getState());
+				} else {
+					newMapData.add(field);
+				}
+			}
+		}
+		//update map
+		
 	}
 
 	/**

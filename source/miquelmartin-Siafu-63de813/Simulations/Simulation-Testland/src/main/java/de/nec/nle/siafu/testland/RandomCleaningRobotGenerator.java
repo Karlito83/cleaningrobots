@@ -5,15 +5,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import cleaningrobots.Actuator;
 import cleaningrobots.CleaningrobotsFactory;
+import cleaningrobots.Drive;
 import cleaningrobots.Sensor;
 import cleaningrobots.State;
 import de.nec.nle.siafu.exceptions.PlaceNotFoundException;
 import de.nec.nle.siafu.model.Agent;
+import de.nec.nle.siafu.model.Overlay;
+import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
 import de.nec.nle.siafu.types.Publishable;
-import de.nec.nle.siafu.types.Text;
 
 public class RandomCleaningRobotGenerator {
 	/**
@@ -25,7 +26,7 @@ public class RandomCleaningRobotGenerator {
 	private static State stateClean, stateDirty, stateFree, stateBlocked, stateWet, stateDry;
 	
 	public RandomCleaningRobotGenerator() {
-		stateClean = CleaningrobotsFactory.eINSTANCE.createState();
+		/*stateClean = CleaningrobotsFactory.eINSTANCE.createState();
 		stateDirty = CleaningrobotsFactory.eINSTANCE.createState();
 		stateFree = CleaningrobotsFactory.eINSTANCE.createState();
 		stateBlocked = CleaningrobotsFactory.eINSTANCE.createState();
@@ -41,6 +42,7 @@ public class RandomCleaningRobotGenerator {
 		
 		stateDirty.getTransition().add(stateClean);
 		stateWet.getTransition().add(stateDry);
+		*/
 	}
 
 	/**
@@ -52,34 +54,14 @@ public class RandomCleaningRobotGenerator {
 	public Agent createRandomAgent(final World world) {
 		try {
 			
-			String image;
-			State a,b;
-			Sensor sensor;
-			Actuator actuator;
+			Overlay overlay;
 			
-			if(rand.nextBoolean()){
-				image = "HumanMagenta";
-				a = stateDirty;
-				b = stateClean;				
-			} else {
-				image = "HumanYellow";
-				a = stateWet;
-				b = stateDry;
-				
-			}
 			CleaningRobotAgent agent = 
-					new CleaningRobotAgent(world.getRandomPlaceOfType("Nowhere").getPos(), image, world);
+					new CleaningRobotAgent(world.getRandomPlaceOfType("Nowhere").getPos(), "HumanMagenta", world);
 			
 			counter++;
-			agent.setName("Robby_" + counter);
+			agent.setName("Robbi_" + counter);
 			
-			agent.getCleaningRobot().getKnownStates().add(a);
-			agent.getCleaningRobot().getKnownStates().add(b);
-			agent.getCleaningRobot().getKnownStates().add(stateBlocked);
-			agent.getCleaningRobot().getKnownStates().add(stateFree);
-			
-			
-
 			return agent;
 		} catch (PlaceNotFoundException e) {
 			throw new RuntimeException(

@@ -2,6 +2,7 @@
  */
 package cleaningrobots;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -76,29 +77,19 @@ public interface Field extends EObject {
 	void setYpos(int value);
 
 	/**
-	 * Returns the value of the '<em><b>State</b></em>' reference.
+	 * Returns the value of the '<em><b>State</b></em>' reference list.
+	 * The list contents are of type {@link cleaningrobots.State}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>State</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>State</em>' reference.
-	 * @see #setState(State)
+	 * @return the value of the '<em>State</em>' reference list.
 	 * @see cleaningrobots.CleaningrobotsPackage#getField_State()
 	 * @model required="true"
 	 * @generated
 	 */
-	State getState();
-
-	/**
-	 * Sets the value of the '{@link cleaningrobots.Field#getState <em>State</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>State</em>' reference.
-	 * @see #getState()
-	 * @generated
-	 */
-	void setState(State value);
+	EList<State> getState();
 
 } // Field

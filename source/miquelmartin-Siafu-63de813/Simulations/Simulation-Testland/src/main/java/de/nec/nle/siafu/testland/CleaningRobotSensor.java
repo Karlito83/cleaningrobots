@@ -1,22 +1,69 @@
 package de.nec.nle.siafu.testland;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.resource.Resource;
 
+import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.Field;
-import cleaningrobots.Sensor;
+import cleaningrobots.State;
 import cleaningrobots.impl.SensorImpl;
+import de.nec.nle.siafu.model.Position;
+import de.nec.nle.siafu.model.World;
 
 public class CleaningRobotSensor extends SensorImpl {
 	
+	private CleaningRobotAgent agent;
+	private World siafuWorld;
+	
+	private final int visionradius = 2;
+
+	public CleaningRobotSensor(World siafuWorld, CleaningRobotAgent agent) {
+		super();
+		
+		this.siafuWorld = siafuWorld;
+		this.agent = agent;
+	}
+	
+	@Override
+	public EList<Field> getData() {
+		
+		EList<Field> data = new BasicEList<Field>();
+		
+		for (int xOffset=-visionradius; xOffset<=visionradius; xOffset++){
+			for (int yOffset = -visionradius; yOffset<=visionradius; yOffset++ )
+			{
+				data.add(getField(xOffset, yOffset));
+			}
+		}
+		
+		
+		return data;
+	}	
+	
+	private Field getField(int xOffset, int yOffset)
+	{
+		Field result = CleaningrobotsFactory.eINSTANCE.createField();
+		
+		int row =  agent.getPos().getRow();
+		int column =  agent.getPos().getCol();
+		
+		result.setXpos(column);
+		result.setYpos(row);
+		if(siafuWorld.isAWall(new Position(row, column)))
+		{
+			State state = CleaningrobotsFactory.eINSTANCE.createState();
+			state.setName("Blocked");
+		}
+		else
+		{
+			State state = CleaningrobotsFactory.eINSTANCE.createState();
+			state.setName("Free");
+		}
+		
+		
+		return result;
+	}
 }
+

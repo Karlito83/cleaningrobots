@@ -233,7 +233,7 @@ public interface CleaningrobotsPackage extends EPackage {
 	int FIELD__YPOS = 1;
 
 	/**
-	 * The feature id for the '<em><b>State</b></em>' reference.
+	 * The feature id for the '<em><b>State</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -699,10 +699,10 @@ public interface CleaningrobotsPackage extends EPackage {
 	EAttribute getField_Ypos();
 
 	/**
-	 * Returns the meta object for the reference '{@link cleaningrobots.Field#getState <em>State</em>}'.
+	 * Returns the meta object for the reference list '{@link cleaningrobots.Field#getState <em>State</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>State</em>'.
+	 * @return the meta object for the reference list '<em>State</em>'.
 	 * @see cleaningrobots.Field#getState()
 	 * @see #getField()
 	 * @generated
@@ -1003,7 +1003,7 @@ public interface CleaningrobotsPackage extends EPackage {
 		EAttribute FIELD__YPOS = eINSTANCE.getField_Ypos();
 
 		/**
-		 * The meta object literal for the '<em><b>State</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>State</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

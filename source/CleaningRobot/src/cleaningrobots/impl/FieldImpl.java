@@ -5,14 +5,13 @@ package cleaningrobots.impl;
 import cleaningrobots.CleaningrobotsPackage;
 import cleaningrobots.Field;
 import cleaningrobots.State;
-
+import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
-
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -71,14 +70,14 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 	protected int ypos = YPOS_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getState() <em>State</em>}' reference.
+	 * The cached value of the '{@link #getState() <em>State</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getState()
 	 * @generated
 	 * @ordered
 	 */
-	protected State state;
+	protected EList<State> state;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -146,37 +145,11 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public State getState() {
-		if (state != null && state.eIsProxy()) {
-			InternalEObject oldState = (InternalEObject)state;
-			state = (State)eResolveProxy(oldState);
-			if (state != oldState) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CleaningrobotsPackage.FIELD__STATE, oldState, state));
-			}
+	public EList<State> getState() {
+		if (state == null) {
+			state = new EObjectResolvingEList<State>(State.class, this, CleaningrobotsPackage.FIELD__STATE);
 		}
 		return state;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public State basicGetState() {
-		return state;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setState(State newState) {
-		State oldState = state;
-		state = newState;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.FIELD__STATE, oldState, state));
 	}
 
 	/**
@@ -192,8 +165,7 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 			case CleaningrobotsPackage.FIELD__YPOS:
 				return getYpos();
 			case CleaningrobotsPackage.FIELD__STATE:
-				if (resolve) return getState();
-				return basicGetState();
+				return getState();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -203,6 +175,7 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -213,7 +186,8 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 				setYpos((Integer)newValue);
 				return;
 			case CleaningrobotsPackage.FIELD__STATE:
-				setState((State)newValue);
+				getState().clear();
+				getState().addAll((Collection<? extends State>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -234,7 +208,7 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 				setYpos(YPOS_EDEFAULT);
 				return;
 			case CleaningrobotsPackage.FIELD__STATE:
-				setState((State)null);
+				getState().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -253,7 +227,7 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 			case CleaningrobotsPackage.FIELD__YPOS:
 				return ypos != YPOS_EDEFAULT;
 			case CleaningrobotsPackage.FIELD__STATE:
-				return state != null;
+				return state != null && !state.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
