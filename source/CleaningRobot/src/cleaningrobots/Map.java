@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link cleaningrobots.Map#getXdim <em>Xdim</em>}</li>
  *   <li>{@link cleaningrobots.Map#getYdim <em>Ydim</em>}</li>
  *   <li>{@link cleaningrobots.Map#getFields <em>Fields</em>}</li>
+ *   <li>{@link cleaningrobots.Map#getSubMaps <em>Sub Maps</em>}</li>
  * </ul>
  * </p>
  *
@@ -92,5 +93,21 @@ public interface Map extends EObject {
 	 * @generated
 	 */
 	EList<Field> getFields();
+
+	/**
+	 * Returns the value of the '<em><b>Sub Maps</b></em>' containment reference list.
+	 * The list contents are of type {@link cleaningrobots.Map}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Sub Maps</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Sub Maps</em>' containment reference list.
+	 * @see cleaningrobots.CleaningrobotsPackage#getMap_SubMaps()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<Map> getSubMaps();
 
 } // Map

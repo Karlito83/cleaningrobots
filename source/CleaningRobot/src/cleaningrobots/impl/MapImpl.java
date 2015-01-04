@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link cleaningrobots.impl.MapImpl#getXdim <em>Xdim</em>}</li>
  *   <li>{@link cleaningrobots.impl.MapImpl#getYdim <em>Ydim</em>}</li>
  *   <li>{@link cleaningrobots.impl.MapImpl#getFields <em>Fields</em>}</li>
+ *   <li>{@link cleaningrobots.impl.MapImpl#getSubMaps <em>Sub Maps</em>}</li>
  * </ul>
  * </p>
  *
@@ -87,6 +88,16 @@ public class MapImpl extends MinimalEObjectImpl.Container implements Map {
 	 * @ordered
 	 */
 	protected EList<Field> fields;
+
+	/**
+	 * The cached value of the '{@link #getSubMaps() <em>Sub Maps</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSubMaps()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Map> subMaps;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -166,11 +177,25 @@ public class MapImpl extends MinimalEObjectImpl.Container implements Map {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<Map> getSubMaps() {
+		if (subMaps == null) {
+			subMaps = new EObjectContainmentEList<Map>(Map.class, this, CleaningrobotsPackage.MAP__SUB_MAPS);
+		}
+		return subMaps;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case CleaningrobotsPackage.MAP__FIELDS:
 				return ((InternalEList<?>)getFields()).basicRemove(otherEnd, msgs);
+			case CleaningrobotsPackage.MAP__SUB_MAPS:
+				return ((InternalEList<?>)getSubMaps()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -189,6 +214,8 @@ public class MapImpl extends MinimalEObjectImpl.Container implements Map {
 				return getYdim();
 			case CleaningrobotsPackage.MAP__FIELDS:
 				return getFields();
+			case CleaningrobotsPackage.MAP__SUB_MAPS:
+				return getSubMaps();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -212,6 +239,10 @@ public class MapImpl extends MinimalEObjectImpl.Container implements Map {
 				getFields().clear();
 				getFields().addAll((Collection<? extends Field>)newValue);
 				return;
+			case CleaningrobotsPackage.MAP__SUB_MAPS:
+				getSubMaps().clear();
+				getSubMaps().addAll((Collection<? extends Map>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -233,6 +264,9 @@ public class MapImpl extends MinimalEObjectImpl.Container implements Map {
 			case CleaningrobotsPackage.MAP__FIELDS:
 				getFields().clear();
 				return;
+			case CleaningrobotsPackage.MAP__SUB_MAPS:
+				getSubMaps().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -251,6 +285,8 @@ public class MapImpl extends MinimalEObjectImpl.Container implements Map {
 				return ydim != YDIM_EDEFAULT;
 			case CleaningrobotsPackage.MAP__FIELDS:
 				return fields != null && !fields.isEmpty();
+			case CleaningrobotsPackage.MAP__SUB_MAPS:
+				return subMaps != null && !subMaps.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

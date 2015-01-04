@@ -58,24 +58,6 @@ public interface CleaningrobotsFactory extends EFactory {
 	State createState();
 
 	/**
-	 * Returns a new object of class '<em>Cleaning Behaviour</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Cleaning Behaviour</em>'.
-	 * @generated
-	 */
-	CleaningBehaviour createCleaningBehaviour();
-
-	/**
-	 * Returns a new object of class '<em>Discover Behaviour</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Discover Behaviour</em>'.
-	 * @generated
-	 */
-	DiscoverBehaviour createDiscoverBehaviour();
-
-	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

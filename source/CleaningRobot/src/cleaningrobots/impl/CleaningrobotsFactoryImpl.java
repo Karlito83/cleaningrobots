@@ -5,7 +5,6 @@ package cleaningrobots.impl;
 import cleaningrobots.*;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -61,40 +60,8 @@ public class CleaningrobotsFactoryImpl extends EFactoryImpl implements Cleaningr
 			case CleaningrobotsPackage.MAP: return createMap();
 			case CleaningrobotsPackage.FIELD: return createField();
 			case CleaningrobotsPackage.STATE: return createState();
-			case CleaningrobotsPackage.CLEANING_BEHAVIOUR: return createCleaningBehaviour();
-			case CleaningrobotsPackage.DISCOVER_BEHAVIOUR: return createDiscoverBehaviour();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
-		}
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object createFromString(EDataType eDataType, String initialValue) {
-		switch (eDataType.getClassifierID()) {
-			case CleaningrobotsPackage.DIRECTION:
-				return createDirectionFromString(eDataType, initialValue);
-			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
-		}
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String convertToString(EDataType eDataType, Object instanceValue) {
-		switch (eDataType.getClassifierID()) {
-			case CleaningrobotsPackage.DIRECTION:
-				return convertDirectionToString(eDataType, instanceValue);
-			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
 	}
 
@@ -136,46 +103,6 @@ public class CleaningrobotsFactoryImpl extends EFactoryImpl implements Cleaningr
 	public State createState() {
 		StateImpl state = new StateImpl();
 		return state;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public CleaningBehaviour createCleaningBehaviour() {
-		CleaningBehaviourImpl cleaningBehaviour = new CleaningBehaviourImpl();
-		return cleaningBehaviour;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public DiscoverBehaviour createDiscoverBehaviour() {
-		DiscoverBehaviourImpl discoverBehaviour = new DiscoverBehaviourImpl();
-		return discoverBehaviour;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Direction createDirectionFromString(EDataType eDataType, String initialValue) {
-		Direction result = Direction.get(initialValue);
-		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-		return result;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertDirectionToString(EDataType eDataType, Object instanceValue) {
-		return instanceValue == null ? null : instanceValue.toString();
 	}
 
 	/**

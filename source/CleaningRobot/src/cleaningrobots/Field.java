@@ -3,6 +3,7 @@
 package cleaningrobots;
 
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -81,7 +82,7 @@ public interface Field extends EObject {
 	 * The list contents are of type {@link cleaningrobots.State}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>State</em>' reference isn't clear,
+	 * If the meaning of the '<em>State</em>' reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
