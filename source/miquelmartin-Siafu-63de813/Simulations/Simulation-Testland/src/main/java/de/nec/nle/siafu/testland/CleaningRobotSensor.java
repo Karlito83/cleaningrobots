@@ -17,7 +17,7 @@ public class CleaningRobotSensor extends SensorImpl {
 	private CleaningRobotAgent agent;
 	private World siafuWorld;
 	
-	private final int visionradius = 2;
+	private final int CONST_VISIONRADIUS = 2;
 
 	public CleaningRobotSensor(World siafuWorld, CleaningRobotAgent agent) {
 		super();
@@ -31,8 +31,8 @@ public class CleaningRobotSensor extends SensorImpl {
 		
 		EList<Field> data = new BasicEList<Field>();
 		
-		for (int xOffset=-visionradius; xOffset<=visionradius; xOffset++){
-			for (int yOffset = -visionradius; yOffset<=visionradius; yOffset++ )
+		for (int xOffset=-CONST_VISIONRADIUS; xOffset<=CONST_VISIONRADIUS; xOffset++){
+			for (int yOffset = -CONST_VISIONRADIUS; yOffset<=CONST_VISIONRADIUS; yOffset++ )
 			{
 				data.add(getField(xOffset, yOffset));
 			}
