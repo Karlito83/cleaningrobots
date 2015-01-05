@@ -18,6 +18,9 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link cleaningrobots.Map#getYdim <em>Ydim</em>}</li>
  *   <li>{@link cleaningrobots.Map#getFields <em>Fields</em>}</li>
  *   <li>{@link cleaningrobots.Map#getSubMaps <em>Sub Maps</em>}</li>
+ *   <li>{@link cleaningrobots.Map#getName <em>Name</em>}</li>
+ *   <li>{@link cleaningrobots.Map#getMinX <em>Min X</em>}</li>
+ *   <li>{@link cleaningrobots.Map#getMinY <em>Min Y</em>}</li>
  * </ul>
  * </p>
  *
@@ -109,5 +112,83 @@ public interface Map extends EObject {
 	 * @generated
 	 */
 	EList<Map> getSubMaps();
+
+	/**
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Name</em>' attribute.
+	 * @see #setName(String)
+	 * @see cleaningrobots.CleaningrobotsPackage#getMap_Name()
+	 * @model
+	 * @generated
+	 */
+	String getName();
+
+	/**
+	 * Sets the value of the '{@link cleaningrobots.Map#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * @see #getName()
+	 * @generated
+	 */
+	void setName(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Min X</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Min X</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Min X</em>' attribute.
+	 * @see #setMinX(int)
+	 * @see cleaningrobots.CleaningrobotsPackage#getMap_MinX()
+	 * @model
+	 * @generated
+	 */
+	int getMinX();
+
+	/**
+	 * Sets the value of the '{@link cleaningrobots.Map#getMinX <em>Min X</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Min X</em>' attribute.
+	 * @see #getMinX()
+	 * @generated
+	 */
+	void setMinX(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Min Y</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Min Y</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Min Y</em>' attribute.
+	 * @see #setMinY(int)
+	 * @see cleaningrobots.CleaningrobotsPackage#getMap_MinY()
+	 * @model
+	 * @generated
+	 */
+	int getMinY();
+
+	/**
+	 * Sets the value of the '{@link cleaningrobots.Map#getMinY <em>Min Y</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Min Y</em>' attribute.
+	 * @see #getMinY()
+	 * @generated
+	 */
+	void setMinY(int value);
 
 } // Map

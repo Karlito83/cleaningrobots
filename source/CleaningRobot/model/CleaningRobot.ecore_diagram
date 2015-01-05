@@ -32,6 +32,18 @@
         <element xmi:type="ecore:EAttribute" href="CleaningRobot.ecore#//Map/ydim"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_lQ1P8WWuEeSJ-ZQpDegE1w"/>
       </children>
+      <children xmi:type="notation:Node" xmi:id="_9ZV9cJTUEeShxP7MdjBWig" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CleaningRobot.ecore#//Map/name"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_9ZV9cZTUEeShxP7MdjBWig"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_5xBhAJTWEeShxP7MdjBWig" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CleaningRobot.ecore#//Map/minX"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_5xBhAZTWEeShxP7MdjBWig"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_EuZNgJTXEeShxP7MdjBWig" type="3001">
+        <element xmi:type="ecore:EAttribute" href="CleaningRobot.ecore#//Map/minY"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_EuZNgZTXEeShxP7MdjBWig"/>
+      </children>
       <styles xmi:type="notation:SortingStyle" xmi:id="_aHarhGWuEeSJ-ZQpDegE1w"/>
       <styles xmi:type="notation:FilteringStyle" xmi:id="_aHarhWWuEeSJ-ZQpDegE1w"/>
     </children>
@@ -44,7 +56,7 @@
       <styles xmi:type="notation:FilteringStyle" xmi:id="_aHari2WuEeSJ-ZQpDegE1w"/>
     </children>
     <element xmi:type="ecore:EClass" href="CleaningRobot.ecore#//Map"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_aHargWWuEeSJ-ZQpDegE1w" x="40" y="150"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_aHargWWuEeSJ-ZQpDegE1w" x="24" y="144"/>
   </children>
   <children xmi:type="notation:Shape" xmi:id="_mfD9oGWuEeSJ-ZQpDegE1w" type="2001" fontName="Segoe UI">
     <children xmi:type="notation:DecorationNode" xmi:id="_mfD9omWuEeSJ-ZQpDegE1w" type="5001"/>
@@ -69,7 +81,7 @@
       <styles xmi:type="notation:FilteringStyle" xmi:id="_mfD9q2WuEeSJ-ZQpDegE1w"/>
     </children>
     <element xmi:type="ecore:EClass" href="CleaningRobot.ecore#//Field"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mfD9oWWuEeSJ-ZQpDegE1w" x="40" y="285"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mfD9oWWuEeSJ-ZQpDegE1w" x="36" y="312"/>
   </children>
   <children xmi:type="notation:Shape" xmi:id="_qXNT4GWuEeSJ-ZQpDegE1w" type="2001" fontName="Segoe UI">
     <children xmi:type="notation:DecorationNode" xmi:id="_qXNT4mWuEeSJ-ZQpDegE1w" type="5001"/>
@@ -166,7 +178,7 @@
     </children>
     <styles xmi:type="notation:FontStyle" xmi:id="_tKJTkZQnEeSp64ewfKgWNA" fontName="Ubuntu"/>
     <element xmi:type="ecore:EReference" href="CleaningRobot.ecore#//Map/subMaps"/>
-    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_tKJTkpQnEeSp64ewfKgWNA" points="[48, 0, 2, -12]$[92, 0, 46, -12]$[92, 77, 46, 65]$[46, 77, 0, 65]$[46, 38, 0, 26]"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_tKJTkpQnEeSp64ewfKgWNA" points="[60, 0, 3, -19]$[132, 0, 75, -19]$[132, 82, 75, 63]$[54, 82, -3, 63]$[54, 62, -3, 43]"/>
     <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_vkJ34JQnEeSp64ewfKgWNA" id="(0.9791666666666666,0.6533333333333333)"/>
   </edges>
 </notation:Diagram>

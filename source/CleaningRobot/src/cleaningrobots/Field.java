@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link cleaningrobots.Field#getXpos <em>Xpos</em>}</li>
  *   <li>{@link cleaningrobots.Field#getYpos <em>Ypos</em>}</li>
- *   <li>{@link cleaningrobots.Field#getState <em>State</em>}</li>
+ *   <li>{@link cleaningrobots.Field#getStates <em>States</em>}</li>
  * </ul>
  * </p>
  *
@@ -78,19 +78,19 @@ public interface Field extends EObject {
 	void setYpos(int value);
 
 	/**
-	 * Returns the value of the '<em><b>State</b></em>' reference list.
+	 * Returns the value of the '<em><b>States</b></em>' reference list.
 	 * The list contents are of type {@link cleaningrobots.State}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>State</em>' reference list isn't clear,
+	 * If the meaning of the '<em>States</em>' reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>State</em>' reference list.
-	 * @see cleaningrobots.CleaningrobotsPackage#getField_State()
+	 * @return the value of the '<em>States</em>' reference list.
+	 * @see cleaningrobots.CleaningrobotsPackage#getField_States()
 	 * @model required="true"
 	 * @generated
 	 */
-	EList<State> getState();
+	EList<State> getStates();
 
 } // Field

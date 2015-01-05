@@ -28,7 +28,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * <ul>
  *   <li>{@link cleaningrobots.impl.FieldImpl#getXpos <em>Xpos</em>}</li>
  *   <li>{@link cleaningrobots.impl.FieldImpl#getYpos <em>Ypos</em>}</li>
- *   <li>{@link cleaningrobots.impl.FieldImpl#getState <em>State</em>}</li>
+ *   <li>{@link cleaningrobots.impl.FieldImpl#getStates <em>States</em>}</li>
  * </ul>
  * </p>
  *
@@ -76,14 +76,14 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 	protected int ypos = YPOS_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getState() <em>State</em>}' reference list.
+	 * The cached value of the '{@link #getStates() <em>States</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getState()
+	 * @see #getStates()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<State> state;
+	protected EList<State> states;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -151,11 +151,11 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<State> getState() {
-		if (state == null) {
-			state = new EObjectResolvingEList<State>(State.class, this, CleaningrobotsPackage.FIELD__STATE);
+	public EList<State> getStates() {
+		if (states == null) {
+			states = new EObjectResolvingEList<State>(State.class, this, CleaningrobotsPackage.FIELD__STATES);
 		}
-		return state;
+		return states;
 	}
 
 	/**
@@ -170,8 +170,8 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 				return getXpos();
 			case CleaningrobotsPackage.FIELD__YPOS:
 				return getYpos();
-			case CleaningrobotsPackage.FIELD__STATE:
-				return getState();
+			case CleaningrobotsPackage.FIELD__STATES:
+				return getStates();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -191,9 +191,9 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 			case CleaningrobotsPackage.FIELD__YPOS:
 				setYpos((Integer)newValue);
 				return;
-			case CleaningrobotsPackage.FIELD__STATE:
-				getState().clear();
-				getState().addAll((Collection<? extends State>)newValue);
+			case CleaningrobotsPackage.FIELD__STATES:
+				getStates().clear();
+				getStates().addAll((Collection<? extends State>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -213,8 +213,8 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 			case CleaningrobotsPackage.FIELD__YPOS:
 				setYpos(YPOS_EDEFAULT);
 				return;
-			case CleaningrobotsPackage.FIELD__STATE:
-				getState().clear();
+			case CleaningrobotsPackage.FIELD__STATES:
+				getStates().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -232,8 +232,8 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 				return xpos != XPOS_EDEFAULT;
 			case CleaningrobotsPackage.FIELD__YPOS:
 				return ypos != YPOS_EDEFAULT;
-			case CleaningrobotsPackage.FIELD__STATE:
-				return state != null && !state.isEmpty();
+			case CleaningrobotsPackage.FIELD__STATES:
+				return states != null && !states.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

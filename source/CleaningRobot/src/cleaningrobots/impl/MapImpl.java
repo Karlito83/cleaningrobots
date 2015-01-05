@@ -33,6 +33,9 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link cleaningrobots.impl.MapImpl#getYdim <em>Ydim</em>}</li>
  *   <li>{@link cleaningrobots.impl.MapImpl#getFields <em>Fields</em>}</li>
  *   <li>{@link cleaningrobots.impl.MapImpl#getSubMaps <em>Sub Maps</em>}</li>
+ *   <li>{@link cleaningrobots.impl.MapImpl#getName <em>Name</em>}</li>
+ *   <li>{@link cleaningrobots.impl.MapImpl#getMinX <em>Min X</em>}</li>
+ *   <li>{@link cleaningrobots.impl.MapImpl#getMinY <em>Min Y</em>}</li>
  * </ul>
  * </p>
  *
@@ -98,6 +101,66 @@ public class MapImpl extends MinimalEObjectImpl.Container implements Map {
 	 * @ordered
 	 */
 	protected EList<Map> subMaps;
+
+	/**
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getMinX() <em>Min X</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMinX()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int MIN_X_EDEFAULT = 0;
+
+	/**
+	 * The cached value of the '{@link #getMinX() <em>Min X</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMinX()
+	 * @generated
+	 * @ordered
+	 */
+	protected int minX = MIN_X_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getMinY() <em>Min Y</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMinY()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int MIN_Y_EDEFAULT = 0;
+
+	/**
+	 * The cached value of the '{@link #getMinY() <em>Min Y</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMinY()
+	 * @generated
+	 * @ordered
+	 */
+	protected int minY = MIN_Y_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -189,6 +252,69 @@ public class MapImpl extends MinimalEObjectImpl.Container implements Map {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setName(String newName) {
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.MAP__NAME, oldName, name));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getMinX() {
+		return minX;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMinX(int newMinX) {
+		int oldMinX = minX;
+		minX = newMinX;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.MAP__MIN_X, oldMinX, minX));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getMinY() {
+		return minY;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMinY(int newMinY) {
+		int oldMinY = minY;
+		minY = newMinY;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.MAP__MIN_Y, oldMinY, minY));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -216,6 +342,12 @@ public class MapImpl extends MinimalEObjectImpl.Container implements Map {
 				return getFields();
 			case CleaningrobotsPackage.MAP__SUB_MAPS:
 				return getSubMaps();
+			case CleaningrobotsPackage.MAP__NAME:
+				return getName();
+			case CleaningrobotsPackage.MAP__MIN_X:
+				return getMinX();
+			case CleaningrobotsPackage.MAP__MIN_Y:
+				return getMinY();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -243,6 +375,15 @@ public class MapImpl extends MinimalEObjectImpl.Container implements Map {
 				getSubMaps().clear();
 				getSubMaps().addAll((Collection<? extends Map>)newValue);
 				return;
+			case CleaningrobotsPackage.MAP__NAME:
+				setName((String)newValue);
+				return;
+			case CleaningrobotsPackage.MAP__MIN_X:
+				setMinX((Integer)newValue);
+				return;
+			case CleaningrobotsPackage.MAP__MIN_Y:
+				setMinY((Integer)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -267,6 +408,15 @@ public class MapImpl extends MinimalEObjectImpl.Container implements Map {
 			case CleaningrobotsPackage.MAP__SUB_MAPS:
 				getSubMaps().clear();
 				return;
+			case CleaningrobotsPackage.MAP__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case CleaningrobotsPackage.MAP__MIN_X:
+				setMinX(MIN_X_EDEFAULT);
+				return;
+			case CleaningrobotsPackage.MAP__MIN_Y:
+				setMinY(MIN_Y_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -287,6 +437,12 @@ public class MapImpl extends MinimalEObjectImpl.Container implements Map {
 				return fields != null && !fields.isEmpty();
 			case CleaningrobotsPackage.MAP__SUB_MAPS:
 				return subMaps != null && !subMaps.isEmpty();
+			case CleaningrobotsPackage.MAP__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case CleaningrobotsPackage.MAP__MIN_X:
+				return minX != MIN_X_EDEFAULT;
+			case CleaningrobotsPackage.MAP__MIN_Y:
+				return minY != MIN_Y_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -305,6 +461,12 @@ public class MapImpl extends MinimalEObjectImpl.Container implements Map {
 		result.append(xdim);
 		result.append(", ydim: ");
 		result.append(ydim);
+		result.append(", name: ");
+		result.append(name);
+		result.append(", minX: ");
+		result.append(minX);
+		result.append(", minY: ");
+		result.append(minY);
 		result.append(')');
 		return result.toString();
 	}

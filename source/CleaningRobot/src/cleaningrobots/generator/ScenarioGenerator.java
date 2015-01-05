@@ -89,9 +89,9 @@ public class ScenarioGenerator {
 					f.setXpos(x);
 					f.setYpos(y);
 					if (fullMap[x][y])
-						f.getState().add(a);
+						f.getStates().add(a);
 					else
-						f.getState().add(b);
+						f.getStates().add(b);
 					//TODO: randomly insert sensor faults (i.e., flip between a and b)
 					m.getFields().add(f);
 				}

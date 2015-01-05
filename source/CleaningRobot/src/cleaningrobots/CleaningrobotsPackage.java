@@ -158,13 +158,40 @@ public interface CleaningrobotsPackage extends EPackage {
 	int MAP__SUB_MAPS = 3;
 
 	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MAP__NAME = 4;
+
+	/**
+	 * The feature id for the '<em><b>Min X</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MAP__MIN_X = 5;
+
+	/**
+	 * The feature id for the '<em><b>Min Y</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MAP__MIN_Y = 6;
+
+	/**
 	 * The number of structural features of the '<em>Map</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MAP_FEATURE_COUNT = 4;
+	int MAP_FEATURE_COUNT = 7;
 
 	/**
 	 * The number of operations of the '<em>Map</em>' class.
@@ -204,13 +231,13 @@ public interface CleaningrobotsPackage extends EPackage {
 	int FIELD__YPOS = 1;
 
 	/**
-	 * The feature id for the '<em><b>State</b></em>' reference list.
+	 * The feature id for the '<em><b>States</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FIELD__STATE = 2;
+	int FIELD__STATES = 2;
 
 	/**
 	 * The number of structural features of the '<em>Field</em>' class.
@@ -375,6 +402,39 @@ public interface CleaningrobotsPackage extends EPackage {
 	EReference getMap_SubMaps();
 
 	/**
+	 * Returns the meta object for the attribute '{@link cleaningrobots.Map#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see cleaningrobots.Map#getName()
+	 * @see #getMap()
+	 * @generated
+	 */
+	EAttribute getMap_Name();
+
+	/**
+	 * Returns the meta object for the attribute '{@link cleaningrobots.Map#getMinX <em>Min X</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Min X</em>'.
+	 * @see cleaningrobots.Map#getMinX()
+	 * @see #getMap()
+	 * @generated
+	 */
+	EAttribute getMap_MinX();
+
+	/**
+	 * Returns the meta object for the attribute '{@link cleaningrobots.Map#getMinY <em>Min Y</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Min Y</em>'.
+	 * @see cleaningrobots.Map#getMinY()
+	 * @see #getMap()
+	 * @generated
+	 */
+	EAttribute getMap_MinY();
+
+	/**
 	 * Returns the meta object for class '{@link cleaningrobots.Field <em>Field</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -407,15 +467,15 @@ public interface CleaningrobotsPackage extends EPackage {
 	EAttribute getField_Ypos();
 
 	/**
-	 * Returns the meta object for the reference list '{@link cleaningrobots.Field#getState <em>State</em>}'.
+	 * Returns the meta object for the reference list '{@link cleaningrobots.Field#getStates <em>States</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>State</em>'.
-	 * @see cleaningrobots.Field#getState()
+	 * @return the meta object for the reference list '<em>States</em>'.
+	 * @see cleaningrobots.Field#getStates()
 	 * @see #getField()
 	 * @generated
 	 */
-	EReference getField_State();
+	EReference getField_States();
 
 	/**
 	 * Returns the meta object for class '{@link cleaningrobots.State <em>State</em>}'.
@@ -549,6 +609,30 @@ public interface CleaningrobotsPackage extends EPackage {
 		EReference MAP__SUB_MAPS = eINSTANCE.getMap_SubMaps();
 
 		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MAP__NAME = eINSTANCE.getMap_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Min X</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MAP__MIN_X = eINSTANCE.getMap_MinX();
+
+		/**
+		 * The meta object literal for the '<em><b>Min Y</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MAP__MIN_Y = eINSTANCE.getMap_MinY();
+
+		/**
 		 * The meta object literal for the '{@link cleaningrobots.impl.FieldImpl <em>Field</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -575,12 +659,12 @@ public interface CleaningrobotsPackage extends EPackage {
 		EAttribute FIELD__YPOS = eINSTANCE.getField_Ypos();
 
 		/**
-		 * The meta object literal for the '<em><b>State</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>States</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference FIELD__STATE = eINSTANCE.getField_State();
+		EReference FIELD__STATES = eINSTANCE.getField_States();
 
 		/**
 		 * The meta object literal for the '{@link cleaningrobots.impl.StateImpl <em>State</em>}' class.
