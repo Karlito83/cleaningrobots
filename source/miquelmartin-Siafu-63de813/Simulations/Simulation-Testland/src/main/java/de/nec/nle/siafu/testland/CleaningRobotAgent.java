@@ -1,35 +1,23 @@
 package de.nec.nle.siafu.testland;
 
-import cleaningrobots.CleaningrobotsFactory;
-import cleaningrobots.Map;
-import cleaningrobots.Robot;
-import cleaningrobots.impl.CleaningrobotsFactoryImpl;
 import de.nec.nle.siafu.model.Agent;
+import de.nec.nle.siafu.model.Place;
 import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
+import de.tud.swt.cleaningrobots.IPositionProvider;
+import de.tud.swt.cleaningrobots.Robot;
 
-public class CleaningRobotAgent extends Agent {
-	
+public class CleaningRobotAgent extends Agent implements IPositionProvider {
+
 	Robot cleaningRobot;
 	World siafuWorld;
-	Map robotsWorld;
-	
-	
 
 	public CleaningRobotAgent(Position start, String image, World world) {
 		super(start, image, world);
-		
-		CleaningrobotsFactory factory = CleaningrobotsFactory.eINSTANCE;
-		this.siafuWorld = world;
-		this.cleaningRobot = factory.createRobot();
-		this.robotsWorld = factory.createMap();
-		
-		this.robotsWorld.setXdim(siafuWorld.getWidth());
-		this.robotsWorld.setYdim(siafuWorld.getHeight());
-		
-		this.cleaningRobot.setMap(robotsWorld);
+		siafuWorld = world;
+		cleaningRobot = new Robot(this);
 	}
-	
+
 	@Override
 	public void wander() {
 		// TODO Auto-generated method stub
@@ -39,11 +27,29 @@ public class CleaningRobotAgent extends Agent {
 	public Robot getCleaningRobot() {
 		return this.cleaningRobot;
 	}
-	
+
 	@Override
 	public void setName(String name) {
-		this.cleaningRobot.setName(name);
 		super.setName(name);
+		this.cleaningRobot.setName(name);
+	}
+
+	public de.tud.swt.cleaningrobots.Position getPosition() {
+		de.tud.swt.cleaningrobots.Position result = new de.tud.swt.cleaningrobots.Position(
+				this.getPos().getCol(), this.getPos().getRow());
+		return result;
+	}
+	
+	@Override
+	public Place getDestination() {
+		// TODO Auto-generated method stub
+		return super.getDestination();
+	}
+	
+	@Override
+	public void setDestination(Place destination) {
+		// TODO Auto-generated method stub
+		super.setDestination(destination);
 	}
 
 }

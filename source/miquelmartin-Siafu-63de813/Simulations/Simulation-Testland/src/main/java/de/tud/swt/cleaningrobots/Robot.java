@@ -11,30 +11,22 @@ public class Robot {
 	private String name;
 	private World world;
 	private List<Behaviour> behaviours;
+	private Position destination;
+	private IPositionProvider positionProvider;
 
-	public Robot(String name) {
+	private static int counter = 1;
+	
+	
+	public Robot(IPositionProvider positionProvider)
+	{
+		this("Robbi" + counter++, positionProvider);
+	}
+	
+	public Robot(String name, IPositionProvider positionProvider) {
+		
 		this.name = name;
+		this.positionProvider = positionProvider;
 		this.world = new World(this);
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void addSensor(ISensor sensor) {
-		sensors.add(sensor);
-	}
-
-	public Collection<State> getSupportedStates() {
-		Set<State> supportedStates = new HashSet<State>();
-		for (ISensor sensor : sensors) {
-			supportedStates.addAll(sensor.getSupportedStates());
-		}
-		return supportedStates;
-	}
-
-	public World getWorld() {
-		return this.world;
 	}
 
 	public void action() {
@@ -57,16 +49,7 @@ public class Robot {
 					"There is no Exception handling defined if a Behaviour goes wrong...");
 		}
 	}
-
-	/***
-	 * Adds a {@link Behaviour} to the list with the least priority
-	 * 
-	 * @param behaviour
-	 */
-	public boolean appendBehaviour(Behaviour behaviour) {
-		return this.behaviours.add(behaviour);
-	}
-
+	
 	/***
 	 * Adds a new {@link Behaviour} to the {@link List} of behaviours This
 	 * function behaves like {@link List#add(int, Object)}.
@@ -76,6 +59,46 @@ public class Robot {
 	 */
 	public void addBehaviour(int index, Behaviour behaviour) {
 		this.behaviours.add(index, behaviour);
+	}
+	
+	public void addSensor(ISensor sensor) {
+		sensors.add(sensor);
+	}
+
+	/***
+	 * Adds a {@link Behaviour} to the list with the least priority
+	 * 
+	 * @param behaviour
+	 */
+	public boolean appendBehaviour(Behaviour behaviour) {
+		return this.behaviours.add(behaviour);
+	}
+	
+	public Position getDestination() {
+		return destination;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Position getPosition()
+	{
+		return positionProvider.getPosition();
+	}
+	
+	
+
+	public Collection<State> getSupportedStates() {
+		Set<State> supportedStates = new HashSet<State>();
+		for (ISensor sensor : sensors) {
+			supportedStates.addAll(sensor.getSupportedStates());
+		}
+		return supportedStates;
+	}
+
+	public World getWorld() {
+		return this.world;
 	}
 
 	/***
@@ -87,5 +110,13 @@ public class Robot {
 	 */
 	public boolean removeBehaviour(Behaviour behaviour) {
 		return this.behaviours.remove(behaviour);
+	}
+
+	public void setDestination(Position destination) {
+		this.destination = destination;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 }
