@@ -19,4 +19,8 @@ public class Field {
 	public int getY() {
 		return y;
 	}
+
+	public void addState(State state) {
+		states.add(state);
+	}
 }

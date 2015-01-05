@@ -12,5 +12,5 @@ public abstract class Behaviour {
 		return robot;
 	}
 	
-	public abstract void action();
+	public abstract boolean action() throws Exception;
 }

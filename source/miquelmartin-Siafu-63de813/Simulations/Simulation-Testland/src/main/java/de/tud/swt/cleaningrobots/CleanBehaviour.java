@@ -10,11 +10,21 @@ public class CleanBehaviour extends Behaviour {
 	private final String CONST_STATE_CLEAN = "Clean";
 
 	@Override
-	public void action() {
-
+	public boolean action() throws Exception {
+		boolean result = false;
 		World RobotsWorld = getRobot().getWorld();
 		Field nextDirtyField = getRobot().getWorld().getNextFieldByState(
 				CONST_STATE_DIRTY);
+		if (nextDirtyField == null) {
+			result = false;
+		} else {
+			//TODO: Implement
+			result = true;
+			throw new Exception("The cleaning behaviour is not yet implemented");
+		}
+		
+		return result;
+
 	}
 
 }
