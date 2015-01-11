@@ -12,11 +12,7 @@
 	</parent>
 
 	<modules>
-		<module>Simulation-Glasgow</module>
-		<module>Simulation-Leimen</module>
-		<module>Simulation-Office</module>
 		<module>Simulation-Testland</module>
-		<module>Simulation-Valencia</module>
 	</modules>
 
 	<build>
