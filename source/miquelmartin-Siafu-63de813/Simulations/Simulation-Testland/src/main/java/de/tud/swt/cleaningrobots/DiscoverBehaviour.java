@@ -9,9 +9,14 @@ public class DiscoverBehaviour extends Behaviour {
 
 	@Override
 	public boolean action() throws Exception {
-		// TODO Auto-generated method stub
-		this.getRobot().getWorld().getNextUnknownField();
-		throw new Exception("Not yet implemented...");
+		boolean result = false;
+		
+		Position nextUnknownPosition = this.getRobot().getWorld().getNextUnknownPosition(); 
+		if(nextUnknownPosition != null){
+			getRobot().setDestination(nextUnknownPosition);
+			result = true;
+		}
+		return result;		
 	}
 
 }

@@ -4,24 +4,31 @@ import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.Place;
 import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
+import de.tud.swt.cleaningrobots.CleanBehaviour;
+import de.tud.swt.cleaningrobots.DiscoverBehaviour;
+import de.tud.swt.cleaningrobots.INavigationController;
 import de.tud.swt.cleaningrobots.IPositionProvider;
 import de.tud.swt.cleaningrobots.Robot;
 
-public class CleaningRobotAgent extends Agent implements IPositionProvider {
+public class CleaningRobotAgent extends Agent implements IPositionProvider{
 
 	Robot cleaningRobot;
 	World siafuWorld;
-
+	
 	public CleaningRobotAgent(Position start, String image, World world) {
 		super(start, image, world);
 		siafuWorld = world;
-		cleaningRobot = new Robot(this);
+		cleaningRobot = new Robot(this, new AgentDestinationAdapter(this, siafuWorld));
+		cleaningRobot.addSensor(new BlockedOnlySensor(siafuWorld, this));
+		cleaningRobot.addBehaviour(new DiscoverBehaviour(cleaningRobot));
+		this.setSpeed(1);
 	}
 
 	@Override
 	public void wander() {
 		// TODO Auto-generated method stub
-		super.wander();
+		cleaningRobot.action();
+		//super.wander();
 	}
 
 	public Robot getCleaningRobot() {
@@ -41,15 +48,7 @@ public class CleaningRobotAgent extends Agent implements IPositionProvider {
 	}
 	
 	@Override
-	public Place getDestination() {
-		// TODO Auto-generated method stub
-		return super.getDestination();
+	public void setSpeed(int speed) {
+		//ignore..
 	}
-	
-	@Override
-	public void setDestination(Place destination) {
-		// TODO Auto-generated method stub
-		super.setDestination(destination);
-	}
-
 }

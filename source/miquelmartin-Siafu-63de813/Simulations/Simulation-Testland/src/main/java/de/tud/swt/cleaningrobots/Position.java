@@ -16,4 +16,24 @@ public class Position {
 	public int getY() {
 		return y;
 	}
+	
+	@Override
+	public String toString() {
+		return "(" + x + "," + y + ")";
+	}
+	
+	@Override
+	public int hashCode() {
+		return x*10000+y;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		boolean result = false;
+		if(obj!=null && obj instanceof Position){
+			Position tmp = (Position)obj;
+			result = (tmp.getX()==x && tmp.getY()==y);
+		}
+		return result;
+	}
 }

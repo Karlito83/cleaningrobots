@@ -3,6 +3,7 @@ package de.nec.nle.siafu.testland;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
 import de.tud.swt.cleaningrobots.Field;
@@ -18,7 +19,7 @@ import de.tud.swt.cleaningrobots.State;
  */
 public class BlockedOnlySensor implements ISensor {
 	
-	private CleaningRobotAgent agent;
+	private Agent agent;
 	private World siafuWorld;
 	
 	private final int CONST_VISIONRADIUS = 2;
@@ -27,7 +28,7 @@ public class BlockedOnlySensor implements ISensor {
 	private final State STATE_BLOCKED = State.createState("Blocked");
 	private final State STATE_FREE = State.createState("Free");
 
-	public BlockedOnlySensor(World siafuWorld, CleaningRobotAgent agent) {
+	public BlockedOnlySensor(World siafuWorld, Agent agent) {
 		super();
 		
 		this.supportedStates = new ArrayList<State>();
@@ -59,10 +60,10 @@ public class BlockedOnlySensor implements ISensor {
 	{
 		Field result = null;
 		
-		int row =  agent.getPos().getRow();
-		int column =  agent.getPos().getCol();
+		int row =  agent.getPos().getRow() + yOffset;
+		int column =  agent.getPos().getCol() + xOffset;
 		
-		result = new Field(column, row);
+		result = new Field(column, row, !siafuWorld.isAWall(new Position(row, column)));
 		if(siafuWorld.isAWall(new Position(row, column)))
 		{
 			result.addState(STATE_BLOCKED);

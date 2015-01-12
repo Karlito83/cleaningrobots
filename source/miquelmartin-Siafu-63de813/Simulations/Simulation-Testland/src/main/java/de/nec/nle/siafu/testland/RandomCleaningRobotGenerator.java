@@ -50,8 +50,6 @@ public class RandomCleaningRobotGenerator {
 	public Agent createRandomAgent(final World world) {
 		try {
 
-			Overlay overlay;
-
 			CleaningRobotAgent agent = new CleaningRobotAgent(world
 					.getRandomPlaceOfType("Nowhere").getPos(), "HumanMagenta",
 					world);

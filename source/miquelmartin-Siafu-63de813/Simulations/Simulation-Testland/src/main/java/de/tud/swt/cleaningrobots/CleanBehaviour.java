@@ -19,8 +19,9 @@ public class CleanBehaviour extends Behaviour {
 			result = false;
 		} else {
 			//TODO: Implement
-			result = true;
-			throw new Exception("The cleaning behaviour is not yet implemented");
+			System.out.println("The cleaning behaviour is not yet implemented!");
+			result = false;
+			//throw new Exception("The cleaning behaviour is not yet implemented");
 		}
 		
 		return result;
