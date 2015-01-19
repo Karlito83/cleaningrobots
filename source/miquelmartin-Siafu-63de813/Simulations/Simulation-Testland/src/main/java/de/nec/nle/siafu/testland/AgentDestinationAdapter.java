@@ -29,14 +29,23 @@ public class AgentDestinationAdapter implements INavigationController {
 
 		return null;
 	}
+	
+	public void setDestination(Position destination, Position start) {
+		de.nec.nle.siafu.model.Position siafuDestination = new de.nec.nle.siafu.model.Position(destination.getY(), destination.getX());
+		de.nec.nle.siafu.model.Position siafuStart = new de.nec.nle.siafu.model.Position(start.getY(), start.getX());
+		Place destinationPlace = new Place("Unknown", siafuDestination, siafuWorld);
 
-	public void setDestination(Position destination) {
-		de.nec.nle.siafu.model.Position siafuPosition = new de.nec.nle.siafu.model.Position(destination.getY(), destination.getX());
-		Place destinationPlace = new Place("Unknown", siafuPosition, siafuWorld);
+		
+		
+		new Place("Unknown", siafuDestination, siafuWorld, siafuStart);
 		agent.setDestination(destinationPlace);
 	}
 
 	public void moveTowardsDestination() {
 		agent.moveTowardsDestination();
+	}
+
+	public boolean isAtDestination() {
+		return agent.isAtDestination();
 	}
 }

@@ -11,11 +11,17 @@ public class DiscoverBehaviour extends Behaviour {
 	public boolean action() throws Exception {
 		boolean result = false;
 		
-		Position nextUnknownPosition = this.getRobot().getWorld().getNextUnknownPosition(); 
-		if(nextUnknownPosition != null){
-			getRobot().setDestination(nextUnknownPosition);
+		if(getRobot().isAtDestination()){
+			Position nextUnknownPosition = this.getRobot().getWorld().getNextUnknownPosition(); 
+			if(nextUnknownPosition != null){
+				getRobot().setDestination(nextUnknownPosition);
+				result = true;
+			}
+		}
+		else {
 			result = true;
 		}
+		
 		return result;		
 	}
 

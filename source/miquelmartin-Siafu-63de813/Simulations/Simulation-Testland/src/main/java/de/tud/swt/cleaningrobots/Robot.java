@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import de.nec.nle.siafu.utils.SiafuGradientCache;
+
 
 public class Robot {
 
@@ -137,7 +139,7 @@ public class Robot {
 	}
 
 	public void setDestination(Position destination) {
-		this.navigationController.setDestination(destination);
+		this.navigationController.setDestination(destination, getPosition());
 	}
 	
 	public void setName(String name) {
@@ -151,5 +153,9 @@ public class Robot {
 
 	public void addBehaviour(Behaviour behaviour) {
 		this.behaviours.add(behaviour);
+	}
+
+	public boolean isAtDestination() {
+		return this.navigationController.isAtDestination();
 	}
 }
