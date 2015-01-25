@@ -29,7 +29,7 @@ public class Field {
 		states.add(state);
 	}
 	
-	public boolean isPassabel() {
+	public boolean isPassable() {
 		return isPassabel;
 	}
 	

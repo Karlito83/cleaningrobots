@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
@@ -87,6 +89,22 @@ public class World {
 		return result;
 	}
 	
+	public List<Position> getPath(Position destination){
+		List<Position> path = new LinkedList<Position>();
+		
+		Position source = robot.getPosition();
+		PriorityQueue<Position> queue = new PriorityQueue<Position>();
+		
+		while (!queue.isEmpty()){
+			
+		}
+		
+		
+		
+		
+		return path;
+	}
+	
 	/***
 	 * Returns the yet unknown field 
 	 * @return
@@ -105,7 +123,7 @@ public class World {
 		while (result==null&&!nodes.isEmpty()){
 			Position currentNodePosition = nodes.poll();
 			for(Position neighbour : getNeighbourPositions(currentNodePosition)){
-				if(!visited.contains(neighbour)&&map.containsKey(neighbour)&&map.get(neighbour).isPassabel()){
+				if(!visited.contains(neighbour)&&map.containsKey(neighbour)&&map.get(neighbour).isPassable()){
 					nodes.add(neighbour);
 				}
 				if(!map.containsKey(neighbour)){
@@ -117,5 +135,9 @@ public class World {
 		
 		return result;
 		//return result;//throw new RuntimeException("Getting the next unknown field is not yet implemented");
+	}
+
+	public boolean isPassable(Position position) {
+		return map.containsKey(position) && map.get(position).isPassable();
 	}
 }
