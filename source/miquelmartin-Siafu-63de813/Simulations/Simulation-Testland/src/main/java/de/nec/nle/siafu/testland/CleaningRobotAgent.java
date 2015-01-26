@@ -4,11 +4,11 @@ import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.Place;
 import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
-import de.tud.swt.cleaningrobots.CleanBehaviour;
-import de.tud.swt.cleaningrobots.DiscoverBehaviour;
 import de.tud.swt.cleaningrobots.INavigationController;
 import de.tud.swt.cleaningrobots.IPositionProvider;
 import de.tud.swt.cleaningrobots.Robot;
+import de.tud.swt.cleaningrobots.behaviours.CleanBehaviour;
+import de.tud.swt.cleaningrobots.behaviours.DiscoverBehaviour;
 
 public class CleaningRobotAgent extends Agent implements IPositionProvider{
 

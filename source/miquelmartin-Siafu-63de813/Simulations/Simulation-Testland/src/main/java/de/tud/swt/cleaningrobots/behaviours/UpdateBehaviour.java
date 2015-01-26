@@ -1,4 +1,7 @@
-package de.tud.swt.cleaningrobots;
+package de.tud.swt.cleaningrobots.behaviours;
+
+import de.tud.swt.cleaningrobots.Behaviour;
+import de.tud.swt.cleaningrobots.Robot;
 
 public class UpdateBehaviour extends Behaviour {
 
