@@ -16,14 +16,16 @@ public class DiscoverBehaviour extends Behaviour {
 		boolean result = false;
 		
 		if(getRobot().isAtDestination()){
+			
 			Position nextUnknownPosition = this.getRobot().getWorld().getNextUnknownPosition(); 
 			if(nextUnknownPosition != null){
 				getRobot().setDestination(nextUnknownPosition);
+				System.err.println("setting destination " + getRobot().isAtDestination());
 				result = true;
 			}
 		}
 		else {
-			result = true;
+			result = false;
 		}
 		
 		return result;		

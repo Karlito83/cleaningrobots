@@ -12,5 +12,11 @@ public abstract class Behaviour {
 		return robot;
 	}
 	
+	/***
+	 * Does the actions implemented by the behaviour
+	 * @return <b>true</b> if the action is terminating the action sequence 
+	 * or <b>false</b> if the action of the next behaviour can be performed   
+	 * @throws Exception
+	 */
 	public abstract boolean action() throws Exception;
 }

@@ -6,9 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import de.nec.nle.siafu.utils.SiafuGradientCache;
-
-
 public class Robot {
 
 	private Collection<ISensor> sensors;
@@ -17,33 +14,38 @@ public class Robot {
 	private List<Behaviour> behaviours;
 	private IPositionProvider positionProvider;
 	private INavigationController navigationController;
+	private List<Position> path;
+	private Position destination;
 
 	private static int counter = 1;
-	
-	
-	public Robot(IPositionProvider positionProvider, INavigationController navigationController)
-	{
+
+	public Robot(IPositionProvider positionProvider,
+			INavigationController navigationController) {
 		this("Robby_" + counter++, positionProvider, navigationController);
 	}
-	
-	public Robot(String name, IPositionProvider positionProvider, INavigationController navigationController) {
-		
+
+	public Robot(String name, IPositionProvider positionProvider,
+			INavigationController navigationController) {
+
 		this.name = name;
 		this.positionProvider = positionProvider;
 		this.world = new World(this);
 		this.sensors = new LinkedList<ISensor>();
 		this.behaviours = new LinkedList<Behaviour>();
 		this.navigationController = navigationController;
+		this.path = null;
+		this.destination = null;
 	}
 
 	public void action() {
 		boolean flag = false;
 		try {
 			getSensorData();
-			if (getDestination()==null){
+			//if (getDestination() == null) {
 				for (Behaviour behaviour : behaviours) {
 					if (behaviour.action()) {
 						flag = true;
+						break;
 					}
 				}
 				if (!flag) {
@@ -52,26 +54,25 @@ public class Robot {
 					throw new RuntimeException(String.format(message,
 							this.getName()));
 				}
-			} else {
-				System.out.println("move");
-				navigationController.moveTowardsDestination();
-			}
+			//} else {
+			//	System.out.println("move");
+			//	navigationController.moveTowardsDestination();
+			//}
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			//System.out.println("There is no Exception handling defined if a Behaviour goes wrong...");
+			// System.out.println("There is no Exception handling defined if a Behaviour goes wrong...");
 			throw new RuntimeException(
 					"There is no Exception handling defined if a Behaviour goes wrong...");
 		}
 	}
-	
+
 	private void getSensorData() {
-		if (sensors != null){
-			for (ISensor sensor : sensors){
+		if (sensors != null) {
+			for (ISensor sensor : sensors) {
 				world.addFields(sensor.getData());
 			}
-		}
-		else {
+		} else {
 			System.out.println(this.toString() + " has no sensors.");
 		}
 	}
@@ -86,7 +87,7 @@ public class Robot {
 	public void addBehaviour(int index, Behaviour behaviour) {
 		this.behaviours.add(index, behaviour);
 	}
-	
+
 	public void addSensor(ISensor sensor) {
 		sensors.add(sensor);
 	}
@@ -99,7 +100,7 @@ public class Robot {
 	public boolean appendBehaviour(Behaviour behaviour) {
 		return this.behaviours.add(behaviour);
 	}
-	
+
 	public Position getDestination() {
 		return navigationController.getDestination();
 	}
@@ -108,12 +109,9 @@ public class Robot {
 		return name;
 	}
 
-	public Position getPosition()
-	{
+	public Position getPosition() {
 		return positionProvider.getPosition();
 	}
-	
-	
 
 	public Collection<State> getSupportedStates() {
 		Set<State> supportedStates = new HashSet<State>();
@@ -138,14 +136,29 @@ public class Robot {
 		return this.behaviours.remove(behaviour);
 	}
 
+	/***
+	 * Sets the destination of the robot
+	 * @param destination If null, the destination will be reset and it is assumed, 
+	 * that the robot is at the destination 
+	 */
 	public void setDestination(Position destination) {
-		this.navigationController.setDestination(destination, getPosition());
+		if (destination==null){
+			this.destination = null;
+			this.path = null;
+		}
+		this.destination = destination;
+		refreshPath();
+		// this.navigationController.setDestination(destination, getPosition());
 	}
-	
+
+	private void refreshPath() {
+		this.path = this.world.getPath(destination);
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.name;
@@ -156,6 +169,33 @@ public class Robot {
 	}
 
 	public boolean isAtDestination() {
-		return this.navigationController.isAtDestination();
+		System.out.println("? "  + (path == null?"0":path.size()));
+		return path == null;
+	}
+
+	public void moveTowardsDestination() {
+		if (this.path != null) {
+			if (this.path.size()==0){
+				refreshPath();
+				System.err.println(this.destination);
+			}
+			Position nextPosition = this.path.get(0);
+			if (world.isPassable(nextPosition)) {
+				path.remove(nextPosition);
+				if (nextPosition.equals(destination)) {
+					destination = null;
+					path = null;
+				}
+				this.setPosition(nextPosition);
+			} else {
+				refreshPath();
+			}
+		} else {
+			System.out.println(getName() + ": Can't move towards destination because no destination given.");
+		}
+	}
+
+	private void setPosition(Position position) {
+		this.navigationController.setPosition(position);
 	}
 }

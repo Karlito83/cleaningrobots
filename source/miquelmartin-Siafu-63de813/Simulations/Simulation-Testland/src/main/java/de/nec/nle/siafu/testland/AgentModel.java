@@ -192,6 +192,7 @@ public class AgentModel extends BaseAgentModel {
 		
 		for (Agent a : agents)
 		{
+			System.out.println("Agentmodel wander");
 			a.wander();
 		}
 		/*

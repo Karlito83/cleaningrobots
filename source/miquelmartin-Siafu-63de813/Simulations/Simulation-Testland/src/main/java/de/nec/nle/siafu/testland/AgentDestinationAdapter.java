@@ -21,22 +21,25 @@ public class AgentDestinationAdapter implements INavigationController {
 	 */
 	public Position getDestination() {
 		Position result = null;
-		
-		if(agent.getDestination()!=null){
-			de.nec.nle.siafu.model.Position siafuPosition = agent.getDestination().getPos();
-			result = new Position(siafuPosition.getCol(), siafuPosition.getRow());
+
+		if (agent.getDestination() != null) {
+			de.nec.nle.siafu.model.Position siafuPosition = agent
+					.getDestination().getPos();
+			result = new Position(siafuPosition.getCol(),
+					siafuPosition.getRow());
 		}
 
-		return null;
+		return result;
 	}
-	
-	public void setDestination(Position destination, Position start) {
-		de.nec.nle.siafu.model.Position siafuDestination = new de.nec.nle.siafu.model.Position(destination.getY(), destination.getX());
-		de.nec.nle.siafu.model.Position siafuStart = new de.nec.nle.siafu.model.Position(start.getY(), start.getX());
-		Place destinationPlace = new Place("Unknown", siafuDestination, siafuWorld);
 
-		
-		
+	public void setDestination(Position destination, Position start) {
+		de.nec.nle.siafu.model.Position siafuDestination = new de.nec.nle.siafu.model.Position(
+				destination.getY(), destination.getX());
+		de.nec.nle.siafu.model.Position siafuStart = new de.nec.nle.siafu.model.Position(
+				start.getY(), start.getX());
+		Place destinationPlace = new Place("Unknown", siafuDestination,
+				siafuWorld);
+
 		new Place("Unknown", siafuDestination, siafuWorld, siafuStart);
 		agent.setDestination(destinationPlace);
 	}
@@ -47,5 +50,13 @@ public class AgentDestinationAdapter implements INavigationController {
 
 	public boolean isAtDestination() {
 		return agent.isAtDestination();
+	}
+
+	public void setPosition(Position position) {
+		de.nec.nle.siafu.model.Position siafuPosition = new de.nec.nle.siafu.model.Position(
+				position.getY(), position.getX());
+		System.err.println("start setpos");
+		agent.setPos(siafuPosition);
+		System.err.println("end setpos");
 	}
 }

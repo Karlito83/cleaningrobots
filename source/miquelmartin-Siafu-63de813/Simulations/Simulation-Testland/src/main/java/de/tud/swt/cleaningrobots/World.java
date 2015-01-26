@@ -22,9 +22,12 @@ public class World {
 	private int xDim;
 	private int yDim;
 
+	private WorldHelper helper;
+
 	public World(Robot robot) {
 		this.robot = robot;
 		this.map = new HashMap<Position, Field>();
+		this.helper = new WorldHelper(this);
 	}
 
 	public void addField(Field newField) {
@@ -51,7 +54,6 @@ public class World {
 
 	private void updateField(Field oldField, Field newField,
 			Collection<State> supportedStates) {
-		// TODO Auto-generated method stub
 		System.out.println("Updating Field information is not yet implemented");
 		//throw new RuntimeException("Updating Field information is not yet implemented");
 	}
@@ -73,36 +75,12 @@ public class World {
 		return null;
 		//return null;
 	}
-	
-	private Collection<Position> getNeighbourPositions(Position position){
-		Collection<Position> result = new LinkedList<Position>();  
-		
-		for (int x = -1; x<=1; x++){
-			for (int y = -1; y<=1; y++){
-				if (x==0 && y==0){
-					continue;
-				}
-				result.add(new Position(position.getX()+x, position.getY()+y));
-			}
-		}
-		
-		return result;
-	}
-	
+
 	public List<Position> getPath(Position destination){
-		List<Position> path = new LinkedList<Position>();
 		
-		Position source = robot.getPosition();
-		PriorityQueue<Position> queue = new PriorityQueue<Position>();
+		System.err.println("getpath: " + this.robot.getPosition() + ", " + destination);
 		
-		while (!queue.isEmpty()){
-			
-		}
-		
-		
-		
-		
-		return path;
+		return helper.findPath(this.robot.getPosition(), destination);
 	}
 	
 	/***
@@ -119,22 +97,26 @@ public class World {
 		visited.add(p);
 		Queue<Position> nodes = new LinkedList<Position>();
 		nodes.add(p);
+		
+		System.err.println("nextUnknownposition start");
 
 		while (result==null&&!nodes.isEmpty()){
 			Position currentNodePosition = nodes.poll();
-			for(Position neighbour : getNeighbourPositions(currentNodePosition)){
-				if(!visited.contains(neighbour)&&map.containsKey(neighbour)&&map.get(neighbour).isPassable()){
-					nodes.add(neighbour);
-				}
+			for(Position neighbour : helper.getNeighbourPositions(currentNodePosition, false)){
 				if(!map.containsKey(neighbour)){
 					result = currentNodePosition;
 					break;
 				}
+				if(!visited.contains(neighbour)&&map.containsKey(neighbour)&&map.get(neighbour).isPassable()){
+					visited.add(neighbour);
+					nodes.add(neighbour);
+				}
 			}
 		}
 		
+		//System.err.println("nextUnknownposition end");
+		
 		return result;
-		//return result;//throw new RuntimeException("Getting the next unknown field is not yet implemented");
 	}
 
 	public boolean isPassable(Position position) {
