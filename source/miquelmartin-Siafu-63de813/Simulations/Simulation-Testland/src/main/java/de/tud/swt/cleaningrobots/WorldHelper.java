@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 public class WorldHelper {
 
 	private class Node implements Comparable<Node> {
@@ -32,7 +35,6 @@ public class WorldHelper {
 			xDiff = xDiff > 0 ? xDiff : -xDiff;
 			yDiff = currentPosition.getY() - destination.getY();
 			yDiff = yDiff > 0 ? yDiff : -yDiff;
-			System.err.println(xDiff + " ," + yDiff + ", " + (xDiff > yDiff ? xDiff : yDiff));
 			return xDiff > yDiff ? xDiff : yDiff;
 		}
 
@@ -53,6 +55,8 @@ public class WorldHelper {
 		}
 
 	}
+	
+	private final Logger logger = LogManager.getRootLogger();
 
 	private World world;
 
@@ -70,10 +74,12 @@ public class WorldHelper {
 	 *         position
 	 */
 	public List<Position> findPath(Position startPosition, Position destination) {
+		
+		logger.trace("Start findPath");
+		long startTime = System.nanoTime();
+		
 		List<Position> result = new LinkedList<Position>();
 
-		System.err.println("findpath");
-		
 		Set<Position> expanded = new HashSet<Position>();
 
 		PriorityQueue<Node> queue = new PriorityQueue<Node>();
@@ -100,6 +106,10 @@ public class WorldHelper {
 				}
 			}
 		}
+		
+		long endTime = System.nanoTime();
+		logger.info("Determinig the Path from " + startPosition + " to " + destination + " took " + (endTime - startTime) + " ns.");
+		logger.trace("End findPath");
 
 		return result;
 	}
@@ -113,7 +123,6 @@ public class WorldHelper {
 				if (i == 0 && j == 0) {
 					continue;
 				}
-				// System.err.println(i + ", " + j);
 				Position newPosition = new Position(currentPosition.getX() + i,
 						currentPosition.getY() + j);
 				if (!onlyPassable || world.isPassable(newPosition)) {
@@ -122,8 +131,6 @@ public class WorldHelper {
 			}
 		}
 		
-		System.err.println(result.size());
-
 		return result;
 	}
 }

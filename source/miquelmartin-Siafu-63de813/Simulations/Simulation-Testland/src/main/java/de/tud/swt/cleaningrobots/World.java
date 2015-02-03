@@ -11,12 +11,17 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class World {
 
-	Random random = new Random(); 
+	private final Random random = new Random(); 
 	
-	Robot robot;
-	Map<Position, Field> map;
+	private final Logger logger  = LogManager.getRootLogger();
+	
+	private Robot robot;
+	private Map<Position, Field> map;
 	private int minX;
 	private int minY;
 	private int xDim;
@@ -54,8 +59,7 @@ public class World {
 
 	private void updateField(Field oldField, Field newField,
 			Collection<State> supportedStates) {
-		System.out.println("Updating Field information is not yet implemented");
-		//throw new RuntimeException("Updating Field information is not yet implemented");
+		logger.warn("Updating Field information is not yet implemented");
 	}
 
 	public void addFields(Iterable<Field> fields) {
@@ -70,16 +74,11 @@ public class World {
 	 * @return
 	 */
 	public Field getNextFieldByState(String stateName) {
-		// TODO Auto-generated method stub
-		System.out.println("Getting the next field by stateName is not yet implemented");
+		logger.warn("Getting the next field by stateName is not yet implemented");
 		return null;
-		//return null;
 	}
 
 	public List<Position> getPath(Position destination){
-		
-		System.err.println("getpath: " + this.robot.getPosition() + ", " + destination);
-		
 		return helper.findPath(this.robot.getPosition(), destination);
 	}
 	
@@ -87,18 +86,18 @@ public class World {
 	 * Returns the yet unknown field 
 	 * @return
 	 */
-	public Position getNextUnknownPosition() {
+	public Position getNextUnknownFieldPosition() {
 		Position result = null;
 		Position p = this.robot.getPosition();
 		
-		//Float minDistance = Float.POSITIVE_INFINITY;
+		logger.trace("getNextUnknownFieldPosition start");
 		
 		Set<Position> visited = new HashSet<Position>();
 		visited.add(p);
 		Queue<Position> nodes = new LinkedList<Position>();
 		nodes.add(p);
 		
-		System.err.println("nextUnknownposition start");
+		
 
 		while (result==null&&!nodes.isEmpty()){
 			Position currentNodePosition = nodes.poll();
@@ -114,7 +113,7 @@ public class World {
 			}
 		}
 		
-		//System.err.println("nextUnknownposition end");
+		logger.trace("getNextUnknownFieldPosition end");
 		
 		return result;
 	}

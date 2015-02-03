@@ -1,8 +1,12 @@
 package de.tud.swt.cleaningrobots;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public abstract class Behaviour {
 	
 	private Robot robot;
+	protected final Logger logger = LogManager.getRootLogger();
 
 	public Behaviour(Robot robot){
 		this.robot = robot;

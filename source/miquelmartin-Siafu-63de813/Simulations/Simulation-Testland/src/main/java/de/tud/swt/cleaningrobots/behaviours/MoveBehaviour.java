@@ -4,7 +4,7 @@ import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.Robot;
 
 public class MoveBehaviour extends Behaviour {
-
+	
 	public MoveBehaviour(Robot robot) {
 		super(robot);
 	}
@@ -13,15 +13,16 @@ public class MoveBehaviour extends Behaviour {
 	public boolean action() throws Exception {
 		boolean result = false;
 		
-		//System.err.println("Movebehaviour action start");
+		logger.trace("Entered Movebehaviour");
 		
 		if (!getRobot().isAtDestination()){
-			System.err.println("Movebehaviour action actually moving?");
 			getRobot().moveTowardsDestination();
 			result = true;
+			logger.info("Executed Movebehaviour");
 		}
 		
-		//System.err.println("Movebehaviour action end");
+		logger.trace("Ended Movebehaviour");
+		
 
 		return result;
 	}

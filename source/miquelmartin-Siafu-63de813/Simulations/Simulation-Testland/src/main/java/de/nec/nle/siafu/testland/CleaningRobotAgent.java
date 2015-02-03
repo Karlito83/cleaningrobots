@@ -19,7 +19,7 @@ public class CleaningRobotAgent extends Agent implements IPositionProvider{
 	public CleaningRobotAgent(Position start, String image, World world) {
 		super(start, image, world);
 		siafuWorld = world;
-		cleaningRobot = new Robot(this, new AgentDestinationAdapter(this, siafuWorld));
+		cleaningRobot = new Robot(this, new AgentNavigationAdapter(this, siafuWorld));
 		cleaningRobot.addSensor(new BlockedOnlySensor(siafuWorld, this));
 		cleaningRobot.addBehaviour(new MoveBehaviour(cleaningRobot));
 		cleaningRobot.addBehaviour(new DiscoverBehaviour(cleaningRobot));

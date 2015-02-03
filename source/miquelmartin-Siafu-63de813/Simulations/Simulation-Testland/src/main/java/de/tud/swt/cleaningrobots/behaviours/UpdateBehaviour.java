@@ -12,7 +12,9 @@ public class UpdateBehaviour extends Behaviour {
 
 	@Override
 	public boolean action() throws Exception {
-		// TODO Auto-generated method stub
+		
+		logger.warn("UpdateBehaviour is not yet implemented.");
+		
 		return false;
 	}
 

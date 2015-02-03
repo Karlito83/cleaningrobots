@@ -6,7 +6,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Robot {
+
+	private final Logger logger = LogManager.getRootLogger();
 
 	private Collection<ISensor> sensors;
 	private String name;
@@ -17,7 +22,7 @@ public class Robot {
 	private List<Position> path;
 	private Position destination;
 
-	private static int counter = 1;
+	private static int counter = 1; // counter for the standard-name
 
 	public Robot(IPositionProvider positionProvider,
 			INavigationController navigationController) {
@@ -26,6 +31,8 @@ public class Robot {
 
 	public Robot(String name, IPositionProvider positionProvider,
 			INavigationController navigationController) {
+
+		logger.info("Initializing robot \"" + name + "\"");
 
 		this.name = name;
 		this.positionProvider = positionProvider;
@@ -41,29 +48,20 @@ public class Robot {
 		boolean flag = false;
 		try {
 			getSensorData();
-			//if (getDestination() == null) {
-				for (Behaviour behaviour : behaviours) {
-					if (behaviour.action()) {
-						flag = true;
-						break;
-					}
+			for (Behaviour behaviour : behaviours) {
+				if (behaviour.action()) {
+					flag = true;
+					break;
 				}
-				if (!flag) {
-					String message = "The robot \"%s\" does not know what to do and feels a bit sad now..."
-							+ "\nPlease specify appropriate behaviours for him to avoid that.";
-					throw new RuntimeException(String.format(message,
-							this.getName()));
-				}
-			//} else {
-			//	System.out.println("move");
-			//	navigationController.moveTowardsDestination();
-			//}
-
+			}
+			if (!flag) {
+				String message = "The robot \"%s\" does not know what to do and feels a bit sad now..."
+						+ "\nPlease specify appropriate behaviours for him to avoid that.";
+				throw new RuntimeException(String.format(message,
+						this.getName()));
+			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			// System.out.println("There is no Exception handling defined if a Behaviour goes wrong...");
-			throw new RuntimeException(
-					"There is no Exception handling defined if a Behaviour goes wrong...");
+			logger.error("There is no Exception handling defined if a Behaviour goes wrong...", e);
 		}
 	}
 
@@ -102,7 +100,7 @@ public class Robot {
 	}
 
 	public Position getDestination() {
-		return navigationController.getDestination();
+		return this.destination;
 	}
 
 	public String getName() {
@@ -138,17 +136,19 @@ public class Robot {
 
 	/***
 	 * Sets the destination of the robot
-	 * @param destination If null, the destination will be reset and it is assumed, 
-	 * that the robot is at the destination 
+	 * 
+	 * @param destination
+	 *            If null, the destination will be reset and it is assumed, that
+	 *            the robot is at the destination
 	 */
 	public void setDestination(Position destination) {
-		if (destination==null){
+		logger.debug("Set destination of " + this + " to " + destination + ".");
+		if (destination == null) {
 			this.destination = null;
 			this.path = null;
 		}
 		this.destination = destination;
 		refreshPath();
-		// this.navigationController.setDestination(destination, getPosition());
 	}
 
 	private void refreshPath() {
@@ -169,13 +169,12 @@ public class Robot {
 	}
 
 	public boolean isAtDestination() {
-		System.out.println("? "  + (path == null?"0":path.size()));
 		return path == null;
 	}
 
 	public void moveTowardsDestination() {
 		if (this.path != null) {
-			if (this.path.size()==0){
+			if (this.path.size() == 0) {
 				refreshPath();
 				System.err.println(this.destination);
 			}
@@ -191,11 +190,14 @@ public class Robot {
 				refreshPath();
 			}
 		} else {
-			System.out.println(getName() + ": Can't move towards destination because no destination given.");
+			System.out
+					.println(getName()
+							+ ": Can't move towards destination because no destination given.");
 		}
 	}
 
 	private void setPosition(Position position) {
+		logger.debug("Set new position of " + this + " to " + position + ".");
 		this.navigationController.setPosition(position);
 	}
 }

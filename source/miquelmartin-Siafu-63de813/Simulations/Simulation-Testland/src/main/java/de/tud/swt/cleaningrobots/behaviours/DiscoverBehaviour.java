@@ -5,28 +5,31 @@ import de.tud.swt.cleaningrobots.Position;
 import de.tud.swt.cleaningrobots.Robot;
 
 public class DiscoverBehaviour extends Behaviour {
-
+	
 	public DiscoverBehaviour(Robot robot) {
 		super(robot);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean action() throws Exception {
 		boolean result = false;
 		
+		logger.trace("Entered DiscoverBehaviour.action().");
+		
 		if(getRobot().isAtDestination()){
 			
-			Position nextUnknownPosition = this.getRobot().getWorld().getNextUnknownPosition(); 
+			Position nextUnknownPosition = this.getRobot().getWorld().getNextUnknownFieldPosition(); 
 			if(nextUnknownPosition != null){
 				getRobot().setDestination(nextUnknownPosition);
-				System.err.println("setting destination " + getRobot().isAtDestination());
 				result = true;
+				logger.info("Executed DiscoverBehaviour.action().");
 			}
 		}
 		else {
 			result = false;
 		}
+		
+		logger.trace("Ended DiscoverBehaviour.action().");
 		
 		return result;		
 	}
