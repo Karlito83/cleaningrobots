@@ -36,4 +36,8 @@ public class Field {
 	public String toString() {
 		return "Field: " + x + "," + y + "[" + states + "]";
 	}
+
+	public Set<State> getStates() {
+		return this.states;
+	}
 }

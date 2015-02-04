@@ -49,16 +49,23 @@ public class World {
 		}
 		Position coordinates = new Position(newField.getX(), newField.getY());
 		if (map.containsKey(coordinates)) {
-			Field oldField = map.get(coordinates);
-			updateField(oldField, newField, robot.getSupportedStates());
+			updateField(newField);
 		} else {
 			map.put(coordinates, newField);
 		}
 	}
 
-	private void updateField(Field oldField, Field newField,
-			Collection<State> supportedStates) {
-		logger.warn("Updating Field information is not yet implemented");
+	private void updateField(Field newField) {
+		Position coordinates = new Position(newField.getX(), newField.getY());
+		Field oldField = map.get(coordinates);
+		
+		for(State oldState : oldField.getStates()){
+			if (!robot.getSupportedStates().contains(oldState)){
+				newField.addState(oldState);
+			}
+		}
+		
+		map.put(coordinates, newField);
 	}
 
 	public void addFields(Iterable<Field> fields) {
