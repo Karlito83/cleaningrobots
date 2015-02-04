@@ -16,10 +16,10 @@ import org.apache.logging.log4j.Logger;
 
 public class World {
 
-	private final Random random = new Random(); 
-	
-	private final Logger logger  = LogManager.getRootLogger();
-	
+	private final Random random = new Random();
+
+	private final Logger logger = LogManager.getRootLogger();
+
 	private Robot robot;
 	private Map<Position, Field> map;
 	private int minX;
@@ -36,17 +36,17 @@ public class World {
 	}
 
 	public void addField(Field newField) {
-		if (newField.getX()<this.minX){
+		if (newField.getX() < this.minX) {
 			this.minX = newField.getX();
 		}
-		if (newField.getY()<this.minY){
+		if (newField.getY() < this.minY) {
 			this.minY = newField.getY();
 		}
-		if (newField.getX()>this.minX+this.xDim){
-			this.xDim = newField.getX()+this.minX;
+		if (newField.getX() > this.minX + this.xDim) {
+			this.xDim = newField.getX() + this.minX;
 		}
-		if (newField.getY()>this.minY+this.yDim){
-			this.yDim = newField.getY()+this.minY;
+		if (newField.getY() > this.minY + this.yDim) {
+			this.yDim = newField.getY() + this.minY;
 		}
 		Position coordinates = new Position(newField.getX(), newField.getY());
 		if (map.containsKey(coordinates)) {
@@ -70,6 +70,7 @@ public class World {
 
 	/***
 	 * Returns the next Field with a State identified by a state name
+	 * 
 	 * @param stateName
 	 * @return
 	 */
@@ -78,44 +79,74 @@ public class World {
 		return null;
 	}
 
-	public List<Position> getPath(Position destination){
+	public List<Position> getPath(Position destination) {
 		return helper.findPath(this.robot.getPosition(), destination);
 	}
-	
+
 	/***
-	 * Returns the yet unknown field 
+	 * Returns the yet unknown field
+	 * 
 	 * @return
 	 */
 	public Position getNextUnknownFieldPosition() {
-		Position result = null;
-		Position p = this.robot.getPosition();
-		
+
 		logger.trace("getNextUnknownFieldPosition start");
-		
+		long startTime = System.nanoTime();
+
+		Position result = null;
+		List<Position> tmpResult = new LinkedList<Position>();
+		Position p = this.robot.getPosition();
+		boolean flag = true;
+
 		Set<Position> visited = new HashSet<Position>();
 		visited.add(p);
 		Queue<Position> nodes = new LinkedList<Position>();
 		nodes.add(p);
-		
-		
 
-		while (result==null&&!nodes.isEmpty()){
+		while (flag && !nodes.isEmpty()) {
 			Position currentNodePosition = nodes.poll();
-			for(Position neighbour : helper.getNeighbourPositions(currentNodePosition, false)){
-				if(!map.containsKey(neighbour)){
-					result = currentNodePosition;
-					break;
+			for (Position neighbour : helper.getNeighbourPositions(
+					currentNodePosition, false)) {
+				if (!map.containsKey(neighbour)) {
+					if (!tmpResult.isEmpty()
+							&& getDistanceFromCurrentPosition(currentNodePosition) > getDistanceFromCurrentPosition(tmpResult
+									.get(0))) {
+						flag = false;
+						break;
+					}
+					tmpResult.add(currentNodePosition);
 				}
-				if(!visited.contains(neighbour)&&map.containsKey(neighbour)&&map.get(neighbour).isPassable()){
+				if (!visited.contains(neighbour) && map.containsKey(neighbour)
+						&& map.get(neighbour).isPassable()) {
 					visited.add(neighbour);
 					nodes.add(neighbour);
 				}
 			}
 		}
 		
+		if(!tmpResult.isEmpty()){
+			int index = random.nextInt(tmpResult.size());
+			result = tmpResult.get(index);
+		}
+
+		long endTime = System.nanoTime();
+		logger.info("Determinig the next Unknown field position took "
+				+ (endTime - startTime) + " ns.");
 		logger.trace("getNextUnknownFieldPosition end");
-		
+
 		return result;
+	}
+
+	private int getDistanceFromCurrentPosition(Position currentNodePosition) {
+		int deltaX = 0, deltaY = 0;
+
+		Position currentRobotPosition = this.robot.getPosition();
+		deltaX = currentRobotPosition.getX() - currentNodePosition.getX();
+		deltaY = currentRobotPosition.getY() - currentNodePosition.getY();
+		deltaX = deltaX < 0 ? -deltaX : deltaX;
+		deltaY = deltaY < 0 ? -deltaY : deltaY;
+
+		return deltaX < deltaY ? deltaX : deltaY;
 	}
 
 	public boolean isPassable(Position position) {
