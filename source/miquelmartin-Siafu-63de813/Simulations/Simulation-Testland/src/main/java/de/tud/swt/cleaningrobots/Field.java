@@ -1,20 +1,19 @@
 package de.tud.swt.cleaningrobots;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Field {
 	private int x;
 	private int y;
-	private boolean isPassabel;
+	private boolean isPassable;
 	private Set<State> states;
 
-	public Field(int x, int y, boolean isPassabel)
+	public Field(int x, int y, boolean isPassable)
 	{
 		this.x = x;
 		this.y = y;
-		this.isPassabel = isPassabel;
+		this.isPassable = isPassable;
 		this.states = new HashSet<State>();
 	}
 	
@@ -30,7 +29,7 @@ public class Field {
 	}
 	
 	public boolean isPassable() {
-		return isPassabel;
+		return isPassable;
 	}
 	
 	@Override
