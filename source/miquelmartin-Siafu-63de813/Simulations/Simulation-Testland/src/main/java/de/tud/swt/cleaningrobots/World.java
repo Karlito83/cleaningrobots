@@ -1,6 +1,5 @@
 package de.tud.swt.cleaningrobots;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -12,6 +11,9 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import cleaningrobots.CleaningrobotsFactory;
+import cleaningrobots.WorldPart;
 
 public class World {
 
@@ -157,5 +159,21 @@ public class World {
 
 	public boolean isPassable(Position position) {
 		return map.containsKey(position) && map.get(position).isPassable();
+	}
+
+	public cleaningrobots.World exportModel() {
+		//TODO: Consider caching
+		cleaningrobots.World modelWorld = null;
+		cleaningrobots.Map modelMap = null;
+		
+		modelWorld = CleaningrobotsFactory.eINSTANCE.createWorld();
+		modelMap = CleaningrobotsFactory.eINSTANCE.createMap();
+		modelMap.setXdim(xDim);
+		modelMap.setYdim(yDim);
+		for (Field field : map.values()){
+			modelMap.getFields().add(field.exportModel());
+		}
+		
+		return modelWorld;
 	}
 }

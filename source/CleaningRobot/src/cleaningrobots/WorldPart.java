@@ -12,8 +12,8 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link cleaningrobots.WorldPart#getXDim <em>XDim</em>}</li>
- *   <li>{@link cleaningrobots.WorldPart#getYDim <em>YDim</em>}</li>
+ *   <li>{@link cleaningrobots.WorldPart#getXdim <em>Xdim</em>}</li>
+ *   <li>{@link cleaningrobots.WorldPart#getYdim <em>Ydim</em>}</li>
  * </ul>
  * </p>
  *
@@ -23,55 +23,57 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface WorldPart extends EObject {
 	/**
-	 * Returns the value of the '<em><b>XDim</b></em>' attribute.
+	 * Returns the value of the '<em><b>Xdim</b></em>' attribute.
+	 * The default value is <code>"0"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>XDim</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Xdim</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>XDim</em>' attribute.
-	 * @see #setXDim(int)
-	 * @see cleaningrobots.CleaningrobotsPackage#getWorldPart_XDim()
-	 * @model
+	 * @return the value of the '<em>Xdim</em>' attribute.
+	 * @see #setXdim(int)
+	 * @see cleaningrobots.CleaningrobotsPackage#getWorldPart_Xdim()
+	 * @model default="0"
 	 * @generated
 	 */
-	int getXDim();
+	int getXdim();
 
 	/**
-	 * Sets the value of the '{@link cleaningrobots.WorldPart#getXDim <em>XDim</em>}' attribute.
+	 * Sets the value of the '{@link cleaningrobots.WorldPart#getXdim <em>Xdim</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>XDim</em>' attribute.
-	 * @see #getXDim()
+	 * @param value the new value of the '<em>Xdim</em>' attribute.
+	 * @see #getXdim()
 	 * @generated
 	 */
-	void setXDim(int value);
+	void setXdim(int value);
 
 	/**
-	 * Returns the value of the '<em><b>YDim</b></em>' attribute.
+	 * Returns the value of the '<em><b>Ydim</b></em>' attribute.
+	 * The default value is <code>"0"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>YDim</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Ydim</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>YDim</em>' attribute.
-	 * @see #setYDim(int)
-	 * @see cleaningrobots.CleaningrobotsPackage#getWorldPart_YDim()
-	 * @model
+	 * @return the value of the '<em>Ydim</em>' attribute.
+	 * @see #setYdim(int)
+	 * @see cleaningrobots.CleaningrobotsPackage#getWorldPart_Ydim()
+	 * @model default="0"
 	 * @generated
 	 */
-	int getYDim();
+	int getYdim();
 
 	/**
-	 * Sets the value of the '{@link cleaningrobots.WorldPart#getYDim <em>YDim</em>}' attribute.
+	 * Sets the value of the '{@link cleaningrobots.WorldPart#getYdim <em>Ydim</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>YDim</em>' attribute.
-	 * @see #getYDim()
+	 * @param value the new value of the '<em>Ydim</em>' attribute.
+	 * @see #getYdim()
 	 * @generated
 	 */
-	void setYDim(int value);
+	void setYdim(int value);
 
 } // WorldPart

@@ -3,6 +3,8 @@ package de.tud.swt.cleaningrobots;
 import java.util.HashSet;
 import java.util.Set;
 
+import cleaningrobots.CleaningrobotsFactory;
+
 public class Field {
 	private int x;
 	private int y;
@@ -39,5 +41,19 @@ public class Field {
 
 	public Set<State> getStates() {
 		return this.states;
+	}
+
+	public cleaningrobots.Field exportModel() {
+		cleaningrobots.Field modelField = null;
+		
+		modelField = CleaningrobotsFactory.eINSTANCE.createField();
+		modelField.setXpos(x);
+		modelField.setXpos(y);
+		
+		for (State state : states){
+			modelField.getStates().add(state.exportModel());
+		}
+		
+		return modelField;
 	}
 }

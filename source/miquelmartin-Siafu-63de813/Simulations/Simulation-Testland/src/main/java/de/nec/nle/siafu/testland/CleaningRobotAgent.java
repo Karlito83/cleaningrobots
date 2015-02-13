@@ -9,6 +9,7 @@ import de.tud.swt.cleaningrobots.IPositionProvider;
 import de.tud.swt.cleaningrobots.Robot;
 import de.tud.swt.cleaningrobots.behaviours.CleanBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.DiscoverBehaviour;
+import de.tud.swt.cleaningrobots.behaviours.DumpModelBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
 
 public class CleaningRobotAgent extends Agent implements IPositionProvider{
@@ -20,7 +21,10 @@ public class CleaningRobotAgent extends Agent implements IPositionProvider{
 		super(start, image, world);
 		siafuWorld = world;
 		cleaningRobot = new Robot(this, new AgentNavigationAdapter(this, siafuWorld));
+		
 		cleaningRobot.addSensor(new BlockedOnlySensor(siafuWorld, this));
+		
+		cleaningRobot.addBehaviour(new DumpModelBehaviour(cleaningRobot));
 		cleaningRobot.addBehaviour(new MoveBehaviour(cleaningRobot));
 		cleaningRobot.addBehaviour(new DiscoverBehaviour(cleaningRobot));
 		this.setSpeed(1);

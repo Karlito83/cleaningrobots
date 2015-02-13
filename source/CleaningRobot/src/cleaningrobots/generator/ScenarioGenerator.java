@@ -25,7 +25,6 @@ import cleaningrobots.Robot;
 import cleaningrobots.State;
 
 public class ScenarioGenerator {
-	/*
 	public static void main(String[] args) {
 		Random r = new Random();
 		
@@ -56,7 +55,7 @@ public class ScenarioGenerator {
 			robby.setName("Robot_" + nr);
 
 			Map m = CleaningrobotsFactory.eINSTANCE.createMap();
-			robby.setMap(m);
+			robby.setWorld(m);
 
 			State s1 = CleaningrobotsFactory.eINSTANCE.createState();
 			s1.setName("Clean");
@@ -143,5 +142,4 @@ public class ScenarioGenerator {
 		return resource;
 
 	}
-	*/
 }

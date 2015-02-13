@@ -4,25 +4,14 @@ package cleaningrobots.impl;
 
 import cleaningrobots.CleaningrobotsPackage;
 import cleaningrobots.Field;
-import cleaningrobots.Map;
 import cleaningrobots.State;
-
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -34,7 +23,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link cleaningrobots.impl.FieldImpl#getXpos <em>Xpos</em>}</li>
  *   <li>{@link cleaningrobots.impl.FieldImpl#getYpos <em>Ypos</em>}</li>
  *   <li>{@link cleaningrobots.impl.FieldImpl#getStates <em>States</em>}</li>
- *   <li>{@link cleaningrobots.impl.FieldImpl#getFields <em>Fields</em>}</li>
  * </ul>
  * </p>
  *
@@ -90,16 +78,6 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 	 * @ordered
 	 */
 	protected EList<State> states;
-
-	/**
-	 * The cached value of the '{@link #getFields() <em>Fields</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getFields()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<Map> fields;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -179,32 +157,6 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Map> getFields() {
-		if (fields == null) {
-			fields = new EObjectContainmentEList<Map>(Map.class, this, CleaningrobotsPackage.FIELD__FIELDS);
-		}
-		return fields;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case CleaningrobotsPackage.FIELD__FIELDS:
-				return ((InternalEList<?>)getFields()).basicRemove(otherEnd, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -214,8 +166,6 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 				return getYpos();
 			case CleaningrobotsPackage.FIELD__STATES:
 				return getStates();
-			case CleaningrobotsPackage.FIELD__FIELDS:
-				return getFields();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -239,10 +189,6 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 				getStates().clear();
 				getStates().addAll((Collection<? extends State>)newValue);
 				return;
-			case CleaningrobotsPackage.FIELD__FIELDS:
-				getFields().clear();
-				getFields().addAll((Collection<? extends Map>)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -264,9 +210,6 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 			case CleaningrobotsPackage.FIELD__STATES:
 				getStates().clear();
 				return;
-			case CleaningrobotsPackage.FIELD__FIELDS:
-				getFields().clear();
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -285,8 +228,6 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 				return ypos != YPOS_EDEFAULT;
 			case CleaningrobotsPackage.FIELD__STATES:
 				return states != null && !states.isEmpty();
-			case CleaningrobotsPackage.FIELD__FIELDS:
-				return fields != null && !fields.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

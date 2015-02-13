@@ -55,7 +55,7 @@ public class RandomCleaningRobotGenerator {
 					world);
 
 			counter++;
-			agent.setName("Robbie_" + counter);
+			agent.setName("Robbi_" + counter);
 
 			return agent;
 		} catch (PlaceNotFoundException e) {

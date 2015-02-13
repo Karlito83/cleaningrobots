@@ -8,6 +8,9 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.emf.ecore.EObject;
+
+import cleaningrobots.CleaningrobotsFactory;
 
 public class Robot {
 
@@ -199,5 +202,20 @@ public class Robot {
 	private void setPosition(Position position) {
 		logger.debug("Set new position of " + this + " to " + position + ".");
 		this.navigationController.setPosition(position);
+	}
+	
+	public cleaningrobots.Robot exportModel(){
+		//TODO: Consider caching
+		cleaningrobots.Robot result = null;
+		
+		try {
+			cleaningrobots.Robot robot = CleaningrobotsFactory.eINSTANCE.createRobot();
+			robot.setWorld(world.exportModel());
+		} catch (Exception e) {
+			logger.error("An error occured while exporting the model", e);
+		}
+		
+		
+		return result;
 	}
 }

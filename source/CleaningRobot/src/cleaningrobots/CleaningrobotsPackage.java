@@ -159,22 +159,13 @@ public interface CleaningrobotsPackage extends EPackage {
 	int FIELD__STATES = 2;
 
 	/**
-	 * The feature id for the '<em><b>Fields</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FIELD__FIELDS = 3;
-
-	/**
 	 * The number of structural features of the '<em>Field</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FIELD_FEATURE_COUNT = 4;
+	int FIELD_FEATURE_COUNT = 3;
 
 	/**
 	 * The number of operations of the '<em>Field</em>' class.
@@ -243,7 +234,7 @@ public interface CleaningrobotsPackage extends EPackage {
 	int WORLD_PART = 3;
 
 	/**
-	 * The feature id for the '<em><b>XDim</b></em>' attribute.
+	 * The feature id for the '<em><b>Xdim</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -252,7 +243,7 @@ public interface CleaningrobotsPackage extends EPackage {
 	int WORLD_PART__XDIM = 0;
 
 	/**
-	 * The feature id for the '<em><b>YDim</b></em>' attribute.
+	 * The feature id for the '<em><b>Ydim</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -289,7 +280,7 @@ public interface CleaningrobotsPackage extends EPackage {
 	int WORLD = 4;
 
 	/**
-	 * The feature id for the '<em><b>XDim</b></em>' attribute.
+	 * The feature id for the '<em><b>Xdim</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -298,7 +289,7 @@ public interface CleaningrobotsPackage extends EPackage {
 	int WORLD__XDIM = WORLD_PART__XDIM;
 
 	/**
-	 * The feature id for the '<em><b>YDim</b></em>' attribute.
+	 * The feature id for the '<em><b>Ydim</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -334,7 +325,7 @@ public interface CleaningrobotsPackage extends EPackage {
 	int WORLD_OPERATION_COUNT = WORLD_PART_OPERATION_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>XDim</b></em>' attribute.
+	 * The feature id for the '<em><b>Xdim</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -343,7 +334,7 @@ public interface CleaningrobotsPackage extends EPackage {
 	int MAP__XDIM = WORLD_PART__XDIM;
 
 	/**
-	 * The feature id for the '<em><b>YDim</b></em>' attribute.
+	 * The feature id for the '<em><b>Ydim</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -352,13 +343,22 @@ public interface CleaningrobotsPackage extends EPackage {
 	int MAP__YDIM = WORLD_PART__YDIM;
 
 	/**
+	 * The feature id for the '<em><b>Fields</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MAP__FIELDS = WORLD_PART_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Map</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MAP_FEATURE_COUNT = WORLD_PART_FEATURE_COUNT + 0;
+	int MAP_FEATURE_COUNT = WORLD_PART_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Map</em>' class.
@@ -424,6 +424,17 @@ public interface CleaningrobotsPackage extends EPackage {
 	EClass getMap();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link cleaningrobots.Map#getFields <em>Fields</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Fields</em>'.
+	 * @see cleaningrobots.Map#getFields()
+	 * @see #getMap()
+	 * @generated
+	 */
+	EReference getMap_Fields();
+
+	/**
 	 * Returns the meta object for class '{@link cleaningrobots.Field <em>Field</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -465,17 +476,6 @@ public interface CleaningrobotsPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getField_States();
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link cleaningrobots.Field#getFields <em>Fields</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Fields</em>'.
-	 * @see cleaningrobots.Field#getFields()
-	 * @see #getField()
-	 * @generated
-	 */
-	EReference getField_Fields();
 
 	/**
 	 * Returns the meta object for class '{@link cleaningrobots.State <em>State</em>}'.
@@ -520,26 +520,26 @@ public interface CleaningrobotsPackage extends EPackage {
 	EClass getWorldPart();
 
 	/**
-	 * Returns the meta object for the attribute '{@link cleaningrobots.WorldPart#getXDim <em>XDim</em>}'.
+	 * Returns the meta object for the attribute '{@link cleaningrobots.WorldPart#getXdim <em>Xdim</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>XDim</em>'.
-	 * @see cleaningrobots.WorldPart#getXDim()
+	 * @return the meta object for the attribute '<em>Xdim</em>'.
+	 * @see cleaningrobots.WorldPart#getXdim()
 	 * @see #getWorldPart()
 	 * @generated
 	 */
-	EAttribute getWorldPart_XDim();
+	EAttribute getWorldPart_Xdim();
 
 	/**
-	 * Returns the meta object for the attribute '{@link cleaningrobots.WorldPart#getYDim <em>YDim</em>}'.
+	 * Returns the meta object for the attribute '{@link cleaningrobots.WorldPart#getYdim <em>Ydim</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>YDim</em>'.
-	 * @see cleaningrobots.WorldPart#getYDim()
+	 * @return the meta object for the attribute '<em>Ydim</em>'.
+	 * @see cleaningrobots.WorldPart#getYdim()
 	 * @see #getWorldPart()
 	 * @generated
 	 */
-	EAttribute getWorldPart_YDim();
+	EAttribute getWorldPart_Ydim();
 
 	/**
 	 * Returns the meta object for class '{@link cleaningrobots.World <em>World</em>}'.
@@ -630,6 +630,14 @@ public interface CleaningrobotsPackage extends EPackage {
 		EClass MAP = eINSTANCE.getMap();
 
 		/**
+		 * The meta object literal for the '<em><b>Fields</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference MAP__FIELDS = eINSTANCE.getMap_Fields();
+
+		/**
 		 * The meta object literal for the '{@link cleaningrobots.impl.FieldImpl <em>Field</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -662,14 +670,6 @@ public interface CleaningrobotsPackage extends EPackage {
 		 * @generated
 		 */
 		EReference FIELD__STATES = eINSTANCE.getField_States();
-
-		/**
-		 * The meta object literal for the '<em><b>Fields</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference FIELD__FIELDS = eINSTANCE.getField_Fields();
 
 		/**
 		 * The meta object literal for the '{@link cleaningrobots.impl.StateImpl <em>State</em>}' class.
@@ -708,20 +708,20 @@ public interface CleaningrobotsPackage extends EPackage {
 		EClass WORLD_PART = eINSTANCE.getWorldPart();
 
 		/**
-		 * The meta object literal for the '<em><b>XDim</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Xdim</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute WORLD_PART__XDIM = eINSTANCE.getWorldPart_XDim();
+		EAttribute WORLD_PART__XDIM = eINSTANCE.getWorldPart_Xdim();
 
 		/**
-		 * The meta object literal for the '<em><b>YDim</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Ydim</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute WORLD_PART__YDIM = eINSTANCE.getWorldPart_YDim();
+		EAttribute WORLD_PART__YDIM = eINSTANCE.getWorldPart_Ydim();
 
 		/**
 		 * The meta object literal for the '{@link cleaningrobots.impl.WorldImpl <em>World</em>}' class.

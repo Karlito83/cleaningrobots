@@ -3,6 +3,8 @@ package de.tud.swt.cleaningrobots;
 import java.util.HashMap;
 import java.util.Map;
 
+import cleaningrobots.CleaningrobotsFactory;
+
 public class State {
 	private static Map<String, State> states = new HashMap<String, State>();
 	private String name;
@@ -28,5 +30,14 @@ public class State {
 			states.put(name, result);
 		}
 		return result;
+	}
+
+	public cleaningrobots.State exportModel() {
+		cleaningrobots.State modelState = null;
+		
+		modelState = CleaningrobotsFactory.eINSTANCE.createState();
+		modelState.setName(name);				
+		
+		return modelState;
 	}
 }

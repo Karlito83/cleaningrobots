@@ -71,11 +71,11 @@
     <children xmi:type="notation:DecorationNode" xmi:id="_ddkucLNfEeS_WJghY45usw" type="5001"/>
     <children xmi:type="notation:BasicCompartment" xmi:id="_ddkucbNfEeS_WJghY45usw" type="7001">
       <children xmi:type="notation:Node" xmi:id="_ye06sLNfEeS_WJghY45usw" type="3001">
-        <element xmi:type="ecore:EAttribute" href="CleaningRobot.ecore#//WorldPart/xDim"/>
+        <element xmi:type="ecore:EAttribute" href="CleaningRobot.ecore#//WorldPart/xdim"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_ye06sbNfEeS_WJghY45usw"/>
       </children>
       <children xmi:type="notation:Node" xmi:id="_kLpTgLNgEeS_WJghY45usw" type="3001">
-        <element xmi:type="ecore:EAttribute" href="CleaningRobot.ecore#//WorldPart/yDim"/>
+        <element xmi:type="ecore:EAttribute" href="CleaningRobot.ecore#//WorldPart/ydim"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_kLpTgbNgEeS_WJghY45usw"/>
       </children>
       <styles xmi:type="notation:SortingStyle" xmi:id="_ddkucrNfEeS_WJghY45usw"/>
@@ -195,17 +195,6 @@
     <element xmi:type="ecore:EReference" href="CleaningRobot.ecore#//Robot/world"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_NnRusrNgEeS_WJghY45usw" points="[4, 30, 1, -66]$[12, 67, 9, -29]"/>
   </edges>
-  <edges xmi:type="notation:Connector" xmi:id="_S1690LNgEeS_WJghY45usw" type="4003" source="_mfD9oGWuEeSJ-ZQpDegE1w" target="_g1TfQLNfEeS_WJghY45usw">
-    <children xmi:type="notation:DecorationNode" xmi:id="_S17k4LNgEeS_WJghY45usw" type="6002">
-      <layoutConstraint xmi:type="notation:Location" xmi:id="_S17k4bNgEeS_WJghY45usw" y="40"/>
-    </children>
-    <children xmi:type="notation:DecorationNode" xmi:id="_S17k4rNgEeS_WJghY45usw" type="6004">
-      <layoutConstraint xmi:type="notation:Location" xmi:id="_S17k47NgEeS_WJghY45usw" y="60"/>
-    </children>
-    <styles xmi:type="notation:FontStyle" xmi:id="_S1690bNgEeS_WJghY45usw" fontName="Ubuntu"/>
-    <element xmi:type="ecore:EReference" href="CleaningRobot.ecore#//Field/fields"/>
-    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_S1690rNgEeS_WJghY45usw" points="[-17, -37, 77, 118]$[-47, -181, 47, -26]"/>
-  </edges>
   <edges xmi:type="notation:Connector" xmi:id="_0LYGoLNgEeS_WJghY45usw" type="4002" source="_f3lSwLNfEeS_WJghY45usw" target="_ddkHYLNfEeS_WJghY45usw">
     <children xmi:type="notation:DecorationNode" xmi:id="_0LYGo7NgEeS_WJghY45usw" type="6001">
       <layoutConstraint xmi:type="notation:Location" xmi:id="_0LYGpLNgEeS_WJghY45usw" y="40"/>
@@ -217,5 +206,18 @@
     <element xmi:type="ecore:EReference" href="CleaningRobot.ecore#//World/children"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_0LYGorNgEeS_WJghY45usw" points="[43, 0, 110, 136]$[54, 0, 121, 136]$[54, -136, 121, 0]$[-36, -136, 31, 0]"/>
     <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_0LcYELNgEeS_WJghY45usw" id="(0.753968253968254,0.4533333333333333)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_t3zucLNuEeSXNMK6RIq0_g" type="4003" source="_g1TfQLNfEeS_WJghY45usw" target="_mfD9oGWuEeSJ-ZQpDegE1w">
+    <children xmi:type="notation:DecorationNode" xmi:id="_t30VgLNuEeSXNMK6RIq0_g" type="6002">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_t30VgbNuEeSXNMK6RIq0_g" y="40"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_t30VgrNuEeSXNMK6RIq0_g" type="6004">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_t30Vg7NuEeSXNMK6RIq0_g" y="60"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_t3zucbNuEeSXNMK6RIq0_g" fontName="Ubuntu"/>
+    <element xmi:type="ecore:EReference" href="CleaningRobot.ecore#//Map/fields"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_t3zucrNuEeSXNMK6RIq0_g" points="[8, 10, 0, -98]$[8, 90, 0, -18]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_t351ELNuEeSXNMK6RIq0_g" id="(0.3979591836734694,0.8076923076923077)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_t351EbNuEeSXNMK6RIq0_g" id="(0.5,0.24)"/>
   </edges>
 </notation:Diagram>

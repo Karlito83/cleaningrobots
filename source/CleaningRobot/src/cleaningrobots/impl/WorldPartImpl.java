@@ -19,8 +19,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link cleaningrobots.impl.WorldPartImpl#getXDim <em>XDim</em>}</li>
- *   <li>{@link cleaningrobots.impl.WorldPartImpl#getYDim <em>YDim</em>}</li>
+ *   <li>{@link cleaningrobots.impl.WorldPartImpl#getXdim <em>Xdim</em>}</li>
+ *   <li>{@link cleaningrobots.impl.WorldPartImpl#getYdim <em>Ydim</em>}</li>
  * </ul>
  * </p>
  *
@@ -28,44 +28,44 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  */
 public class WorldPartImpl extends MinimalEObjectImpl.Container implements WorldPart {
 	/**
-	 * The default value of the '{@link #getXDim() <em>XDim</em>}' attribute.
+	 * The default value of the '{@link #getXdim() <em>Xdim</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getXDim()
+	 * @see #getXdim()
 	 * @generated
 	 * @ordered
 	 */
 	protected static final int XDIM_EDEFAULT = 0;
 
 	/**
-	 * The cached value of the '{@link #getXDim() <em>XDim</em>}' attribute.
+	 * The cached value of the '{@link #getXdim() <em>Xdim</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getXDim()
+	 * @see #getXdim()
 	 * @generated
 	 * @ordered
 	 */
-	protected int xDim = XDIM_EDEFAULT;
+	protected int xdim = XDIM_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getYDim() <em>YDim</em>}' attribute.
+	 * The default value of the '{@link #getYdim() <em>Ydim</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getYDim()
+	 * @see #getYdim()
 	 * @generated
 	 * @ordered
 	 */
 	protected static final int YDIM_EDEFAULT = 0;
 
 	/**
-	 * The cached value of the '{@link #getYDim() <em>YDim</em>}' attribute.
+	 * The cached value of the '{@link #getYdim() <em>Ydim</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getYDim()
+	 * @see #getYdim()
 	 * @generated
 	 * @ordered
 	 */
-	protected int yDim = YDIM_EDEFAULT;
+	protected int ydim = YDIM_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -91,8 +91,8 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public int getXDim() {
-		return xDim;
+	public int getXdim() {
+		return xdim;
 	}
 
 	/**
@@ -100,11 +100,11 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setXDim(int newXDim) {
-		int oldXDim = xDim;
-		xDim = newXDim;
+	public void setXdim(int newXdim) {
+		int oldXdim = xdim;
+		xdim = newXdim;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.WORLD_PART__XDIM, oldXDim, xDim));
+			eNotify(new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.WORLD_PART__XDIM, oldXdim, xdim));
 	}
 
 	/**
@@ -112,8 +112,8 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public int getYDim() {
-		return yDim;
+	public int getYdim() {
+		return ydim;
 	}
 
 	/**
@@ -121,11 +121,11 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setYDim(int newYDim) {
-		int oldYDim = yDim;
-		yDim = newYDim;
+	public void setYdim(int newYdim) {
+		int oldYdim = ydim;
+		ydim = newYdim;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.WORLD_PART__YDIM, oldYDim, yDim));
+			eNotify(new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.WORLD_PART__YDIM, oldYdim, ydim));
 	}
 
 	/**
@@ -137,9 +137,9 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case CleaningrobotsPackage.WORLD_PART__XDIM:
-				return getXDim();
+				return getXdim();
 			case CleaningrobotsPackage.WORLD_PART__YDIM:
-				return getYDim();
+				return getYdim();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -153,10 +153,10 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case CleaningrobotsPackage.WORLD_PART__XDIM:
-				setXDim((Integer)newValue);
+				setXdim((Integer)newValue);
 				return;
 			case CleaningrobotsPackage.WORLD_PART__YDIM:
-				setYDim((Integer)newValue);
+				setYdim((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -171,10 +171,10 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case CleaningrobotsPackage.WORLD_PART__XDIM:
-				setXDim(XDIM_EDEFAULT);
+				setXdim(XDIM_EDEFAULT);
 				return;
 			case CleaningrobotsPackage.WORLD_PART__YDIM:
-				setYDim(YDIM_EDEFAULT);
+				setYdim(YDIM_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -189,9 +189,9 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case CleaningrobotsPackage.WORLD_PART__XDIM:
-				return xDim != XDIM_EDEFAULT;
+				return xdim != XDIM_EDEFAULT;
 			case CleaningrobotsPackage.WORLD_PART__YDIM:
-				return yDim != YDIM_EDEFAULT;
+				return ydim != YDIM_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -206,10 +206,10 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (xDim: ");
-		result.append(xDim);
-		result.append(", yDim: ");
-		result.append(yDim);
+		result.append(" (xdim: ");
+		result.append(xdim);
+		result.append(", ydim: ");
+		result.append(ydim);
 		result.append(')');
 		return result.toString();
 	}
