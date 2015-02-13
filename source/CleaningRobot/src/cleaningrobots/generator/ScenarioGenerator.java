@@ -25,6 +25,7 @@ import cleaningrobots.Robot;
 import cleaningrobots.State;
 
 public class ScenarioGenerator {
+	/*
 	public static void main(String[] args) {
 		Random r = new Random();
 		
@@ -142,4 +143,5 @@ public class ScenarioGenerator {
 		return resource;
 
 	}
+	*/
 }

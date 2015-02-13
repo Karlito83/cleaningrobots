@@ -15,8 +15,8 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link cleaningrobots.Robot#getName <em>Name</em>}</li>
- *   <li>{@link cleaningrobots.Robot#getMap <em>Map</em>}</li>
  *   <li>{@link cleaningrobots.Robot#getKnownStates <em>Known States</em>}</li>
+ *   <li>{@link cleaningrobots.Robot#getWorld <em>World</em>}</li>
  * </ul>
  * </p>
  *
@@ -52,32 +52,6 @@ public interface Robot extends EObject {
 	void setName(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Map</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Map</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Map</em>' containment reference.
-	 * @see #setMap(Map)
-	 * @see cleaningrobots.CleaningrobotsPackage#getRobot_Map()
-	 * @model containment="true" required="true"
-	 * @generated
-	 */
-	Map getMap();
-
-	/**
-	 * Sets the value of the '{@link cleaningrobots.Robot#getMap <em>Map</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Map</em>' containment reference.
-	 * @see #getMap()
-	 * @generated
-	 */
-	void setMap(Map value);
-
-	/**
 	 * Returns the value of the '<em><b>Known States</b></em>' containment reference list.
 	 * The list contents are of type {@link cleaningrobots.State}.
 	 * <!-- begin-user-doc -->
@@ -92,5 +66,31 @@ public interface Robot extends EObject {
 	 * @generated
 	 */
 	EList<State> getKnownStates();
+
+	/**
+	 * Returns the value of the '<em><b>World</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>World</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>World</em>' reference.
+	 * @see #setWorld(WorldPart)
+	 * @see cleaningrobots.CleaningrobotsPackage#getRobot_World()
+	 * @model required="true"
+	 * @generated
+	 */
+	WorldPart getWorld();
+
+	/**
+	 * Sets the value of the '{@link cleaningrobots.Robot#getWorld <em>World</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>World</em>' reference.
+	 * @see #getWorld()
+	 * @generated
+	 */
+	void setWorld(WorldPart value);
 
 } // Robot

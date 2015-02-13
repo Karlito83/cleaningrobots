@@ -57,9 +57,11 @@ public class CleaningrobotsFactoryImpl extends EFactoryImpl implements Cleaningr
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case CleaningrobotsPackage.ROBOT: return createRobot();
-			case CleaningrobotsPackage.MAP: return createMap();
 			case CleaningrobotsPackage.FIELD: return createField();
 			case CleaningrobotsPackage.STATE: return createState();
+			case CleaningrobotsPackage.WORLD_PART: return createWorldPart();
+			case CleaningrobotsPackage.WORLD: return createWorld();
+			case CleaningrobotsPackage.MAP: return createMap();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -103,6 +105,26 @@ public class CleaningrobotsFactoryImpl extends EFactoryImpl implements Cleaningr
 	public State createState() {
 		StateImpl state = new StateImpl();
 		return state;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public WorldPart createWorldPart() {
+		WorldPartImpl worldPart = new WorldPartImpl();
+		return worldPart;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public World createWorld() {
+		WorldImpl world = new WorldImpl();
+		return world;
 	}
 
 	/**

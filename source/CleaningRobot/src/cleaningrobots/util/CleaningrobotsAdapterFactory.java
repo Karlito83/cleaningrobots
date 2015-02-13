@@ -72,16 +72,24 @@ public class CleaningrobotsAdapterFactory extends AdapterFactoryImpl {
 				return createRobotAdapter();
 			}
 			@Override
-			public Adapter caseMap(Map object) {
-				return createMapAdapter();
-			}
-			@Override
 			public Adapter caseField(Field object) {
 				return createFieldAdapter();
 			}
 			@Override
 			public Adapter caseState(State object) {
 				return createStateAdapter();
+			}
+			@Override
+			public Adapter caseWorldPart(WorldPart object) {
+				return createWorldPartAdapter();
+			}
+			@Override
+			public Adapter caseWorld(World object) {
+				return createWorldAdapter();
+			}
+			@Override
+			public Adapter caseMap(Map object) {
+				return createMapAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -156,6 +164,34 @@ public class CleaningrobotsAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createStateAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link cleaningrobots.WorldPart <em>World Part</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see cleaningrobots.WorldPart
+	 * @generated
+	 */
+	public Adapter createWorldPartAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link cleaningrobots.World <em>World</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see cleaningrobots.World
+	 * @generated
+	 */
+	public Adapter createWorldAdapter() {
 		return null;
 	}
 

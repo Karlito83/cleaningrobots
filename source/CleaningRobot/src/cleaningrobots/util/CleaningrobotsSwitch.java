@@ -72,12 +72,6 @@ public class CleaningrobotsSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case CleaningrobotsPackage.MAP: {
-				Map map = (Map)theEObject;
-				T result = caseMap(map);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case CleaningrobotsPackage.FIELD: {
 				Field field = (Field)theEObject;
 				T result = caseField(field);
@@ -87,6 +81,26 @@ public class CleaningrobotsSwitch<T> extends Switch<T> {
 			case CleaningrobotsPackage.STATE: {
 				State state = (State)theEObject;
 				T result = caseState(state);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CleaningrobotsPackage.WORLD_PART: {
+				WorldPart worldPart = (WorldPart)theEObject;
+				T result = caseWorldPart(worldPart);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CleaningrobotsPackage.WORLD: {
+				World world = (World)theEObject;
+				T result = caseWorld(world);
+				if (result == null) result = caseWorldPart(world);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CleaningrobotsPackage.MAP: {
+				Map map = (Map)theEObject;
+				T result = caseMap(map);
+				if (result == null) result = caseWorldPart(map);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -151,6 +165,36 @@ public class CleaningrobotsSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseState(State object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>World Part</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>World Part</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseWorldPart(WorldPart object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>World</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>World</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseWorld(World object) {
 		return null;
 	}
 

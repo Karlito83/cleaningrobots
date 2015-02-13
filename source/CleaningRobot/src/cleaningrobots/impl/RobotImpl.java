@@ -3,23 +3,17 @@
 package cleaningrobots.impl;
 
 import cleaningrobots.CleaningrobotsPackage;
-import cleaningrobots.Map;
 import cleaningrobots.Robot;
 import cleaningrobots.State;
-
+import cleaningrobots.WorldPart;
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -31,8 +25,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * <ul>
  *   <li>{@link cleaningrobots.impl.RobotImpl#getName <em>Name</em>}</li>
- *   <li>{@link cleaningrobots.impl.RobotImpl#getMap <em>Map</em>}</li>
  *   <li>{@link cleaningrobots.impl.RobotImpl#getKnownStates <em>Known States</em>}</li>
+ *   <li>{@link cleaningrobots.impl.RobotImpl#getWorld <em>World</em>}</li>
  * </ul>
  * </p>
  *
@@ -60,16 +54,6 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getMap() <em>Map</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMap()
-	 * @generated
-	 * @ordered
-	 */
-	protected Map map;
-
-	/**
 	 * The cached value of the '{@link #getKnownStates() <em>Known States</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -78,6 +62,16 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	 * @ordered
 	 */
 	protected EList<State> knownStates;
+
+	/**
+	 * The cached value of the '{@link #getWorld() <em>World</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getWorld()
+	 * @generated
+	 * @ordered
+	 */
+	protected WorldPart world;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -124,49 +118,6 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Map getMap() {
-		return map;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetMap(Map newMap, NotificationChain msgs) {
-		Map oldMap = map;
-		map = newMap;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.ROBOT__MAP, oldMap, newMap);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setMap(Map newMap) {
-		if (newMap != map) {
-			NotificationChain msgs = null;
-			if (map != null)
-				msgs = ((InternalEObject)map).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - CleaningrobotsPackage.ROBOT__MAP, null, msgs);
-			if (newMap != null)
-				msgs = ((InternalEObject)newMap).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - CleaningrobotsPackage.ROBOT__MAP, null, msgs);
-			msgs = basicSetMap(newMap, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.ROBOT__MAP, newMap, newMap));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EList<State> getKnownStates() {
 		if (knownStates == null) {
 			knownStates = new EObjectContainmentEList<State>(State.class, this, CleaningrobotsPackage.ROBOT__KNOWN_STATES);
@@ -179,11 +130,47 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public WorldPart getWorld() {
+		if (world != null && world.eIsProxy()) {
+			InternalEObject oldWorld = (InternalEObject)world;
+			world = (WorldPart)eResolveProxy(oldWorld);
+			if (world != oldWorld) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CleaningrobotsPackage.ROBOT__WORLD, oldWorld, world));
+			}
+		}
+		return world;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public WorldPart basicGetWorld() {
+		return world;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setWorld(WorldPart newWorld) {
+		WorldPart oldWorld = world;
+		world = newWorld;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.ROBOT__WORLD, oldWorld, world));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case CleaningrobotsPackage.ROBOT__MAP:
-				return basicSetMap(null, msgs);
 			case CleaningrobotsPackage.ROBOT__KNOWN_STATES:
 				return ((InternalEList<?>)getKnownStates()).basicRemove(otherEnd, msgs);
 		}
@@ -200,10 +187,11 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 		switch (featureID) {
 			case CleaningrobotsPackage.ROBOT__NAME:
 				return getName();
-			case CleaningrobotsPackage.ROBOT__MAP:
-				return getMap();
 			case CleaningrobotsPackage.ROBOT__KNOWN_STATES:
 				return getKnownStates();
+			case CleaningrobotsPackage.ROBOT__WORLD:
+				if (resolve) return getWorld();
+				return basicGetWorld();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -220,12 +208,12 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 			case CleaningrobotsPackage.ROBOT__NAME:
 				setName((String)newValue);
 				return;
-			case CleaningrobotsPackage.ROBOT__MAP:
-				setMap((Map)newValue);
-				return;
 			case CleaningrobotsPackage.ROBOT__KNOWN_STATES:
 				getKnownStates().clear();
 				getKnownStates().addAll((Collection<? extends State>)newValue);
+				return;
+			case CleaningrobotsPackage.ROBOT__WORLD:
+				setWorld((WorldPart)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -242,11 +230,11 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 			case CleaningrobotsPackage.ROBOT__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case CleaningrobotsPackage.ROBOT__MAP:
-				setMap((Map)null);
-				return;
 			case CleaningrobotsPackage.ROBOT__KNOWN_STATES:
 				getKnownStates().clear();
+				return;
+			case CleaningrobotsPackage.ROBOT__WORLD:
+				setWorld((WorldPart)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -262,10 +250,10 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 		switch (featureID) {
 			case CleaningrobotsPackage.ROBOT__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case CleaningrobotsPackage.ROBOT__MAP:
-				return map != null;
 			case CleaningrobotsPackage.ROBOT__KNOWN_STATES:
 				return knownStates != null && !knownStates.isEmpty();
+			case CleaningrobotsPackage.ROBOT__WORLD:
+				return world != null;
 		}
 		return super.eIsSet(featureID);
 	}
