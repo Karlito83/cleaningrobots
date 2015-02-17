@@ -211,6 +211,11 @@ public class Robot {
 		try {
 			cleaningrobots.Robot robot = CleaningrobotsFactory.eINSTANCE.createRobot();
 			robot.setWorld(world.exportModel());
+			robot.setName(getName());
+			for (State state : getSupportedStates()){
+				robot.getKnownStates().add(state.exportModel());
+			}
+			result = robot;
 		} catch (Exception e) {
 			logger.error("An error occured while exporting the model", e);
 		}

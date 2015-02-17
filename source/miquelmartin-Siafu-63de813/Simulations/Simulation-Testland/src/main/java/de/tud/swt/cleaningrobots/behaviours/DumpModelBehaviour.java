@@ -22,7 +22,7 @@ import de.tud.swt.cleaningrobots.Robot;
 public class DumpModelBehaviour extends Behaviour {
 
 	private static final int CONST_FILENAME_NUMBERPREFIX = 1000000000;
-	private static final int CONST_DUMP_INTERVAL = 1000;
+	private static final int CONST_DUMP_INTERVAL = 100;
 	private static final String CONST_PATH_DUMP_XML = "dump/xml";
 	private static final String CONST_PATH_DUMP_PNG = "dump/png";
 
@@ -37,8 +37,7 @@ public class DumpModelBehaviour extends Behaviour {
 	@Override
 	public boolean action() throws Exception {
 
-		logger.trace("Enter DumpModelBehaviour.action()");
-		
+		logger.trace("Enter DumpModelBehaviour.action() " + (counter % CONST_DUMP_INTERVAL + 1)  + "/" + CONST_DUMP_INTERVAL);
 		counter++;
 		if (counter % CONST_DUMP_INTERVAL == 0 && counter > 0) {
 			EObject model = getRobot().exportModel();
@@ -63,23 +62,25 @@ public class DumpModelBehaviour extends Behaviour {
 	}
 
 	private void exportXML(EObject model) {
-		if (createDirectory(CONST_PATH_DUMP_PNG)){
-			String fileName = generateFilename("png"); 
+		if (createDirectory(CONST_PATH_DUMP_XML)){
+			String fileName = generateFilename("xml"); 
 			
-			ResourceSet rs = new ResourceSetImpl();
-			Resource res = createAndAddResource("output/" + fileName, "cleaningrobots", rs);
-			res.getContents().add(model);
-			java.util.Map<Object,Object> saveOptions = ((XMLResource)res).getDefaultSaveOptions();
-		     saveOptions.put(XMLResource.OPTION_CONFIGURATION_CACHE, Boolean.TRUE);
-		     saveOptions.put(XMLResource.OPTION_USE_CACHED_LOOKUP_TABLE, new ArrayList<>());
-		     try {
-		        res.save(saveOptions);
-		     } catch (IOException e) {
-		        throw new RuntimeException(e);
-		     }
-			
-			
-			logger.info("created xml " + fileName);
+			try{
+				ResourceSet rs = new ResourceSetImpl();
+				Resource res = createAndAddResource(CONST_PATH_DUMP_XML + "/" + fileName, "xml", rs);
+				res.getContents().add(model);
+				java.util.Map<Object,Object> saveOptions = ((XMLResource)res).getDefaultSaveOptions();
+			     saveOptions.put(XMLResource.OPTION_CONFIGURATION_CACHE, Boolean.TRUE);
+			     saveOptions.put(XMLResource.OPTION_USE_CACHED_LOOKUP_TABLE, new ArrayList<>());
+			     try {
+			        res.save(saveOptions);
+			     } catch (IOException e) {
+			        throw new RuntimeException(e);
+			     }
+			     logger.info("created xml " + fileName);
+			} catch (Exception ex) {
+				logger.error("Something went wrong while exporting to XML", ex);
+			}
 		}
 	}
 	
@@ -106,6 +107,7 @@ public class DumpModelBehaviour extends Behaviour {
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap()
 				.put(ext, new XMLResourceFactoryImpl());
 		URI uri = URI.createFileURI(outputFile);
+		logger.debug(uri);
 		Resource resource = rs.createResource(uri);
 		((ResourceImpl) resource).setIntrinsicIDToEObjectMap(new HashMap());
 		return resource;
@@ -120,13 +122,14 @@ public class DumpModelBehaviour extends Behaviour {
 			logger.info("creating directory: " + path);
 
 			try {
-				dir.mkdir();
-				result = true;
+				result = dir.mkdirs();
 			} catch (Exception e) {
 				logger.error(e);
 			}
 			if (result) {
 				logger.info("created directory " + dir.getAbsolutePath());
+			} else {
+				logger.error("error while creating directory " + dir.getAbsolutePath());
 			}
 		} else {
 			result = true;
@@ -134,3 +137,4 @@ public class DumpModelBehaviour extends Behaviour {
 		return result;
 	}
 }
+
