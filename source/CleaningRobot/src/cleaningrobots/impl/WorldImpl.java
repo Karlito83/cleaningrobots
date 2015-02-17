@@ -5,14 +5,13 @@ package cleaningrobots.impl;
 import cleaningrobots.CleaningrobotsPackage;
 import cleaningrobots.World;
 import cleaningrobots.WorldPart;
-
 import java.util.Collection;
-
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,7 +28,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  */
 public class WorldImpl extends WorldPartImpl implements World {
 	/**
-	 * The cached value of the '{@link #getChildren() <em>Children</em>}' reference list.
+	 * The cached value of the '{@link #getChildren() <em>Children</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getChildren()
@@ -64,9 +63,23 @@ public class WorldImpl extends WorldPartImpl implements World {
 	 */
 	public EList<WorldPart> getChildren() {
 		if (children == null) {
-			children = new EObjectResolvingEList<WorldPart>(WorldPart.class, this, CleaningrobotsPackage.WORLD__CHILDREN);
+			children = new EObjectContainmentEList<WorldPart>(WorldPart.class, this, CleaningrobotsPackage.WORLD__CHILDREN);
 		}
 		return children;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case CleaningrobotsPackage.WORLD__CHILDREN:
+				return ((InternalEList<?>)getChildren()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**

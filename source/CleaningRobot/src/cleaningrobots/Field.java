@@ -78,7 +78,7 @@ public interface Field extends EObject {
 	void setYpos(int value);
 
 	/**
-	 * Returns the value of the '<em><b>States</b></em>' reference list.
+	 * Returns the value of the '<em><b>States</b></em>' containment reference list.
 	 * The list contents are of type {@link cleaningrobots.State}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -86,9 +86,9 @@ public interface Field extends EObject {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>States</em>' reference list.
+	 * @return the value of the '<em>States</em>' containment reference list.
 	 * @see cleaningrobots.CleaningrobotsPackage#getField_States()
-	 * @model required="true"
+	 * @model containment="true" required="true"
 	 * @generated
 	 */
 	EList<State> getStates();

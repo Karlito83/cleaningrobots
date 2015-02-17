@@ -68,26 +68,26 @@ public interface Robot extends EObject {
 	EList<State> getKnownStates();
 
 	/**
-	 * Returns the value of the '<em><b>World</b></em>' reference.
+	 * Returns the value of the '<em><b>World</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>World</em>' reference isn't clear,
+	 * If the meaning of the '<em>World</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>World</em>' reference.
+	 * @return the value of the '<em>World</em>' containment reference.
 	 * @see #setWorld(WorldPart)
 	 * @see cleaningrobots.CleaningrobotsPackage#getRobot_World()
-	 * @model required="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	WorldPart getWorld();
 
 	/**
-	 * Sets the value of the '{@link cleaningrobots.Robot#getWorld <em>World</em>}' reference.
+	 * Sets the value of the '{@link cleaningrobots.Robot#getWorld <em>World</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>World</em>' reference.
+	 * @param value the new value of the '<em>World</em>' containment reference.
 	 * @see #getWorld()
 	 * @generated
 	 */

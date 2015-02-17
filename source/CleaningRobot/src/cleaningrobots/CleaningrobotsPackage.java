@@ -85,7 +85,7 @@ public interface CleaningrobotsPackage extends EPackage {
 	int ROBOT__KNOWN_STATES = 1;
 
 	/**
-	 * The feature id for the '<em><b>World</b></em>' reference.
+	 * The feature id for the '<em><b>World</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -150,7 +150,7 @@ public interface CleaningrobotsPackage extends EPackage {
 	int FIELD__YPOS = 1;
 
 	/**
-	 * The feature id for the '<em><b>States</b></em>' reference list.
+	 * The feature id for the '<em><b>States</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -298,7 +298,7 @@ public interface CleaningrobotsPackage extends EPackage {
 	int WORLD__YDIM = WORLD_PART__YDIM;
 
 	/**
-	 * The feature id for the '<em><b>Children</b></em>' reference list.
+	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -403,10 +403,10 @@ public interface CleaningrobotsPackage extends EPackage {
 	EReference getRobot_KnownStates();
 
 	/**
-	 * Returns the meta object for the reference '{@link cleaningrobots.Robot#getWorld <em>World</em>}'.
+	 * Returns the meta object for the containment reference '{@link cleaningrobots.Robot#getWorld <em>World</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>World</em>'.
+	 * @return the meta object for the containment reference '<em>World</em>'.
 	 * @see cleaningrobots.Robot#getWorld()
 	 * @see #getRobot()
 	 * @generated
@@ -467,10 +467,10 @@ public interface CleaningrobotsPackage extends EPackage {
 	EAttribute getField_Ypos();
 
 	/**
-	 * Returns the meta object for the reference list '{@link cleaningrobots.Field#getStates <em>States</em>}'.
+	 * Returns the meta object for the containment reference list '{@link cleaningrobots.Field#getStates <em>States</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>States</em>'.
+	 * @return the meta object for the containment reference list '<em>States</em>'.
 	 * @see cleaningrobots.Field#getStates()
 	 * @see #getField()
 	 * @generated
@@ -552,10 +552,10 @@ public interface CleaningrobotsPackage extends EPackage {
 	EClass getWorld();
 
 	/**
-	 * Returns the meta object for the reference list '{@link cleaningrobots.World#getChildren <em>Children</em>}'.
+	 * Returns the meta object for the containment reference list '{@link cleaningrobots.World#getChildren <em>Children</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Children</em>'.
+	 * @return the meta object for the containment reference list '<em>Children</em>'.
 	 * @see cleaningrobots.World#getChildren()
 	 * @see #getWorld()
 	 * @generated
@@ -612,7 +612,7 @@ public interface CleaningrobotsPackage extends EPackage {
 		EReference ROBOT__KNOWN_STATES = eINSTANCE.getRobot_KnownStates();
 
 		/**
-		 * The meta object literal for the '<em><b>World</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>World</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -664,7 +664,7 @@ public interface CleaningrobotsPackage extends EPackage {
 		EAttribute FIELD__YPOS = eINSTANCE.getField_Ypos();
 
 		/**
-		 * The meta object literal for the '<em><b>States</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>States</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -734,7 +734,7 @@ public interface CleaningrobotsPackage extends EPackage {
 		EClass WORLD = eINSTANCE.getWorld();
 
 		/**
-		 * The meta object literal for the '<em><b>Children</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Children</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

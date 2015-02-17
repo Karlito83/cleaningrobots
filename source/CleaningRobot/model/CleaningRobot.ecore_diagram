@@ -184,17 +184,6 @@
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_n2seYrNfEeS_WJghY45usw" points="[0, -26, -72, 87]$[0, -62, -72, 51]$[72, -62, 0, 51]$[72, -99, 0, 14]"/>
     <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_n2uTkLNfEeS_WJghY45usw" id="(0.3888888888888889,0.7692307692307693)"/>
   </edges>
-  <edges xmi:type="notation:Connector" xmi:id="_NnRusLNgEeS_WJghY45usw" type="4002" source="_UoTXcGWuEeSJ-ZQpDegE1w" target="_ddkHYLNfEeS_WJghY45usw">
-    <children xmi:type="notation:DecorationNode" xmi:id="_NnRus7NgEeS_WJghY45usw" type="6001">
-      <layoutConstraint xmi:type="notation:Location" xmi:id="_NnSVwLNgEeS_WJghY45usw" y="40"/>
-    </children>
-    <children xmi:type="notation:DecorationNode" xmi:id="_NnSVwbNgEeS_WJghY45usw" type="6003">
-      <layoutConstraint xmi:type="notation:Location" xmi:id="_NnSVwrNgEeS_WJghY45usw" y="60"/>
-    </children>
-    <styles xmi:type="notation:FontStyle" xmi:id="_NnRusbNgEeS_WJghY45usw" fontName="Ubuntu"/>
-    <element xmi:type="ecore:EReference" href="CleaningRobot.ecore#//Robot/world"/>
-    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_NnRusrNgEeS_WJghY45usw" points="[4, 30, 1, -66]$[12, 67, 9, -29]"/>
-  </edges>
   <edges xmi:type="notation:Connector" xmi:id="_0LYGoLNgEeS_WJghY45usw" type="4002" source="_f3lSwLNfEeS_WJghY45usw" target="_ddkHYLNfEeS_WJghY45usw">
     <children xmi:type="notation:DecorationNode" xmi:id="_0LYGo7NgEeS_WJghY45usw" type="6001">
       <layoutConstraint xmi:type="notation:Location" xmi:id="_0LYGpLNgEeS_WJghY45usw" y="40"/>
@@ -219,5 +208,16 @@
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_t3zucrNuEeSXNMK6RIq0_g" points="[8, 10, 0, -98]$[8, 90, 0, -18]"/>
     <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_t351ELNuEeSXNMK6RIq0_g" id="(0.3979591836734694,0.8076923076923077)"/>
     <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_t351EbNuEeSXNMK6RIq0_g" id="(0.5,0.24)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_p0nxULaZEeSAF5nh5PAfIw" type="4002" source="_UoTXcGWuEeSJ-ZQpDegE1w" target="_ddkHYLNfEeS_WJghY45usw">
+    <children xmi:type="notation:DecorationNode" xmi:id="_p0oYYraZEeSAF5nh5PAfIw" type="6001">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_p0oYY7aZEeSAF5nh5PAfIw" y="40"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_p0oYZLaZEeSAF5nh5PAfIw" type="6003">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_p0oYZbaZEeSAF5nh5PAfIw" y="60"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_p0oYYLaZEeSAF5nh5PAfIw" fontName="Ubuntu"/>
+    <element xmi:type="ecore:EReference" href="CleaningRobot.ecore#//Robot/world"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_p0oYYbaZEeSAF5nh5PAfIw" points="[4, 30, -11, -74]$[14, 67, -1, -37]"/>
   </edges>
 </notation:Diagram>

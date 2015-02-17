@@ -1,13 +1,10 @@
 package de.nec.nle.siafu.testland;
 
 import de.nec.nle.siafu.model.Agent;
-import de.nec.nle.siafu.model.Place;
 import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
-import de.tud.swt.cleaningrobots.INavigationController;
 import de.tud.swt.cleaningrobots.IPositionProvider;
 import de.tud.swt.cleaningrobots.Robot;
-import de.tud.swt.cleaningrobots.behaviours.CleanBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.DiscoverBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.DumpModelBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
@@ -47,6 +44,7 @@ public class CleaningRobotAgent extends Agent implements IPositionProvider{
 		this.cleaningRobot.setName(name);
 	}
 
+	@Override
 	public de.tud.swt.cleaningrobots.Position getPosition() {
 		de.tud.swt.cleaningrobots.Position result = new de.tud.swt.cleaningrobots.Position(
 				this.getPos().getCol(), this.getPos().getRow());

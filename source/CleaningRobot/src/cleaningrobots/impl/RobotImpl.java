@@ -64,7 +64,7 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	protected EList<State> knownStates;
 
 	/**
-	 * The cached value of the '{@link #getWorld() <em>World</em>}' reference.
+	 * The cached value of the '{@link #getWorld() <em>World</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getWorld()
@@ -131,14 +131,6 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	 * @generated
 	 */
 	public WorldPart getWorld() {
-		if (world != null && world.eIsProxy()) {
-			InternalEObject oldWorld = (InternalEObject)world;
-			world = (WorldPart)eResolveProxy(oldWorld);
-			if (world != oldWorld) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CleaningrobotsPackage.ROBOT__WORLD, oldWorld, world));
-			}
-		}
 		return world;
 	}
 
@@ -147,8 +139,14 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public WorldPart basicGetWorld() {
-		return world;
+	public NotificationChain basicSetWorld(WorldPart newWorld, NotificationChain msgs) {
+		WorldPart oldWorld = world;
+		world = newWorld;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.ROBOT__WORLD, oldWorld, newWorld);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
 	}
 
 	/**
@@ -157,10 +155,17 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	 * @generated
 	 */
 	public void setWorld(WorldPart newWorld) {
-		WorldPart oldWorld = world;
-		world = newWorld;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.ROBOT__WORLD, oldWorld, world));
+		if (newWorld != world) {
+			NotificationChain msgs = null;
+			if (world != null)
+				msgs = ((InternalEObject)world).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - CleaningrobotsPackage.ROBOT__WORLD, null, msgs);
+			if (newWorld != null)
+				msgs = ((InternalEObject)newWorld).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - CleaningrobotsPackage.ROBOT__WORLD, null, msgs);
+			msgs = basicSetWorld(newWorld, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.ROBOT__WORLD, newWorld, newWorld));
 	}
 
 	/**
@@ -173,6 +178,8 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 		switch (featureID) {
 			case CleaningrobotsPackage.ROBOT__KNOWN_STATES:
 				return ((InternalEList<?>)getKnownStates()).basicRemove(otherEnd, msgs);
+			case CleaningrobotsPackage.ROBOT__WORLD:
+				return basicSetWorld(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -190,8 +197,7 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 			case CleaningrobotsPackage.ROBOT__KNOWN_STATES:
 				return getKnownStates();
 			case CleaningrobotsPackage.ROBOT__WORLD:
-				if (resolve) return getWorld();
-				return basicGetWorld();
+				return getWorld();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}

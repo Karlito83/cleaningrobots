@@ -22,7 +22,7 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface World extends WorldPart {
 	/**
-	 * Returns the value of the '<em><b>Children</b></em>' reference list.
+	 * Returns the value of the '<em><b>Children</b></em>' containment reference list.
 	 * The list contents are of type {@link cleaningrobots.WorldPart}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -30,9 +30,9 @@ public interface World extends WorldPart {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Children</em>' reference list.
+	 * @return the value of the '<em>Children</em>' containment reference list.
 	 * @see cleaningrobots.CleaningrobotsPackage#getWorld_Children()
-	 * @model
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<WorldPart> getChildren();

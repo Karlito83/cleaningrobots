@@ -173,6 +173,7 @@ public class World {
 		for (Field field : map.values()){
 			modelMap.getFields().add(field.exportModel());
 		}
+		modelWorld.getChildren().add(modelMap);
 		
 		return modelWorld;
 	}
