@@ -52,7 +52,7 @@ public class ContextModel extends BaseContextModel {
 	 */
 	@Override
 	public void createOverlays(final ArrayList<Overlay> oList) {
-		System.out.println(oList.size());
+		//System.out.println(oList.size());
 	}
 
 	/**

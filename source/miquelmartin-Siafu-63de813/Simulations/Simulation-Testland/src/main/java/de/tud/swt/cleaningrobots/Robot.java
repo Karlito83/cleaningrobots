@@ -22,18 +22,19 @@ public class Robot {
 	private List<Behaviour> behaviours;
 	private IPositionProvider positionProvider;
 	private INavigationController navigationController;
+	private ICommunicationProvider communicationProvider;
 	private List<Position> path;
 	private Position destination;
 
 	private static int counter = 1; // counter for the standard-name
 
 	public Robot(IPositionProvider positionProvider,
-			INavigationController navigationController) {
-		this("Robby_" + counter++, positionProvider, navigationController);
+			INavigationController navigationController, ICommunicationProvider networkProvider) {
+		this("Robby_" + counter++, positionProvider, navigationController, networkProvider);
 	}
 
 	public Robot(String name, IPositionProvider positionProvider,
-			INavigationController navigationController) {
+			INavigationController navigationController, ICommunicationProvider communicationProvider) {
 
 		logger.info("Initializing robot \"" + name + "\"");
 
@@ -45,12 +46,14 @@ public class Robot {
 		this.navigationController = navigationController;
 		this.path = null;
 		this.destination = null;
+		this.communicationProvider = communicationProvider;
 	}
 
 	public void action() {
 		boolean flag = false;
 		try {
 			getSensorData();
+			getNearRobotsAndImportModel();
 			for (Behaviour behaviour : behaviours) {
 				if (behaviour.action()) {
 					flag = true;
@@ -68,13 +71,25 @@ public class Robot {
 		}
 	}
 
+	private void getNearRobotsAndImportModel() {
+		List<Robot> nearRobots = this.communicationProvider.getNearRobots();
+		for (Robot nearRobot : nearRobots){
+			EObject model = nearRobot.exportModel();
+			importModel(model);
+		}
+	}
+
+	private void importModel(EObject model) {
+		logger.trace("importing model " + model);
+	}
+
 	private void getSensorData() {
 		if (sensors != null) {
 			for (ISensor sensor : sensors) {
 				world.addFields(sensor.getData());
 			}
 		} else {
-			System.out.println(this.toString() + " has no sensors.");
+			logger.warn(this.toString() + " has no sensors.");
 		}
 	}
 
