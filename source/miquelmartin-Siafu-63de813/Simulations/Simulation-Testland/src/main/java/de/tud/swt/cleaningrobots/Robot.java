@@ -11,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
 import cleaningrobots.CleaningrobotsFactory;
+import cleaningrobots.Map;
+import cleaningrobots.WorldPart;
 
 public class Robot {
 
@@ -29,12 +31,15 @@ public class Robot {
 	private static int counter = 1; // counter for the standard-name
 
 	public Robot(IPositionProvider positionProvider,
-			INavigationController navigationController, ICommunicationProvider communicationProvider) {
-		this("Robby_" + counter++, positionProvider, navigationController, communicationProvider);
+			INavigationController navigationController,
+			ICommunicationProvider communicationProvider) {
+		this("Robby_" + counter++, positionProvider, navigationController,
+				communicationProvider);
 	}
 
 	public Robot(String name, IPositionProvider positionProvider,
-			INavigationController navigationController, ICommunicationProvider communicationProvider) {
+			INavigationController navigationController,
+			ICommunicationProvider communicationProvider) {
 
 		logger.info("Initializing robot \"" + name + "\"");
 
@@ -63,24 +68,53 @@ public class Robot {
 			if (!flag) {
 				String message = "The robot \"%s\" does not know what to do and feels a bit sad now..."
 						+ "\nPlease specify appropriate behaviours for him to avoid that.";
-				throw new RuntimeException(String.format(message,
-						this.getName()));
+				logger.warn(String.format(message, this.getName()));
 			}
 		} catch (Exception e) {
-			logger.error("There is no Exception handling defined if a Behaviour goes wrong...", e);
+			logger.error(
+					"There is no Exception handling defined if a Behaviour goes wrong...",
+					e);
 		}
 	}
 
 	private void getNearRobotsAndImportModel() {
 		List<Robot> nearRobots = this.communicationProvider.getNearRobots();
-		for (Robot nearRobot : nearRobots){
+		for (Robot nearRobot : nearRobots) {
 			EObject model = nearRobot.exportModel();
 			importModel(model);
 		}
 	}
 
+	private void getFieldsFromWorldModel(cleaningrobots.WorldPart worldPart) {
+		// Maybe an arrayList is better here?
+		if (worldPart instanceof cleaningrobots.Map) {
+			cleaningrobots.State blockedState = CleaningrobotsFactory.eINSTANCE
+					.createState();
+			blockedState.setName("Blocked");
+			for (cleaningrobots.Field field : ((cleaningrobots.Map) worldPart)
+					.getFields()) {
+				Field f = new Field(field.getXpos(), field.getYpos(), !field
+						.getStates().contains(blockedState));
+				world.addField(f);
+			}
+		}
+		if (worldPart instanceof cleaningrobots.World) {
+			for (WorldPart innerWorldPart : ((cleaningrobots.World) worldPart)
+					.getChildren()) {
+				getFieldsFromWorldModel(innerWorldPart);
+			}
+		}
+	}
+
 	private void importModel(EObject model) {
-		logger.trace("importing model " + model);
+		if (model instanceof cleaningrobots.Robot) {
+			logger.trace("importing model " + model);
+			cleaningrobots.Robot robot = (cleaningrobots.Robot) model;
+			cleaningrobots.WorldPart rootWorldPart = robot.getWorld();
+			getFieldsFromWorldModel(rootWorldPart);
+		} else {
+			logger.warn("unknown model " + model);
+		}
 	}
 
 	private void getSensorData() {
@@ -208,9 +242,8 @@ public class Robot {
 				refreshPath();
 			}
 		} else {
-			System.out
-					.println(getName()
-							+ ": Can't move towards destination because no destination given.");
+			logger.warn(getName()
+					+ ": can't move towards destination because no destination given.");
 		}
 	}
 
@@ -218,24 +251,24 @@ public class Robot {
 		logger.debug("Set new position of " + this + " to " + position + ".");
 		this.navigationController.setPosition(position);
 	}
-	
-	public cleaningrobots.Robot exportModel(){
-		//TODO: Consider caching
+
+	public cleaningrobots.Robot exportModel() {
+		// TODO: Consider caching
 		cleaningrobots.Robot result = null;
-		
+
 		try {
-			cleaningrobots.Robot robot = CleaningrobotsFactory.eINSTANCE.createRobot();
+			cleaningrobots.Robot robot = CleaningrobotsFactory.eINSTANCE
+					.createRobot();
 			robot.setWorld(world.exportModel());
 			robot.setName(getName());
-			for (State state : getSupportedStates()){
+			for (State state : getSupportedStates()) {
 				robot.getKnownStates().add(state.exportModel());
 			}
 			result = robot;
 		} catch (Exception e) {
 			logger.error("An error occured while exporting the model", e);
 		}
-		
-		
+
 		return result;
 	}
 }

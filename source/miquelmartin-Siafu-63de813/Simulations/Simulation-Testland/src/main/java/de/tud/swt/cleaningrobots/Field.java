@@ -10,7 +10,7 @@ public class Field {
 	private int y;
 	private boolean isPassable;
 	private Set<State> states;
-
+	
 	public Field(int x, int y, boolean isPassable)
 	{
 		this.x = x;
