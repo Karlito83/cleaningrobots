@@ -48,7 +48,7 @@ public class Field {
 		
 		modelField = CleaningrobotsFactory.eINSTANCE.createField();
 		modelField.setXpos(x);
-		modelField.setXpos(y);
+		modelField.setYpos(y);
 		
 		for (State state : states){
 			modelField.getStates().add(state.exportModel());

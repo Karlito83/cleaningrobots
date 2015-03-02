@@ -29,8 +29,8 @@ public class Robot {
 	private static int counter = 1; // counter for the standard-name
 
 	public Robot(IPositionProvider positionProvider,
-			INavigationController navigationController, ICommunicationProvider networkProvider) {
-		this("Robby_" + counter++, positionProvider, navigationController, networkProvider);
+			INavigationController navigationController, ICommunicationProvider communicationProvider) {
+		this("Robby_" + counter++, positionProvider, navigationController, communicationProvider);
 	}
 
 	public Robot(String name, IPositionProvider positionProvider,

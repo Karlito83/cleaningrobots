@@ -79,7 +79,6 @@ public class CleaningRobotAgent extends Agent implements IPositionProvider, ICom
 					result.add(((CleaningRobotAgent) nearAgent).getCleaningRobot());
 				}
 			}
-			
 		}
 		logger.debug(cleaningRobot + " has " + result.size() + " neighbours to communicate with...");
 		return result;
