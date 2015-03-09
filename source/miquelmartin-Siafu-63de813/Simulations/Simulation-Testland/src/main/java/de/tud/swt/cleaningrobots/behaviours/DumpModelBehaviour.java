@@ -1,9 +1,13 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.imageio.ImageIO;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,6 +20,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 
+import cleaningrobots.WorldPart;
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.Robot;
 
@@ -53,11 +58,39 @@ public class DumpModelBehaviour extends Behaviour {
 
 	private void exportPNG(EObject model) {
 		if (createDirectory(CONST_PATH_DUMP_PNG)){
-			String fileName = "";
+			String fileName = generateFilename("png");
+			
+			try {
+				
+				if (model instanceof cleaningrobots.Robot) {
+					WorldPart world = ((cleaningrobots.Robot) model).getWorld();
+					world.getXdim();
+					world.getYdim();
+				} else {
+					throw new Exception("The model " + model + " is unknown!");
+				}
+				cleaningrobots.Robot robot = (cleaningrobots.Robot)model;
+				WorldPart world = robot.getWorld();
+				
+				/*BufferedImage image = new BufferedImage(model, 480, BufferedImage.TYPE_BYTE_GRAY);
+				
+				for(int x=0; x<image.getWidth(); x++)
+				{
+					for(int y=0; y<image.getHeight(); y++)
+					{
+						image.setRGB(x, y, rand.nextFloat()>=0.8?Color.BLACK.getRGB():Color.WHITE.getRGB());
+					}
+				}
+				*/
+				
+				logger.info("created png " + fileName);
+			} catch (Exception e) {
+				logger.error("Something went wrong while exporting to PNG");
+			}
 			
 			
 			
-			logger.info("created png " + fileName);
+			
 		}
 	}
 

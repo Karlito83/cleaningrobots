@@ -71,8 +71,8 @@ public class CleaningRobotAgent extends Agent implements IPositionProvider, ICom
 		{
 			// Just in case...
 			if (nearAgent instanceof CleaningRobotAgent){
-				int xdiff = this.getPos().getCol() - this.getPos().getCol();
-				int ydiff = this.getPos().getRow() - this.getPos().getRow();
+				int xdiff = this.getPos().getCol() - nearAgent.getPos().getCol();
+				int ydiff = this.getPos().getRow() - nearAgent.getPos().getRow();
 				xdiff = xdiff < 0 ? -xdiff : xdiff;
 				ydiff = ydiff < 0 ? -ydiff : ydiff;
 				if (xdiff < CONST_VISIONRADIUS_NEAR_ROBOTS && ydiff < CONST_VISIONRADIUS_NEAR_ROBOTS){

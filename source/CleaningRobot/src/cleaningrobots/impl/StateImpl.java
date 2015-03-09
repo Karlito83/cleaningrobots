@@ -8,14 +8,10 @@ import cleaningrobots.State;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
@@ -199,6 +195,15 @@ public class StateImpl extends MinimalEObjectImpl.Container implements State {
 		result.append(name);
 		result.append(')');
 		return result.toString();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		boolean result = false;
+		if (obj != null && obj instanceof State){
+			result = ((State)obj).getName().equals(this.getName());
+		}
+		return result;
 	}
 
 } //StateImpl

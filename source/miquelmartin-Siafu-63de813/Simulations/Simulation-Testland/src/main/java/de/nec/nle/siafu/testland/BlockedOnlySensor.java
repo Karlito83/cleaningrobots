@@ -3,6 +3,9 @@ package de.nec.nle.siafu.testland;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
@@ -27,6 +30,8 @@ public class BlockedOnlySensor implements ISensor {
 	
 	private final State STATE_BLOCKED = State.createState("Blocked");
 	private final State STATE_FREE = State.createState("Free");
+	
+	private final Logger logger = LogManager.getRootLogger();  
 
 	public BlockedOnlySensor(World siafuWorld, Agent agent) {
 		super();
@@ -66,6 +71,7 @@ public class BlockedOnlySensor implements ISensor {
 		result = new Field(column, row, !siafuWorld.isAWall(new Position(row, column)));
 		if(siafuWorld.isAWall(new Position(row, column)))
 		{
+			logger.debug("Blocked field: " + this);
 			result.addState(STATE_BLOCKED);
 		}
 		else

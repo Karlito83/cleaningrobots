@@ -78,11 +78,20 @@ public class Robot {
 	}
 
 	private void getNearRobotsAndImportModel() {
+		
+		long endTime, startTime = System.nanoTime();
+		logger.trace("enter getNearRobotsAndImportModel");
+		
 		List<Robot> nearRobots = this.communicationProvider.getNearRobots();
 		for (Robot nearRobot : nearRobots) {
 			EObject model = nearRobot.exportModel();
 			importModel(model);
 		}
+		
+		endTime = System.nanoTime();
+		logger.info("Importing the data from " + nearRobots.size() + " other agents took " + (endTime - startTime) + " ns.");
+		
+		logger.trace("exit getNearRobotsAndImportModel");
 	}
 
 	private void importFieldsFromWorldModel(cleaningrobots.WorldPart worldPart) {
@@ -91,13 +100,13 @@ public class Robot {
 			cleaningrobots.State blockedState = CleaningrobotsFactory.eINSTANCE
 					.createState();
 			blockedState.setName("Blocked");
-			for (cleaningrobots.Field field : ((cleaningrobots.Map) worldPart)
+			for (cleaningrobots.Field modelField : ((cleaningrobots.Map) worldPart)
 					.getFields()) {
-				Field f = new Field(field.getXpos(), field.getYpos(), !field
+				Field f = new Field(modelField.getXpos(), modelField.getYpos(), !modelField
 						.getStates().contains(blockedState));
-				for (cleaningrobots.State modelState : field.getStates()){
-					State s = State.createState(modelState.getName());
-					f.addState(s);
+				for (cleaningrobots.State modelState : modelField.getStates()) {
+					State state = State.createState(modelState.getName());
+					f.addState(state);
 				}
 				world.addField(f);
 			}

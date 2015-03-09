@@ -8,7 +8,7 @@
 		</File>
 	</Appenders>
 	<Loggers>
-		<Root level="warn">
+		<Root level="debug">
 			<AppenderRef ref="Console" />
 			<AppenderRef ref="File1" />
 		</Root>
