@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,9 +21,12 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 
+import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.WorldPart;
 import de.tud.swt.cleaningrobots.Behaviour;
+import de.tud.swt.cleaningrobots.Field;
 import de.tud.swt.cleaningrobots.Robot;
+import de.tud.swt.cleaningrobots.State;
 
 public class DumpModelBehaviour extends Behaviour {
 
@@ -55,6 +59,31 @@ public class DumpModelBehaviour extends Behaviour {
 		// executed
 		return false;
 	}
+	
+	private List<Field> getFieldsFromWorldModel(cleaningrobots.WorldPart worldPart) {
+		// Maybe an arrayList is better here?
+		if (worldPart instanceof cleaningrobots.Map) {
+			cleaningrobots.State blockedState = CleaningrobotsFactory.eINSTANCE
+					.createState();
+			blockedState.setName("Blocked");
+			for (cleaningrobots.Field modelField : ((cleaningrobots.Map) worldPart)
+					.getFields()) {
+				Field f = new Field(modelField.getXpos(), modelField.getYpos(), !modelField
+						.getStates().contains(blockedState));
+				for (cleaningrobots.State modelState : modelField.getStates()) {
+					State state = State.createState(modelState.getName());
+					f.addState(state);
+				}
+				world.addField(f);
+			}
+		}
+		if (worldPart instanceof cleaningrobots.World) {
+			for (WorldPart innerWorldPart : ((cleaningrobots.World) worldPart)
+					.getChildren()) {
+				importFieldsFromWorldModel(innerWorldPart);
+			}
+		}
+	}
 
 	private void exportPNG(EObject model) {
 		if (createDirectory(CONST_PATH_DUMP_PNG)){
@@ -71,6 +100,7 @@ public class DumpModelBehaviour extends Behaviour {
 				}
 				cleaningrobots.Robot robot = (cleaningrobots.Robot)model;
 				WorldPart world = robot.getWorld();
+				getFields
 				
 				/*BufferedImage image = new BufferedImage(model, 480, BufferedImage.TYPE_BYTE_GRAY);
 				
