@@ -1,12 +1,14 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -61,6 +63,9 @@ public class DumpModelBehaviour extends Behaviour {
 	}
 	
 	private List<Field> getFieldsFromWorldModel(cleaningrobots.WorldPart worldPart) {
+		
+		List<Field> result = new LinkedList<Field>();
+		
 		// Maybe an arrayList is better here?
 		if (worldPart instanceof cleaningrobots.Map) {
 			cleaningrobots.State blockedState = CleaningrobotsFactory.eINSTANCE
@@ -74,15 +79,17 @@ public class DumpModelBehaviour extends Behaviour {
 					State state = State.createState(modelState.getName());
 					f.addState(state);
 				}
-				world.addField(f);
+				result.add(f);
 			}
 		}
 		if (worldPart instanceof cleaningrobots.World) {
 			for (WorldPart innerWorldPart : ((cleaningrobots.World) worldPart)
 					.getChildren()) {
-				importFieldsFromWorldModel(innerWorldPart);
+				result.addAll(getFieldsFromWorldModel(innerWorldPart));
 			}
 		}
+		
+		return result;
 	}
 
 	private void exportPNG(EObject model) {
@@ -100,20 +107,27 @@ public class DumpModelBehaviour extends Behaviour {
 				}
 				cleaningrobots.Robot robot = (cleaningrobots.Robot)model;
 				WorldPart world = robot.getWorld();
-				getFields
+				List<Field> fields = getFieldsFromWorldModel(world);
 				
-				/*BufferedImage image = new BufferedImage(model, 480, BufferedImage.TYPE_BYTE_GRAY);
 				
-				for(int x=0; x<image.getWidth(); x++)
-				{
-					for(int y=0; y<image.getHeight(); y++)
-					{
-						image.setRGB(x, y, rand.nextFloat()>=0.8?Color.BLACK.getRGB():Color.WHITE.getRGB());
+				BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_BYTE_GRAY);
+				Graphics2D    graphics = image.createGraphics();
+
+				graphics.setPaint ( Color.GRAY );
+				graphics.fillRect ( 0, 0, image.getWidth(), image.getHeight() );
+				cleaningrobots.State blockedState = CleaningrobotsFactory.eINSTANCE.createState();
+				blockedState.setName("Blocked");
+				for (Field field : fields){
+					if (field.getStates().contains(blockedState)){
+						image.setRGB(field.getX(), field.getY(), Color.BLACK.getRGB());
+					} else {
+						image.setRGB(field.getX(), field.getY(), Color.WHITE.getRGB());
 					}
 				}
-				*/
+				File outputFile = new File(CONST_PATH_DUMP_PNG + File.separator + fileName);
+				ImageIO.write(image, "png", outputFile);
 				
-				logger.info("created png " + fileName);
+				logger.info("created png " + outputFile.getAbsolutePath());
 			} catch (Exception e) {
 				logger.error("Something went wrong while exporting to PNG");
 			}
@@ -130,7 +144,7 @@ public class DumpModelBehaviour extends Behaviour {
 			
 			try{
 				ResourceSet rs = new ResourceSetImpl();
-				Resource res = createAndAddResource(CONST_PATH_DUMP_XML + "/" + fileName, "xml", rs);
+				Resource res = createAndAddResource(CONST_PATH_DUMP_XML + File.separator + fileName, "xml", rs);
 				res.getContents().add(model);
 				java.util.Map<Object,Object> saveOptions = ((XMLResource)res).getDefaultSaveOptions();
 			     saveOptions.put(XMLResource.OPTION_CONFIGURATION_CACHE, Boolean.TRUE);
