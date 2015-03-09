@@ -40,4 +40,13 @@ public class State {
 		
 		return modelState;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		boolean result = false;
+		if (obj != null && obj instanceof State){
+			result = ((State)obj).getName().equals(this.getName());
+		}
+		return result;
+	}
 }

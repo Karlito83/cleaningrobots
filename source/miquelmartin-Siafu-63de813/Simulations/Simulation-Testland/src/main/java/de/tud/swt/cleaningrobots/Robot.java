@@ -85,7 +85,7 @@ public class Robot {
 		}
 	}
 
-	private void getFieldsFromWorldModel(cleaningrobots.WorldPart worldPart) {
+	private void importFieldsFromWorldModel(cleaningrobots.WorldPart worldPart) {
 		// Maybe an arrayList is better here?
 		if (worldPart instanceof cleaningrobots.Map) {
 			cleaningrobots.State blockedState = CleaningrobotsFactory.eINSTANCE
@@ -95,13 +95,17 @@ public class Robot {
 					.getFields()) {
 				Field f = new Field(field.getXpos(), field.getYpos(), !field
 						.getStates().contains(blockedState));
+				for (cleaningrobots.State modelState : field.getStates()){
+					State s = State.createState(modelState.getName());
+					f.addState(s);
+				}
 				world.addField(f);
 			}
 		}
 		if (worldPart instanceof cleaningrobots.World) {
 			for (WorldPart innerWorldPart : ((cleaningrobots.World) worldPart)
 					.getChildren()) {
-				getFieldsFromWorldModel(innerWorldPart);
+				importFieldsFromWorldModel(innerWorldPart);
 			}
 		}
 	}
@@ -111,7 +115,7 @@ public class Robot {
 			logger.trace("importing model " + model);
 			cleaningrobots.Robot robot = (cleaningrobots.Robot) model;
 			cleaningrobots.WorldPart rootWorldPart = robot.getWorld();
-			getFieldsFromWorldModel(rootWorldPart);
+			importFieldsFromWorldModel(rootWorldPart);
 		} else {
 			logger.warn("unknown model " + model);
 		}
