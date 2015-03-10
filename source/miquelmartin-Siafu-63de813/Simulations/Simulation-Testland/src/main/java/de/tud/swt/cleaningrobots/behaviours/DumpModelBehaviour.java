@@ -100,8 +100,10 @@ public class DumpModelBehaviour extends Behaviour {
 				
 				if (model instanceof cleaningrobots.Robot) {
 					WorldPart world = ((cleaningrobots.Robot) model).getWorld();
+					/*
 					world.getXdim();
 					world.getYdim();
+					*/
 				} else {
 					throw new Exception("The model " + model + " is unknown!");
 				}

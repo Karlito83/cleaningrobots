@@ -161,12 +161,13 @@ public class World {
 		return map.containsKey(position) && map.get(position).isPassable();
 	}
 
+	/*
 	public cleaningrobots.World exportModel() {
 		//TODO: Consider caching
 		cleaningrobots.World modelWorld = null;
 		cleaningrobots.Map modelMap = null;
 		
-		modelWorld = CleaningrobotsFactory.eINSTANCE.createWorld();
+		//modelWorld = CleaningrobotsFactory.eINSTANCE.createWorld();
 		modelMap = CleaningrobotsFactory.eINSTANCE.createMap();
 		modelMap.setXdim(xDim);
 		modelMap.setYdim(yDim);
@@ -176,5 +177,23 @@ public class World {
 		modelWorld.getChildren().add(modelMap);
 		
 		return modelWorld;
+	}
+	*/
+	
+	public cleaningrobots.WorldPart exportModel() {
+		//TODO: Consider caching
+		//cleaningrobots.World modelWorld = null;
+		cleaningrobots.Map modelMap = null;
+		
+		//modelWorld = CleaningrobotsFactory.eINSTANCE.createWorld();
+		modelMap = CleaningrobotsFactory.eINSTANCE.createMap();
+		modelMap.setXdim(xDim);
+		modelMap.setYdim(yDim);
+		for (Field field : map.values()){
+			modelMap.getFields().add(field.exportModel());
+		}
+		//modelWorld.getChildren().add(modelMap);
+		
+		return modelMap;
 	}
 }
