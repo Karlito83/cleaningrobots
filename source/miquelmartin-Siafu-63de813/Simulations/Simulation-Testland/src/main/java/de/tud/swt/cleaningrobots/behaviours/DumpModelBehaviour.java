@@ -62,25 +62,12 @@ public class DumpModelBehaviour extends Behaviour {
 		return false;
 	}
 	
-	private List<Field> getFieldsFromWorldModel(cleaningrobots.WorldPart worldPart) {
+	private List<cleaningrobots.Field> getFieldsFromWorldModel(cleaningrobots.WorldPart worldPart) {
 		
-		List<Field> result = new LinkedList<Field>();
+		List<cleaningrobots.Field> result = new LinkedList<cleaningrobots.Field>();
 		
-		// Maybe an arrayList is better here?
 		if (worldPart instanceof cleaningrobots.Map) {
-			cleaningrobots.State blockedState = CleaningrobotsFactory.eINSTANCE
-					.createState();
-			blockedState.setName("Blocked");
-			for (cleaningrobots.Field modelField : ((cleaningrobots.Map) worldPart)
-					.getFields()) {
-				Field f = new Field(modelField.getXpos(), modelField.getYpos(), !modelField
-						.getStates().contains(blockedState));
-				for (cleaningrobots.State modelState : modelField.getStates()) {
-					State state = State.createState(modelState.getName());
-					f.addState(state);
-				}
-				result.add(f);
-			}
+			result.addAll(((cleaningrobots.Map) worldPart).getFields());
 		}
 		if (worldPart instanceof cleaningrobots.World) {
 			for (WorldPart innerWorldPart : ((cleaningrobots.World) worldPart)
@@ -100,16 +87,12 @@ public class DumpModelBehaviour extends Behaviour {
 				
 				if (model instanceof cleaningrobots.Robot) {
 					WorldPart world = ((cleaningrobots.Robot) model).getWorld();
-					/*
-					world.getXdim();
-					world.getYdim();
-					*/
 				} else {
 					throw new Exception("The model " + model + " is unknown!");
 				}
 				cleaningrobots.Robot robot = (cleaningrobots.Robot)model;
 				WorldPart world = robot.getWorld();
-				List<Field> fields = getFieldsFromWorldModel(world);
+				List<cleaningrobots.Field> fields = getFieldsFromWorldModel(world);
 				
 				
 				BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_BYTE_GRAY);
@@ -119,11 +102,11 @@ public class DumpModelBehaviour extends Behaviour {
 				graphics.fillRect ( 0, 0, image.getWidth(), image.getHeight() );
 				cleaningrobots.State blockedState = CleaningrobotsFactory.eINSTANCE.createState();
 				blockedState.setName("Blocked");
-				for (Field field : fields){
+				for (cleaningrobots.Field field : fields){
 					if (field.getStates().contains(blockedState)){
-						image.setRGB(field.getX(), field.getY(), Color.BLACK.getRGB());
+						image.setRGB(field.getXpos(), field.getYpos(), Color.BLACK.getRGB());
 					} else {
-						image.setRGB(field.getX(), field.getY(), Color.WHITE.getRGB());
+						image.setRGB(field.getXpos(), field.getYpos(), Color.WHITE.getRGB());
 					}
 				}
 				File outputFile = new File(CONST_PATH_DUMP_PNG + File.separator + fileName);

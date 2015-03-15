@@ -37,8 +37,6 @@ public class BlockedOnlySensor implements ISensor {
 		super();
 		
 		this.supportedStates = new ArrayList<State>();
-		/*supportedStates.add(STATE_CLEAN);
-		supportedStates.add(STATE_DIRTY);*/
 		supportedStates.add(STATE_BLOCKED);
 		supportedStates.add(STATE_FREE);
 		
@@ -68,8 +66,10 @@ public class BlockedOnlySensor implements ISensor {
 		int row =  agent.getPos().getRow() + yOffset;
 		int column =  agent.getPos().getCol() + xOffset;
 		
-		result = new Field(column, row, !siafuWorld.isAWall(new Position(row, column)));
-		if(siafuWorld.isAWall(new Position(row, column)))
+		boolean positionIsAtWall = siafuWorld.isAWall(new Position(row, column));
+		
+		result = new Field(column, row, !positionIsAtWall);
+		if(positionIsAtWall)
 		{
 			logger.debug("Blocked field: " + this);
 			result.addState(STATE_BLOCKED);

@@ -55,10 +55,18 @@ public class Robot {
 	}
 
 	public void action() {
-		boolean flag = false;
 		try {
 			getSensorData();
 			getNearRobotsAndImportModel();
+			executeBehaviours();
+		} catch (Exception e) {
+			logger.error(this + ": Error while action().", e);
+		}
+	}
+
+	private void executeBehaviours() throws Exception {
+		try {
+			boolean flag = false;
 			for (Behaviour behaviour : behaviours) {
 				if (behaviour.action()) {
 					flag = true;
@@ -75,6 +83,7 @@ public class Robot {
 					"There is no Exception handling defined if a Behaviour goes wrong...",
 					e);
 		}
+		
 	}
 
 	private void getNearRobotsAndImportModel() {
@@ -131,13 +140,18 @@ public class Robot {
 	}
 
 	private void getSensorData() {
-		if (sensors != null) {
-			for (ISensor sensor : sensors) {
-				world.addFields(sensor.getData());
+		try {
+			if (sensors != null) {
+				for (ISensor sensor : sensors) {
+					world.addFields(sensor.getData());
+				}
+			} else {
+				logger.warn(this.toString() + " has no sensors.");
 			}
-		} else {
-			logger.warn(this.toString() + " has no sensors.");
+		} catch (Exception e) {
+			throw e;
 		}
+		
 	}
 
 	/***
