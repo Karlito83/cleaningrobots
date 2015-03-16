@@ -52,6 +52,7 @@ public class ContextModel extends BaseContextModel {
 	 */
 	@Override
 	public void createOverlays(final ArrayList<Overlay> oList) {
+		oList.add(new DirtOverlay(world.getWidth(), world.getHeight()));
 		//System.out.println(oList.size());
 	}
 
