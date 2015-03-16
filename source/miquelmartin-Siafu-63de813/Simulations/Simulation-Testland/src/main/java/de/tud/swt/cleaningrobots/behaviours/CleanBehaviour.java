@@ -1,9 +1,9 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Field;
 import de.tud.swt.cleaningrobots.Robot;
-import de.tud.swt.cleaningrobots.World;
+import de.tud.swt.cleaningrobots.model.Field;
+import de.tud.swt.cleaningrobots.model.World;
 
 public class CleanBehaviour extends Behaviour {
 	public CleanBehaviour(Robot robot) {

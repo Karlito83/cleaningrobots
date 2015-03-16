@@ -52,8 +52,8 @@ public class CleaningRobotAgent extends Agent implements IPositionProvider, ICom
 	}
 
 	@Override
-	public de.tud.swt.cleaningrobots.Position getPosition() {
-		de.tud.swt.cleaningrobots.Position result = new de.tud.swt.cleaningrobots.Position(
+	public de.tud.swt.cleaningrobots.model.Position getPosition() {
+		de.tud.swt.cleaningrobots.model.Position result = new de.tud.swt.cleaningrobots.model.Position(
 				this.getPos().getCol(), this.getPos().getRow());
 		return result;
 	}

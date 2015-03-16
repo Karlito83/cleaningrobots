@@ -4,7 +4,7 @@ import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.Place;
 import de.nec.nle.siafu.model.World;
 import de.tud.swt.cleaningrobots.INavigationController;
-import de.tud.swt.cleaningrobots.Position;
+import de.tud.swt.cleaningrobots.model.Position;
 
 public class AgentNavigationAdapter implements INavigationController {
 

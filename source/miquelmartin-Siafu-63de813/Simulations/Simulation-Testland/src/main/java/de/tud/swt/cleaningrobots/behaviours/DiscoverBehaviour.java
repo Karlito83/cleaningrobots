@@ -1,8 +1,8 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Position;
 import de.tud.swt.cleaningrobots.Robot;
+import de.tud.swt.cleaningrobots.model.Position;
 
 public class DiscoverBehaviour extends Behaviour {
 	

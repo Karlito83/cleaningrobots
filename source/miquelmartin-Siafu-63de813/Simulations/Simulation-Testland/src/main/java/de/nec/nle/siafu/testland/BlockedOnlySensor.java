@@ -9,9 +9,9 @@ import org.apache.logging.log4j.Logger;
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
-import de.tud.swt.cleaningrobots.Field;
 import de.tud.swt.cleaningrobots.ISensor;
-import de.tud.swt.cleaningrobots.State;
+import de.tud.swt.cleaningrobots.model.Field;
+import de.tud.swt.cleaningrobots.model.State;
 
 
 /***

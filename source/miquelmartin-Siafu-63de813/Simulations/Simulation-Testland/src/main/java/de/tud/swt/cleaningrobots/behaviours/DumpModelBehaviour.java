@@ -14,7 +14,6 @@ import javax.imageio.ImageIO;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -28,14 +27,13 @@ import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.WorldPart;
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.EMFUtils;
-import de.tud.swt.cleaningrobots.Field;
 import de.tud.swt.cleaningrobots.Robot;
-import de.tud.swt.cleaningrobots.State;
 
 public class DumpModelBehaviour extends Behaviour {
 
 	private static final int CONST_FILENAME_NUMBERPREFIX = 1000000000;
-	private static final int CONST_DUMP_INTERVAL = 100;
+	private static final int CONST_PNG_DUMP_INTERVAL = 100;
+	private static final int CONST_XML_DUMP_INTERVAL = 10000;
 	private static final String CONST_PATH_DUMP_XML = "dump/xml";
 	private static final String CONST_PATH_DUMP_PNG = "dump/png";
 
@@ -50,14 +48,19 @@ public class DumpModelBehaviour extends Behaviour {
 	@Override
 	public boolean action() throws Exception {
 
-		logger.trace("Enter DumpModelBehaviour.action() " + (counter % CONST_DUMP_INTERVAL + 1)  + "/" + CONST_DUMP_INTERVAL);
 		counter++;
-		if (counter % CONST_DUMP_INTERVAL == 0 && counter > 0) {
-			EObject model = getRobot().exportModel();
-
-			exportXML(model);
+		EObject model = null;
+		if (counter % CONST_PNG_DUMP_INTERVAL == 0 && counter > 0) {
+			model = getRobot().exportModel();
 			exportPNG(model);
 		}
+		if (counter % CONST_XML_DUMP_INTERVAL == 0 && counter > 0){
+			if (model == null){
+				model = getRobot().exportModel();
+			}
+			exportXML(model);
+		}
+		
 
 		// Always returns false, so that the following behaviours will be
 		// executed

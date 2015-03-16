@@ -1,4 +1,4 @@
-package de.tud.swt.cleaningrobots;
+package de.tud.swt.cleaningrobots.model;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.WorldPart;
+import de.tud.swt.cleaningrobots.Robot;
 
 public class World {
 

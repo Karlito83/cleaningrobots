@@ -11,12 +11,16 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
 import cleaningrobots.CleaningrobotsFactory;
-import cleaningrobots.Map;
 import cleaningrobots.WorldPart;
+import de.tud.swt.cleaningrobots.model.Field;
+import de.tud.swt.cleaningrobots.model.Position;
+import de.tud.swt.cleaningrobots.model.State;
+import de.tud.swt.cleaningrobots.model.World;
 
 public class Robot {
 
 	private final Logger logger = LogManager.getRootLogger();
+	
 
 	private Collection<ISensor> sensors;
 	private String name;
@@ -92,6 +96,7 @@ public class Robot {
 		logger.trace("enter getNearRobotsAndImportModel");
 		
 		List<Robot> nearRobots = this.communicationProvider.getNearRobots();
+		nearRobots.remove(this);
 		for (Robot nearRobot : nearRobots) {
 			EObject model = nearRobot.exportModel();
 			importModel(model);
