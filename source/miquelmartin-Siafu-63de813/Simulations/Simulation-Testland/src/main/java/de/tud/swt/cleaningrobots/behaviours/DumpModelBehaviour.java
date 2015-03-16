@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -26,6 +27,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.WorldPart;
 import de.tud.swt.cleaningrobots.Behaviour;
+import de.tud.swt.cleaningrobots.EMFUtils;
 import de.tud.swt.cleaningrobots.Field;
 import de.tud.swt.cleaningrobots.Robot;
 import de.tud.swt.cleaningrobots.State;
@@ -103,7 +105,7 @@ public class DumpModelBehaviour extends Behaviour {
 				cleaningrobots.State blockedState = CleaningrobotsFactory.eINSTANCE.createState();
 				blockedState.setName("Blocked");
 				for (cleaningrobots.Field field : fields){
-					if (field.getStates().contains(blockedState)){
+					if (EMFUtils.listContains(field.getStates(), blockedState)){
 						image.setRGB(field.getXpos(), field.getYpos(), Color.BLACK.getRGB());
 					} else {
 						image.setRGB(field.getXpos(), field.getYpos(), Color.WHITE.getRGB());

@@ -111,8 +111,9 @@ public class Robot {
 			blockedState.setName("Blocked");
 			for (cleaningrobots.Field modelField : ((cleaningrobots.Map) worldPart)
 					.getFields()) {
-				Field f = new Field(modelField.getXpos(), modelField.getYpos(), !modelField
-						.getStates().contains(blockedState));
+				boolean isBlocked = EMFUtils.listContains(modelField
+						.getStates(), blockedState);
+				Field f = new Field(modelField.getXpos(), modelField.getYpos(), !isBlocked);
 				for (cleaningrobots.State modelState : modelField.getStates()) {
 					State state = State.createState(modelState.getName());
 					f.addState(state);
