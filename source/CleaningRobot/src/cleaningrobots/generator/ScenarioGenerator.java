@@ -11,6 +11,7 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
@@ -138,7 +139,7 @@ public class ScenarioGenerator {
 				.put(ext, new XMLResourceFactoryImpl());
 		URI uri = URI.createFileURI(outputFile);
 		Resource resource = rs.createResource(uri);
-		((ResourceImpl) resource).setIntrinsicIDToEObjectMap(new HashMap());
+		((ResourceImpl) resource).setIntrinsicIDToEObjectMap(new HashMap<String, EObject>());
 		return resource;
 
 	}
