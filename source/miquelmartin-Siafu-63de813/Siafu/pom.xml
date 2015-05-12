@@ -10,16 +10,16 @@
 		<version>1.0.6-SNAPSHOT</version>
 		<relativePath>../MavenParent</relativePath>
 	</parent>
-	
+
 	<build>
 		<plugins>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
-        			<version>2.3</version>
-        			<configuration>
-          				<descriptors>
-            					<descriptor>assembly.xml</descriptor>
-         				</descriptors>
+				<version>2.3</version>
+				<configuration>
+					<descriptors>
+						<descriptor>assembly.xml</descriptor>
+					</descriptors>
 					<attach>false</attach>
 					<appendAssemblyId>false</appendAssemblyId>
 					<finalName>Siafu</finalName>
@@ -28,7 +28,7 @@
 							<mainClass>de.nec.nle.siafu.control.Siafu</mainClass>
 						</manifest>
 					</archive>
-        			</configuration>
+				</configuration>
 				<executions>
 					<execution>
 						<id>ReleaseFolder</id>
@@ -80,15 +80,28 @@
 			<groupId>swt</groupId>
 			<artifactId>jface</artifactId>
 		</dependency>
-				<dependency>
+		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
-			<version>2.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.emf</groupId>
+			<artifactId>org.eclipse.emf.common</artifactId>
+			<version>2.10.1-v20140901-1043</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.emf</groupId>
+			<artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+			<version>2.10.1-v20140901-1043</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.emf</groupId>
+			<artifactId>org.eclipse.emf.ecore</artifactId>
+			<version>2.10.1-v20140901-1043</version>
 		</dependency>
 	</dependencies>
 

@@ -20,25 +20,15 @@
 package de.nec.nle.siafu.testland;
 
 import static de.nec.nle.siafu.testland.Constants.POPULATION;
-import static de.nec.nle.siafu.testland.Constants.Fields.ACTIVITY;
-
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.nec.nle.siafu.behaviormodels.BaseAgentModel;
-import de.nec.nle.siafu.exceptions.PlaceTypeUndefinedException;
 import de.nec.nle.siafu.model.Agent;
-import de.nec.nle.siafu.model.Place;
 import de.nec.nle.siafu.model.World;
-import de.nec.nle.siafu.testland.Constants.Activity;
-import de.nec.nle.siafu.types.EasyTime;
-import de.nec.nle.siafu.types.Text;
 
 /**
  * This Agent Model defines the behavior of users in this test simulation.
@@ -71,6 +61,7 @@ public class AgentModel extends BaseAgentModel {
 	 * 
 	 * @return the created agents
 	 */
+	@Override
 	public ArrayList<Agent> createAgents() {
 
 		ArrayList<Agent> agents = new ArrayList<Agent>();
@@ -94,6 +85,7 @@ public class AgentModel extends BaseAgentModel {
 	 * @param agents
 	 *            the list of agents
 	 */
+	@Override
 	public void doIteration(final Collection<Agent> agents) {
 		for (Agent a : agents) {
 			a.wander();

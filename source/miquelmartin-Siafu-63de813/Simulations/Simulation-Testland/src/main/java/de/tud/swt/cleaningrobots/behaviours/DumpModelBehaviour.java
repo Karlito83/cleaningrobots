@@ -176,7 +176,7 @@ public class DumpModelBehaviour extends Behaviour {
 		URI uri = URI.createFileURI(outputFile);
 		logger.debug(uri);
 		Resource resource = rs.createResource(uri);
-		((ResourceImpl) resource).setIntrinsicIDToEObjectMap(new HashMap());
+		((ResourceImpl) resource).setIntrinsicIDToEObjectMap(new HashMap<String, EObject>());
 		return resource;
 
 	}
