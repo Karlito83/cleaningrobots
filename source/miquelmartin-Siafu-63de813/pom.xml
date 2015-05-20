@@ -11,7 +11,7 @@
 		<module>Siafu</module>
 		<module>Datatypes</module>
 		<module>Simulations</module>
-		<module>Simulations/Simulation-Testland</module>
+		<module>../CleaningRobot</module>
 	</modules>
 
 	<build>
