@@ -1,4 +1,4 @@
-package de.nec.nle.siafu.testland;
+package de.tud.swt.cleaningrobots.old;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,7 +11,7 @@ import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
 import de.tud.swt.cleaningrobots.ICommunicationProvider;
 import de.tud.swt.cleaningrobots.IPositionProvider;
-import de.tud.swt.cleaningrobots.Robot;
+import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.behaviours.DiscoverBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.DumpModelBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
@@ -19,20 +19,20 @@ import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
 public class CleaningRobotAgent extends Agent implements IPositionProvider, ICommunicationProvider{
 
 	private static final int CONST_VISIONRADIUS_NEAR_ROBOTS = 10;
-	private Robot cleaningRobot;
+	private RobotCore cleaningRobot;
 	private World siafuWorld;
 	private Logger logger = LogManager.getRootLogger();
 	
 	public CleaningRobotAgent(Position start, String image, World world) {
 		super(start, image, world);
 		siafuWorld = world;
-		cleaningRobot = new Robot(this, new AgentNavigationAdapter(this, siafuWorld), this);
+		//cleaningRobot = new Robot(this, new AgentNavigationAdapter(this, siafuWorld), this);
 		
-		cleaningRobot.addSensor(new BlockedOnlySensor(siafuWorld, this));
+		//cleaningRobot.addSensor(new BlockedOnlySensor(siafuWorld, this));
 		
-		cleaningRobot.addBehaviour(new DumpModelBehaviour(cleaningRobot));
-		cleaningRobot.addBehaviour(new MoveBehaviour(cleaningRobot));
-		cleaningRobot.addBehaviour(new DiscoverBehaviour(cleaningRobot));
+		//cleaningRobot.addBehaviour(new DumpModelBehaviour(cleaningRobot));
+		//cleaningRobot.addBehaviour(new MoveBehaviour(cleaningRobot));
+		//cleaningRobot.addBehaviour(new DiscoverBehaviour(cleaningRobot));
 		this.setSpeed(1);
 	}
 
@@ -41,7 +41,7 @@ public class CleaningRobotAgent extends Agent implements IPositionProvider, ICom
 		cleaningRobot.action();
 	}
 
-	public Robot getCleaningRobot() {
+	public RobotCore getCleaningRobot() {
 		return this.cleaningRobot;
 	}
 
@@ -64,8 +64,8 @@ public class CleaningRobotAgent extends Agent implements IPositionProvider, ICom
 	}
 
 	@Override
-	public List<Robot> getNearRobots() {
-		List <Robot> result = new LinkedList<Robot>(); 
+	public List<RobotCore> getNearRobots(int visionRadius) {
+		List <RobotCore> result = new LinkedList<RobotCore>(); 
 		
 		for (Agent nearAgent : this.siafuWorld.getPeople())
 		{
@@ -82,5 +82,11 @@ public class CleaningRobotAgent extends Agent implements IPositionProvider, ICom
 		}
 		logger.debug(cleaningRobot + " has " + result.size() + " neighbours to communicate with...");
 		return result;
+	}
+
+	@Override
+	public List<RobotCore> getAllRobots() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

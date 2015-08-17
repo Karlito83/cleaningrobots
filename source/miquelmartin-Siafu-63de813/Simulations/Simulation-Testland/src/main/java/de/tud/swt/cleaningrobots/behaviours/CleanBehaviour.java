@@ -1,24 +1,26 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Robot;
+import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.model.Field;
+import de.tud.swt.cleaningrobots.model.Position;
+import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.model.World;
 
 public class CleanBehaviour extends Behaviour {
-	public CleanBehaviour(Robot robot) {
+	public CleanBehaviour(RobotCore robot) {
 		super(robot);
 		// TODO Auto-generated constructor stub
 	}
 
-	private final String CONST_STATE_DIRTY = "Dirty";
-	private final String CONST_STATE_CLEAN = "Clean";
+	private final State CONST_STATE_DIRTY = State.createState("Dirty");
+	private final State CONST_STATE_CLEAN = State.createState("Clean");
 
 	@Override
 	public boolean action() throws Exception {
 		boolean result = false;
 		World RobotsWorld = getRobot().getWorld();
-		Field nextDirtyField = getRobot().getWorld().getNextFieldByState(
+		Position nextDirtyField = getRobot().getWorld().getNextFieldByState(
 				CONST_STATE_DIRTY);
 		if (nextDirtyField == null) {
 			result = false;

@@ -1,4 +1,4 @@
-package de.tud.swt.cleaningrobots;
+package de.tud.swt.cleaningrobots.old;
 
 import java.util.Collection;
 

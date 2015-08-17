@@ -1,11 +1,11 @@
-package de.tud.swt.cleaningrobots.behaviours;
+package de.tud.swt.cleaningrobots.old;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Robot;
+import de.tud.swt.cleaningrobots.RobotCore;
 
 public class UpdateBehaviour extends Behaviour {
 
-	public UpdateBehaviour(Robot robot) {
+	public UpdateBehaviour(RobotCore robot) {
 		super(robot);
 		// TODO Auto-generated constructor stub
 	}

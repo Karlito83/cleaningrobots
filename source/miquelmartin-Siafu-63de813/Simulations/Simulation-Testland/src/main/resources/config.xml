@@ -28,11 +28,9 @@
 	<!-- What are the classes that model the behaviour of agents, the world 
 	and context? -->
 	<models>
-		<agentmodel>de.nec.nle.siafu.testland.AgentModel</agentmodel>
-		<worldmodel>de.nec.nle.siafu.testland.WorldModel</worldmodel>
-		<contextmodel>
-			de.nec.nle.siafu.testland.ContextModel
-		</contextmodel>
+		<agentmodel>de.tud.swt.testland.AgentModel</agentmodel>
+		<worldmodel>de.tud.swt.testland.WorldModel</worldmodel>
+		<contextmodel>de.tud.swt.testland.ContextModel</contextmodel>
 	</models>
 	<!-- For each overlay, what is the tag the simulator should associate to the 
 		pixel value? -->

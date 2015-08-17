@@ -114,6 +114,12 @@ public class WorldHelper {
 		return result;
 	}
 
+	/**
+	 * Gibt nachbar Position zurück die entweder Passierbar sind oder nicht
+	 * @param currentPosition
+	 * @param onlyPassable
+	 * @return
+	 */
 	public List<Position> getNeighbourPositions(Position currentPosition,
 			boolean onlyPassable) {
 		List<Position> result = new LinkedList<Position>();

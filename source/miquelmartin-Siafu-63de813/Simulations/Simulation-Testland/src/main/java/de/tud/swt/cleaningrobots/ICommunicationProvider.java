@@ -4,6 +4,8 @@ import java.util.List;
 
 public interface ICommunicationProvider {
 
-	List<Robot> getNearRobots();
+	List<RobotCore> getNearRobots(int visionRadius);
+
+	List<RobotCore> getAllRobots();
 
 }

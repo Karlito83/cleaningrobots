@@ -1,8 +1,7 @@
-package de.nec.nle.siafu.testland;
+package de.tud.swt.cleaningrobots;
 
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.World;
-import de.tud.swt.cleaningrobots.INavigationController;
 import de.tud.swt.cleaningrobots.model.Position;
 
 public class AgentNavigationAdapter implements INavigationController {
@@ -14,7 +13,15 @@ public class AgentNavigationAdapter implements INavigationController {
 		this.agent = agent;
 		this.siafuWorld = siafuWorld;
 	}
+	
+	public Agent getAgent()	{
+		return agent;
+	}
 
+	public World getSiafuWorld() {
+		return siafuWorld;
+	}
+	
 	public void moveTowardsDestination() {
 		agent.moveTowardsDestination();
 	}

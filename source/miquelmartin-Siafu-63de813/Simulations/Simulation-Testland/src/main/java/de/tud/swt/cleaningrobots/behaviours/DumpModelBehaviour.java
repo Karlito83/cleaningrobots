@@ -6,9 +6,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -26,8 +28,10 @@ import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.WorldPart;
 import de.tud.swt.cleaningrobots.Behaviour;
+import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.EMFUtils;
-import de.tud.swt.cleaningrobots.Robot;
+import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.hardware.Components;
 
 public class DumpModelBehaviour extends Behaviour {
 
@@ -40,25 +44,36 @@ public class DumpModelBehaviour extends Behaviour {
 	private int counter;
 	private final Logger logger = LogManager.getRootLogger();
 
-	public DumpModelBehaviour(Robot robot) {
+	public DumpModelBehaviour(RobotCore robot) {
 		super(robot);
 		counter = 0;
+		
+		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
+		
+		d = new Demand(hardware, robot);
+		hardwarecorrect = d.isCorrect();
 	}
 
 	@Override
 	public boolean action() throws Exception {
+		
+		//System.out.println("DUMP ACTION");
 
 		counter++;
 		EObject model = null;
 		if (counter % CONST_PNG_DUMP_INTERVAL == 0 && counter > 0) {
+			System.out.println("ExportPng: " + getRobot().getName());
 			model = getRobot().exportModel();
 			exportPNG(model);
+			System.out.println("ExportPngFinish");
 		}
 		if (counter % CONST_XML_DUMP_INTERVAL == 0 && counter > 0){
+			System.out.println("ExportXML");
 			if (model == null){
 				model = getRobot().exportModel();
 			}
 			exportXML(model);
+			System.out.println("ExportXMLFinish");
 		}
 		
 
@@ -99,21 +114,35 @@ public class DumpModelBehaviour extends Behaviour {
 				WorldPart world = robot.getWorld();
 				List<cleaningrobots.Field> fields = getFieldsFromWorldModel(world);
 				
-				
-				BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_BYTE_GRAY);
+				//Creates a gray scale image
+				BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);//.TYPE_BYTE_GRAY);
 				Graphics2D    graphics = image.createGraphics();
 
+				//Creates the gray background of the hole image
 				graphics.setPaint ( Color.GRAY );
 				graphics.fillRect ( 0, 0, image.getWidth(), image.getHeight() );
 				cleaningrobots.State blockedState = CleaningrobotsFactory.eINSTANCE.createState();
 				blockedState.setName("Blocked");
+				
+				cleaningrobots.State hooveState = CleaningrobotsFactory.eINSTANCE.createState();
+				hooveState.setName("Hoove");
+				
+				cleaningrobots.State wipeState = CleaningrobotsFactory.eINSTANCE.createState();
+				wipeState.setName("Wipe");
+				
+				//iterates over all fields if has State make color
 				for (cleaningrobots.Field field : fields){
-					if (EMFUtils.listContains(field.getStates(), blockedState)){
+					if (EMFUtils.listContains(field.getStates(), wipeState)){
+						image.setRGB(field.getXpos(), field.getYpos(), Color.RED.getRGB());
+					} else if (EMFUtils.listContains(field.getStates(), hooveState)){
+						image.setRGB(field.getXpos(), field.getYpos(), Color.BLUE.getRGB());
+					} else if (EMFUtils.listContains(field.getStates(), blockedState)){
 						image.setRGB(field.getXpos(), field.getYpos(), Color.BLACK.getRGB());
 					} else {
 						image.setRGB(field.getXpos(), field.getYpos(), Color.WHITE.getRGB());
 					}
 				}
+				//write the output image in a file
 				File outputFile = new File(CONST_PATH_DUMP_PNG + File.separator + fileName);
 				ImageIO.write(image, "png", outputFile);
 				
@@ -137,14 +166,14 @@ public class DumpModelBehaviour extends Behaviour {
 				Resource res = createAndAddResource(CONST_PATH_DUMP_XML + File.separator + fileName, "xml", rs);
 				res.getContents().add(model);
 				java.util.Map<Object,Object> saveOptions = ((XMLResource)res).getDefaultSaveOptions();
-			     saveOptions.put(XMLResource.OPTION_CONFIGURATION_CACHE, Boolean.TRUE);
-			     saveOptions.put(XMLResource.OPTION_USE_CACHED_LOOKUP_TABLE, new ArrayList<>());
-			     try {
-			        res.save(saveOptions);
-			     } catch (IOException e) {
-			        throw new RuntimeException(e);
-			     }
-			     logger.info("created xml " + fileName);
+			    saveOptions.put(XMLResource.OPTION_CONFIGURATION_CACHE, Boolean.TRUE);
+			    saveOptions.put(XMLResource.OPTION_USE_CACHED_LOOKUP_TABLE, new ArrayList<>());
+			    try {
+			    	res.save(saveOptions);
+			    } catch (IOException e) {
+			    	throw new RuntimeException(e);
+			    }
+			    logger.info("created xml " + fileName);
 			} catch (Exception ex) {
 				logger.error("Something went wrong while exporting to XML", ex);
 			}

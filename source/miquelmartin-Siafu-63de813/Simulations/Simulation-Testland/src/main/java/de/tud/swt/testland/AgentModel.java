@@ -17,9 +17,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.nec.nle.siafu.testland;
+package de.tud.swt.testland;
 
-import static de.nec.nle.siafu.testland.Constants.POPULATION;
+import static de.tud.swt.testland.Constants.POPULATION;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -42,6 +43,8 @@ import de.nec.nle.siafu.model.World;
 public class AgentModel extends BaseAgentModel {
 
 	private final Logger logger = LogManager.getRootLogger();
+	
+	private boolean finish;
 	
 	/**
 	 * Constructor for the agent model.
@@ -68,8 +71,7 @@ public class AgentModel extends BaseAgentModel {
 
 		try {
 			logger.info("Creating " + POPULATION + " random cleaning robots.");
-			agents = new RandomCleaningRobotGenerator().createRandomPopulation(
-					POPULATION, world);
+			agents = new ExploreFactory().createRobots(world);
 		} catch (Exception ex) {
 			logger.error("An exception occured while creating the population.", ex);
 		}
@@ -87,8 +89,24 @@ public class AgentModel extends BaseAgentModel {
 	 */
 	@Override
 	public void doIteration(final Collection<Agent> agents) {
-		for (Agent a : agents) {
-			a.wander();
+		System.out.println("New Iteration: ");
+		if (!finish) {
+			finish = true;
+			//wemm noch nicht finsh dann mache das hier
+			for (Agent a : agents) {
+				a.wander();
+				System.out.println("Robot: " + ((RobotAgent)a).getName() + " finish: " + ((RobotAgent)a).isFinish());
+				if (!((RobotAgent)a).isFinish())
+					finish = false;
+			}
+		} else {
+			System.out.println("Programm Finish!");
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }

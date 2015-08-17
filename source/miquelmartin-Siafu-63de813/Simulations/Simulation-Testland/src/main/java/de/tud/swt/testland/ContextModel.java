@@ -17,7 +17,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.nec.nle.siafu.testland;
+package de.tud.swt.testland;
 
 import de.nec.nle.siafu.behaviormodels.BaseContextModel;
 import de.nec.nle.siafu.model.Overlay;

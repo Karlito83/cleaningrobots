@@ -17,7 +17,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.nec.nle.siafu.testland;
+package de.tud.swt.cleaningrobots.old;
 
 import java.util.ArrayList;
 import java.util.HashMap;

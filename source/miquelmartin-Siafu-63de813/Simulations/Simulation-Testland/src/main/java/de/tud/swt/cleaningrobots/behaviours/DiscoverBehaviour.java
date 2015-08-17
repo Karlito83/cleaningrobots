@@ -1,37 +1,120 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
+import java.util.EnumMap;
+import java.util.Map;
+
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Robot;
+import de.tud.swt.cleaningrobots.Demand;
+import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.model.Position;
 
+/**
+ * Search next unknown position and drive throw, if the accu is to low drive to loadstation
+ *  and if there is no more onknown position drive back to loadstation again
+ *  
+ * @author ChrissiMobil
+ *
+ */
 public class DiscoverBehaviour extends Behaviour {
 	
-	public DiscoverBehaviour(Robot robot) {
+	private boolean noMoreDiscovering;
+	
+	public DiscoverBehaviour(RobotCore robot) {
 		super(robot);
-	}
+		
+		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
+		//dont add motor because of you online search destination you don't move
+		//hardware.put(Components.MOTOR, 1);
+		
+		d = new Demand(hardware, robot);
+		hardwarecorrect = d.isCorrect();
+		
+		noMoreDiscovering = false;
+	}	
 
+	public boolean isFinishDiscovering () {
+		return noMoreDiscovering;
+	}
+	
 	@Override
 	public boolean action() throws Exception {
-		boolean result = false;
 		
+		//Schalte alle Hardwarecomponenten an wenn sie nicht schon laufen
+		//hardwarecomponents are empty
+		/*for (HardwareComponent hard : d.getHcs())
+		{
+			if (!hard.isActive())
+			{
+				hard.changeActive();
+			}
+		}		*/
+		
+		//wenn accu vorhanden dann muss ladestatus geprüft werden
+		//wird immer geprüft und ist somit zeitaufwendiger
+		/*if (getRobot().getAccu() != null && getRobot().getDestination() != getRobot().loadStationPosition)
+		{
+			int size = getRobot().getPath(getRobot().getPosition(), getRobot().loadStationPosition).size();
+			size +=2;
+			if (size * getRobot().getActualEnergie() > getRobot().getAccu().getRestKWh())
+				getRobot().setDestination(getRobot().loadStationPosition);
+		}*/
+					
+		//Prüfe ob Hardwarecorrect oder entferne es vorher schon wieder
 		logger.trace("Entered DiscoverBehaviour.action().");
 		
 		if(getRobot().isAtDestination()){
 			
 			Position nextUnknownPosition = this.getRobot().getWorld().getNextUnknownFieldPosition(); 
+						
 			if(nextUnknownPosition != null){
 				getRobot().setDestination(nextUnknownPosition);
-				result = true;
+				
+				//wenn accu vorhanden dann muss ladestatus geprüft werden Prüfe,
+				//ob ziel vorher erreicht wird oder ob accu beim fahren leer wird
+				if (getRobot().getAccu() != null)
+				{
+					if (getRobot().isLoading)
+						return false;
+					
+					//Entfernung Robot bis Ziel
+					int sizeOne = getRobot().getPath(getRobot().getPosition(), nextUnknownPosition).size();
+					//Entfernung Robot bis Ladestation
+					//int sizeTwo = getRobot().getPath(getRobot().getPosition(), getRobot().loadStationPosition).size();
+					//Entfernung Ziel bis Ladestation
+					int sizeThree = getRobot().getPath(nextUnknownPosition, getRobot().loadStationPosition).size();
+					int size = sizeOne + sizeThree;
+					size +=2;
+					//Wenn akku bis zu Ziel nicht mehr 
+					if (size * getRobot().getActualEnergie() > getRobot().getAccu().getRestKWh())
+					{
+						//Robot schafft Weg nicht also Fahre zurück zu Ladestation
+						getRobot().setDestinationLoadStation();
+						//
+						if (getRobot().loadStationPosition.equals(getRobot().getPosition()))
+						{
+							System.out.println("Robot erreicht keine Unknownposition mehr obwohl diese noch existiert!");
+							noMoreDiscovering = true;
+							return true;
+						}
+					}
+				}
 				logger.info("Executed DiscoverBehaviour.action().");
 			}
-		}
-		else {
-			result = false;
+			else if(!getRobot().getDestination().equals(getRobot().loadStationPosition))
+			{
+				//Ist an Ladestation angekommen muss geladen werden
+				getRobot().setDestinationLoadStation();
+			} else {
+				//gibt true zurück wenn alles geschafft ist in der Behaviour
+				//Keine Unknown Positon mehr und schon an Ladestation
+				noMoreDiscovering = true;
+				return true;
+			}
 		}
 		
 		logger.trace("Ended DiscoverBehaviour.action().");
 		
-		return result;		
+		return false;		
 	}
-
 }

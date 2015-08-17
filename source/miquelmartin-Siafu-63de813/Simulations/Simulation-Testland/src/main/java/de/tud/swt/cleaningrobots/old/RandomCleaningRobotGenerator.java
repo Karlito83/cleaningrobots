@@ -1,4 +1,4 @@
-package de.nec.nle.siafu.testland;
+package de.tud.swt.cleaningrobots.old;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +51,7 @@ public class RandomCleaningRobotGenerator {
 		try {
 
 			CleaningRobotAgent agent = new CleaningRobotAgent(world
-					.getRandomPlaceOfType("Nowhere").getPos(), "HumanMagenta",
+					.getRandomPlaceOfType("OtherCenter").getPos(), "HumanMagenta",
 					world);
 
 			counter++;
