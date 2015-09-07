@@ -9,11 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
-import cleaningrobots.CleaningrobotsFactory;
-import cleaningrobots.WorldPart;
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.Demand;
-import de.tud.swt.cleaningrobots.EMFUtils;
 import de.tud.swt.cleaningrobots.FollowerRole;
 import de.tud.swt.cleaningrobots.MasterRole;
 import de.tud.swt.cleaningrobots.RobotCore;
@@ -21,17 +18,18 @@ import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
-import de.tud.swt.cleaningrobots.model.Field;
-import de.tud.swt.cleaningrobots.model.State;
+import de.tud.swt.cleaningrobots.merge.MergeAll;
+import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
 public class MergeMasterFollower extends Behaviour {
 
 	private final Logger logger = LogManager.getRootLogger();
 	
+	private MergeAll ma;
 	private Wlan wlan;
 	
-	private final State STATE_BLOCKED = State.createState("Blocked");
-	private final State STATE_FREE = State.createState("Free");		
+	//private final State STATE_BLOCKED = State.createState("Blocked");
+	//private final State STATE_FREE = State.createState("Free");		
 	
 	private List<FollowerRole> lastChange;
 	
@@ -39,12 +37,13 @@ public class MergeMasterFollower extends Behaviour {
 		super(robot);
 		
 		lastChange = new ArrayList<FollowerRole>();
+		ma = new MergeAll();
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.WLAN, 1);
 		
-		supportedStates.add(STATE_BLOCKED);
-		supportedStates.add(STATE_FREE);
+		//supportedStates.add(STATE_BLOCKED);
+		//supportedStates.add(STATE_FREE);
 		
 		d = new Demand(hardware, robot);
 		hardwarecorrect = d.isCorrect();
@@ -82,7 +81,7 @@ public class MergeMasterFollower extends Behaviour {
 		if (nearRobots.isEmpty())
 			return false;
 
-		System.out.println("NearRobots: " + nearRobots.size());
+		//System.out.println("NearRobots: " + nearRobots.size());
 		List<FollowerRole> nearsNewInformation = new ArrayList<FollowerRole>();
 		List<FollowerRole> nearsNoNewInformation = new ArrayList<FollowerRole>();
 		//System.out.println("Robots in Tausch reichweite: " + nearRobots.size());
@@ -103,7 +102,7 @@ public class MergeMasterFollower extends Behaviour {
 							{
 								if (fr.hasNewInformation())
 								{
-									System.out.println("Follower with new Information");
+									//System.out.println("Follower with new Information");
 									//Roboter in der nähe
 									fr.setNewInformation(false);
 									nearsNewInformation.add(fr);
@@ -113,8 +112,12 @@ public class MergeMasterFollower extends Behaviour {
 									
 									//Tausche Model aus
 									//Füge modell von Nahem Robot mir hinzu
-									EObject model = nearRobot.exportModel();
-									importModel(model, this.getRobot());
+									ImportExportConfiguration config = new ImportExportConfiguration();
+									config.world = true;
+									config.knownstates = true;
+									config.knowledge = true;
+									EObject model = nearRobot.exportModel(config);
+									ma.importAllModel(model, this.getRobot(), config);
 								} else {
 									//System.out.println("Follower without new Information");
 									nearsNoNewInformation.add(fr);									
@@ -132,28 +135,32 @@ public class MergeMasterFollower extends Behaviour {
 		{
 			System.out.println("LastChange: " + lastChange + " NewInfo: " + nearsNewInformation + " NoNewInfo: " + nearsNoNewInformation);
 			lastChange.clear();
-			EObject model = this.getRobot().exportModel();
+			ImportExportConfiguration config = new ImportExportConfiguration();
+			config.world = true;
+			config.knownstates = true;
+			config.knowledge = true;
+			EObject model = this.getRobot().exportModel(config);
 			if (nearsNewInformation.size() == 1)
 			{
 				//muss model nur importieren wenn noch nicht in lastchange liste war oder er nicht der einzige mit neuen informationen ist
 				for (FollowerRole fr : nearsNewInformation) {
 					//fr schon vorher enthalten
 					if(!fr.hasNewInformation())
-						importModel(model, fr.getRobotCore());
+						ma.importAllModel(model, fr.getRobotCore(), config);
 					lastChange.add(fr);
 					fr.setNewInformation(false);
 				}
 			} else {
 				for (FollowerRole fr : nearsNewInformation) {
 					//importiere allen nahen Robotern das neue Modell
-					importModel(model, fr.getRobotCore());
+					ma.importAllModel(model, fr.getRobotCore(), config);
 					lastChange.add(fr);
 					fr.setNewInformation(false);
 				}
 			}
 			for (FollowerRole fr : nearsNoNewInformation) {
 				//importiere allen nahen Robotern das neue Modell
-				importModel(model, fr.getRobotCore());
+				ma.importAllModel(model, fr.getRobotCore(), config);
 				lastChange.add(fr);
 			}			
 			System.out.println("LastChange: " + lastChange);
@@ -165,42 +172,5 @@ public class MergeMasterFollower extends Behaviour {
 		
 		logger.trace("exit getNearRobotsAndImportModel");
 		return false;
-	}
-	
-	private void importFieldsFromWorldModel(cleaningrobots.WorldPart worldPart, RobotCore core) {
-		// Maybe an arrayList is better here?
-		if (worldPart instanceof cleaningrobots.Map) {
-			cleaningrobots.State blockedState = CleaningrobotsFactory.eINSTANCE
-					.createState();
-			blockedState.setName("Blocked");
-			for (cleaningrobots.Field modelField : ((cleaningrobots.Map) worldPart)
-					.getFields()) {
-				boolean isBlocked = EMFUtils.listContains(modelField
-						.getStates(), blockedState);
-				Field f = new Field(modelField.getXpos(), modelField.getYpos(), !isBlocked);
-				for (cleaningrobots.State modelState : modelField.getStates()) {
-					State state = State.createState(modelState.getName());
-					f.addState(state);
-				}
-				core.getWorld().addField(f);
-			}
-		}
-		if (worldPart instanceof cleaningrobots.World) {
-			for (WorldPart innerWorldPart : ((cleaningrobots.World) worldPart)
-					.getChildren()) {
-				importFieldsFromWorldModel(innerWorldPart, core);
-			}
-		}
-	}
-
-	private void importModel(EObject model, RobotCore core) {
-		if (model instanceof cleaningrobots.Robot) {
-			logger.trace("importing model " + model);
-			cleaningrobots.Robot robot = (cleaningrobots.Robot) model;
-			cleaningrobots.WorldPart rootWorldPart = robot.getWorld();
-			importFieldsFromWorldModel(rootWorldPart, core);
-		} else {
-			logger.warn("unknown model " + model);
-		}
-	}
+	}	
 }

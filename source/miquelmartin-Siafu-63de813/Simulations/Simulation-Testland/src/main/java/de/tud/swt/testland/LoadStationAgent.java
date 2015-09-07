@@ -4,11 +4,13 @@ import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
 import de.tud.swt.cleaningrobots.AgentNavigationAdapter;
 import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.goals.CalculateRobotPositionGoal;
 import de.tud.swt.cleaningrobots.goals.ExploreDumpGoal;
 import de.tud.swt.cleaningrobots.goals.LoadRobotGoal;
 import de.tud.swt.cleaningrobots.goals.MasterGoal;
 import de.tud.swt.cleaningrobots.goals.MergeMasterFollowerGoal;
 import de.tud.swt.cleaningrobots.hardware.LoadStation;
+import de.tud.swt.cleaningrobots.hardware.Rechner;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
 
 public class LoadStationAgent extends RobotAgent {
@@ -19,19 +21,21 @@ public class LoadStationAgent extends RobotAgent {
 		siafuWorld = world;
 		cleaningRobot = new RobotCore(this, new AgentNavigationAdapter(this, siafuWorld), this, null);
 		
+		cleaningRobot.addHardwareComponent(new Rechner());
 		cleaningRobot.addHardwareComponent(new LoadStation());
 		cleaningRobot.addHardwareComponent(new Wlan());
 		
-		//Wlan hinzufügen und MergeMasterFollower / DumpBehaviour
-		cleaningRobot.isLoadStation = true;
+		System.out.println("LoadStation: " + cleaningRobot.isLoadStation());
 		
 		MergeMasterFollowerGoal mmfg = new MergeMasterFollowerGoal(cleaningRobot);
+		CalculateRobotPositionGoal crpg = new CalculateRobotPositionGoal(cleaningRobot);
 		LoadRobotGoal lrg = new LoadRobotGoal(cleaningRobot);
 		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
 		
 		MasterGoal mg = new MasterGoal(cleaningRobot);
-		mg.subGoals.add(mmfg);
 		mg.subGoals.add(lrg);
+		mg.subGoals.add(mmfg);
+		mg.subGoals.add(crpg);		
 		mg.subGoals.add(edg);
 		
 		if (mg.isHardwareCorrect())

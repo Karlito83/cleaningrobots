@@ -4,6 +4,7 @@ package cleaningrobots.impl;
 
 import cleaningrobots.CleaningrobotsPackage;
 import cleaningrobots.Field;
+import cleaningrobots.Position;
 import cleaningrobots.State;
 import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
@@ -23,55 +24,14 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link cleaningrobots.impl.FieldImpl#getXpos <em>Xpos</em>}</li>
- *   <li>{@link cleaningrobots.impl.FieldImpl#getYpos <em>Ypos</em>}</li>
  *   <li>{@link cleaningrobots.impl.FieldImpl#getStates <em>States</em>}</li>
+ *   <li>{@link cleaningrobots.impl.FieldImpl#getPos <em>Pos</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
 public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
-	/**
-	 * The default value of the '{@link #getXpos() <em>Xpos</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXpos()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int XPOS_EDEFAULT = 0;
-
-	/**
-	 * The cached value of the '{@link #getXpos() <em>Xpos</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getXpos()
-	 * @generated
-	 * @ordered
-	 */
-	protected int xpos = XPOS_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getYpos() <em>Ypos</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getYpos()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int YPOS_EDEFAULT = 0;
-
-	/**
-	 * The cached value of the '{@link #getYpos() <em>Ypos</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getYpos()
-	 * @generated
-	 * @ordered
-	 */
-	protected int ypos = YPOS_EDEFAULT;
-
 	/**
 	 * The cached value of the '{@link #getStates() <em>States</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -81,6 +41,16 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 	 * @ordered
 	 */
 	protected EList<State> states;
+
+	/**
+	 * The cached value of the '{@link #getPos() <em>Pos</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPos()
+	 * @generated
+	 * @ordered
+	 */
+	protected Position pos;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -106,53 +76,49 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public int getXpos() {
-		return xpos;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setXpos(int newXpos) {
-		int oldXpos = xpos;
-		xpos = newXpos;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.FIELD__XPOS, oldXpos, xpos));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public int getYpos() {
-		return ypos;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setYpos(int newYpos) {
-		int oldYpos = ypos;
-		ypos = newYpos;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.FIELD__YPOS, oldYpos, ypos));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EList<State> getStates() {
 		if (states == null) {
 			states = new EObjectContainmentEList<State>(State.class, this, CleaningrobotsPackage.FIELD__STATES);
 		}
 		return states;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Position getPos() {
+		if (pos != null && pos.eIsProxy()) {
+			InternalEObject oldPos = (InternalEObject)pos;
+			pos = (Position)eResolveProxy(oldPos);
+			if (pos != oldPos) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CleaningrobotsPackage.FIELD__POS, oldPos, pos));
+			}
+		}
+		return pos;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Position basicGetPos() {
+		return pos;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setPos(Position newPos) {
+		Position oldPos = pos;
+		pos = newPos;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CleaningrobotsPackage.FIELD__POS, oldPos, pos));
 	}
 
 	/**
@@ -177,12 +143,11 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case CleaningrobotsPackage.FIELD__XPOS:
-				return getXpos();
-			case CleaningrobotsPackage.FIELD__YPOS:
-				return getYpos();
 			case CleaningrobotsPackage.FIELD__STATES:
 				return getStates();
+			case CleaningrobotsPackage.FIELD__POS:
+				if (resolve) return getPos();
+				return basicGetPos();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -196,15 +161,12 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case CleaningrobotsPackage.FIELD__XPOS:
-				setXpos((Integer)newValue);
-				return;
-			case CleaningrobotsPackage.FIELD__YPOS:
-				setYpos((Integer)newValue);
-				return;
 			case CleaningrobotsPackage.FIELD__STATES:
 				getStates().clear();
 				getStates().addAll((Collection<? extends State>)newValue);
+				return;
+			case CleaningrobotsPackage.FIELD__POS:
+				setPos((Position)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -218,14 +180,11 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case CleaningrobotsPackage.FIELD__XPOS:
-				setXpos(XPOS_EDEFAULT);
-				return;
-			case CleaningrobotsPackage.FIELD__YPOS:
-				setYpos(YPOS_EDEFAULT);
-				return;
 			case CleaningrobotsPackage.FIELD__STATES:
 				getStates().clear();
+				return;
+			case CleaningrobotsPackage.FIELD__POS:
+				setPos((Position)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -239,32 +198,12 @@ public class FieldImpl extends MinimalEObjectImpl.Container implements Field {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case CleaningrobotsPackage.FIELD__XPOS:
-				return xpos != XPOS_EDEFAULT;
-			case CleaningrobotsPackage.FIELD__YPOS:
-				return ypos != YPOS_EDEFAULT;
 			case CleaningrobotsPackage.FIELD__STATES:
 				return states != null && !states.isEmpty();
+			case CleaningrobotsPackage.FIELD__POS:
+				return pos != null;
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (xpos: ");
-		result.append(xpos);
-		result.append(", ypos: ");
-		result.append(ypos);
-		result.append(')');
-		return result.toString();
 	}
 
 } //FieldImpl

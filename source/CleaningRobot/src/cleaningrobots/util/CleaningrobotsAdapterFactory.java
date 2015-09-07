@@ -72,8 +72,16 @@ public class CleaningrobotsAdapterFactory extends AdapterFactoryImpl {
 				return createRobotAdapter();
 			}
 			@Override
+			public Adapter caseRobotKnowledge(RobotKnowledge object) {
+				return createRobotKnowledgeAdapter();
+			}
+			@Override
 			public Adapter caseField(Field object) {
 				return createFieldAdapter();
+			}
+			@Override
+			public Adapter casePosition(Position object) {
+				return createPositionAdapter();
 			}
 			@Override
 			public Adapter caseState(State object) {
@@ -90,6 +98,18 @@ public class CleaningrobotsAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseMap(Map object) {
 				return createMapAdapter();
+			}
+			@Override
+			public Adapter caseRole(Role object) {
+				return createRoleAdapter();
+			}
+			@Override
+			public Adapter caseFollowerRole(FollowerRole object) {
+				return createFollowerRoleAdapter();
+			}
+			@Override
+			public Adapter caseMasterRole(MasterRole object) {
+				return createMasterRoleAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -136,6 +156,76 @@ public class CleaningrobotsAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createMapAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link cleaningrobots.RobotKnowledge <em>Robot Knowledge</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see cleaningrobots.RobotKnowledge
+	 * @generated
+	 */
+	public Adapter createRobotKnowledgeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link cleaningrobots.Position <em>Position</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see cleaningrobots.Position
+	 * @generated
+	 */
+	public Adapter createPositionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link cleaningrobots.Role <em>Role</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see cleaningrobots.Role
+	 * @generated
+	 */
+	public Adapter createRoleAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link cleaningrobots.FollowerRole <em>Follower Role</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see cleaningrobots.FollowerRole
+	 * @generated
+	 */
+	public Adapter createFollowerRoleAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link cleaningrobots.MasterRole <em>Master Role</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see cleaningrobots.MasterRole
+	 * @generated
+	 */
+	public Adapter createMasterRoleAdapter() {
 		return null;
 	}
 

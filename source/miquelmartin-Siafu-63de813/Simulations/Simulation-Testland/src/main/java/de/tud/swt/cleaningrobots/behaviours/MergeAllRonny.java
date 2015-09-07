@@ -8,17 +8,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
-import cleaningrobots.CleaningrobotsFactory;
-import cleaningrobots.WorldPart;
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.Demand;
-import de.tud.swt.cleaningrobots.EMFUtils;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
-import de.tud.swt.cleaningrobots.model.Field;
-import de.tud.swt.cleaningrobots.model.State;
+import de.tud.swt.cleaningrobots.merge.MergeAll;
+import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
 public class MergeAllRonny extends Behaviour {
 
@@ -66,8 +63,13 @@ public class MergeAllRonny extends Behaviour {
 		for (RobotCore nearRobot : nearRobots) {
 			//darf nur mi Robotern in der nähe Kommunizieren wenn diese Wirklich die gleiche HardwareComponente habe und diese aktiv ist
 			if (nearRobot.hasActiveHardwareComponent(wlan.getComponents())) {
-				EObject model = nearRobot.exportModel();
-				importModel(model);
+				ImportExportConfiguration config = new ImportExportConfiguration();
+				config.world = true;
+				config.knownstates = true;
+				config.knowledge = true;
+				EObject model = nearRobot.exportModel(config);
+				MergeAll ma = new MergeAll();
+				ma.importAllModel(model, this.getRobot(), config);
 			}
 		}
 		
@@ -76,42 +78,5 @@ public class MergeAllRonny extends Behaviour {
 		
 		logger.trace("exit getNearRobotsAndImportModel");
 		return false;
-	}
-	
-	private void importFieldsFromWorldModel(cleaningrobots.WorldPart worldPart) {
-		// Maybe an arrayList is better here?
-		if (worldPart instanceof cleaningrobots.Map) {
-			cleaningrobots.State blockedState = CleaningrobotsFactory.eINSTANCE
-					.createState();
-			blockedState.setName("Blocked");
-			for (cleaningrobots.Field modelField : ((cleaningrobots.Map) worldPart)
-					.getFields()) {
-				boolean isBlocked = EMFUtils.listContains(modelField
-						.getStates(), blockedState);
-				Field f = new Field(modelField.getXpos(), modelField.getYpos(), !isBlocked);
-				for (cleaningrobots.State modelState : modelField.getStates()) {
-					State state = State.createState(modelState.getName());
-					f.addState(state);
-				}
-				this.getRobot().getWorld().addField(f);
-			}
-		}
-		if (worldPart instanceof cleaningrobots.World) {
-			for (WorldPart innerWorldPart : ((cleaningrobots.World) worldPart)
-					.getChildren()) {
-				importFieldsFromWorldModel(innerWorldPart);
-			}
-		}
-	}
-
-	private void importModel(EObject model) {
-		if (model instanceof cleaningrobots.Robot) {
-			logger.trace("importing model " + model);
-			cleaningrobots.Robot robot = (cleaningrobots.Robot) model;
-			cleaningrobots.WorldPart rootWorldPart = robot.getWorld();
-			importFieldsFromWorldModel(rootWorldPart);
-		} else {
-			logger.warn("unknown model " + model);
-		}
 	}
 }

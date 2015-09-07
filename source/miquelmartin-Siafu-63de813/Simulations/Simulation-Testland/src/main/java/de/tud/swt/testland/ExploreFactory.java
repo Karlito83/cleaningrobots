@@ -144,7 +144,8 @@ public class ExploreFactory extends RobotFactory {
 	 */
 	@Override
 	public ArrayList<Agent> createRobots(World world) {
-		ArrayList<Agent> population = new ArrayList<Agent>(amount);		
+		//ArrayList<Agent> population = new ArrayList<Agent>(amount);		
+		ArrayList<Agent> population = new ArrayList<Agent>();	
 		population.add(createLoadStationAgent(world));
 		for (int i = 0; i < amount; i++) {
 			population.add(createExploreAgent(world));

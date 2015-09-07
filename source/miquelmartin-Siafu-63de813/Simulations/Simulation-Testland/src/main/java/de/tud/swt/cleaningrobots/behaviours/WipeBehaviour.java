@@ -39,12 +39,12 @@ public class WipeBehaviour extends Behaviour{
 		//Prüfe ob Hardwarecorrect oder entferne es vorher schon wieder
 		logger.trace("Entered HooveBehaviour.action().");
 		
-		if(getRobot().isAtDestination()){
+		if(getRobot().getDestinationContainer().isAtDestination()){
 			
-			Position nextNotWipePosition = this.getRobot().getWorld().getNextFieldByStateWithoutState(STATE_HOOVE, STATE_WIPE);
+			Position nextNotWipePosition = this.getRobot().getWorld().getNextPassablePositionByStateWithoutState(STATE_HOOVE, STATE_WIPE);
 						
 			if(nextNotWipePosition != null){
-				getRobot().setDestination(nextNotWipePosition);
+				getRobot().getDestinationContainer().setDestination(nextNotWipePosition);
 				
 				//wenn accu vorhanden dann muss ladestatus geprüft werden Prüfe,
 				//ob ziel vorher erreicht wird oder ob accu beim fahren leer wird
@@ -54,20 +54,20 @@ public class WipeBehaviour extends Behaviour{
 						return false;
 					
 					//Entfernung Robot bis Ziel
-					int sizeOne = getRobot().getPath(getRobot().getPosition(), nextNotWipePosition).size();
+					int sizeOne = getRobot().getDestinationContainer().getPathFromTo(getRobot().getPosition(), nextNotWipePosition).size();
 					//Entfernung Robot bis Ladestation
 					//int sizeTwo = getRobot().getPath(getRobot().getPosition(), getRobot().loadStationPosition).size();
 					//Entfernung Ziel bis Ladestation
-					int sizeThree = getRobot().getPath(nextNotWipePosition, getRobot().loadStationPosition).size();
+					int sizeThree = getRobot().getDestinationContainer().getPathFromTo(nextNotWipePosition, getRobot().getDestinationContainer().getLoadStationPosition()).size();
 					int size = sizeOne + sizeThree;
 					size +=2;
 					//Wenn akku bis zu Ziel nicht mehr 
 					if (size * getRobot().getActualEnergie() > getRobot().getAccu().getRestKWh())
 					{
 						//Robot schafft Weg nicht also Fahre zurück zu Ladestation
-						getRobot().setDestinationLoadStation();
+						getRobot().getDestinationContainer().setDestinationLoadStation();
 						//
-						if (getRobot().loadStationPosition.equals(getRobot().getPosition()))
+						if (getRobot().getDestinationContainer().getLoadStationPosition().equals(getRobot().getPosition()))
 						{
 							System.out.println("Robot erreicht keine Hooveposition mehr obwohl diese noch existiert!");
 							finishWiping = true;
@@ -78,15 +78,15 @@ public class WipeBehaviour extends Behaviour{
 				logger.info("Executed DiscoverBehaviour.action().");
 			} else {
 				//no more wipe position found
-				Position nextNotHoovePosition = this.getRobot().getWorld().getNextFieldByState(STATE_HOOVE); 
+				Position nextNotHoovePosition = this.getRobot().getWorld().getNextPassablePositionWithoutState(STATE_HOOVE); 
 				Position nextUnknownPosition = this.getRobot().getWorld().getNextUnknownFieldPosition();
 				if (nextUnknownPosition == null && nextNotHoovePosition == null)
 				{
 					//finish back to load station
-					if(!getRobot().getDestination().equals(getRobot().loadStationPosition))
+					if(!getRobot().getDestinationContainer().getDestination().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
 					{
 						//Ist an Ladestation angekommen muss geladen werden
-						getRobot().setDestinationLoadStation();
+						getRobot().getDestinationContainer().setDestinationLoadStation();
 					} else {
 						//is at loadstation
 						finishWiping = true;
@@ -94,7 +94,7 @@ public class WipeBehaviour extends Behaviour{
 					}
 				} else {
 					//not finish wait for new data, drive back to master
-					getRobot().setDestinationLoadStation();
+					getRobot().getDestinationContainer().setDestinationLoadStation();
 					return false;
 				}
 			}

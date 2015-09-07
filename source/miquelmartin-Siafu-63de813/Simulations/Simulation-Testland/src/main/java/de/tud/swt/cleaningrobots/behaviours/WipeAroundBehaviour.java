@@ -53,7 +53,8 @@ public class WipeAroundBehaviour extends Behaviour {
 	public boolean action() throws Exception {
 		
 		//Wenn Roboter an Ziel dann machen ann Scanne umgebung und machen wieder aus
-		if (getRobot().isAtDestination() && getRobot().isDestinationSet() && !getRobot().isAtLoadDestination()) {
+		if (getRobot().getDestinationContainer().isAtDestination() && getRobot().getDestinationContainer().isDestinationSet() 
+				&& !getRobot().getDestinationContainer().isAtLoadDestination()) {
 			//Schalte alle Hardwarecomponenten an wenn sie nicht schon laufen
 			for (HardwareComponent hard : d.getHcs())
 			{

@@ -29,9 +29,10 @@ import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.WorldPart;
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.Demand;
-import de.tud.swt.cleaningrobots.EMFUtils;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.hardware.Components;
+import de.tud.swt.cleaningrobots.util.EMFUtils;
+import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
 public class DumpModelBehaviour extends Behaviour {
 
@@ -62,19 +63,20 @@ public class DumpModelBehaviour extends Behaviour {
 		counter++;
 		EObject model = null;
 		if (counter % CONST_PNG_DUMP_INTERVAL == 0 && counter > 0) {
-			System.out.println("ExportPng: " + getRobot().getName());
-			model = getRobot().exportModel();
+			ImportExportConfiguration config = new ImportExportConfiguration();
+			config.world = true;
+			config.knownstates = true;
+			model = getRobot().exportModel(config);
 			exportPNG(model);
-			System.out.println("ExportPngFinish");
 		}
-		if (counter % CONST_XML_DUMP_INTERVAL == 0 && counter > 0){
+		/*if (counter % CONST_XML_DUMP_INTERVAL == 0 && counter > 0){
 			System.out.println("ExportXML");
 			if (model == null){
 				model = getRobot().exportModel();
 			}
 			exportXML(model);
 			System.out.println("ExportXMLFinish");
-		}
+		}*/
 		
 
 		// Always returns false, so that the following behaviours will be
@@ -115,7 +117,8 @@ public class DumpModelBehaviour extends Behaviour {
 				List<cleaningrobots.Field> fields = getFieldsFromWorldModel(world);
 				
 				//Creates a gray scale image
-				BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);//.TYPE_BYTE_GRAY);
+				//BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);//.TYPE_BYTE_GRAY);
+				BufferedImage image = new BufferedImage(310, 274, BufferedImage.TYPE_3BYTE_BGR);//.TYPE_BYTE_GRAY);
 				Graphics2D    graphics = image.createGraphics();
 
 				//Creates the gray background of the hole image
@@ -133,13 +136,13 @@ public class DumpModelBehaviour extends Behaviour {
 				//iterates over all fields if has State make color
 				for (cleaningrobots.Field field : fields){
 					if (EMFUtils.listContains(field.getStates(), wipeState)){
-						image.setRGB(field.getXpos(), field.getYpos(), Color.RED.getRGB());
+						image.setRGB(field.getPos().getXpos(), field.getPos().getYpos(), Color.RED.getRGB());
 					} else if (EMFUtils.listContains(field.getStates(), hooveState)){
-						image.setRGB(field.getXpos(), field.getYpos(), Color.BLUE.getRGB());
+						image.setRGB(field.getPos().getXpos(), field.getPos().getYpos(), Color.BLUE.getRGB());
 					} else if (EMFUtils.listContains(field.getStates(), blockedState)){
-						image.setRGB(field.getXpos(), field.getYpos(), Color.BLACK.getRGB());
+						image.setRGB(field.getPos().getXpos(), field.getPos().getYpos(), Color.BLACK.getRGB());
 					} else {
-						image.setRGB(field.getXpos(), field.getYpos(), Color.WHITE.getRGB());
+						image.setRGB(field.getPos().getXpos(), field.getPos().getYpos(), Color.WHITE.getRGB());
 					}
 				}
 				//write the output image in a file

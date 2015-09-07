@@ -63,12 +63,12 @@ public class DiscoverBehaviour extends Behaviour {
 		//Prüfe ob Hardwarecorrect oder entferne es vorher schon wieder
 		logger.trace("Entered DiscoverBehaviour.action().");
 		
-		if(getRobot().isAtDestination()){
+		if(getRobot().getDestinationContainer().isAtDestination()){
 			
 			Position nextUnknownPosition = this.getRobot().getWorld().getNextUnknownFieldPosition(); 
 						
 			if(nextUnknownPosition != null){
-				getRobot().setDestination(nextUnknownPosition);
+				getRobot().getDestinationContainer().setDestination(nextUnknownPosition);
 				
 				//wenn accu vorhanden dann muss ladestatus geprüft werden Prüfe,
 				//ob ziel vorher erreicht wird oder ob accu beim fahren leer wird
@@ -78,20 +78,20 @@ public class DiscoverBehaviour extends Behaviour {
 						return false;
 					
 					//Entfernung Robot bis Ziel
-					int sizeOne = getRobot().getPath(getRobot().getPosition(), nextUnknownPosition).size();
+					int sizeOne = getRobot().getDestinationContainer().getPathFromTo(getRobot().getPosition(), nextUnknownPosition).size();
 					//Entfernung Robot bis Ladestation
 					//int sizeTwo = getRobot().getPath(getRobot().getPosition(), getRobot().loadStationPosition).size();
 					//Entfernung Ziel bis Ladestation
-					int sizeThree = getRobot().getPath(nextUnknownPosition, getRobot().loadStationPosition).size();
+					int sizeThree = getRobot().getDestinationContainer().getPathFromTo(nextUnknownPosition, getRobot().getDestinationContainer().getLoadStationPosition()).size();
 					int size = sizeOne + sizeThree;
 					size +=2;
 					//Wenn akku bis zu Ziel nicht mehr 
 					if (size * getRobot().getActualEnergie() > getRobot().getAccu().getRestKWh())
 					{
 						//Robot schafft Weg nicht also Fahre zurück zu Ladestation
-						getRobot().setDestinationLoadStation();
+						getRobot().getDestinationContainer().setDestinationLoadStation();
 						//
-						if (getRobot().loadStationPosition.equals(getRobot().getPosition()))
+						if (getRobot().getDestinationContainer().getLoadStationPosition().equals(getRobot().getPosition()))
 						{
 							System.out.println("Robot erreicht keine Unknownposition mehr obwohl diese noch existiert!");
 							noMoreDiscovering = true;
@@ -101,10 +101,10 @@ public class DiscoverBehaviour extends Behaviour {
 				}
 				logger.info("Executed DiscoverBehaviour.action().");
 			}
-			else if(!getRobot().getDestination().equals(getRobot().loadStationPosition))
+			else if(!getRobot().getPosition().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
 			{
 				//Ist an Ladestation angekommen muss geladen werden
-				getRobot().setDestinationLoadStation();
+				getRobot().getDestinationContainer().setDestinationLoadStation();
 			} else {
 				//gibt true zurück wenn alles geschafft ist in der Behaviour
 				//Keine Unknown Positon mehr und schon an Ladestation

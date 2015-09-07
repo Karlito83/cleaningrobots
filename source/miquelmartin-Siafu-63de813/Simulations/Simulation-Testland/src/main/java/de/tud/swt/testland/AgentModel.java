@@ -23,6 +23,7 @@ import static de.tud.swt.testland.Constants.POPULATION;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,6 +31,10 @@ import org.apache.logging.log4j.Logger;
 import de.nec.nle.siafu.behaviormodels.BaseAgentModel;
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.World;
+import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.measure.ExchangeMeasurement;
+import de.tud.swt.cleaningrobots.measure.FileWorker;
+import de.tud.swt.cleaningrobots.util.Variables;
 
 /**
  * This Agent Model defines the behavior of users in this test simulation.
@@ -54,6 +59,7 @@ public class AgentModel extends BaseAgentModel {
 	 */
 	public AgentModel(final World world) {
 		super(world);
+		counter = 0;
 	}
 
 	/**
@@ -78,6 +84,8 @@ public class AgentModel extends BaseAgentModel {
 
 		return agents;
 	}
+	
+	private int counter;
 
 	/**
 	 * Make all the normal agents wander around, and the postman, run errands
@@ -89,24 +97,69 @@ public class AgentModel extends BaseAgentModel {
 	 */
 	@Override
 	public void doIteration(final Collection<Agent> agents) {
+		counter++;
+		Variables.iteration += 1;
 		System.out.println("New Iteration: ");
-		if (!finish) {
+		if (!finish) {			
 			finish = true;
 			//wemm noch nicht finsh dann mache das hier
 			for (Agent a : agents) {
-				a.wander();
-				System.out.println("Robot: " + ((RobotAgent)a).getName() + " finish: " + ((RobotAgent)a).isFinish());
-				if (!((RobotAgent)a).isFinish())
-					finish = false;
+				//nur wenn Robot noch nicht aus ist
+				if (!((RobotAgent)a).getRobot().isShutDown()) {
+					a.wander();
+					System.out.println("Robot: " + ((RobotAgent)a).getName() + " finish: " + ((RobotAgent)a).isFinish());
+					if (!((RobotAgent)a).isFinish())
+						finish = false;
+				}
 			}
+			//if (counter == 1000)
+			//	finish = true;
 		} else {
+			//Programm ist fertig Lese Measurement aller Roboter und gebe in Datei aus
+			for (Agent a : agents) {
+				RobotCore rc = ((RobotAgent)a).getRobot();
+				
+				//Json Datein in .txt speicher
+				FileWorker fw = new FileWorker(rc.getName()+ ".txt");				
+				String measu = rc.getMeasurement().toJson();
+				fw.addLineToFile(measu);
+				
+				//Roboter time in csv speichern
+				//outputCsv(rc.getMeasurement().timeProTick, rc.getName() + "Time");
+				
+			}
+			FileWorker fw = new FileWorker("exchange.txt");
+			int tester = 0;
+			for (ExchangeMeasurement em : Variables.exchange) {
+				tester++;
+				em.setNumber(tester);
+				String result = em.toJson();
+				fw.addLineToFile(result);
+			}
 			System.out.println("Programm Finish!");
+			System.out.println("Iterations: " + counter);
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(100000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void outputCsv (List<Double> liste, String name) {
+		FileWorker fw = new FileWorker(name + ".csv");
+		String svalue = "";
+		String skey = "";
+		if (!liste.isEmpty()) {
+			svalue = "" + liste.get(0);
+			skey = "" + 0;
+		}
+		for (int i = 1; i < liste.size(); i++) {
+			svalue = svalue + ";" + liste.get(i);
+			skey = skey + ";" + i;
+		}
+		fw.addLineToFile(skey);
+		fw.addLineToFile(svalue);
 	}
 }

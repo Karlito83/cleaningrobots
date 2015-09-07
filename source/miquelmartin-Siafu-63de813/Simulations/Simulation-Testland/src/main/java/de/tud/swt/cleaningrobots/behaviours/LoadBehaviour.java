@@ -10,7 +10,6 @@ import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.hardware.LoadStation;
-import de.tud.swt.cleaningrobots.hardware.Wlan;
 
 public class LoadBehaviour extends Behaviour {
 

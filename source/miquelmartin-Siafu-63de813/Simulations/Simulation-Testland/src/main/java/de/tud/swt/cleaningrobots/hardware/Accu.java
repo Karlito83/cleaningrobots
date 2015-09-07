@@ -59,4 +59,9 @@ public class Accu {
 	{
 		return actualKWh - minKWh;
 	}
+	
+	public double getMaxFieldGoes (double Energie)
+	{
+		return (maxKWh - minKWh) / Energie;
+	}
 }

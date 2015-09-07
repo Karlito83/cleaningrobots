@@ -5,8 +5,13 @@ package cleaningrobots.impl;
 import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.CleaningrobotsPackage;
 import cleaningrobots.Field;
+import cleaningrobots.FollowerRole;
 import cleaningrobots.Map;
+import cleaningrobots.MasterRole;
+import cleaningrobots.Position;
 import cleaningrobots.Robot;
+import cleaningrobots.RobotKnowledge;
+import cleaningrobots.Role;
 import cleaningrobots.State;
 
 import cleaningrobots.World;
@@ -38,6 +43,41 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 	 * @generated
 	 */
 	private EClass mapEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass robotKnowledgeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass positionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass roleEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass followerRoleEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass masterRoleEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -152,7 +192,7 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 	 * @generated
 	 */
 	public EReference getRobot_KnownStates() {
-		return (EReference)robotEClass.getEStructuralFeatures().get(1);
+		return (EReference)robotEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -161,7 +201,43 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 	 * @generated
 	 */
 	public EReference getRobot_World() {
+		return (EReference)robotEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRobot_Destination() {
 		return (EReference)robotEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getRobot_Components() {
+		return (EAttribute)robotEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRobot_Roles() {
+		return (EReference)robotEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRobot_RobotKnowledge() {
+		return (EReference)robotEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -187,6 +263,141 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getRobotKnowledge() {
+		return robotKnowledgeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getRobotKnowledge_Name() {
+		return (EAttribute)robotKnowledgeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRobotKnowledge_Destination() {
+		return (EReference)robotKnowledgeEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getRobotKnowledge_Components() {
+		return (EAttribute)robotKnowledgeEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getRobotKnowledge_LastArrange() {
+		return (EAttribute)robotKnowledgeEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRobotKnowledge_Roles() {
+		return (EReference)robotKnowledgeEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRobotKnowledge_KnowStates() {
+		return (EReference)robotKnowledgeEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getPosition() {
+		return positionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPosition_Xpos() {
+		return (EAttribute)positionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPosition_Ypos() {
+		return (EAttribute)positionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getRole() {
+		return roleEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getFollowerRole() {
+		return followerRoleEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getFollowerRole_MasterName() {
+		return (EAttribute)followerRoleEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getMasterRole() {
+		return masterRoleEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getMasterRole_FollowerNames() {
+		return (EAttribute)masterRoleEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getField() {
 		return fieldEClass;
 	}
@@ -196,26 +407,17 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getField_Xpos() {
-		return (EAttribute)fieldEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getField_Ypos() {
-		return (EAttribute)fieldEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EReference getField_States() {
-		return (EReference)fieldEClass.getEStructuralFeatures().get(2);
+		return (EReference)fieldEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getField_Pos() {
+		return (EReference)fieldEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -320,13 +522,28 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 		// Create classes and their features
 		robotEClass = createEClass(ROBOT);
 		createEAttribute(robotEClass, ROBOT__NAME);
-		createEReference(robotEClass, ROBOT__KNOWN_STATES);
 		createEReference(robotEClass, ROBOT__WORLD);
+		createEReference(robotEClass, ROBOT__DESTINATION);
+		createEAttribute(robotEClass, ROBOT__COMPONENTS);
+		createEReference(robotEClass, ROBOT__ROLES);
+		createEReference(robotEClass, ROBOT__KNOWN_STATES);
+		createEReference(robotEClass, ROBOT__ROBOT_KNOWLEDGE);
+
+		robotKnowledgeEClass = createEClass(ROBOT_KNOWLEDGE);
+		createEAttribute(robotKnowledgeEClass, ROBOT_KNOWLEDGE__NAME);
+		createEAttribute(robotKnowledgeEClass, ROBOT_KNOWLEDGE__LAST_ARRANGE);
+		createEReference(robotKnowledgeEClass, ROBOT_KNOWLEDGE__DESTINATION);
+		createEAttribute(robotKnowledgeEClass, ROBOT_KNOWLEDGE__COMPONENTS);
+		createEReference(robotKnowledgeEClass, ROBOT_KNOWLEDGE__ROLES);
+		createEReference(robotKnowledgeEClass, ROBOT_KNOWLEDGE__KNOW_STATES);
 
 		fieldEClass = createEClass(FIELD);
-		createEAttribute(fieldEClass, FIELD__XPOS);
-		createEAttribute(fieldEClass, FIELD__YPOS);
 		createEReference(fieldEClass, FIELD__STATES);
+		createEReference(fieldEClass, FIELD__POS);
+
+		positionEClass = createEClass(POSITION);
+		createEAttribute(positionEClass, POSITION__XPOS);
+		createEAttribute(positionEClass, POSITION__YPOS);
 
 		stateEClass = createEClass(STATE);
 		createEAttribute(stateEClass, STATE__NAME);
@@ -341,6 +558,14 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 
 		mapEClass = createEClass(MAP);
 		createEReference(mapEClass, MAP__FIELDS);
+
+		roleEClass = createEClass(ROLE);
+
+		followerRoleEClass = createEClass(FOLLOWER_ROLE);
+		createEAttribute(followerRoleEClass, FOLLOWER_ROLE__MASTER_NAME);
+
+		masterRoleEClass = createEClass(MASTER_ROLE);
+		createEAttribute(masterRoleEClass, MASTER_ROLE__FOLLOWER_NAMES);
 	}
 
 	/**
@@ -373,17 +598,34 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 		// Add supertypes to classes
 		worldEClass.getESuperTypes().add(this.getWorldPart());
 		mapEClass.getESuperTypes().add(this.getWorldPart());
+		followerRoleEClass.getESuperTypes().add(this.getRole());
+		masterRoleEClass.getESuperTypes().add(this.getRole());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(robotEClass, Robot.class, "Robot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getRobot_Name(), ecorePackage.getEString(), "name", null, 0, 1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getRobot_KnownStates(), this.getState(), null, "knownStates", null, 1, -1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRobot_World(), this.getWorldPart(), null, "world", null, 0, 1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRobot_Destination(), this.getPosition(), null, "destination", null, 0, 1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRobot_Components(), ecorePackage.getEString(), "components", null, 0, -1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRobot_Roles(), this.getRole(), null, "roles", null, 0, -1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRobot_KnownStates(), this.getState(), null, "knownStates", null, 0, -1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRobot_RobotKnowledge(), this.getRobotKnowledge(), null, "robotKnowledge", null, 0, -1, Robot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(robotKnowledgeEClass, RobotKnowledge.class, "RobotKnowledge", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getRobotKnowledge_Name(), ecorePackage.getEString(), "name", null, 0, 1, RobotKnowledge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRobotKnowledge_LastArrange(), ecorePackage.getEInt(), "lastArrange", null, 0, 1, RobotKnowledge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRobotKnowledge_Destination(), this.getPosition(), null, "destination", null, 0, 1, RobotKnowledge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRobotKnowledge_Components(), ecorePackage.getEString(), "components", null, 0, -1, RobotKnowledge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRobotKnowledge_Roles(), this.getRole(), null, "roles", null, 0, -1, RobotKnowledge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRobotKnowledge_KnowStates(), this.getState(), null, "knowStates", null, 0, -1, RobotKnowledge.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(fieldEClass, Field.class, "Field", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getField_Xpos(), ecorePackage.getEInt(), "xpos", null, 0, 1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getField_Ypos(), ecorePackage.getEInt(), "ypos", null, 0, 1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getField_States(), this.getState(), null, "states", null, 1, -1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getField_Pos(), this.getPosition(), null, "pos", null, 0, 1, Field.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(positionEClass, Position.class, "Position", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getPosition_Xpos(), ecorePackage.getEInt(), "xpos", null, 0, 1, Position.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPosition_Ypos(), ecorePackage.getEInt(), "ypos", null, 0, 1, Position.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(stateEClass, State.class, "State", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getState_Name(), ecorePackage.getEString(), "name", null, 0, 1, State.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -398,6 +640,14 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 
 		initEClass(mapEClass, Map.class, "Map", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getMap_Fields(), this.getField(), null, "fields", null, 0, -1, Map.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(roleEClass, Role.class, "Role", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(followerRoleEClass, FollowerRole.class, "FollowerRole", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getFollowerRole_MasterName(), ecorePackage.getEString(), "masterName", null, 0, 1, FollowerRole.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(masterRoleEClass, MasterRole.class, "MasterRole", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getMasterRole_FollowerNames(), ecorePackage.getEString(), "followerNames", null, 0, -1, MasterRole.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

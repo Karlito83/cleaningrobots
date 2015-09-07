@@ -57,11 +57,15 @@ public class CleaningrobotsFactoryImpl extends EFactoryImpl implements Cleaningr
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case CleaningrobotsPackage.ROBOT: return createRobot();
+			case CleaningrobotsPackage.ROBOT_KNOWLEDGE: return createRobotKnowledge();
 			case CleaningrobotsPackage.FIELD: return createField();
+			case CleaningrobotsPackage.POSITION: return createPosition();
 			case CleaningrobotsPackage.STATE: return createState();
 			case CleaningrobotsPackage.WORLD_PART: return createWorldPart();
 			case CleaningrobotsPackage.WORLD: return createWorld();
 			case CleaningrobotsPackage.MAP: return createMap();
+			case CleaningrobotsPackage.FOLLOWER_ROLE: return createFollowerRole();
+			case CleaningrobotsPackage.MASTER_ROLE: return createMasterRole();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -85,6 +89,46 @@ public class CleaningrobotsFactoryImpl extends EFactoryImpl implements Cleaningr
 	public Map createMap() {
 		MapImpl map = new MapImpl();
 		return map;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public RobotKnowledge createRobotKnowledge() {
+		RobotKnowledgeImpl robotKnowledge = new RobotKnowledgeImpl();
+		return robotKnowledge;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Position createPosition() {
+		PositionImpl position = new PositionImpl();
+		return position;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public FollowerRole createFollowerRole() {
+		FollowerRoleImpl followerRole = new FollowerRoleImpl();
+		return followerRole;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public MasterRole createMasterRole() {
+		MasterRoleImpl masterRole = new MasterRoleImpl();
+		return masterRole;
 	}
 
 	/**

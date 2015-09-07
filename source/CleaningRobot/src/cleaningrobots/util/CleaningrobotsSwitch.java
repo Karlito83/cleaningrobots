@@ -72,9 +72,21 @@ public class CleaningrobotsSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case CleaningrobotsPackage.ROBOT_KNOWLEDGE: {
+				RobotKnowledge robotKnowledge = (RobotKnowledge)theEObject;
+				T result = caseRobotKnowledge(robotKnowledge);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case CleaningrobotsPackage.FIELD: {
 				Field field = (Field)theEObject;
 				T result = caseField(field);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CleaningrobotsPackage.POSITION: {
+				Position position = (Position)theEObject;
+				T result = casePosition(position);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -101,6 +113,26 @@ public class CleaningrobotsSwitch<T> extends Switch<T> {
 				Map map = (Map)theEObject;
 				T result = caseMap(map);
 				if (result == null) result = caseWorldPart(map);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CleaningrobotsPackage.ROLE: {
+				Role role = (Role)theEObject;
+				T result = caseRole(role);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CleaningrobotsPackage.FOLLOWER_ROLE: {
+				FollowerRole followerRole = (FollowerRole)theEObject;
+				T result = caseFollowerRole(followerRole);
+				if (result == null) result = caseRole(followerRole);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case CleaningrobotsPackage.MASTER_ROLE: {
+				MasterRole masterRole = (MasterRole)theEObject;
+				T result = caseMasterRole(masterRole);
+				if (result == null) result = caseRole(masterRole);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -135,6 +167,81 @@ public class CleaningrobotsSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseMap(Map object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Robot Knowledge</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Robot Knowledge</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseRobotKnowledge(RobotKnowledge object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Position</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Position</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T casePosition(Position object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Role</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Role</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseRole(Role object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Follower Role</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Follower Role</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseFollowerRole(FollowerRole object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Master Role</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Master Role</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseMasterRole(MasterRole object) {
 		return null;
 	}
 

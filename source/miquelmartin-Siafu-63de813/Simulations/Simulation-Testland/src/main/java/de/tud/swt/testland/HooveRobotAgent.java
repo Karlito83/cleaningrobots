@@ -11,6 +11,7 @@ import de.tud.swt.cleaningrobots.goals.WlanActivateMasterPositionGoal;
 import de.tud.swt.cleaningrobots.hardware.Accu;
 import de.tud.swt.cleaningrobots.hardware.Hoover;
 import de.tud.swt.cleaningrobots.hardware.Motor;
+import de.tud.swt.cleaningrobots.hardware.Rechner;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
 
 public class HooveRobotAgent extends RobotAgent {
@@ -21,12 +22,12 @@ public class HooveRobotAgent extends RobotAgent {
 		siafuWorld = world;
 		cleaningRobot = new RobotCore(this, new AgentNavigationAdapter(this, siafuWorld), this, new Accu(0, 500)); //new Accu(0, 1000)
 		
+		cleaningRobot.addHardwareComponent(new Rechner());
 		cleaningRobot.addHardwareComponent(new Wlan());
 		cleaningRobot.addHardwareComponent(new Motor());
 		cleaningRobot.addHardwareComponent(new Hoover());
 		
-		cleaningRobot.isLoadStation = false;
-		cleaningRobot.calculateMaxMinEnergieConsumption();
+		System.out.println("LoadStation: " + cleaningRobot.isLoadStation());
 		
 		HooveLoadGoal hlg = new HooveLoadGoal(cleaningRobot);
 		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);

@@ -15,8 +15,12 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link cleaningrobots.Robot#getName <em>Name</em>}</li>
- *   <li>{@link cleaningrobots.Robot#getKnownStates <em>Known States</em>}</li>
  *   <li>{@link cleaningrobots.Robot#getWorld <em>World</em>}</li>
+ *   <li>{@link cleaningrobots.Robot#getDestination <em>Destination</em>}</li>
+ *   <li>{@link cleaningrobots.Robot#getComponents <em>Components</em>}</li>
+ *   <li>{@link cleaningrobots.Robot#getRoles <em>Roles</em>}</li>
+ *   <li>{@link cleaningrobots.Robot#getKnownStates <em>Known States</em>}</li>
+ *   <li>{@link cleaningrobots.Robot#getRobotKnowledge <em>Robot Knowledge</em>}</li>
  * </ul>
  * </p>
  *
@@ -62,7 +66,7 @@ public interface Robot extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Known States</em>' containment reference list.
 	 * @see cleaningrobots.CleaningrobotsPackage#getRobot_KnownStates()
-	 * @model containment="true" required="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<State> getKnownStates();
@@ -92,5 +96,79 @@ public interface Robot extends EObject {
 	 * @generated
 	 */
 	void setWorld(WorldPart value);
+
+	/**
+	 * Returns the value of the '<em><b>Destination</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Destination</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Destination</em>' reference.
+	 * @see #setDestination(Position)
+	 * @see cleaningrobots.CleaningrobotsPackage#getRobot_Destination()
+	 * @model
+	 * @generated
+	 */
+	Position getDestination();
+
+	/**
+	 * Sets the value of the '{@link cleaningrobots.Robot#getDestination <em>Destination</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Destination</em>' reference.
+	 * @see #getDestination()
+	 * @generated
+	 */
+	void setDestination(Position value);
+
+	/**
+	 * Returns the value of the '<em><b>Components</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.String}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Components</em>' attribute list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Components</em>' attribute list.
+	 * @see cleaningrobots.CleaningrobotsPackage#getRobot_Components()
+	 * @model
+	 * @generated
+	 */
+	EList<String> getComponents();
+
+	/**
+	 * Returns the value of the '<em><b>Roles</b></em>' reference list.
+	 * The list contents are of type {@link cleaningrobots.Role}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Roles</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Roles</em>' reference list.
+	 * @see cleaningrobots.CleaningrobotsPackage#getRobot_Roles()
+	 * @model
+	 * @generated
+	 */
+	EList<Role> getRoles();
+
+	/**
+	 * Returns the value of the '<em><b>Robot Knowledge</b></em>' reference list.
+	 * The list contents are of type {@link cleaningrobots.RobotKnowledge}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Robot Knowledge</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Robot Knowledge</em>' reference list.
+	 * @see cleaningrobots.CleaningrobotsPackage#getRobot_RobotKnowledge()
+	 * @model
+	 * @generated
+	 */
+	EList<RobotKnowledge> getRobotKnowledge();
 
 } // Robot

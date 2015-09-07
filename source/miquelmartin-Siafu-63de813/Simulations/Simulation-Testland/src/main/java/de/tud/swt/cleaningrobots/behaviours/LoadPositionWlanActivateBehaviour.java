@@ -36,7 +36,7 @@ public class LoadPositionWlanActivateBehaviour extends Behaviour {
 	@Override
 	public boolean action() throws Exception {
 		//if isLoading mache Wlan an
-		if (getRobot().getPosition().equals(getRobot().loadStationPosition))
+		if (getRobot().getPosition().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
 		{
 			if (!wlan.isActive())
 			{

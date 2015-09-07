@@ -6,14 +6,14 @@ import de.tud.swt.cleaningrobots.behaviours.WipeAroundBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.WipeBehaviour;
 import de.tud.swt.cleaningrobots.model.State;
 
-public class WipeLoadGoal extends SubGoal {
+public class WipeLoadGoal extends NonOptionalGoal {
 
 	private WipeBehaviour d;
 	
 	private final State STATE_WIPE = State.createState("Wipe");
 	
 	public WipeLoadGoal(RobotCore robot) {
-		super(robot, false);
+		super(robot);
 		
 		WipeAroundBehaviour s = new WipeAroundBehaviour(robot);
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
@@ -46,7 +46,7 @@ public class WipeLoadGoal extends SubGoal {
 	@Override
 	public boolean preCondition() {		
 		if (this.getRobotCore().getWorld().getNextUnknownFieldPosition() != null || 
-				this.getRobotCore().getWorld().getNextFieldByState(STATE_WIPE) != null)
+				this.getRobotCore().getWorld().getNextPassablePositionWithoutState(STATE_WIPE) != null)
 			return true;
 		return false;
 	}

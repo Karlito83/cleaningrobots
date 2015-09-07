@@ -27,7 +27,7 @@ public class MoveBehaviour extends Behaviour {
 		logger.trace("Entered Movebehaviour");
 		
 		//wenn er nicht am Ziel ist und nicht am Laden ist soll er laufen
-		if (!getRobot().isAtDestination() && !getRobot().isLoading){
+		if (!getRobot().getDestinationContainer().isAtDestination() && !getRobot().isLoading){
 			//start all hardwarecomponents if not active
 			for (HardwareComponent hard : d.getHcs())
 			{

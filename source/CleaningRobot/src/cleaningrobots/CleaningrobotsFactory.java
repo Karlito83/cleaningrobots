@@ -40,6 +40,42 @@ public interface CleaningrobotsFactory extends EFactory {
 	Map createMap();
 
 	/**
+	 * Returns a new object of class '<em>Robot Knowledge</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Robot Knowledge</em>'.
+	 * @generated
+	 */
+	RobotKnowledge createRobotKnowledge();
+
+	/**
+	 * Returns a new object of class '<em>Position</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Position</em>'.
+	 * @generated
+	 */
+	Position createPosition();
+
+	/**
+	 * Returns a new object of class '<em>Follower Role</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Follower Role</em>'.
+	 * @generated
+	 */
+	FollowerRole createFollowerRole();
+
+	/**
+	 * Returns a new object of class '<em>Master Role</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Master Role</em>'.
+	 * @generated
+	 */
+	MasterRole createMasterRole();
+
+	/**
 	 * Returns a new object of class '<em>Field</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

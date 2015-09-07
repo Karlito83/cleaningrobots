@@ -21,20 +21,20 @@ public class MasterGoal extends Goal {
 
 	@Override
 	public void run() {
-		boolean test = false;
+		//boolean test = false;
 		for (Goal goal : subGoals) {
 			goal.run();
-			if (goal.postCondition())
-				test = true;			
+			//if (goal.postCondition())
+			//	test = true;			
 		}		
-		if (test) {
+		/*if (test) {
 			List<Goal> copy = new ArrayList<Goal>(subGoals);
 			for (Goal goal : copy) {
 				if (goal.postCondition()) {
 					subGoals.remove(goal);
 				}
 			}
-		}
+		}*/
 	}
 
 	@Override

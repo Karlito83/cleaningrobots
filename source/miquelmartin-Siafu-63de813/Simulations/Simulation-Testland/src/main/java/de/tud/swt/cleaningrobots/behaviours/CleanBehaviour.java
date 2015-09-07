@@ -20,7 +20,7 @@ public class CleanBehaviour extends Behaviour {
 	public boolean action() throws Exception {
 		boolean result = false;
 		World RobotsWorld = getRobot().getWorld();
-		Position nextDirtyField = getRobot().getWorld().getNextFieldByState(
+		Position nextDirtyField = getRobot().getWorld().getNextPassablePositionWithoutState(
 				CONST_STATE_DIRTY);
 		if (nextDirtyField == null) {
 			result = false;

@@ -38,15 +38,15 @@ public class HooveBehaviour extends Behaviour {
 		//Prüfe ob Hardwarecorrect oder entferne es vorher schon wieder
 		logger.trace("Entered HooveBehaviour.action().");
 		
-		if(getRobot().isAtDestination()){
+		if(getRobot().getDestinationContainer().isAtDestination()){
 			//System.out.println("Hoove at Destination");
-			long startTime = System.nanoTime();
-			Position nextNotHoovePosition = this.getRobot().getWorld().getNextFieldByState(STATE_HOOVE); 
-			long endTime = System.nanoTime();
-			System.out.println("NextNotHoovePosition: " + (endTime - startTime));
+			//long startTime = System.nanoTime();
+			Position nextNotHoovePosition = this.getRobot().getWorld().getNextPassablePositionWithoutState(STATE_HOOVE); 
+			//long endTime = System.nanoTime();
+			//System.out.println("NextNotHoovePosition: " + (endTime - startTime));
 			//System.out.println("NextNotHoovePosition: " + nextNotHoovePosition);			
 			if(nextNotHoovePosition != null){
-				getRobot().setDestination(nextNotHoovePosition);
+				getRobot().getDestinationContainer().setDestination(nextNotHoovePosition);
 				
 				//wenn accu vorhanden dann muss ladestatus geprüft werden Prüfe,
 				//ob ziel vorher erreicht wird oder ob accu beim fahren leer wird
@@ -56,20 +56,20 @@ public class HooveBehaviour extends Behaviour {
 						return false;
 					
 					//Entfernung Robot bis Ziel
-					int sizeOne = getRobot().getPath(getRobot().getPosition(), nextNotHoovePosition).size();
+					int sizeOne = getRobot().getDestinationContainer().getPathFromTo(getRobot().getPosition(), nextNotHoovePosition).size();
 					//Entfernung Robot bis Ladestation
 					//int sizeTwo = getRobot().getPath(getRobot().getPosition(), getRobot().loadStationPosition).size();
 					//Entfernung Ziel bis Ladestation
-					int sizeThree = getRobot().getPath(nextNotHoovePosition, getRobot().loadStationPosition).size();
+					int sizeThree = getRobot().getDestinationContainer().getPathFromTo(nextNotHoovePosition, getRobot().getDestinationContainer().getLoadStationPosition()).size();
 					int size = sizeOne + sizeThree;
 					size +=2;
 					//Wenn akku bis zu Ziel nicht mehr 
 					if (size * getRobot().getActualEnergie() > getRobot().getAccu().getRestKWh())
 					{
 						//Robot schafft Weg nicht also Fahre zurück zu Ladestation
-						getRobot().setDestinationLoadStation();
+						getRobot().getDestinationContainer().setDestinationLoadStation();
 						//
-						if (getRobot().loadStationPosition.equals(getRobot().getPosition()))
+						if (getRobot().getDestinationContainer().getLoadStationPosition().equals(getRobot().getPosition()))
 						{
 							System.out.println("Robot erreicht keine Hooveposition mehr obwohl diese noch existiert!");
 							finishHooving = true;
@@ -85,17 +85,17 @@ public class HooveBehaviour extends Behaviour {
 				if (nextUnknownPosition == null)
 				{
 					//finish back to load station
-					if(!getRobot().getDestination().equals(getRobot().loadStationPosition))
+					if(!getRobot().getDestinationContainer().getDestination().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
 					{
 						//Ist an Ladestation angekommen muss geladen werden
-						getRobot().setDestinationLoadStation();
+						getRobot().getDestinationContainer().setDestinationLoadStation();
 					} else {
 						//is at loadstation
 						finishHooving = true;
 						return true;
 					}
 				} else {
-					getRobot().setDestinationLoadStation();
+					getRobot().getDestinationContainer().setDestinationLoadStation();
 					return false;
 				}
 			}

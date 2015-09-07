@@ -1,5 +1,7 @@
 package de.tud.swt.cleaningrobots.model;
 
+import cleaningrobots.CleaningrobotsFactory;
+
 public class Position {
 	private int x;
 	private int y;
@@ -35,5 +37,16 @@ public class Position {
 			result = (tmp.getX()==x && tmp.getY()==y);
 		}
 		return result;
+	}
+	
+	public cleaningrobots.Position exportModel() {
+		cleaningrobots.Position modelPosition = null;
+		
+		modelPosition = CleaningrobotsFactory.eINSTANCE.createPosition();
+		
+		modelPosition.setXpos(x);
+		modelPosition.setYpos(y);
+		
+		return modelPosition;
 	}
 }

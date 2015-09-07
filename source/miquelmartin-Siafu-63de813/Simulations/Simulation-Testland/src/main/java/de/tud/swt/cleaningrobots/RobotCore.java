@@ -15,27 +15,26 @@ import de.tud.swt.cleaningrobots.goals.Goal;
 import de.tud.swt.cleaningrobots.hardware.Accu;
 import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
+import de.tud.swt.cleaningrobots.measure.RobotMeasurement;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.model.World;
+import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
 public class RobotCore extends Robot {
 	
+	private RobotMeasurement measure;
+	
 	private List<RobotRole> roles;
+	private List<RobotKnowledge> knowledge;
 
 	private final Logger logger = LogManager.getRootLogger();
 	
 	private String name;
 	private World world;
 	
-	private double energieTest;
 	private Accu accu;
-	
-	//Loadsstation info
-	public boolean isLoadStation;
-	public boolean isLoading;
-	public Position loadStationPosition;
-	
+		
 	private double maxEnergieNeed;
 	private double minEnergieNeed;
 	private double actualEnergieNeed;
@@ -49,10 +48,16 @@ public class RobotCore extends Robot {
 	private INavigationController navigationController;
 	private ICommunicationProvider communicationProvider;
 	
-	private List<Position> path;
-	private Position destination;
-
+	private DestinationContainer destinationContainer;
+	
 	private static int counter = 1; // counter for the standard-name
+	
+	//ob es Ladestation ist
+	private boolean loadStation;
+	//sagt ob er gerade lädt
+	public boolean isLoading;
+	
+	private boolean shutDown;
 
 	public RobotCore(IPositionProvider positionProvider,
 			INavigationController navigationController,
@@ -66,40 +71,53 @@ public class RobotCore extends Robot {
 			ICommunicationProvider communicationProvider, Accu accu) {
 
 		logger.info("Initializing robot \"" + name + "\"");
-
+		
 		this.name = name;
 		this.world = new World(this);
+		this.measure = new RobotMeasurement(name);
 		
 		//if accu==null the you do not drive to Loadstation
 		this.accu = accu;
 		
-		energieTest = 0.0;
+		this.loadStation = false;
+		this.isLoading = false;
+		this.shutDown = false;
 		
 		this.roles = new ArrayList<RobotRole>();
 		this.hardwarecomponents = new LinkedList<HardwareComponent>();
 		this.behaviours = new LinkedList<Behaviour>();
 		this.goals = new LinkedList<Goal>();
 		this.supportedStates = new HashSet<State>();
+		this.knowledge = new LinkedList<RobotKnowledge>();
 		
 		this.navigationController = navigationController;
 		this.communicationProvider = communicationProvider;
 		this.positionProvider = positionProvider;
+		this.destinationContainer = new DestinationContainer(this);
 		
-		this.path = null;
-		this.destination = null;
-		
-		isLoading = false;
-		loadStationPosition = this.getPosition();
-		//System.out.println(loadStationPosition);
-		
-		//setze Destination informationen
-		loadDestination = false;
-		destinationSet = false;
-		
+	}
+	
+	public boolean isShutDown () {
+		return this.shutDown;
+	}
+	
+	public boolean isLoadStation () {
+		return this.loadStation;
+	}
+	
+	public DestinationContainer getDestinationContainer () {
+		return this.destinationContainer;
+	}
+	
+	public RobotMeasurement getMeasurement () {
+		return this.measure;
 	}
 	
 	//action operactions
 	public boolean action() {
+				
+		long startTime = System.nanoTime();
+		
 		//boolean result;
 		try {
 			//executeBehaviours();
@@ -108,6 +126,13 @@ public class RobotCore extends Robot {
 		} catch (Exception e) {
 			logger.error(this + ": Error while action().", e);
 		}
+		
+		long endTime = System.nanoTime();
+		
+		long time = endTime - startTime;
+		measure.completeTime += time;
+		measure.timeProTick.add((double) time);
+		
 		for (Goal goal : goals) {
 			//wenn nicht nur noch optionale Goals da sind ist er nicht fertig
 			if (!goal.isOptional())
@@ -130,6 +155,17 @@ public class RobotCore extends Robot {
 					goals.remove(goal);
 				}
 			}
+			//wenn keine Ziele mehr mache alle Hardwarecomponenten aus
+			if (goals.isEmpty())
+			{
+				System.out.println("Alle HardwareComponenten ausgeschaltet von " + this.getName());
+				for (HardwareComponent hc : hardwarecomponents) {
+					if (hc.isActive())
+						hc.changeActive();
+				}
+				shutDown = true;
+			}
+			
 		}
 	}
 	
@@ -141,10 +177,8 @@ public class RobotCore extends Robot {
 			}
 		} catch (Exception e) {
 			logger.error(
-					"There is no Exception handling defined if a Behaviour goes wrong...",
-					e);
-		}
-		
+					"There is no Exception handling defined if a Behaviour goes wrong...",e);
+		}		
 	}
 	
 	//Get Energie values of the robot
@@ -160,19 +194,23 @@ public class RobotCore extends Robot {
 		return this.actualEnergieNeed;
 	}
 	
-	public void getEnergieConsumption() {
+	private void getEnergieConsumption() {
 		actualEnergieNeed = 0.0;
 		for (HardwareComponent hard : hardwarecomponents) {
 			actualEnergieNeed += hard.getActualEnergie();
 		}
 		if (accu != null) {
 			accu.use(actualEnergieNeed);
-			System.out.println("AktuelleKWh: " + accu.getActualKWh());
+			//System.out.println("AktuelleKWh: " + accu.getActualKWh());
 		}
+		//Make Measurement hier
+		this.measure.completeEnergie += actualEnergieNeed;
+		this.measure.energieProTick.add(actualEnergieNeed);
+		this.measure.completeTicks += 1;
 		//energieTest += actualEnergieNeed;
 	}
 	
-	public void calculateMaxMinEnergieConsumption () {
+	private void calculateMaxMinEnergieConsumption () {
 		minEnergieNeed = 0.0;
 		maxEnergieNeed = 0.0;
 		for (HardwareComponent hard : hardwarecomponents) {
@@ -208,18 +246,14 @@ public class RobotCore extends Robot {
 				return true;
 		}
 		return false;
-	}		
-
-	/***
-	 * Adds a new {@link Behaviour} to the {@link List} of behaviours This
-	 * function behaves like {@link List#add(int, Object)}.
-	 * 
-	 * @param index
-	 * @param behaviour
-	 */
-	public void addBehaviour(int index, Behaviour behaviour) {
-		this.behaviours.add(index, behaviour);
-		recalculateSupportedStates();
+	}
+	
+	public boolean hasHardwareComponent (Components c) {
+		for (HardwareComponent hard : hardwarecomponents) {
+			if (hard.getComponents() == c)
+				return true;
+		}
+		return false;
 	}
 	
 	/***
@@ -255,10 +289,10 @@ public class RobotCore extends Robot {
 
 	public void addHardwareComponent(HardwareComponent component) {
 		hardwarecomponents.add(component);
-	}
-
-	public Position getDestination() {
-		return this.destination;
+		if (component.getComponents() == Components.LOADSTATION)
+			this.loadStation = true;
+		//Min und Max Engergie aufgrund von neuer Hardwarecomponente bestimmen
+		calculateMaxMinEnergieConsumption();
 	}
 
 	public Position getPosition() {
@@ -279,8 +313,7 @@ public class RobotCore extends Robot {
 					supportedStates.add(state);
 			}
 		}
-	}
-	
+	}	
 
 	public Collection<State> getSupportedStates() {
 		return supportedStates;
@@ -288,118 +321,19 @@ public class RobotCore extends Robot {
 
 	public World getWorld() {
 		return this.world;
-	}	
-	
-	private boolean loadDestination;
-	private boolean destinationSet;
-	
-	public boolean isLoadDestination () {
-		return loadDestination;
-	}
-	
-	public boolean isDestinationSet () {
-		return destinationSet;
-	}
-	
-	public void setDestinationLoadStation () {
-		logger.debug("Set destination of " + this + " to LoadStation Position.");		
-		loadDestination = true;
-		this.destination = loadStationPosition;
-		refreshPath();
-	}
+	}		
 
-	/***
-	 * Sets the destination of the robot
-	 * 
-	 * @param destination
-	 *            If null, the destination will be reset and it is assumed, that
-	 *            the robot is at the destination
-	 */
-	public void setDestination(Position destination) {
-		logger.debug("Set destination of " + this + " to " + destination + ".");
-		loadDestination = false;
-		if (destination == null) {
-			this.destination = null;
-			this.path = null;
-		} else {
-			this.destinationSet = true;
-			this.destination = destination;
-			refreshPath();
-		}
-	}
-
-	private void refreshPath() {
-		this.path = this.world.getPath(destination);
-	}
-	
-	public List<Position> getPath (Position start, Position dest) {
-		return this.world.getPathFromTo(start, dest);
-	}
-	
-	public boolean isAtLoadDestination () {
-		return path == null && loadDestination;
-	}
-
-	public boolean isAtDestination() {
-		return path == null;
-	}
-
-	public void moveTowardsDestination() {		
-		if (this.path != null) {
-			//sollte nicht auftreten
-			if (this.path.size() == 0) {
-				//refreshPath();
-				System.err.println(this.destination);
-				path = null;
-				return;
-			}
-			Position nextPosition = this.path.get(0);
-			if (world.isPassable(nextPosition)) {
-				path.remove(nextPosition);
-				if (nextPosition.equals(destination)) {
-					//an destination angekommen
-					this.destinationSet = false;
-					destination = null;
-					path = null;
-				}
-				this.setPosition(nextPosition);
-			} else {
-				//da sich welt nicht verändert sollte das nicht vorkommen
-				refreshPath();
-			}
-		} else {
-			logger.warn(getName()
-					+ ": can't move towards destination because no destination given.");
-		}
+	public void moveTowardsDestination() {	
+		this.destinationContainer.moveTowardsDestination();
 	}
 
 	/**
 	 * Set the Position of the robot
 	 * @param position
 	 */
-	private void setPosition(Position position) {
+	public void setPosition(Position position) {
 		logger.debug("Set new position of " + this + " to " + position + ".");
 		this.navigationController.setPosition(position);
-	}
-
-	public cleaningrobots.Robot exportModel() {
-		// TODO: Consider caching
-		cleaningrobots.Robot result = null;
-
-		try {
-			cleaningrobots.Robot robot = CleaningrobotsFactory.eINSTANCE
-					.createRobot();
-			robot.setWorld(world.exportModel());
-			robot.setName(getName());
-			for (State state : getSupportedStates()) {
-				robot.getKnownStates().add(state.exportModel());
-			}
-			result = robot;
-		} catch (Exception e) {
-			logger.error("An error occured while exporting the model", e);
-		}
-
-		return result;
 	}
 
 	public void setName(String name) {
@@ -407,7 +341,7 @@ public class RobotCore extends Robot {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 	
 	@Override
@@ -416,7 +350,11 @@ public class RobotCore extends Robot {
 	}
 	
 	public List<RobotRole> getRoles () {
-		return roles;
+		return this.roles;
+	}
+	
+	public List<RobotKnowledge> getKnowledge () {
+		return this.knowledge;
 	}
 	
 	//Funktionalität von Robot
@@ -442,6 +380,59 @@ public class RobotCore extends Robot {
 			RobotCore tmp = (RobotCore)obj;
 			result = tmp.getName().equals(this.getName());
 		}
+		return result;
+	}
+
+	public cleaningrobots.Robot exportModel(ImportExportConfiguration config) {
+		// TODO: Consider caching
+		cleaningrobots.Robot result = null;
+
+		try {
+			cleaningrobots.Robot robot = CleaningrobotsFactory.eINSTANCE.createRobot();
+			robot.setName(getName());
+			if (config.world)
+			{
+				robot.setWorld(world.exportModel(config));
+			}
+			if (config.knowledge)
+			{
+				if (destinationContainer.getDestination() != null)
+					robot.setDestination(destinationContainer.getDestination().exportModel());
+				else
+					robot.setDestination(null);
+				for (HardwareComponent hc : getHardwarecomponents()) {
+					robot.getComponents().add(hc.getName());
+				}
+				for (RobotKnowledge rk : knowledge) {
+					robot.getRobotKnowledge().add(rk.exportModel());
+				}
+				//roles noch hinzufügen
+				for (RobotRole rr : getRoles()) {
+					if (rr instanceof MasterRole) {
+						cleaningrobots.MasterRole master = CleaningrobotsFactory.eINSTANCE.createMasterRole();
+						for (FollowerRole fr : ((MasterRole)rr).followers) {
+							master.getFollowerNames().add(fr.getRobotCore().getName());
+						}
+						robot.getRoles().add(master);
+					} else {
+						cleaningrobots.FollowerRole follower = CleaningrobotsFactory.eINSTANCE.createFollowerRole();
+						follower.setMasterName(((FollowerRole)rr).master.getRobotCore().getName());
+						robot.getRoles().add(follower);
+					}
+				}
+			}
+			if (config.knownstates)
+			{
+				for (State state : getSupportedStates()) {
+					robot.getKnownStates().add(state.exportModel());
+				}
+			}
+			
+			result = robot;
+		} catch (Exception e) {
+			logger.error("An error occured while exporting the model", e);
+		}
+
 		return result;
 	}
 }

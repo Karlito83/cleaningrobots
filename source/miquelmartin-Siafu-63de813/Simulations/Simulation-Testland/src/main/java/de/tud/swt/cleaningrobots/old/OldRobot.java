@@ -13,7 +13,6 @@ import org.eclipse.emf.ecore.EObject;
 import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.WorldPart;
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.EMFUtils;
 import de.tud.swt.cleaningrobots.ICommunicationProvider;
 import de.tud.swt.cleaningrobots.INavigationController;
 import de.tud.swt.cleaningrobots.IPositionProvider;
@@ -22,6 +21,8 @@ import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.model.World;
+import de.tud.swt.cleaningrobots.util.EMFUtils;
+import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
 public class OldRobot {
 
@@ -109,7 +110,7 @@ private final Logger logger = LogManager.getRootLogger();
 		List<RobotCore> nearRobots = this.communicationProvider.getNearRobots(10);
 		nearRobots.remove(this);
 		for (RobotCore nearRobot : nearRobots) {
-			EObject model = nearRobot.exportModel();
+			EObject model = nearRobot.exportModel(new ImportExportConfiguration());
 			importModel(model);
 		}
 		
@@ -129,7 +130,7 @@ private final Logger logger = LogManager.getRootLogger();
 					.getFields()) {
 				boolean isBlocked = EMFUtils.listContains(modelField
 						.getStates(), blockedState);
-				Field f = new Field(modelField.getXpos(), modelField.getYpos(), !isBlocked);
+				Field f = new Field(modelField.getPos().getXpos(), modelField.getPos().getYpos(), !isBlocked);
 				for (cleaningrobots.State modelState : modelField.getStates()) {
 					State state = State.createState(modelState.getName());
 					f.addState(state);
@@ -303,7 +304,7 @@ private final Logger logger = LogManager.getRootLogger();
 		try {
 			cleaningrobots.Robot robot = CleaningrobotsFactory.eINSTANCE
 					.createRobot();
-			robot.setWorld(world.exportModel());
+			//robot.setWorld(world.exportModel());
 			robot.setName(getName());
 			for (State state : getSupportedStates()) {
 				robot.getKnownStates().add(state.exportModel());

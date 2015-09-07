@@ -6,13 +6,13 @@ import de.tud.swt.cleaningrobots.behaviours.HooveBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
 import de.tud.swt.cleaningrobots.model.State;
 
-public class HooveLoadGoal extends SubGoal {
+public class HooveLoadGoal extends NonOptionalGoal {
 
 	private HooveBehaviour d;
 	private final State STATE_HOOVE = State.createState("Hoove");
 	
 	public HooveLoadGoal(RobotCore robot) {
-		super(robot, false);
+		super(robot);
 		
 		HooveAroundBehaviour s = new HooveAroundBehaviour(robot);
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
@@ -45,7 +45,7 @@ public class HooveLoadGoal extends SubGoal {
 	@Override
 	public boolean preCondition() {		
 		if (this.getRobotCore().getWorld().getNextUnknownFieldPosition() != null || 
-				this.getRobotCore().getWorld().getNextFieldByState(STATE_HOOVE) != null)
+				this.getRobotCore().getWorld().getNextPassablePositionWithoutState(STATE_HOOVE) != null)
 			return true;
 		return false;
 	}

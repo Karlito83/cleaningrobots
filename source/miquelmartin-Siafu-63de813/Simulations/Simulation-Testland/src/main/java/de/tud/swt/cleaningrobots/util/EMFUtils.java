@@ -1,4 +1,4 @@
-package de.tud.swt.cleaningrobots;
+package de.tud.swt.cleaningrobots.util;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;

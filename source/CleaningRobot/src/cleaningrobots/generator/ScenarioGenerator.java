@@ -1,7 +1,6 @@
 package cleaningrobots.generator;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.Field;
 import cleaningrobots.Map;
+import cleaningrobots.Position;
 import cleaningrobots.Robot;
 import cleaningrobots.State;
 
@@ -87,8 +87,10 @@ public class ScenarioGenerator {
 			for (int x = startX; x <= stopX; x++) {
 				for (int y = startY; y <= stopY; y++) {
 					Field f = CleaningrobotsFactory.eINSTANCE.createField();
-					f.setXpos(x);
-					f.setYpos(y);
+					Position p = CleaningrobotsFactory.eINSTANCE.createPosition();
+					p.setXpos(x);
+					p.setYpos(y);
+					f.setPos(p);//f.setXpos(x);f.setYpos(y);
 					if (fullMap[x][y])
 						f.getStates().add(a);
 					else

@@ -11,12 +11,12 @@ import de.tud.swt.cleaningrobots.behaviours.SeeAroundAtDestinationBehaviour;
  * @author ChrissiMobil
  *
  */
-public class ExploreLoadGoal extends SubGoal {
+public class ExploreLoadGoal extends NonOptionalGoal {
 
 	private DiscoverBehaviour d;
 	
 	public ExploreLoadGoal(RobotCore robot) {
-		super(robot, false);
+		super(robot);
 		
 		SeeAroundAtDestinationBehaviour s = new SeeAroundAtDestinationBehaviour(robot);
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());

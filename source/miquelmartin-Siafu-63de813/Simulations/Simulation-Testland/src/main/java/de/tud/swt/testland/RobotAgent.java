@@ -30,11 +30,11 @@ public class RobotAgent extends Agent implements IPositionProvider, ICommunicati
 	
 	@Override
 	public void wander() {
-		finish = cleaningRobot.action();
+		this.finish = this.cleaningRobot.action();
 	}
 	
 	public boolean isFinish () {
-		return finish;
+		return this.finish;
 	}
 
 	public RobotCore getRobot() {
