@@ -29,6 +29,14 @@ public class MergeAll {
 		
 	}*/
 	
+	public void newInformationMeasure (String name) {
+		em = new ExchangeMeasurement(name, "New Info", Variables.iteration);
+		em.addIntegerNumber(1);
+		em.addStringNumber(1);
+		em.addStringByteNumber(name.getBytes().length);
+		Variables.exchange.add(em);
+	}
+	
 	public void importAllModel(EObject model, RobotCore importcore, ImportExportConfiguration config) {
 		if (model instanceof cleaningrobots.Robot) {
 			logger.trace("importing model " + model);
@@ -41,80 +49,61 @@ public class MergeAll {
 			if (config.knowledge)
 			{
 				//alls robotknowledges und eigene Daten durchlaufen und einfügen
-				for (cleaningrobots.RobotKnowledge rk : robot.getRobotKnowledge()) {
-					for (RobotKnowledge hisRk : importcore.getKnowledge()) {
-						if (rk.getName().equals(hisRk.getName())) {
-							//Vergleiche beide RobotKnowledges miteinander
-							if (hisRk.getLastArrange() < rk.getLastArrange()) {
-								//anderer Robot hat ihn als letztes gesehen also aktualisiere deine Daten
-								hisRk.setLastArrange(rk.getLastArrange());
-								em.addIntegerNumber(1);
-								Position dest = new Position(rk.getDestination().getXpos(), rk.getDestination().getYpos());
-								hisRk.setLastDestination(dest);
-								em.addIntegerNumber(2);
-								hisRk.setComponents(rk.getComponents());
-								for (String s : rk.getComponents()) {
-									em.addStringByteNumber(s.getBytes().length);
-								}
-								em.addStringNumber(rk.getComponents().size());
-								hisRk.setRoles(rk.getRoles());
-								for (cleaningrobots.Role r : rk.getRoles()) {
-									if (r instanceof cleaningrobots.MasterRole) {
-										cleaningrobots.MasterRole m = (cleaningrobots.MasterRole) r;
-										for (String s : m.getFollowerNames())
-											em.addStringByteNumber(s.getBytes().length);
-										em.addStringNumber(m.getFollowerNames().size());
-									} else {
-										cleaningrobots.FollowerRole f = (cleaningrobots.FollowerRole) r;
-										em.addStringNumber(1);
-										em.addStringByteNumber(f.getMasterName().getBytes().length);
-									}
-								}
-								List<State> knowns = new LinkedList<State>();
-								for (cleaningrobots.State s : rk.getKnowStates()) {
-									State st = State.createState(s.getName());
-									knowns.add(st);
-									em.addStringByteNumber(s.getName().getBytes().length);
-									em.addStringNumber(1);
-								}
-								hisRk.setKnownStates(knowns);
-							}
-						}
-						if (hisRk.getName().equals(robot.getName())) {
-							//Füge die neuen Information vom Robot ein
-							hisRk.setLastArrange(Variables.iteration);
-							em.addIntegerNumber(1);
-							Position dest = new Position(robot.getDestination().getXpos(), robot.getDestination().getYpos());
-							hisRk.setLastDestination(dest);
-							em.addIntegerNumber(2);
-							hisRk.setComponents(robot.getComponents());
-							for (String s : rk.getComponents()) {
-								em.addStringByteNumber(s.getBytes().length);
-							}
-							em.addStringNumber(rk.getComponents().size());
-							hisRk.setRoles(robot.getRoles());
-							for (cleaningrobots.Role r : rk.getRoles()) {
-								if (r instanceof cleaningrobots.MasterRole) {
-									cleaningrobots.MasterRole m = (cleaningrobots.MasterRole) r;
-									for (String s : m.getFollowerNames())
-										em.addStringByteNumber(s.getBytes().length);
-									em.addStringNumber(m.getFollowerNames().size());
-								} else {
-									cleaningrobots.FollowerRole f = (cleaningrobots.FollowerRole) r;
-									em.addStringNumber(1);
-									em.addStringByteNumber(f.getMasterName().getBytes().length);
-								}
-							}
-							List<State> knowns = new LinkedList<State>();
-							for (cleaningrobots.State s : robot.getKnownStates()) {
-								State st = State.createState(s.getName());
-								knowns.add(st);
-								em.addStringByteNumber(s.getName().getBytes().length);
-								em.addStringNumber(1);
-							}
-							hisRk.setKnownStates(knowns);						
+				for (cleaningrobots.RobotKnowledge exportRk : robot.getRobotKnowledge()) {
+					boolean isIn = false;
+					for (RobotKnowledge importRk : importcore.getKnowledge()) {
+						if (exportRk.getName().equals(importRk.getName())) {
+							isIn = true;
+							importRobotKnowledge(importRk, exportRk);							
 						}
 					}
+					if (!isIn) {
+						RobotKnowledge rk = new RobotKnowledge(exportRk.getName());
+						importcore.getKnowledge().add(rk);
+						importRobotKnowledge(rk, exportRk);
+					}
+				}
+				boolean isIn = false;
+				for (RobotKnowledge importRk : importcore.getKnowledge()) {
+					if (importRk.getName().equals(robot.getName())) {
+						isIn = true;			
+						importRobotKnowledge(importRk, robot);
+					}
+				}
+				if (!isIn) {
+					RobotKnowledge rk = new RobotKnowledge(robot.getName());
+					importcore.getKnowledge().add(rk);
+					importRobotKnowledge(rk, robot);
+				}
+			}
+			if (config.knownstates && !config.knowledge)
+			{
+				boolean isIn = false;
+				for (RobotKnowledge hisRk : importcore.getKnowledge()) {					
+					if (hisRk.getName().equals(robot.getName())) {
+						isIn = true;
+						//Füge die neuen Information vom Robot ein
+						List<State> knowns = new LinkedList<State>();
+						for (cleaningrobots.State s : robot.getKnownStates()) {
+							State st = State.createState(s.getName());
+							knowns.add(st);
+							em.addStringByteNumberKnowledge(s.getName().getBytes().length);
+							em.addStringNumberKnowledge(1);
+						}
+						hisRk.setKnownStates(knowns);						
+					}
+				}
+				if (!isIn) {
+					RobotKnowledge rk = new RobotKnowledge(robot.getName());
+					List<State> knowns = new LinkedList<State>();
+					for (cleaningrobots.State s : robot.getKnownStates()) {
+						State st = State.createState(s.getName());
+						knowns.add(st);
+						em.addStringByteNumberKnowledge(s.getName().getBytes().length);
+						em.addStringNumberKnowledge(1);
+					}
+					rk.setKnownStates(knowns);
+					importcore.getKnowledge().add(rk);
 				}
 			}
 			if (config.world)
@@ -129,22 +118,118 @@ public class MergeAll {
 		}
 	}
 	
+	private void importRobotKnowledge (RobotKnowledge importRk, cleaningrobots.Robot exportR) {
+		//Füge die neuen Information vom Robot ein
+		em.addStringByteNumberKnowledge(exportR.getName().getBytes().length);
+		em.addStringNumberKnowledge(1);
+		importRk.setLastArrange(Variables.iteration);
+		em.addIntegerNumberKnowledge(1);
+		if (exportR.getDestination() != null) {
+			Position dest = new Position(exportR.getDestination().getXpos(), exportR.getDestination().getYpos());
+			importRk.setLastDestination(dest);
+			em.addIntegerNumberKnowledge(2);
+		}
+		importRk.setComponents(exportR.getComponents());
+		for (String s : exportR.getComponents()) {
+			em.addStringByteNumberKnowledge(s.getBytes().length);
+		}
+		em.addStringNumberKnowledge(exportR.getComponents().size());
+		importRk.setRoles(exportR.getRoles());
+		for (cleaningrobots.Role r : exportR.getRoles()) {
+			if (r instanceof cleaningrobots.MasterRole) {
+				cleaningrobots.MasterRole m = (cleaningrobots.MasterRole) r;
+				for (String s : m.getFollowerNames())
+					em.addStringByteNumberKnowledge(s.getBytes().length);
+				em.addStringNumberKnowledge(m.getFollowerNames().size());
+			} else {
+				cleaningrobots.FollowerRole f = (cleaningrobots.FollowerRole) r;
+				em.addStringNumberKnowledge(1);
+				em.addStringByteNumberKnowledge(f.getMasterName().getBytes().length);
+			}
+		}
+		List<State> knowns = new LinkedList<State>();
+		for (cleaningrobots.State s : exportR.getKnownStates()) {
+			State st = State.createState(s.getName());
+			knowns.add(st);
+			em.addStringByteNumberKnowledge(s.getName().getBytes().length);
+			em.addStringNumberKnowledge(1);
+		}
+		importRk.setKnownStates(knowns);	
+	}
+	
+	private void importRobotKnowledge (RobotKnowledge importRk, cleaningrobots.RobotKnowledge exportRk) {		
+		if (importRk.getLastArrange() < exportRk.getLastArrange()) {
+			em.addStringByteNumberKnowledge(exportRk.getName().getBytes().length);
+			em.addStringNumberKnowledge(1);
+			//anderer Robot hat ihn als letztes gesehen also aktualisiere deine Daten
+			importRk.setLastArrange(exportRk.getLastArrange());
+			em.addIntegerNumberKnowledge(1);
+			if (exportRk.getDestination() != null) {
+				Position dest = new Position(exportRk.getDestination().getXpos(), exportRk.getDestination().getYpos());
+				importRk.setLastDestination(dest);			
+				em.addIntegerNumberKnowledge(2);
+			}
+			importRk.setComponents(exportRk.getComponents());
+			for (String s : exportRk.getComponents()) {
+				em.addStringByteNumberKnowledge(s.getBytes().length);
+			}
+			em.addStringNumberKnowledge(exportRk.getComponents().size());
+			importRk.setRoles(exportRk.getRoles());
+			for (cleaningrobots.Role r : exportRk.getRoles()) {
+				if (r instanceof cleaningrobots.MasterRole) {
+					cleaningrobots.MasterRole m = (cleaningrobots.MasterRole) r;
+					for (String s : m.getFollowerNames())
+						em.addStringByteNumberKnowledge(s.getBytes().length);
+					em.addStringNumberKnowledge(m.getFollowerNames().size());
+				} else {
+					cleaningrobots.FollowerRole f = (cleaningrobots.FollowerRole) r;
+					em.addStringNumberKnowledge(1);
+					em.addStringByteNumberKnowledge(f.getMasterName().getBytes().length);
+				}
+			}
+			List<State> knowns = new LinkedList<State>();
+			for (cleaningrobots.State s : exportRk.getKnowStates()) {
+				State st = State.createState(s.getName());
+				knowns.add(st);
+				em.addStringByteNumberKnowledge(s.getName().getBytes().length);
+				em.addStringNumberKnowledge(1);
+			}
+			importRk.setKnownStates(knowns);
+		}
+	}
+	
 	private void importFieldsFromWorldModel(cleaningrobots.WorldPart worldPart, RobotCore importcore) {
 		// Maybe an arrayList is better here?
 		if (worldPart instanceof cleaningrobots.Map) {
 			//x und yDim
 			em.addIntegerNumber(2);
-			cleaningrobots.State blockedState = CleaningrobotsFactory.eINSTANCE
-					.createState();
+			cleaningrobots.State blockedState = CleaningrobotsFactory.eINSTANCE.createState();
+			//cleaningrobots.State freeState = CleaningrobotsFactory.eINSTANCE.createState();
 			//Search blockstate for isPassable value of field 
 			blockedState.setName("Blocked");
+			
+			for (cleaningrobots.State worldState : worldPart.getWorldStates()) {
+				State state = State.createState(worldState.getName());
+				importcore.getWorld().addWorldState(state);
+				em.addStringByteNumber(worldState.getName().getBytes().length);
+				em.addStringNumber(1);
+			}
+			
+			//freeState.setName("Free");
 			for (cleaningrobots.Field modelField : ((cleaningrobots.Map) worldPart)
 					.getFields()) {
 				//blockstate because of its passable
-				boolean isBlocked = EMFUtils.listContains(modelField
-						.getStates(), blockedState);
+				boolean isBlocked = EMFUtils.listContains(modelField.getStates(), blockedState);
+				//boolean isFree = EMFUtils.listContains(modelField.getStates(), freeState);
 				//test about the supported states of the new robot
 				//core is the new robot
+				/*boolean passable;
+				if (isBlocked) {
+					passable = false;
+				}
+				if (isFree) {
+					passable = true;
+				}*/
 				Field f = new Field(modelField.getPos().getXpos(), modelField.getPos().getYpos(), !isBlocked);
 				for (cleaningrobots.State modelState : modelField.getStates()) {
 					State state = State.createState(modelState.getName());

@@ -236,9 +236,9 @@ public class RobotCore extends Robot {
 		return this.hardwarecomponents;
 	}
 	
-	public List<Goal> getGoals () {
+	/*public List<Goal> getGoals () {
 		return this.goals;
-	}
+	}*/
 	
 	public boolean hasActiveHardwareComponent (Components c) {
 		for (HardwareComponent hard : hardwarecomponents) {
@@ -282,7 +282,7 @@ public class RobotCore extends Robot {
 	}
 	
 	public boolean removeGoal (Goal goal) {
-		boolean result = this.removeGoal(goal);
+		boolean result = this.goals.remove(goal);
 		recalculateSupportedStates();
 		return result;
 	}
@@ -303,14 +303,16 @@ public class RobotCore extends Robot {
 		supportedStates.clear();
 		for (Goal goal : goals) {
 			for (State state : goal.getSupportedStates()) {
-				if (!supportedStates.contains(state))
-					supportedStates.add(state);
+				supportedStates.add(state);
+				//if (!supportedStates.contains(state))
+				//	supportedStates.add(state);
 			}
 		}
 		for (Behaviour behavior : behaviours) {
 			for (State state : behavior.getSupportedStates()) {
-				if (!supportedStates.contains(state))
-					supportedStates.add(state);
+				supportedStates.add(state);
+				//if (!supportedStates.contains(state))
+				//	supportedStates.add(state);
 			}
 		}
 	}	
@@ -396,8 +398,8 @@ public class RobotCore extends Robot {
 			}
 			if (config.knowledge)
 			{
-				if (destinationContainer.getDestination() != null)
-					robot.setDestination(destinationContainer.getDestination().exportModel());
+				if (destinationContainer.getLastLoadDestination() != null)
+					robot.setDestination(destinationContainer.getLastLoadDestination().exportModel());
 				else
 					robot.setDestination(null);
 				for (HardwareComponent hc : getHardwarecomponents()) {
@@ -410,7 +412,7 @@ public class RobotCore extends Robot {
 				for (RobotRole rr : getRoles()) {
 					if (rr instanceof MasterRole) {
 						cleaningrobots.MasterRole master = CleaningrobotsFactory.eINSTANCE.createMasterRole();
-						for (FollowerRole fr : ((MasterRole)rr).followers) {
+						for (RobotRole fr : ((MasterRole)rr).getFollowers()) {
 							master.getFollowerNames().add(fr.getRobotCore().getName());
 						}
 						robot.getRoles().add(master);

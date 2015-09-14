@@ -11,6 +11,10 @@ public class ExchangeMeasurement {
 	private String robotName2;
 	private int iteration;
 	
+	private int integerNumberKnowledge;
+	private int stringNumberKnowledge;
+	private int stringByteNumberKnowledge;
+	
 	private int integerNumber;
 	private int stringNumber;
 	private int stringByteNumber;
@@ -23,6 +27,9 @@ public class ExchangeMeasurement {
 		this.integerNumber = 0;
 		this.stringByteNumber = 0;
 		this.stringNumber = 0;
+		this.integerNumberKnowledge = 0;
+		this.stringByteNumberKnowledge = 0;
+		this.stringNumberKnowledge = 0;
 	}
 	
 	public void setNumber (int value) {
@@ -67,6 +74,30 @@ public class ExchangeMeasurement {
 	
 	public void addStringByteNumber (int value) {
 		stringByteNumber += value;
+	}
+	
+	public int getIntegerNumberKnowledge () {
+		return this.integerNumberKnowledge;
+	}
+	
+	public int getStringNumberKnowledge () {
+		return this.stringNumberKnowledge;
+	}
+	
+	public int getStringByteNumberKnowledge () {
+		return this.stringByteNumberKnowledge;
+	}
+	
+	public void addIntegerNumberKnowledge (int value) {
+		integerNumberKnowledge += value;
+	}
+	
+	public void addStringNumberKnowledge (int value) {
+		stringNumberKnowledge += value;
+	}
+	
+	public void addStringByteNumberKnowledge (int value) {
+		stringByteNumberKnowledge += value;
 	}
 	
 	public ExchangeMeasurement fromJson(String json) {

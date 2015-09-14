@@ -16,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 import cleaningrobots.CleaningrobotsFactory;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
+import de.tud.swt.cleaningrobots.util.RobotDestinationCalculation;
 
 public class World {
 	
@@ -49,6 +50,7 @@ public class World {
 
 	private RobotCore robot;
 	private Map<Position, Field> map;
+	private Set<State> worldStates;
 	//koordinaten von großer karte 
 	private int minX;
 	private int minY;
@@ -60,6 +62,7 @@ public class World {
 
 	public World(RobotCore robot) {
 		this.robot = robot;
+		this.worldStates = new HashSet<State>();
 		this.map = new HashMap<Position, Field>();
 		this.helper = new WorldHelper(this);
 	}
@@ -92,16 +95,13 @@ public class World {
 	 * @param newField
 	 */
 	private void updateField(Field newField) {
-		Position coordinates = newField.getPos();
-		Field oldField = map.get(coordinates);
+		Field oldField = map.get(newField.getPos());
 		
-		for(State oldState : oldField.getStates()){
-			if (!robot.getSupportedStates().contains(oldState)){
-				newField.addState(oldState);
+		for (State newState : newField.getStates()) {
+			if (!oldField.containsState(newState)) {
+				oldField.addState(newState);
 			}
 		}
-		
-		map.put(coordinates, newField);
 	}
 
 	public void addFields(Iterable<Field> fields) {
@@ -138,7 +138,7 @@ public class World {
 		
 		while (flag && !nodes.isEmpty()) {
 			Position currentNodePosition = nodes.poll();
-			if (!map.get(currentNodePosition).getStates().contains(state)) {
+			if (!map.get(currentNodePosition).containsState(state)) {
 				//wenn aktuelles Feld nicht den State enthält
 				//Position kann zu Ergebnis gehören
 				int actDist = getDistanceFromCurrentPosition(currentNodePosition);
@@ -184,7 +184,7 @@ public class World {
 		Position p = this.robot.getPosition();
 		
 		//gibt null zurück wenn Position nicht in Map und nicht state hat
-		if (!map.containsKey(p) || !map.get(p).getStates().contains(state))
+		if (!map.containsKey(p) || !map.get(p).containsState(state))
 			return null;
 		
 		boolean flag = true;
@@ -202,7 +202,7 @@ public class World {
 		
 		while (flag && !nodes.isEmpty()) {
 			Position currentNodePosition = nodes.poll();
-			if (!map.get(currentNodePosition).getStates().contains(without)) {
+			if (!map.get(currentNodePosition).containsState(without)) {
 				//Position kann zu Ergebnis gehören
 				int actDist = getDistanceFromCurrentPosition(currentNodePosition);
 				if (actDist <= dist) {
@@ -218,7 +218,7 @@ public class World {
 				//füge alle nachbar Felder der Nodeliste hinzu aber nur wenn sie existieren und den state enthalten
 				//und noch nicht besucht wurden
 				for (Position neighbour : helper.getNeighbourPositions(currentNodePosition, false)) {
-					if (map.containsKey(neighbour) && map.get(neighbour).getStates().contains(state) && !visited.contains(neighbour)) {
+					if (map.containsKey(neighbour) && map.get(neighbour).containsState(state) && !visited.contains(neighbour)) {
 						visited.add(neighbour);
 						nodes.add(neighbour);
 					}
@@ -249,6 +249,11 @@ public class World {
 	 */
 	public Map<String, RobotDestinationCalculation> getNextUnknownFields(Map<String, RobotDestinationCalculation> information, int maxAway) {
 
+		if (this.containsWorldState(State.createState("Discovered"))) {
+			System.out.println("Welt schon erkundet!");
+			return null;
+		}
+		
 		//Position des Masters und aller Roboter
 		Position p = this.robot.getPosition();
 		
@@ -497,11 +502,23 @@ public class World {
 	}
 	
 	public boolean hasState(Position position, State state) {
-		return map.containsKey(position) && map.get(position).getStates().contains(state);
+		return map.containsKey(position) && map.get(position).containsState(state);
 	}
 	
 	public Field getField (Position position) {
 		return map.get(position);
+	}
+	
+	public boolean containsWorldState (State state) {
+		return this.worldStates.contains(state);
+	}
+	
+	public boolean addWorldState (State state) {
+		return this.worldStates.add(state);
+	}
+	
+	public boolean removeWorldState (State state) {
+		return this.worldStates.remove(state);
 	}
 
 	/*
@@ -525,19 +542,22 @@ public class World {
 	
 	public cleaningrobots.WorldPart exportModel(ImportExportConfiguration config) {
 		//TODO: Consider caching
-		//cleaningrobots.World modelWorld = null;
 		cleaningrobots.Map modelMap = null;
 		
-		//modelWorld = CleaningrobotsFactory.eINSTANCE.createWorld();
 		modelMap = CleaningrobotsFactory.eINSTANCE.createMap();
 		modelMap.setXdim(xDim);
 		modelMap.setYdim(yDim);
+		//world fields hinzufügen
 		for (Field field : map.values()){
 			cleaningrobots.Field f = field.exportModel(config);
 			if (f != null)
 				modelMap.getFields().add(f);
 		}
-		//modelWorld.getChildren().add(modelMap);
+		
+		//World states hinzufügen
+		for (State state : worldStates){
+			modelMap.getWorldStates().add(state.exportModel());
+		}
 		
 		return modelMap;
 	}

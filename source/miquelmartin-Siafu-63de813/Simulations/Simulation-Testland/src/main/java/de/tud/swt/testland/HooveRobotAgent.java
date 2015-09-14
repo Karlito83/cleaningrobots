@@ -4,10 +4,10 @@ import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
 import de.tud.swt.cleaningrobots.AgentNavigationAdapter;
 import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.goals.ExploreDumpGoal;
-import de.tud.swt.cleaningrobots.goals.HooveLoadGoal;
 import de.tud.swt.cleaningrobots.goals.MasterGoal;
-import de.tud.swt.cleaningrobots.goals.WlanActivateMasterPositionGoal;
+import de.tud.swt.cleaningrobots.goals.nonoptional.HooveLoadGoal;
+import de.tud.swt.cleaningrobots.goals.optional.ExploreDumpGoal;
+import de.tud.swt.cleaningrobots.goals.optional.WlanActivateMasterPositionGoal;
 import de.tud.swt.cleaningrobots.hardware.Accu;
 import de.tud.swt.cleaningrobots.hardware.Hoover;
 import de.tud.swt.cleaningrobots.hardware.Motor;
@@ -26,8 +26,9 @@ public class HooveRobotAgent extends RobotAgent {
 		cleaningRobot.addHardwareComponent(new Wlan());
 		cleaningRobot.addHardwareComponent(new Motor());
 		cleaningRobot.addHardwareComponent(new Hoover());
-		
-		System.out.println("LoadStation: " + cleaningRobot.isLoadStation());
+	}
+	
+	public void addStandardGoals () {
 		
 		HooveLoadGoal hlg = new HooveLoadGoal(cleaningRobot);
 		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
@@ -40,7 +41,7 @@ public class HooveRobotAgent extends RobotAgent {
 		
 		if (mg.isHardwareCorrect())
 		{
-			cleaningRobot.getGoals().add(mg);
+			cleaningRobot.addGoal(mg);
 		}
 	}
 

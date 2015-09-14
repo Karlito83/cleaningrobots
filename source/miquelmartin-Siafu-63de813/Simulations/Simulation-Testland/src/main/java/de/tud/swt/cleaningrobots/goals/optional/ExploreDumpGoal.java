@@ -1,7 +1,8 @@
-package de.tud.swt.cleaningrobots.goals;
+package de.tud.swt.cleaningrobots.goals.optional;
 
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.behaviours.DumpModelBehaviour;
+import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
 /**
  * Could always run and always be finished and save the images vor reconstruction

@@ -74,7 +74,8 @@ public class RobotKnowledge {
 		try {
 			cleaningrobots.RobotKnowledge robotknowledge = CleaningrobotsFactory.eINSTANCE.createRobotKnowledge();
 			robotknowledge.setName(getName());
-			robotknowledge.setDestination(lastDestination.exportModel());
+			if (lastDestination != null)
+				robotknowledge.setDestination(lastDestination.exportModel());
 			robotknowledge.setLastArrange(lastArrange);
 			robotknowledge.getComponents().addAll(components);
 			for (State state : getKnownStates()) {

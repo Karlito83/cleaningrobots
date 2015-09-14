@@ -1,15 +1,19 @@
-package de.tud.swt.cleaningrobots.goals;
+package de.tud.swt.cleaningrobots.goals.nonoptional;
 
 import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.behaviours.HooveAroundBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.HooveBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
+import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
 import de.tud.swt.cleaningrobots.model.State;
 
 public class HooveLoadGoal extends NonOptionalGoal {
 
 	private HooveBehaviour d;
 	private final State STATE_HOOVE = State.createState("Hoove");
+	
+	private final State WORLDSTATE_DISCOVERED = State.createState("Discovered");
 	
 	public HooveLoadGoal(RobotCore robot) {
 		super(robot);
@@ -44,15 +48,26 @@ public class HooveLoadGoal extends NonOptionalGoal {
 
 	@Override
 	public boolean preCondition() {		
-		if (this.getRobotCore().getWorld().getNextUnknownFieldPosition() != null || 
-				this.getRobotCore().getWorld().getNextPassablePositionWithoutState(STATE_HOOVE) != null)
+		boolean discovered = this.getRobotCore().getWorld().containsWorldState(WORLDSTATE_DISCOVERED);
+		if (!discovered || this.getRobotCore().getWorld().getNextPassablePositionWithoutState(STATE_HOOVE) != null)
 			return true;
 		return false;
 	}
 
 	@Override
 	public boolean postCondition() {
-		return d.isFinishHoove();
+		//muss auch als Follower alle Informationen abgegeben haben bevor Ziel erfüllt ist
+		if (!d.isFinishHoove())
+			return false;
+		else {
+			boolean proof = true;
+			for (RobotRole rr : getRobotCore().getRoles()) {
+				if (rr.hasNewInformation())
+					proof = false;
+			}
+			return proof;
+		}
+		//return d.isFinishHoove();
 		/*if (d.noMoreDiscovering)
 			return true;
 		if (this.getRobotCore().getWorld().getNextUnknownFieldPosition() == null 

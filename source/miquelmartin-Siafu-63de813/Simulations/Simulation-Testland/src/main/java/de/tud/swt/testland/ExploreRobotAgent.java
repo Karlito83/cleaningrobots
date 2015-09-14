@@ -4,11 +4,12 @@ import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
 import de.tud.swt.cleaningrobots.AgentNavigationAdapter;
 import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.goals.ExploreDumpGoal;
-import de.tud.swt.cleaningrobots.goals.ExploreLoadGoal;
-import de.tud.swt.cleaningrobots.goals.ExploreRelativeLoadGoal;
 import de.tud.swt.cleaningrobots.goals.MasterGoal;
-import de.tud.swt.cleaningrobots.goals.WlanLoadMasterMergeGoal;
+import de.tud.swt.cleaningrobots.goals.nonoptional.ExploreLoadGoal;
+import de.tud.swt.cleaningrobots.goals.nonoptional.ExploreRelativeLoadGoal;
+import de.tud.swt.cleaningrobots.goals.optional.ExploreDumpGoal;
+import de.tud.swt.cleaningrobots.goals.optional.WlanLoadIfRobotWantMergeGoal;
+import de.tud.swt.cleaningrobots.goals.optional.WlanLoadMasterMergeGoal;
 import de.tud.swt.cleaningrobots.hardware.Accu;
 import de.tud.swt.cleaningrobots.hardware.LookAroundSensor;
 import de.tud.swt.cleaningrobots.hardware.Motor;
@@ -26,56 +27,31 @@ public class ExploreRobotAgent extends RobotAgent {
 		cleaningRobot.addHardwareComponent(new Rechner());
 		cleaningRobot.addHardwareComponent(new Wlan());
 		cleaningRobot.addHardwareComponent(new Motor());
-		cleaningRobot.addHardwareComponent(new LookAroundSensor());
+		cleaningRobot.addHardwareComponent(new LookAroundSensor());		
 		
-		System.out.println("LoadStation: " + cleaningRobot.isLoadStation());
+		//System.out.println("Name: " + cleaningRobot.getName() + " : States: " + cleaningRobot.getSupportedStates() + " Roles: " + cleaningRobot.getRoles());		
+	}
+	
+	public void addStandardRoles () {
 		
 		ExploreRelativeLoadGoal erlg = new ExploreRelativeLoadGoal(cleaningRobot);
 		//ExploreLoadGoal elg = new ExploreLoadGoal(cleaningRobot);
-		//ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
-		WlanLoadMasterMergeGoal wlmmg = new WlanLoadMasterMergeGoal(cleaningRobot);
+		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
+		
+		WlanLoadIfRobotWantMergeGoal wlirwmg = new WlanLoadIfRobotWantMergeGoal(cleaningRobot);
+		//WlanLoadMasterMergeGoal wlmmg = new WlanLoadMasterMergeGoal(cleaningRobot);
 		
 		MasterGoal mg = new MasterGoal(cleaningRobot);
 		mg.subGoals.add(erlg);
 		//mg.subGoals.add(elg);
-		mg.subGoals.add(wlmmg);
-		//mg.subGoals.add(edg);
+		//mg.subGoals.add(wlmmg);
+		mg.subGoals.add(wlirwmg);
+		mg.subGoals.add(edg);
 		
 		if (mg.isHardwareCorrect())
 		{
-			cleaningRobot.getGoals().add(mg);
+			cleaningRobot.addGoal(mg);
 		}
-
-		/*SeeAroundBehaviour s = new SeeAroundBehaviour(cleaningRobot);
-		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
-		if (s.isHardwarecorrect())
-			cleaningRobot.addBehaviour(s);
-		
-		DiscoverBehaviour d = new DiscoverBehaviour(cleaningRobot);
-		System.out.println("Correct Discover: " + d.isHardwarecorrect());
-		if (d.isHardwarecorrect())
-			cleaningRobot.addBehaviour(d);
-		
-		MoveBehaviour m = new MoveBehaviour(cleaningRobot);
-		System.out.println("Correct Move: " + m.isHardwarecorrect());
-		if (m.isHardwarecorrect())
-			cleaningRobot.addBehaviour(m);
-				
-		LoadWlanActivateBehaviour lab = new LoadWlanActivateBehaviour(cleaningRobot);
-		System.out.println("Correct WlanActive: " + lab.isHardwarecorrect());
-		if (lab.isHardwarecorrect())
-			cleaningRobot.addBehaviour(lab);
-		
-		//MergeAllRonny a = new MergeAllRonny(cleaningRobot);
-		System.out.println("Correct Merge: " + a.isHardwarecorrect());
-		if (a.isHardwarecorrect())
-			cleaningRobot.addBehaviour(a);
-		
-		DumpModelBehaviour b = new DumpModelBehaviour(cleaningRobot);
-		System.out.println("Correct Dump: " + b.isHardwarecorrect());
-		if (b.isHardwarecorrect())
-			cleaningRobot.addBehaviour(b);*/
-		
-	}
+	} 
 
 }

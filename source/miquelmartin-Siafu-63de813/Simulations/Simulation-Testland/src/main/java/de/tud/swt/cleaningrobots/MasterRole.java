@@ -5,12 +5,16 @@ import java.util.List;
 
 public class MasterRole extends RobotRole {
 	
-	public List<FollowerRole> followers;
+	private List<RobotRole> followers;
 
 	public MasterRole(RobotCore robotCore) {
 		super(robotCore);
 		
-		followers = new ArrayList<FollowerRole>();
+		followers = new ArrayList<RobotRole>();
+	}
+	
+	public List<RobotRole> getFollowers () {
+		return this.followers;
 	}
 
 }

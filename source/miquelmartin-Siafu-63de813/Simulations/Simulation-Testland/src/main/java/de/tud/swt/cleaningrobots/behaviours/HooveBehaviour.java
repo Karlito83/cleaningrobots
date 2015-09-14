@@ -13,11 +13,18 @@ import de.tud.swt.cleaningrobots.model.State;
 public class HooveBehaviour extends Behaviour {
 	
 	private final State STATE_HOOVE = State.createState("Hoove");
+	private final State STATE_FREE = State.createState("Free");
+	
+	private final State WORLDSTATE_DISCOVERED = State.createState("Discovered");
+	private final State WORLDSTATE_HOOVED = State.createState("Hooved");
 	
 	private boolean finishHooving;
 
 	public HooveBehaviour(RobotCore robot) {
 		super(robot);
+		
+		supportedStates.add(STATE_HOOVE);
+		supportedStates.add(STATE_FREE);
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		//same as in the DiscoverBehaviour
@@ -68,7 +75,7 @@ public class HooveBehaviour extends Behaviour {
 					{
 						//Robot schafft Weg nicht also Fahre zurück zu Ladestation
 						getRobot().getDestinationContainer().setDestinationLoadStation();
-						//
+						//lohnt sich für Robot nicht mehr rauszufahren
 						if (getRobot().getDestinationContainer().getLoadStationPosition().equals(getRobot().getPosition()))
 						{
 							System.out.println("Robot erreicht keine Hooveposition mehr obwohl diese noch existiert!");
@@ -80,10 +87,11 @@ public class HooveBehaviour extends Behaviour {
 				logger.info("Executed DiscoverBehaviour.action().");
 			} else {
 				//no more hoove position found
-				Position nextUnknownPosition = this.getRobot().getWorld().getNextUnknownFieldPosition();
-				System.out.println("NextNotHoovePosition: " + nextUnknownPosition);	
-				if (nextUnknownPosition == null)
+				//need no blocked field and proof if the hole world is discovered
+				boolean discovered = this.getRobot().getWorld().containsWorldState(WORLDSTATE_DISCOVERED);
+				if (discovered)
 				{
+					this.getRobot().getWorld().addWorldState(WORLDSTATE_HOOVED);
 					//finish back to load station
 					if(!getRobot().getDestinationContainer().getDestination().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
 					{

@@ -39,7 +39,7 @@ public abstract class RobotRole extends Robot {
 	
 	@Override
 	public String toString() {
-		return core.getName();
+		return core.getName() + " NewInfo: " + newInformation;
 	}
 
 }

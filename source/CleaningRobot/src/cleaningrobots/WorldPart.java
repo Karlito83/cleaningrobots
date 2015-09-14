@@ -2,6 +2,7 @@
  */
 package cleaningrobots;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -14,6 +15,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link cleaningrobots.WorldPart#getXdim <em>Xdim</em>}</li>
  *   <li>{@link cleaningrobots.WorldPart#getYdim <em>Ydim</em>}</li>
+ *   <li>{@link cleaningrobots.WorldPart#getWorldStates <em>World States</em>}</li>
  * </ul>
  * </p>
  *
@@ -75,5 +77,21 @@ public interface WorldPart extends EObject {
 	 * @generated
 	 */
 	void setYdim(int value);
+
+	/**
+	 * Returns the value of the '<em><b>World States</b></em>' reference list.
+	 * The list contents are of type {@link cleaningrobots.State}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>World States</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>World States</em>' reference list.
+	 * @see cleaningrobots.CleaningrobotsPackage#getWorldPart_WorldStates()
+	 * @model
+	 * @generated
+	 */
+	EList<State> getWorldStates();
 
 } // WorldPart

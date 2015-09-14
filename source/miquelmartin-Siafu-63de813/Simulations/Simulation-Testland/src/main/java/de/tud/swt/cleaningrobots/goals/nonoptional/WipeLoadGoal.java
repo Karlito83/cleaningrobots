@@ -1,9 +1,11 @@
-package de.tud.swt.cleaningrobots.goals;
+package de.tud.swt.cleaningrobots.goals.nonoptional;
 
 import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.WipeAroundBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.WipeBehaviour;
+import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
 import de.tud.swt.cleaningrobots.model.State;
 
 public class WipeLoadGoal extends NonOptionalGoal {
@@ -11,6 +13,8 @@ public class WipeLoadGoal extends NonOptionalGoal {
 	private WipeBehaviour d;
 	
 	private final State STATE_WIPE = State.createState("Wipe");
+	
+	private final State WORLDSTATE_DISCOVERED = State.createState("Discovered");
 	
 	public WipeLoadGoal(RobotCore robot) {
 		super(robot);
@@ -45,15 +49,25 @@ public class WipeLoadGoal extends NonOptionalGoal {
 
 	@Override
 	public boolean preCondition() {		
-		if (this.getRobotCore().getWorld().getNextUnknownFieldPosition() != null || 
-				this.getRobotCore().getWorld().getNextPassablePositionWithoutState(STATE_WIPE) != null)
+		boolean discovered = this.getRobotCore().getWorld().containsWorldState(WORLDSTATE_DISCOVERED);
+		if (!discovered || this.getRobotCore().getWorld().getNextPassablePositionWithoutState(STATE_WIPE) != null)
 			return true;
 		return false;
 	}
 
 	@Override
 	public boolean postCondition() {
-		return d.isFinishWipe();
+		if (!d.isFinishWipe())
+			return false;
+		else {
+			boolean proof = true;
+			for (RobotRole rr : getRobotCore().getRoles()) {
+				if (rr.hasNewInformation())
+					proof = false;
+			}
+			return proof;
+		}
+		//return d.isFinishWipe();
 		/*if (d.noMoreDiscovering)
 			return true;
 		if (this.getRobotCore().getWorld().getNextUnknownFieldPosition() == null 

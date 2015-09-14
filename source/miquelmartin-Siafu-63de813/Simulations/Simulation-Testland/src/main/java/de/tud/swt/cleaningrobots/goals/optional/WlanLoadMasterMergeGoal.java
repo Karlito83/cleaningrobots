@@ -1,7 +1,8 @@
-package de.tud.swt.cleaningrobots.goals;
+package de.tud.swt.cleaningrobots.goals.optional;
 
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.behaviours.LoadWlanActivateBehaviour;
+import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
 public class WlanLoadMasterMergeGoal extends OptionalGoal {
 

@@ -1,7 +1,7 @@
 package de.tud.swt.cleaningrobots;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,11 +16,11 @@ public abstract class Behaviour {
 	protected Demand d;
 	protected boolean hardwarecorrect;
 	
-	protected ArrayList<State> supportedStates;
+	protected Set<State> supportedStates;
 
 	public Behaviour(RobotCore robot){
 		this.robot = robot;
-		this.supportedStates = new ArrayList<State>();
+		this.supportedStates = new HashSet<State>();
 		hardwarecorrect = false;
 	}
 	
@@ -43,8 +43,7 @@ public abstract class Behaviour {
 	/***
 	 * Returns a copy of the SupportedStates Collection. 
 	 */
-	@SuppressWarnings("unchecked")
-	public Collection<State> getSupportedStates ()	{
-		return (Collection<State>) supportedStates.clone();
+	public Set<State> getSupportedStates ()	{
+		return supportedStates;
 	}
 }

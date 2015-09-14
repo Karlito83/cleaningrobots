@@ -3,11 +3,15 @@
 package cleaningrobots.impl;
 
 import cleaningrobots.CleaningrobotsPackage;
+import cleaningrobots.State;
 import cleaningrobots.WorldPart;
+import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -18,6 +22,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <ul>
  *   <li>{@link cleaningrobots.impl.WorldPartImpl#getXdim <em>Xdim</em>}</li>
  *   <li>{@link cleaningrobots.impl.WorldPartImpl#getYdim <em>Ydim</em>}</li>
+ *   <li>{@link cleaningrobots.impl.WorldPartImpl#getWorldStates <em>World States</em>}</li>
  * </ul>
  * </p>
  *
@@ -63,6 +68,16 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 	 * @ordered
 	 */
 	protected int ydim = YDIM_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getWorldStates() <em>World States</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getWorldStates()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<State> worldStates;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -130,6 +145,18 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<State> getWorldStates() {
+		if (worldStates == null) {
+			worldStates = new EObjectResolvingEList<State>(State.class, this, CleaningrobotsPackage.WORLD_PART__WORLD_STATES);
+		}
+		return worldStates;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -137,6 +164,8 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 				return getXdim();
 			case CleaningrobotsPackage.WORLD_PART__YDIM:
 				return getYdim();
+			case CleaningrobotsPackage.WORLD_PART__WORLD_STATES:
+				return getWorldStates();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -146,6 +175,7 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -154,6 +184,10 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 				return;
 			case CleaningrobotsPackage.WORLD_PART__YDIM:
 				setYdim((Integer)newValue);
+				return;
+			case CleaningrobotsPackage.WORLD_PART__WORLD_STATES:
+				getWorldStates().clear();
+				getWorldStates().addAll((Collection<? extends State>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -173,6 +207,9 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 			case CleaningrobotsPackage.WORLD_PART__YDIM:
 				setYdim(YDIM_EDEFAULT);
 				return;
+			case CleaningrobotsPackage.WORLD_PART__WORLD_STATES:
+				getWorldStates().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -189,6 +226,8 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 				return xdim != XDIM_EDEFAULT;
 			case CleaningrobotsPackage.WORLD_PART__YDIM:
 				return ydim != YDIM_EDEFAULT;
+			case CleaningrobotsPackage.WORLD_PART__WORLD_STATES:
+				return worldStates != null && !worldStates.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

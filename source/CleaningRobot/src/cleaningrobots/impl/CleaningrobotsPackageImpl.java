@@ -479,6 +479,15 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getWorldPart_WorldStates() {
+		return (EReference)worldPartEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getWorld() {
 		return worldEClass;
 	}
@@ -552,6 +561,7 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 		worldPartEClass = createEClass(WORLD_PART);
 		createEAttribute(worldPartEClass, WORLD_PART__XDIM);
 		createEAttribute(worldPartEClass, WORLD_PART__YDIM);
+		createEReference(worldPartEClass, WORLD_PART__WORLD_STATES);
 
 		worldEClass = createEClass(WORLD);
 		createEReference(worldEClass, WORLD__CHILDREN);
@@ -634,6 +644,7 @@ public class CleaningrobotsPackageImpl extends EPackageImpl implements Cleaningr
 		initEClass(worldPartEClass, WorldPart.class, "WorldPart", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getWorldPart_Xdim(), ecorePackage.getEInt(), "xdim", "0", 0, 1, WorldPart.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getWorldPart_Ydim(), ecorePackage.getEInt(), "ydim", "0", 0, 1, WorldPart.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getWorldPart_WorldStates(), this.getState(), null, "worldStates", null, 0, -1, WorldPart.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(worldEClass, World.class, "World", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getWorld_Children(), this.getWorldPart(), null, "children", null, 0, -1, World.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

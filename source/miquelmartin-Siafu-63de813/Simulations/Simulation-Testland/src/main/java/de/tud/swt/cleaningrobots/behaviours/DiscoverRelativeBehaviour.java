@@ -8,13 +8,22 @@ import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.model.Position;
+import de.tud.swt.cleaningrobots.model.State;
 
 public class DiscoverRelativeBehaviour extends Behaviour {
+	
+	private final State STATE_BLOCKED = State.createState("Blocked");
+	private final State STATE_FREE = State.createState("Free");
+	
+	private final State WORLDSTATE_DISCOVERED = State.createState("Discovered");
 
-private boolean noMoreDiscovering;
+	private boolean noMoreDiscovering;
 	
 	public DiscoverRelativeBehaviour(RobotCore robot) {
 		super(robot);
+		
+		supportedStates.add(STATE_BLOCKED);
+		supportedStates.add(STATE_FREE);
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		//dont add motor because of you online search destination you don't move
@@ -36,7 +45,7 @@ private boolean noMoreDiscovering;
 		//Prüfe ob Hardwarecorrect oder entferne es vorher schon wieder
 		logger.trace("Entered DiscoverRelativeBehaviour.action().");
 		
-		if(getRobot().getDestinationContainer().isAtDestination()){
+		if(getRobot().getDestinationContainer().isAtDestination()) {
 			
 			Position nextUnknownPosition = this.getRobot().getWorld().getNextUnknownFieldPosition(this.getRobot().getDestinationContainer().getLastLoadDestination()); 
 						
@@ -74,15 +83,19 @@ private boolean noMoreDiscovering;
 				}
 				logger.info("Executed DiscoverBehaviour.action().");
 			}
-			else if(!getRobot().getPosition().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
+			else 
 			{
-				//Ist an Ladestation angekommen muss geladen werden
-				getRobot().getDestinationContainer().setDestinationLoadStation();
-			} else {
-				//gibt true zurück wenn alles geschafft ist in der Behaviour
-				//Keine Unknown Positon mehr und schon an Ladestation
-				noMoreDiscovering = true;
-				return true;
+				this.getRobot().getWorld().addWorldState(WORLDSTATE_DISCOVERED);
+				if(!getRobot().getPosition().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
+				{
+					//Ist an Ladestation angekommen muss geladen werden
+					getRobot().getDestinationContainer().setDestinationLoadStation();
+				} else {
+					//gibt true zurück wenn alles geschafft ist in der Behaviour
+					//Keine Unknown Positon mehr und schon an Ladestation
+					noMoreDiscovering = true;
+					return true;
+				}
 			}
 		}
 		

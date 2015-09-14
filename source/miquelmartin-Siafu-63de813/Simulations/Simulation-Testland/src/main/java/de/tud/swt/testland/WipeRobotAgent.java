@@ -4,10 +4,10 @@ import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
 import de.tud.swt.cleaningrobots.AgentNavigationAdapter;
 import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.goals.ExploreDumpGoal;
 import de.tud.swt.cleaningrobots.goals.MasterGoal;
-import de.tud.swt.cleaningrobots.goals.WipeLoadGoal;
-import de.tud.swt.cleaningrobots.goals.WlanActivateMasterPositionGoal;
+import de.tud.swt.cleaningrobots.goals.nonoptional.WipeLoadGoal;
+import de.tud.swt.cleaningrobots.goals.optional.ExploreDumpGoal;
+import de.tud.swt.cleaningrobots.goals.optional.WlanActivateMasterPositionGoal;
 import de.tud.swt.cleaningrobots.hardware.Accu;
 import de.tud.swt.cleaningrobots.hardware.Motor;
 import de.tud.swt.cleaningrobots.hardware.Rechner;
@@ -25,9 +25,12 @@ public class WipeRobotAgent extends RobotAgent {
 		cleaningRobot.addHardwareComponent(new Rechner());
 		cleaningRobot.addHardwareComponent(new Wlan());
 		cleaningRobot.addHardwareComponent(new Motor());
-		cleaningRobot.addHardwareComponent(new Wiper());
+		cleaningRobot.addHardwareComponent(new Wiper());		
 		
-		System.out.println("LoadStation: " + cleaningRobot.isLoadStation());
+		//System.out.println("Name: " + cleaningRobot.getName() + " : States: " + cleaningRobot.getSupportedStates());
+	}
+	
+	public void addStandardGoals () {
 		
 		WipeLoadGoal wlg = new WipeLoadGoal(cleaningRobot);
 		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
@@ -40,7 +43,7 @@ public class WipeRobotAgent extends RobotAgent {
 		
 		if (mg.isHardwareCorrect())
 		{
-			cleaningRobot.getGoals().add(mg);
+			cleaningRobot.addGoal(mg);
 		}
 	}
 

@@ -49,4 +49,9 @@ public class State {
 		}
 		return result;
 	}
+	
+	@Override
+	public String toString() {
+		return this.name;
+	}
 }

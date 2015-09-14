@@ -11,7 +11,7 @@ import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
-import de.tud.swt.cleaningrobots.model.RobotDestinationCalculation;
+import de.tud.swt.cleaningrobots.util.RobotDestinationCalculation;
 
 public class MasterDestinationExplore extends Behaviour {
 
@@ -94,8 +94,9 @@ public class MasterDestinationExplore extends Behaviour {
 		nearRobots.remove(this.getRobot());
 				
 		for (RobotDestinationCalculation rdc : information.values()) {
-			//alle NeedNew auf false setzen und new und old dest tauschen wenn nicht mehr in Reichweite
+			//alle NeedNew auf false setzen
 			rdc.needNew = false;
+			//new und old dest tauschen wenn nicht mehr in Reichweite
 			if (rdc.newDest != null)
 			{
 				boolean change = true;
@@ -152,7 +153,12 @@ public class MasterDestinationExplore extends Behaviour {
 		if (!newOneFind)
 			return false;
 		
-		information = this.getRobot().getWorld().getNextUnknownFields(information, calculationAway); 
+		Map<String, RobotDestinationCalculation> result = this.getRobot().getWorld().getNextUnknownFields(information, calculationAway); 
+		
+		if (result == null)
+			return false;
+		
+		information = result; 
 		
 		//TODO: warte Funktion und auslesen der neu berechneten Werte
 		

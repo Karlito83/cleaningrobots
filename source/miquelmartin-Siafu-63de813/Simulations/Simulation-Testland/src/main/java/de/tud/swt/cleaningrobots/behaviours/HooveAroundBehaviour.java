@@ -33,6 +33,7 @@ public class HooveAroundBehaviour extends Behaviour {
 		super(robot);
 				
 		supportedStates.add(STATE_HOOVE);
+		supportedStates.add(STATE_FREE);
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.HOOVER, 1);
@@ -55,7 +56,6 @@ public class HooveAroundBehaviour extends Behaviour {
 		//Wenn Roboter an Ziel dann machen ann Scanne umgebung und machen wieder aus
 		if (getRobot().getDestinationContainer().isAtDestination() && getRobot().getDestinationContainer().isDestinationSet() 
 				&& !getRobot().getDestinationContainer().isAtLoadDestination()) {
-			System.out.println("HooveAround Start");
 			//Schalte alle Hardwarecomponenten an wenn sie nicht schon laufen
 			for (HardwareComponent hard : d.getHcs())
 			{
@@ -78,7 +78,6 @@ public class HooveAroundBehaviour extends Behaviour {
 			} catch (Exception e) {
 				throw e;
 			}
-			System.out.println("HooveAround End");
 				
 		} else {
 			//kommt erst im nächsten Schritt damit die Energie beachtet wird

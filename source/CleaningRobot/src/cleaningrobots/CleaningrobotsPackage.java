@@ -416,13 +416,22 @@ public interface CleaningrobotsPackage extends EPackage {
 	int WORLD_PART__YDIM = 1;
 
 	/**
+	 * The feature id for the '<em><b>World States</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WORLD_PART__WORLD_STATES = 2;
+
+	/**
 	 * The number of structural features of the '<em>World Part</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int WORLD_PART_FEATURE_COUNT = 2;
+	int WORLD_PART_FEATURE_COUNT = 3;
 
 	/**
 	 * The number of operations of the '<em>World Part</em>' class.
@@ -450,6 +459,15 @@ public interface CleaningrobotsPackage extends EPackage {
 	 * @ordered
 	 */
 	int WORLD__YDIM = WORLD_PART__YDIM;
+
+	/**
+	 * The feature id for the '<em><b>World States</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WORLD__WORLD_STATES = WORLD_PART__WORLD_STATES;
 
 	/**
 	 * The feature id for the '<em><b>Children</b></em>' containment reference list.
@@ -495,6 +513,15 @@ public interface CleaningrobotsPackage extends EPackage {
 	 * @ordered
 	 */
 	int MAP__YDIM = WORLD_PART__YDIM;
+
+	/**
+	 * The feature id for the '<em><b>World States</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MAP__WORLD_STATES = WORLD_PART__WORLD_STATES;
 
 	/**
 	 * The feature id for the '<em><b>Fields</b></em>' containment reference list.
@@ -991,6 +1018,17 @@ public interface CleaningrobotsPackage extends EPackage {
 	EAttribute getWorldPart_Ydim();
 
 	/**
+	 * Returns the meta object for the reference list '{@link cleaningrobots.WorldPart#getWorldStates <em>World States</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>World States</em>'.
+	 * @see cleaningrobots.WorldPart#getWorldStates()
+	 * @see #getWorldPart()
+	 * @generated
+	 */
+	EReference getWorldPart_WorldStates();
+
+	/**
 	 * Returns the meta object for class '{@link cleaningrobots.World <em>World</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1325,6 +1363,14 @@ public interface CleaningrobotsPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute WORLD_PART__YDIM = eINSTANCE.getWorldPart_Ydim();
+
+		/**
+		 * The meta object literal for the '<em><b>World States</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference WORLD_PART__WORLD_STATES = eINSTANCE.getWorldPart_WorldStates();
 
 		/**
 		 * The meta object literal for the '{@link cleaningrobots.impl.WorldImpl <em>World</em>}' class.

@@ -15,6 +15,9 @@ public class WipeBehaviour extends Behaviour{
 	private final State STATE_HOOVE = State.createState("Hoove");
 	private final State STATE_WIPE = State.createState("Wipe");
 	
+	private final State WORLDSTATE_WIPED = State.createState("Wiped");
+	private final State WORLDSTATE_HOOVED = State.createState("Hooved");
+	
 	private boolean finishWiping;
 
 	public WipeBehaviour(RobotCore robot) {
@@ -78,10 +81,10 @@ public class WipeBehaviour extends Behaviour{
 				logger.info("Executed DiscoverBehaviour.action().");
 			} else {
 				//no more wipe position found
-				Position nextNotHoovePosition = this.getRobot().getWorld().getNextPassablePositionWithoutState(STATE_HOOVE); 
-				Position nextUnknownPosition = this.getRobot().getWorld().getNextUnknownFieldPosition();
-				if (nextUnknownPosition == null && nextNotHoovePosition == null)
+				boolean hooved = this.getRobot().getWorld().containsWorldState(WORLDSTATE_HOOVED);
+				if (hooved)
 				{
+					this.getRobot().getWorld().addWorldState(WORLDSTATE_WIPED);
 					//finish back to load station
 					if(!getRobot().getDestinationContainer().getDestination().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
 					{

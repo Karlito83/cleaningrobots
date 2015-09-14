@@ -76,13 +76,12 @@ public class DestinationContainer {
 			//speichere die erste Destination nachdem er laden war
 			if (loadDestination) {
 				lastLoadDestination = destination;
-				System.out.println("++++LastLoadDestination bei " + robot.getName() + ": " + lastLoadDestination);
 			}
 			this.destinationSet = true;
 			this.destination = destination;
 			refreshPath();
-		}
-		loadDestination = false;		
+			loadDestination = false;	
+		}	
 	}
 	
 	public void setMasterDestination (Position destination) {
@@ -91,11 +90,11 @@ public class DestinationContainer {
 			this.path = null;
 		} else {
 			lastLoadDestination = destination;
-			this.destinationSet = true;
 			this.destination = destination;
+			this.destinationSet = true;
 			refreshPath();
+			loadDestination = false;
 		}
-		loadDestination = false;
 	}
 
 	private void refreshPath () {

@@ -1,49 +1,55 @@
 package de.tud.swt.cleaningrobots.model;
 
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import cleaningrobots.CleaningrobotsFactory;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
+import de.tud.swt.cleaningrobots.util.Variables;
 
 public class Field {
 	private Position pos;
 	private boolean isPassable;
-	private Set<State> states;
+	private int changedIteration;
+	private Map<State, Integer> states;
 	
 	public Field(int x, int y, boolean isPassable)
 	{
+		this.changedIteration = Variables.iteration;
 		this.pos = new Position(x, y);
 		this.isPassable = isPassable;
-		this.states = new HashSet<State>();
+		this.states = new HashMap<State, Integer>();
 	}
 	
 	public Position getPos() {
 		return this.pos;
 	}
 	
-	/*public int getX() {
-		return this.pos.getX();
+	public int getChangeIteration () {
+		return this.changedIteration;
 	}
-	public int getY() {
-		return this.pos.getY();
-	}*/
 
 	public void addState(State state) {
-		states.add(state);
+		this.changedIteration = Variables.iteration;
+		states.put(state, this.changedIteration);
 	}
 	
 	public boolean isPassable() {
 		return isPassable;
 	}
 	
+	public boolean containsState(State state) {
+		return this.states.keySet().contains(state);
+	}	
+
+	public Set<State> getStates() {
+		return this.states.keySet();
+	}
+	
 	@Override
 	public String toString() {
 		return "Field: " + pos.toString() + "[" + states + "]";
-	}
-
-	public Set<State> getStates() {
-		return this.states;
 	}
 
 	public cleaningrobots.Field exportModel(ImportExportConfiguration config) {
@@ -52,27 +58,56 @@ public class Field {
 		modelField = CleaningrobotsFactory.eINSTANCE.createField();
 		
 		modelField.setPos(pos.exportModel());
-		if (config.knownStates.isEmpty())
+		if (config.iteration == -1) 
 		{
-			//Field mit allen States soll zurück gegeben werden
-			for (State state : states){
-				modelField.getStates().add(state.exportModel());
+			if (config.knownStates.isEmpty())
+			{
+				//Field mit allen States soll zurück gegeben werden
+				for (State state : states.keySet()){
+					modelField.getStates().add(state.exportModel());
+				}
+			} else {
+				boolean proof = false;
+				//nur wenn State auch bei knownstates dann hinzufügen
+				for (State state : states.keySet()){
+					if (config.knownStates.contains(state))
+					{
+						proof = true;
+						modelField.getStates().add(state.exportModel());
+					}				
+				}
+				if (!proof) {
+					return null;
+				}
 			}
 		} else {
+			if (this.changedIteration <= config.iteration)
+				return null;
 			boolean proof = false;
-			//nur wenn State auch bei knownstates dann hinzufügen
-			for (State state : states){
-				if (config.knownStates.contains(state))
-				{
-					proof = true;
-					modelField.getStates().add(state.exportModel());
-				}				
+			if (config.knownStates.isEmpty())
+			{
+				//Field mit allen States soll zurück gegeben werden
+				for (State state : states.keySet()){
+					//nur hinzufügen wenn später erstellt wurde als iteration ist
+					if (states.get(state) > config.iteration) {
+						proof = true;
+						modelField.getStates().add(state.exportModel());
+					}
+				}
+			} else {
+				//nur wenn State auch bei knownstates dann hinzufügen
+				for (State state : states.keySet()) {
+					if (config.knownStates.contains(state) && states.get(state) > config.iteration)
+					{
+						proof = true;
+						modelField.getStates().add(state.exportModel());
+					}				
+				}
 			}
 			if (!proof) {
 				return null;
 			}
 		}
-		
 		return modelField;
 	}
 }

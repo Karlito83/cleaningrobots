@@ -8,6 +8,7 @@ import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.model.Position;
+import de.tud.swt.cleaningrobots.model.State;
 
 /**
  * Search next unknown position and drive throw, if the accu is to low drive to loadstation
@@ -20,8 +21,16 @@ public class DiscoverBehaviour extends Behaviour {
 	
 	private boolean noMoreDiscovering;
 	
+	private final State STATE_BLOCKED = State.createState("Blocked");
+	private final State STATE_FREE = State.createState("Free");
+	
+	private final State WORLDSTATE_DISCOVERED = State.createState("Discovered");
+	
 	public DiscoverBehaviour(RobotCore robot) {
 		super(robot);
+		
+		supportedStates.add(STATE_BLOCKED);
+		supportedStates.add(STATE_FREE);
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		//dont add motor because of you online search destination you don't move
@@ -101,15 +110,19 @@ public class DiscoverBehaviour extends Behaviour {
 				}
 				logger.info("Executed DiscoverBehaviour.action().");
 			}
-			else if(!getRobot().getPosition().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
+			else 
 			{
-				//Ist an Ladestation angekommen muss geladen werden
-				getRobot().getDestinationContainer().setDestinationLoadStation();
-			} else {
-				//gibt true zurück wenn alles geschafft ist in der Behaviour
-				//Keine Unknown Positon mehr und schon an Ladestation
-				noMoreDiscovering = true;
-				return true;
+				this.getRobot().getWorld().addWorldState(WORLDSTATE_DISCOVERED);
+				if(!getRobot().getPosition().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
+				{
+					//Ist an Ladestation angekommen muss geladen werden
+					getRobot().getDestinationContainer().setDestinationLoadStation();
+				} else {
+					//gibt true zurück wenn alles geschafft ist in der Behaviour
+					//Keine Unknown Positon mehr und schon an Ladestation
+					noMoreDiscovering = true;
+					return true;
+				}
 			}
 		}
 		

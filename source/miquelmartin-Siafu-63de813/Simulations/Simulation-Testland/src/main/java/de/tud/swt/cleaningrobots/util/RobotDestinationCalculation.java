@@ -1,4 +1,6 @@
-package de.tud.swt.cleaningrobots.model;
+package de.tud.swt.cleaningrobots.util;
+
+import de.tud.swt.cleaningrobots.model.Position;
 
 public class RobotDestinationCalculation {
 

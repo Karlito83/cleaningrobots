@@ -1,9 +1,11 @@
-package de.tud.swt.cleaningrobots.goals;
+package de.tud.swt.cleaningrobots.goals.nonoptional;
 
 import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.behaviours.DiscoverRelativeBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.SeeAroundAtDestinationBehaviour;
+import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
 
 /**
  * Discovers as long as no more unknown field exists and then drive back to Loadstation
@@ -55,7 +57,17 @@ public class ExploreRelativeLoadGoal extends NonOptionalGoal {
 
 	@Override
 	public boolean postCondition() {
-		return d.isFinishDiscovering();
+		if (!d.isFinishDiscovering())
+			return false;
+		else {
+			boolean proof = true;
+			for (RobotRole rr : getRobotCore().getRoles()) {
+				if (rr.hasNewInformation())
+					proof = false;
+			}
+			return proof;
+		}
+		//return d.isFinishDiscovering();
 		/*if (d.noMoreDiscovering)
 			return true;
 		if (this.getRobotCore().getWorld().getNextUnknownFieldPosition() == null 

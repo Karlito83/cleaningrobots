@@ -43,7 +43,7 @@ public class LoadPositionWlanActivateBehaviour extends Behaviour {
 				wlan.changeActive();
 			}
 		} else {
-			//if nicht mehr isLoading mache Wlan aus
+			//nicht mehr bei lade position
 			if (wlan.isActive())
 			{
 				wlan.changeActive();
