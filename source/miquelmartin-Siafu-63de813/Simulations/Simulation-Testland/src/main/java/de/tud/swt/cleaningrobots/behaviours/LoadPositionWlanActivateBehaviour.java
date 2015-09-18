@@ -38,6 +38,7 @@ public class LoadPositionWlanActivateBehaviour extends Behaviour {
 		//if isLoading mache Wlan an
 		if (getRobot().getPosition().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
 		{
+			getRobot().isLoading = true;
 			if (!wlan.isActive())
 			{
 				wlan.changeActive();

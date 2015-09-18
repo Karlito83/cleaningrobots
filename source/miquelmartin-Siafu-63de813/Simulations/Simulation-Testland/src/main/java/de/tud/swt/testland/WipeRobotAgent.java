@@ -20,7 +20,7 @@ public class WipeRobotAgent extends RobotAgent {
 		super(start, image, world);
 
 		siafuWorld = world;
-		cleaningRobot = new RobotCore(this, new AgentNavigationAdapter(this, siafuWorld), this, new Accu(0, 500)); //new Accu(0, 1000)
+		cleaningRobot = new RobotCore(this, new AgentNavigationAdapter(this, siafuWorld), this, new Accu(48.0)); //new Accu(0, 1000)
 		
 		cleaningRobot.addHardwareComponent(new Rechner());
 		cleaningRobot.addHardwareComponent(new Wlan());

@@ -13,8 +13,6 @@ public class ExploreFactory extends RobotFactory {
 	private int counter;
 	//private int amount;
 	
-	//private MasterRole mr;
-	
 	public ExploreFactory ()
 	{
 		counter = 0;
@@ -37,9 +35,6 @@ public class ExploreFactory extends RobotFactory {
 
 			counter++;
 			agent.setName("Robbi_" + counter);
-
-			/*mr = new MasterRole(agent.getRobot());
-			mr.addRole(mr);*/
 			
 			return agent;
 		} catch (PlaceNotFoundException e) {
@@ -64,11 +59,6 @@ public class ExploreFactory extends RobotFactory {
 
 			counter++;
 			agent.setName("Robbi_" + counter);
-			
-			/*FollowerRole fr = new FollowerRole(agent.getRobot());
-			fr.master = mr;
-			fr.addRole(fr);
-			mr.getFollowers().add(fr);*/
 
 			return agent;
 		} catch (PlaceNotFoundException e) {
@@ -93,11 +83,6 @@ public class ExploreFactory extends RobotFactory {
 
 			counter++;
 			agent.setName("Robbi_" + counter);
-			
-			/*FollowerRole fr = new FollowerRole(agent.getRobot());
-			fr.master = mr;
-			fr.addRole(fr);
-			mr.getFollowers().add(fr);*/
 
 			return agent;
 		} catch (PlaceNotFoundException e) {
@@ -122,11 +107,6 @@ public class ExploreFactory extends RobotFactory {
 
 			counter++;
 			agent.setName("Robbi_" + counter);
-			
-			/*FollowerRole fr = new FollowerRole(agent.getRobot());
-			fr.master = mr;
-			fr.addRole(fr);
-			mr.getFollowers().add(fr);*/
 
 			return agent;
 		} catch (PlaceNotFoundException e) {

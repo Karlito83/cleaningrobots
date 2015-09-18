@@ -14,7 +14,7 @@ public class State {
 	}
 
 	public String getName() {
-		return name;
+		return name;		
 	}
 	
 	public static State createState(String name)

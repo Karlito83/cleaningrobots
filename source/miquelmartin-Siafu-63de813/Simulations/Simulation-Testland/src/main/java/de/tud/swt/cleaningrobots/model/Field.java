@@ -19,7 +19,7 @@ public class Field {
 		this.changedIteration = Variables.iteration;
 		this.pos = new Position(x, y);
 		this.isPassable = isPassable;
-		this.states = new HashMap<State, Integer>();
+		this.states = new HashMap<State, Integer>();		
 	}
 	
 	public Position getPos() {

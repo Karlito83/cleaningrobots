@@ -8,9 +8,13 @@ public class Hoover extends HardwareComponent {
 	{
 		super();
 		name = "Hoover";
-		offEnergie = 0.1;
-		onEnergie = 0.7;
-		workEnergie = 0.5;
+		//0
+		offEnergie = 0.0;
+		//13Wh
+		onEnergie = caluculateEnergie(13.0);
+		//13Wh
+		workEnergie = caluculateEnergie(13.0);
+		//0
 		outEnergie = 0.0;
 		
 		radius = 2;

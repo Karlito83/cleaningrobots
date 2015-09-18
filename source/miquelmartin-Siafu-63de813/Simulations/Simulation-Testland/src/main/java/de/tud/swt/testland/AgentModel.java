@@ -51,6 +51,8 @@ public class AgentModel extends BaseAgentModel {
 	
 	private boolean finish;
 	
+	private World siafuWorld;
+	
 	/**
 	 * Constructor for the agent model.
 	 * 
@@ -59,6 +61,7 @@ public class AgentModel extends BaseAgentModel {
 	 */
 	public AgentModel(final World world) {
 		super(world);
+		this.siafuWorld = world;
 		counter = 0;
 	}
 
@@ -138,6 +141,7 @@ public class AgentModel extends BaseAgentModel {
 			}
 			System.out.println("Programm Finish!");
 			System.out.println("Iterations: " + counter);
+			siafuWorld.pause(true);
 			try {
 				Thread.sleep(100000);
 			} catch (InterruptedException e) {

@@ -11,27 +11,50 @@ public class ExchangeMeasurement {
 	private String robotName2;
 	private int iteration;
 	
-	private int integerNumberKnowledge;
-	private int stringNumberKnowledge;
-	private int stringByteNumberKnowledge;
+	//knowledge Information
+	private int knowledgeIntegerNumber;
+	private int knowledgeStringNumber;
+	private int knowledgeStringByteNumber;
 	
-	private int integerNumber;
-	private int stringNumber;
-	private int stringByteNumber;
+	//states
+	private int statesStringNumber;
+	private int statesStringByteNumber;
+	
+	//world
+	private int worldPositionCount;
+	private int worldIntegerNumber;
+	private int worldStringNumber;
+	private int worldStringByteNumber;
+	
+	private int worldStatesStringNumber;
+	private int worldStatesStringByteNumber;
 	
 	public ExchangeMeasurement (String name1, String name2, int iteration) {
 		this.robotName1 = name1;
 		this.robotName2 = name2;
 		this.iteration = iteration;
 		this.number = 0;
-		this.integerNumber = 0;
-		this.stringByteNumber = 0;
-		this.stringNumber = 0;
-		this.integerNumberKnowledge = 0;
-		this.stringByteNumberKnowledge = 0;
-		this.stringNumberKnowledge = 0;
+		
+		//knowledge
+		this.knowledgeIntegerNumber = 0;
+		this.knowledgeStringNumber = 0;
+		this.knowledgeStringByteNumber = 0;
+		
+		//states
+		this.statesStringNumber = 0;
+		this.statesStringByteNumber = 0;
+		
+		//world
+		this.worldPositionCount = 0;
+		this.worldIntegerNumber = 0;
+		this.worldStringNumber = 0;
+		this.worldStringByteNumber = 0;
+		
+		this.worldStatesStringNumber = 0;
+		this.worldStatesStringByteNumber = 0;
 	}
 	
+	//basic information
 	public void setNumber (int value) {
 		this.number = value;
 	}
@@ -52,52 +75,96 @@ public class ExchangeMeasurement {
 		return this.iteration;
 	}
 	
-	public int getIntegerNumber () {
-		return this.integerNumber;
+	//knowledge Information
+	public int getKnowledgeIntegerNumber () {
+		return this.knowledgeIntegerNumber;
 	}
 	
-	public int getStringNumber () {
-		return this.stringNumber;
+	public int getKnowledgeStringNumber () {
+		return this.knowledgeStringNumber;
 	}
 	
-	public int getStringByteNumber () {
-		return this.stringByteNumber;
+	public int getKnowledgeStringByteNumber () {
+		return this.knowledgeStringByteNumber;
 	}
 	
-	public void addIntegerNumber (int value) {
-		integerNumber += value;
+	//knowledge add methods
+	public void addKnowledgeIntegerNumber (int value) {
+		knowledgeIntegerNumber += value;
 	}
 	
-	public void addStringNumber (int value) {
-		stringNumber += value;
+	public void addKnowledgeStringNumber (int value) {
+		knowledgeStringNumber += value;
 	}
 	
-	public void addStringByteNumber (int value) {
-		stringByteNumber += value;
+	public void addKnowledgeStringByteNumber (int value) {
+		knowledgeStringByteNumber += value;
 	}
 	
-	public int getIntegerNumberKnowledge () {
-		return this.integerNumberKnowledge;
+	//knownState information	
+	public int getStatesStringNumber () {
+		return this.statesStringNumber;
 	}
 	
-	public int getStringNumberKnowledge () {
-		return this.stringNumberKnowledge;
+	public int getStatesStringByteNumber () {
+		return this.statesStringByteNumber;
 	}
 	
-	public int getStringByteNumberKnowledge () {
-		return this.stringByteNumberKnowledge;
+	//knownState add methods
+	public void addStatesStringNumber (int value) {
+		statesStringNumber += value;
 	}
 	
-	public void addIntegerNumberKnowledge (int value) {
-		integerNumberKnowledge += value;
+	public void addStatesStringByteNumber (int value) {
+		statesStringByteNumber += value;
 	}
 	
-	public void addStringNumberKnowledge (int value) {
-		stringNumberKnowledge += value;
+	//world information
+	public int getWorldPositionCount () {
+		return this.worldPositionCount;
 	}
 	
-	public void addStringByteNumberKnowledge (int value) {
-		stringByteNumberKnowledge += value;
+	public int getWorldIntegerNumber () {
+		return this.worldIntegerNumber;
+	}
+	public int getWorldStringNumber () {
+		return this.worldStringNumber;
+	}
+	
+	public int getWorldStringByteNumber () {
+		return this.worldStringByteNumber;
+	}
+	
+	public int getWorldStatesStringNumber () {
+		return this.worldStatesStringNumber;
+	}
+	
+	public int getWorldStatesStringByteNumber () {
+		return this.worldStatesStringByteNumber;
+	}
+	
+	//world add methods
+	public void addWorldPositionCount (int value) {
+		this.worldPositionCount += value;
+	}
+	
+	public void addWorldIntegerNumber (int value) {
+		this.worldIntegerNumber += value;
+	}
+	public void addWorldStringNumber (int value) {
+		this.worldStringNumber += value;
+	}
+	
+	public void addWorldStringByteNumber (int value) {
+		this.worldStringByteNumber += value;
+	}
+	
+	public void addWorldStatesStringNumber (int value) {
+		this.worldStatesStringNumber += value;
+	}
+	
+	public void addWorldStatesStringByteNumber (int value) {
+		this.worldStatesStringByteNumber += value;
 	}
 	
 	public ExchangeMeasurement fromJson(String json) {

@@ -11,12 +11,12 @@
 		<bottomleft  latitude="-20"  longitude="-15"/>
 	</calibration>
 	<!-- How many seconds does each simulation iteration represent-->
-	<iterationstep>30</iterationstep>
+	<iterationstep>1</iterationstep>
 	<!-- Simulation time at startup (World creation date) -->
 	<starttime>
-		<year>3000</year>
-		<month>1</month>
-		<day>1</day>
+		<year>2015</year>
+		<month>12</month>
+		<day>9</day>
 		<hour>6</hour>
 		<minute>0</minute>
 	</starttime>

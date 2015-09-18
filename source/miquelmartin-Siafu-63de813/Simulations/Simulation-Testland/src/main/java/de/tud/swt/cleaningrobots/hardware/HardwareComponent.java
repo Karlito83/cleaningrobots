@@ -22,6 +22,10 @@ public abstract class HardwareComponent {
 		actualEnergie = 0.0;
 	}
 	
+	protected double caluculateEnergie (double value) {
+		return (value / 3600);
+	}
+	
 	public String getName ()
 	{
 		return name;

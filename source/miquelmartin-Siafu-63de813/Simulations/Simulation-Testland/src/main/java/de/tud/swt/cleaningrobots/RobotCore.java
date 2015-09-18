@@ -169,7 +169,7 @@ public class RobotCore extends Robot {
 		}
 	}
 	
-	private void executeBehaviours() throws Exception {
+	/*private void executeBehaviours() throws Exception {
 		try {
 			//Make action of all Behaviours
 			for (Behaviour behaviour : behaviours) {
@@ -179,7 +179,7 @@ public class RobotCore extends Robot {
 			logger.error(
 					"There is no Exception handling defined if a Behaviour goes wrong...",e);
 		}		
-	}
+	}*/
 	
 	//Get Energie values of the robot
 	public double getMinEnergie() {
@@ -372,7 +372,7 @@ public class RobotCore extends Robot {
 
 	@Override
 	public boolean addRole(RobotRole role) {
-		return this.roles.add(role);		
+		return this.roles.add(role);	
 	}
 	
 	@Override

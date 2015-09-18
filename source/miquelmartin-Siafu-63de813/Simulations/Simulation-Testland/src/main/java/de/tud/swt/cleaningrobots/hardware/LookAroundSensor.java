@@ -8,9 +8,13 @@ public class LookAroundSensor extends HardwareComponent {
 	{
 		super();
 		name = "LookAroundSensor";
-		offEnergie = 0.1;
-		onEnergie = 0.7;
-		workEnergie = 0.5;
+		//0
+		offEnergie = 0.0;
+		//15Wh
+		onEnergie = caluculateEnergie(15.0);
+		//6Wh
+		workEnergie = caluculateEnergie(6.0);
+		//0
 		outEnergie = 0.0;
 		
 		radius = 2;

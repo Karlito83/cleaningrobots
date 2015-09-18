@@ -2,66 +2,75 @@ package de.tud.swt.cleaningrobots.hardware;
 
 public class Accu {
 	
-	private double maxKWh;
-	private double minKWh;
-	private double actualKWh;
+	//48 Wh
+	private double maxWh;
+	//10%
+	private double minWh;
+	private double actualWh;
+	
+	public Accu (double max)
+	{
+		actualWh = max;
+		maxWh = max;
+		minWh = 0.1 * max;
+	}
 	
 	public Accu (double min, double max)
 	{
-		maxKWh = max;
-		minKWh = min;
-		actualKWh = max;
+		maxWh = max;
+		minWh = min;
+		actualWh = max;
 	}
 	
 	public Accu (double min, double max, double actual)
 	{
 		this(min,max);
-		actualKWh = actual;
+		actualWh = actual;
 	}
 	
 	public void load (double loadKWh)
 	{
-		actualKWh += loadKWh;
-		if (actualKWh > maxKWh)
+		actualWh += loadKWh;
+		if (actualWh > maxWh)
 		{
-			actualKWh = maxKWh;
+			actualWh = maxWh;
 		}
 	}
 
 	public boolean isFull ()
 	{
-		return actualKWh == maxKWh;
+		return actualWh == maxWh;
 	}
 	
 	public void use (double useKWh)
 	{
-		actualKWh -= useKWh;
-		if (actualKWh < 0)
-			actualKWh = 0;
+		actualWh -= useKWh;
+		if (actualWh < 0)
+			actualWh = 0;
 	}
 	
 	public double getMinKWh ()
 	{
-		return minKWh;
+		return minWh;
 	}
 	
 	public double getMaxKWh ()
 	{
-		return maxKWh;
+		return maxWh;
 	}
 	
 	public double getActualKWh ()
 	{
-		return actualKWh;
+		return actualWh;
 	}
 	
 	public double getRestKWh ()
 	{
-		return actualKWh - minKWh;
+		return actualWh - minWh;
 	}
 	
 	public double getMaxFieldGoes (double Energie)
 	{
-		return (maxKWh - minKWh) / Energie;
+		return (maxWh - minWh) / Energie;
 	}
 }
