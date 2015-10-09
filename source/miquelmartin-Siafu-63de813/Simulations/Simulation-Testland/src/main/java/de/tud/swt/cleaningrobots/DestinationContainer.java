@@ -138,4 +138,41 @@ public class DestinationContainer {
 		}*/
 	}
 	
+	public boolean setDestinationAndPath (List<Position> path, Position dest) {
+		if (dest == null || path == null || path.isEmpty())
+			return false;
+
+		this.destination = dest;
+		this.path = path;
+		this.destinationSet = true;
+		
+		if (this.loadDestination) {
+			robot.isLoading = true;
+		}
+		
+		if (dest.equals(loadStationPosition)) {
+			this.loadDestination = true;
+		} else {
+			if (loadDestination) {
+				this.lastLoadDestination = dest;
+			}
+			this.loadDestination = false;
+		}
+		return true;
+	}
+	
+	public void moveTowardsDestinationWithoutInformation () {		
+		if (this.path != null) {			
+			Position nextPosition = this.path.get(0);
+			path.remove(nextPosition);
+			if (nextPosition.equals(this.destination)) {
+				//an destination angekommen
+				this.destinationSet = false;
+				//destination = null;
+				path = null;
+			}
+			this.robot.setPosition(nextPosition);
+		}
+	}
+	
 }

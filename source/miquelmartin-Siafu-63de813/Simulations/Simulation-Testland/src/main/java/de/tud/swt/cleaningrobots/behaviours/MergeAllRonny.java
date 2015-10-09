@@ -23,8 +23,17 @@ public class MergeAllRonny extends Behaviour {
 	
 	private Wlan wlan;
 	
+	private MergeAll ma;
+	
+	private int counter;
+	private int maxCount;
+	
 	public MergeAllRonny(RobotCore robot) {
 		super(robot);
+		
+		this.ma = new MergeAll();
+		this.counter = 0;
+		this.maxCount = 100;
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.WLAN, 1);
@@ -45,6 +54,8 @@ public class MergeAllRonny extends Behaviour {
 	@Override
 	public boolean action() {
 		
+		counter++;
+		
 		//Schalte alle Hardwarecomponenten an wenn sie nicht schon laufen
 		for (HardwareComponent hard : d.getHcs())
 		{
@@ -54,11 +65,17 @@ public class MergeAllRonny extends Behaviour {
 			}
 		}
 		
+		if (this.getRobot().getPosition().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
+			return false;
+		
+		if (counter < maxCount)
+			return false;
+		
 		//Tausche komplettes modell von ronny
-		long endTime, startTime = System.nanoTime();
+		long startTime = System.nanoTime();
 		logger.trace("enter getNearRobotsAndImportModel");
 		
-		List<RobotCore> nearRobots = this.getRobot().getICommunicationProvider().getNearRobots(wlan.getVisionRadius());
+		List<RobotCore> nearRobots = this.getRobot().getICommunicationProvider().getNearRobots(10);//wlan.getVisionRadius());
 		nearRobots.remove(this.getRobot());
 		for (RobotCore nearRobot : nearRobots) {
 			//darf nur mi Robotern in der nähe Kommunizieren wenn diese Wirklich die gleiche HardwareComponente habe und diese aktiv ist
@@ -68,12 +85,13 @@ public class MergeAllRonny extends Behaviour {
 				config.knownstates = true;
 				config.knowledge = true;
 				EObject model = nearRobot.exportModel(config);
-				MergeAll ma = new MergeAll();
 				ma.importAllModel(model, this.getRobot(), config);
+				
+				counter = 0;
 			}
 		}
 		
-		endTime = System.nanoTime();
+		long endTime = System.nanoTime();
 		logger.info("Importing the data from " + nearRobots.size() + " other agents took " + (endTime - startTime) + " ns.");
 		
 		logger.trace("exit getNearRobotsAndImportModel");

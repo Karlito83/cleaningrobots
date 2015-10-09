@@ -4,9 +4,9 @@ import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.behaviours.LoadIfRobotWantBehaviour;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
-public class LoadIfRobotWandGoal extends OptionalGoal {
+public class LoadIfRobotWantGoal extends OptionalGoal {
 
-	public LoadIfRobotWandGoal(RobotCore robot) {
+	public LoadIfRobotWantGoal(RobotCore robot) {
 		super(robot);
 				
 		LoadIfRobotWantBehaviour l = new LoadIfRobotWantBehaviour(robot);

@@ -47,7 +47,7 @@ public class DiscoverRelativeBehaviour extends Behaviour {
 		
 		if(getRobot().getDestinationContainer().isAtDestination()) {
 			
-			Position nextUnknownPosition = this.getRobot().getWorld().getNextUnknownFieldPosition(this.getRobot().getDestinationContainer().getLastLoadDestination()); 
+			Position nextUnknownPosition = this.getRobot().getWorld().getNextUnknownRelativeFieldPosition(this.getRobot().getDestinationContainer().getLastLoadDestination()); 
 						
 			if(nextUnknownPosition != null){
 				getRobot().getDestinationContainer().setDestination(nextUnknownPosition);

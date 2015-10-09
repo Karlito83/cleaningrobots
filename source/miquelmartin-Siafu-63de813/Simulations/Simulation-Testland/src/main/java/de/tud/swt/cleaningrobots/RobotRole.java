@@ -3,7 +3,6 @@ package de.tud.swt.cleaningrobots;
 public abstract class RobotRole extends Robot {
 	
 	protected RobotCore core;
-	private boolean newInformation;
 	
 	public RobotRole (RobotCore robotCore) {
 		core = robotCore;
@@ -11,15 +10,7 @@ public abstract class RobotRole extends Robot {
 	
 	public RobotCore getRobotCore () {
 		return core;
-	}
-	
-	public boolean hasNewInformation () {
-		return newInformation;
-	}
-	
-	public void setNewInformation (boolean value) {
-		newInformation = value;
-	}
+	}	
 
 	@Override
 	public boolean addRole(RobotRole role) {
@@ -39,7 +30,7 @@ public abstract class RobotRole extends Robot {
 	
 	@Override
 	public String toString() {
-		return core.getName() + " NewInfo: " + newInformation;
+		return core.getName() + super.toString();
 	}
 
 }

@@ -3,6 +3,9 @@ package de.tud.swt.cleaningrobots.util;
 import de.tud.swt.cleaningrobots.model.Position;
 
 public class RobotDestinationCalculation {
+	
+	public Position actualPosition;
+	public boolean finish;
 
 	public Position oldDest;
 	public Position newDest;
@@ -11,9 +14,11 @@ public class RobotDestinationCalculation {
 	private String robotName;
 	
 	public RobotDestinationCalculation (String name) {
+		finish = false;
 		robotName = name;
 		oldDest = null;
 		newDest = null;
+		actualPosition = null;
 		needNew = false;
 	}
 	
@@ -21,7 +26,7 @@ public class RobotDestinationCalculation {
 		return robotName;
 	}
 	
-	public Position getActualPosition () {
+	public Position getNewOldPosition () {
 		if (newDest == null)
 			return oldDest;
 		return newDest;

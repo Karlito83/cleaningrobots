@@ -29,6 +29,9 @@ public class ExchangeMeasurement {
 	private int worldStatesStringNumber;
 	private int worldStatesStringByteNumber;
 	
+	//Accu values
+	private int accuDoubleNumber;
+	
 	public ExchangeMeasurement (String name1, String name2, int iteration) {
 		this.robotName1 = name1;
 		this.robotName2 = name2;
@@ -52,6 +55,9 @@ public class ExchangeMeasurement {
 		
 		this.worldStatesStringNumber = 0;
 		this.worldStatesStringByteNumber = 0;
+		
+		//Accu
+		this.accuDoubleNumber = 0;
 	}
 	
 	//basic information
@@ -165,6 +171,30 @@ public class ExchangeMeasurement {
 	
 	public void addWorldStatesStringByteNumber (int value) {
 		this.worldStatesStringByteNumber += value;
+	}
+	
+	//accu get and add methods
+	public int getAccuDoubleNumber () {
+		return this.accuDoubleNumber;
+	}
+	
+	public void addAccuDoubleNumber (int value) {
+		this.accuDoubleNumber += value;
+	}
+	
+	public void addMeasurement (ExchangeMeasurement em) {
+		this.addAccuDoubleNumber(em.getAccuDoubleNumber());
+		this.addKnowledgeIntegerNumber(em.getKnowledgeIntegerNumber());
+		this.addKnowledgeStringByteNumber(em.getKnowledgeStringByteNumber());
+		this.addKnowledgeStringNumber(em.getKnowledgeStringNumber());
+		this.addStatesStringByteNumber(em.getStatesStringByteNumber());
+		this.addStatesStringNumber(em.getStatesStringNumber());
+		this.addWorldIntegerNumber(em.getWorldIntegerNumber());
+		this.addWorldPositionCount(em.getWorldPositionCount());
+		this.addWorldStatesStringByteNumber(em.getWorldStatesStringByteNumber());
+		this.addWorldStatesStringNumber(em.getWorldStatesStringNumber());
+		this.addWorldStringByteNumber(em.getWorldStringByteNumber());
+		this.addWorldStringNumber(em.getWorldStringNumber());
 	}
 	
 	public ExchangeMeasurement fromJson(String json) {

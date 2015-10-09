@@ -38,7 +38,7 @@ public class MoveBehaviour extends Behaviour {
 			}
 			
 			//make the move
-			getRobot().moveTowardsDestination();
+			getRobot().getDestinationContainer().moveTowardsDestination();
 			logger.info("Executed Movebehaviour");
 		} else {
 			//Schalte alle Hardwarecomponenten aus

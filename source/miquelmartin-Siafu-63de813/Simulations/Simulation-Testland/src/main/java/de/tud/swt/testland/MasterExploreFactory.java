@@ -8,13 +8,14 @@ import de.nec.nle.siafu.model.World;
 import de.tud.swt.cleaningrobots.FollowerRole;
 import de.tud.swt.cleaningrobots.MasterRole;
 
-public class ExploreFactory extends RobotFactory {
+public class MasterExploreFactory extends RobotFactory {
 
 	private int counter;
 	
-	public ExploreFactory ()
+	public MasterExploreFactory ()
 	{
-		Constants.configuration = 4;
+		Constants.configuration = 1;
+		Constants.NEW_FIELD_COUNT = 0;
 		counter = 0;
 	}
 	
@@ -123,76 +124,34 @@ public class ExploreFactory extends RobotFactory {
 	 */
 	@Override
 	public ArrayList<Agent> createRobots(World world) {
-		
+		//ArrayList<Agent> population = new ArrayList<Agent>(amount);		
 		ArrayList<Agent> population = new ArrayList<Agent>();	
 		
 		//loadstation agent
 		LoadStationAgent lsa = createLoadStationAgent(world);
 		population.add(lsa);
 		
-		//MasterRole mrw = new MasterRole(lsa.getRobot());
-		//mrw.addRole(mrw);
+		MasterRole mre = new MasterRole(lsa.getRobot());
+		mre.addRole(mre);
 		
-		//lsa.addMasterMerge(mrh);
-		lsa.addStandardGoals();
+		//lsa.addMasterExploreGoals(mre);
+		lsa.addMasterExploreRandomGoals(mre);
 		
-		if (Constants.NUMBER_EXPLORE_AGENTS > 0) {
-			MasterRole mre = new MasterRole(lsa.getRobot());
-			mre.addRole(mre);			
-			lsa.addMasterMerge(mre);
-			//explore agents
-			for (int i = 0; i < Constants.NUMBER_EXPLORE_AGENTS; i++) {
-				ExploreRobotAgent era = createExploreAgent(world);
-				era.addStandardGoals();
-				population.add(era);		
-				
-				FollowerRole fre = new FollowerRole(era.getRobot());
-				fre.addRole(fre);
-				fre.master = mre;
-				mre.getFollowers().add(fre);
-			}
-		
-			//hoove agents
-			if (Constants.NUMBER_HOOVE_AGENTS > 0) {
-				MasterRole mrh = new MasterRole(lsa.getRobot());
-				mrh.addRole(mrh);
-				lsa.addMasterMerge(mrh);
-				for (int i = 0; i < Constants.NUMBER_HOOVE_AGENTS; i++) {
-					HooveRobotAgent hra = createHooveAgent(world);
-					hra.addStandardGoals();
-					population.add(hra);
-					
-					FollowerRole frh = new FollowerRole(hra.getRobot());
-					frh.addRole(frh);
-					frh.master = mrh;
-					mrh.getFollowers().add(frh);
-				}
-				mrh.getFollowers().add(mre);
-								
-				//wipe agents
-				if (Constants.NUMBER_WIPE_AGENTS > 0) {
-					MasterRole mrw = new MasterRole(lsa.getRobot());
-					mrw.addRole(mrw);
-					lsa.addMasterMerge(mrw);
-					for (int i = 0; i < Constants.NUMBER_WIPE_AGENTS; i++) {
-						WipeRobotAgent wra = createWipeAgent(world);
-						wra.addStandardGoals();
-						population.add(wra);
-						
-						FollowerRole frw = new FollowerRole(wra.getRobot());
-						frw.addRole(frw);
-						frw.master = mrw;
-						mrw.getFollowers().add(frw);
-					}
-					mrw.getFollowers().add(mrh);
-				}
-				
-			}
+		//explore agents
+		for (int i = 0; i < Constants.NUMBER_EXPLORE_AGENTS; i++) {
+			ExploreRobotAgent era = createExploreAgent(world);
+			era.addMasterExploreGoals();
+			population.add(era);		
+			
+			FollowerRole fre = new FollowerRole(era.getRobot());
+			fre.addRole(fre);
+			fre.master = mre;
+			mre.getFollowers().add(fre);
 		}
 		
 		/*//E1
 		ExploreRobotAgent era1 = createExploreAgent(world);
-		era1.addStandardGoals();
+		era1.addMasterExploreGoals();
 		population.add(era1);		
 		
 		FollowerRole fre1 = new FollowerRole(era1.getRobot());
@@ -202,7 +161,7 @@ public class ExploreFactory extends RobotFactory {
 		
 		//E2
 		ExploreRobotAgent era2 = createExploreAgent(world);
-		era2.addStandardGoals();
+		era2.addMasterExploreGoals();
 		population.add(era2);
 		
 		FollowerRole fre2 = new FollowerRole(era2.getRobot());
@@ -212,7 +171,7 @@ public class ExploreFactory extends RobotFactory {
 		
 		//E3
 		ExploreRobotAgent era3 = createExploreAgent(world);
-		era3.addStandardGoals();
+		era3.addMasterExploreGoals();
 		population.add(era3);
 		
 		FollowerRole fre3 = new FollowerRole(era3.getRobot());
@@ -254,5 +213,4 @@ public class ExploreFactory extends RobotFactory {
 		//population.add(createWipeAgent(world));
 		return population;
 	}
-
 }

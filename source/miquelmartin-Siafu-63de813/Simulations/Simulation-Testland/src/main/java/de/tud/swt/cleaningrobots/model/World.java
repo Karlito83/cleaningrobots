@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import cleaningrobots.CleaningrobotsFactory;
 import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.measure.ExchangeMeasurement;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 import de.tud.swt.cleaningrobots.util.RobotDestinationCalculation;
 
@@ -141,7 +142,7 @@ public class World {
 			if (!map.get(currentNodePosition).containsState(state)) {
 				//wenn aktuelles Feld nicht den State enthält
 				//Position kann zu Ergebnis gehören
-				int actDist = getDistanceFromCurrentPosition(currentNodePosition);
+				int actDist = getDistanceFromPositionToPosition(p, currentNodePosition);
 				if (actDist <= dist) {
 					if (actDist < dist)	{
 						tmpResult.clear();
@@ -204,7 +205,7 @@ public class World {
 			Position currentNodePosition = nodes.poll();
 			if (!map.get(currentNodePosition).containsState(without)) {
 				//Position kann zu Ergebnis gehören
-				int actDist = getDistanceFromCurrentPosition(currentNodePosition);
+				int actDist = getDistanceFromPositionToPosition(p, currentNodePosition);
 				if (actDist <= dist) {
 					if (actDist < dist) {
 						tmpResult.clear();
@@ -284,7 +285,7 @@ public class World {
 									//wenn es eine beschriebene Position gibt dann Prüfe diese
 									if (proof.hasPostion())
 									{
-										int dist = getDistanceFromPositionToPosition(proof.getActualPosition(), currentNodePosition);									
+										int dist = getDistanceFromPositionToPosition(proof.getNewOldPosition(), currentNodePosition);									
 										if (dist < maxAway)
 										{
 											if (dist < minDistToOther)
@@ -326,7 +327,7 @@ public class World {
 		return information;
 	}	
 	
-	private void outPutInformation (Map <String, RobotDestinationCalculation> information)
+	/*private void outPutInformation (Map <String, RobotDestinationCalculation> information)
 	{
 		for (RobotDestinationCalculation out : information.values())
 		{			
@@ -342,11 +343,11 @@ public class World {
 			}
 			System.out.println("");
 		}
-		/*try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}*/
+	}*/
+	
+	public Position getNextUnknownFieldPosition() {
+		Position p = this.robot.getPosition();
+		return this.getNextUnknownFieldPosition(p);
 	}
 
 	/***
@@ -355,14 +356,13 @@ public class World {
 	 * 
 	 * @return
 	 */
-	public Position getNextUnknownFieldPosition() {
+	public Position getNextUnknownFieldPosition(Position p) {
 
 		logger.trace("getNextUnknownFieldPosition start");
 		long startTime = System.nanoTime();
 
 		Position result = null;
 		List<Position> tmpResult = new LinkedList<Position>();
-		Position p = this.robot.getPosition();
 		boolean flag = true;
 
 		Set<Position> visited = new HashSet<Position>();
@@ -377,7 +377,7 @@ public class World {
 				//bedeuted nimm nur auf wenn noch nicht gesehen wurde
 				if (!map.containsKey(neighbour)) {
 					if (!tmpResult.isEmpty()
-							&& getDistanceFromCurrentPosition(currentNodePosition) > getDistanceFromCurrentPosition(tmpResult
+							&& getDistanceFromPositionToPosition(p, currentNodePosition) > getDistanceFromPositionToPosition(p, tmpResult
 									.get(0))) {
 						flag = false;
 						break;
@@ -408,20 +408,24 @@ public class World {
 		return result;
 	}	
 	
+	public Position getNextUnknownRelativeFieldPosition(Position relative) {
+		Position p = this.robot.getPosition();
+		return getNextUnknownRelativeFieldPosition(p, relative);
+	}
+	
 	/***
 	 * Returns the yet unknown field
 	 * gibt Position von bekannter passierbarer Stelle zurück die neben unknown position liegt
 	 * 
 	 * @return
 	 */
-	public Position getNextUnknownFieldPosition(Position relative) {
+	public Position getNextUnknownRelativeFieldPosition(Position p, Position relative) {
 		
 		if (relative == null)
-			return getNextUnknownFieldPosition();
+			return getNextUnknownFieldPosition(p);
 
 		Position result = null;
 		List<Node> tmpResult = new LinkedList<Node>();
-		Position p = this.robot.getPosition();
 		
 		boolean flag = true;
 
@@ -475,22 +479,12 @@ public class World {
 	}
 	
 	private int getDistanceFromPositionToPosition(Position x, Position y) {
+		//return Math.max(Math.abs(x.getX() - y.getX()), Math.abs(x.getY() - y.getY()));
+		
 		int deltaX = 0, deltaY = 0;
 
 		deltaX = x.getX() - y.getX();
 		deltaY = x.getY() - y.getY();
-		deltaX = deltaX < 0 ? -deltaX : deltaX;
-		deltaY = deltaY < 0 ? -deltaY : deltaY;
-
-		return deltaX < deltaY ? deltaY : deltaX;
-	}
-
-	private int getDistanceFromCurrentPosition(Position currentNodePosition) {
-		int deltaX = 0, deltaY = 0;
-
-		Position currentRobotPosition = this.robot.getPosition();
-		deltaX = currentRobotPosition.getX() - currentNodePosition.getX();
-		deltaY = currentRobotPosition.getY() - currentNodePosition.getY();
 		deltaX = deltaX < 0 ? -deltaX : deltaX;
 		deltaY = deltaY < 0 ? -deltaY : deltaY;
 
@@ -519,6 +513,27 @@ public class World {
 	
 	public boolean removeWorldState (State state) {
 		return this.worldStates.remove(state);
+	}
+	
+	public ExchangeMeasurement getHoleMeasurement () {
+		ExchangeMeasurement em = new ExchangeMeasurement("", "", 0);
+		//WorldStates durchlaufen
+		em.addWorldIntegerNumber(4);
+		em.addWorldStatesStringNumber(this.worldStates.size());
+		for (State s : this.worldStates) {
+			em.addWorldStatesStringByteNumber(s.getName().getBytes().length);
+		}
+		//Map durchlaufen
+		em.addWorldPositionCount(map.keySet().size() * 2);
+		em.addWorldIntegerNumber(map.keySet().size() * 4);
+		
+		for (Field f : map.values()) {
+			em.addWorldStringNumber(f.getStates().size());
+			for (State s  : f.getStates()) {
+				em.addWorldStringByteNumber(s.getName().getBytes().length);
+			}
+		}
+		return em;
 	}
 
 	/*

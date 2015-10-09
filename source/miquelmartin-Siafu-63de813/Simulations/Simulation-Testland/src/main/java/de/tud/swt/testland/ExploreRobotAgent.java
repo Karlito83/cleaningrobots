@@ -7,6 +7,8 @@ import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.goals.MasterGoal;
 import de.tud.swt.cleaningrobots.goals.nonoptional.ExploreLoadGoal;
 import de.tud.swt.cleaningrobots.goals.nonoptional.ExploreRelativeLoadGoal;
+import de.tud.swt.cleaningrobots.goals.nonoptional.MasterExploreRobotGoal;
+import de.tud.swt.cleaningrobots.goals.nonoptional.RonnyConfigurationGoal;
 import de.tud.swt.cleaningrobots.goals.optional.ExploreDumpGoal;
 import de.tud.swt.cleaningrobots.goals.optional.WlanLoadIfRobotWantMergeGoal;
 import de.tud.swt.cleaningrobots.goals.optional.WlanLoadMasterMergeGoal;
@@ -32,7 +34,7 @@ public class ExploreRobotAgent extends RobotAgent {
 		//System.out.println("Name: " + cleaningRobot.getName() + " : States: " + cleaningRobot.getSupportedStates() + " Roles: " + cleaningRobot.getRoles());		
 	}
 	
-	public void addStandardRoles () {
+	public void addStandardGoals () {
 		
 		ExploreRelativeLoadGoal erlg = new ExploreRelativeLoadGoal(cleaningRobot);
 		//ExploreLoadGoal elg = new ExploreLoadGoal(cleaningRobot);
@@ -53,4 +55,46 @@ public class ExploreRobotAgent extends RobotAgent {
 			cleaningRobot.addGoal(mg);
 		}
 	} 
+	
+	public void addNonRelativeStandardGoals () {
+		
+		ExploreLoadGoal elg = new ExploreLoadGoal(cleaningRobot);
+		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
+		
+		WlanLoadIfRobotWantMergeGoal wlirwmg = new WlanLoadIfRobotWantMergeGoal(cleaningRobot);
+		
+		MasterGoal mg = new MasterGoal(cleaningRobot);
+		mg.subGoals.add(elg);
+		mg.subGoals.add(wlirwmg);
+		mg.subGoals.add(edg);
+		
+		if (mg.isHardwareCorrect())
+		{
+			cleaningRobot.addGoal(mg);
+		}
+	}
+	
+	public void addMasterExploreGoals () {
+		MasterExploreRobotGoal merg = new MasterExploreRobotGoal(cleaningRobot);
+		
+		if (merg.isHardwareCorrect()) 
+		{
+			cleaningRobot.addGoal(merg);
+		}
+	}
+	
+	public void addRonnyConfiguration () {
+		
+		RonnyConfigurationGoal rcg = new RonnyConfigurationGoal(cleaningRobot);
+		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
+		
+		MasterGoal mg = new MasterGoal(cleaningRobot);
+		mg.subGoals.add(rcg);
+		mg.subGoals.add(edg);
+		
+		if (mg.isHardwareCorrect())
+		{
+			cleaningRobot.addGoal(mg);
+		}
+	}
 }

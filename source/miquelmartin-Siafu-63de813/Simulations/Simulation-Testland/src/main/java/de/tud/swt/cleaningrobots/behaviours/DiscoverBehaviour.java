@@ -115,7 +115,7 @@ public class DiscoverBehaviour extends Behaviour {
 				this.getRobot().getWorld().addWorldState(WORLDSTATE_DISCOVERED);
 				if(!getRobot().getPosition().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
 				{
-					//Ist an Ladestation angekommen muss geladen werden
+					//Ist noch nicht am ausgang muss noch zur ladestation fahren
 					getRobot().getDestinationContainer().setDestinationLoadStation();
 				} else {
 					//gibt true zurück wenn alles geschafft ist in der Behaviour

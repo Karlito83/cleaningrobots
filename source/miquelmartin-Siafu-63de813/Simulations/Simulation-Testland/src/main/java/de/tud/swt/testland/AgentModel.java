@@ -80,7 +80,11 @@ public class AgentModel extends BaseAgentModel {
 
 		try {
 			logger.info("Creating " + POPULATION + " random cleaning robots.");
-			agents = new ExploreFactory().createRobots(world);
+			//agents = new ExploreWithoutMasterFactory().createRobots(world);
+			//agents = new ExploreWithMasterMergeFactory().createRobots(world);
+			//agents = new ExploreWithCalculateMasterFactory().createRobots(world);
+			agents = new ExploreFactory().createRobots(world);			
+			//agents = new MasterExploreFactory().createRobots(world);
 		} catch (Exception ex) {
 			logger.error("An exception occured while creating the population.", ex);
 		}
@@ -118,12 +122,18 @@ public class AgentModel extends BaseAgentModel {
 			//if (counter == 1000)
 			//	finish = true;
 		} else {
+			for (Agent a : agents) {
+				//nur wenn Robot noch nicht aus ist
+				((RobotAgent)a).getRobot().addLastMeasurement();				
+			}
+			
 			//Programm ist fertig Lese Measurement aller Roboter und gebe in Datei aus
 			for (Agent a : agents) {
 				RobotCore rc = ((RobotAgent)a).getRobot();
 				
 				//Json Datein in .txt speicher
-				FileWorker fw = new FileWorker(rc.getName()+ ".txt");				
+				FileWorker fw = new FileWorker("V" + Constants.configuration + "_CE" + Constants.NUMBER_EXPLORE_AGENTS + "_CH" + Constants.NUMBER_HOOVE_AGENTS +
+						"_CW" + Constants.NUMBER_WIPE_AGENTS + "_B" + Constants.NEW_FIELD_COUNT + "_D" + Constants.run + "_" + rc.getName()+ ".txt");				
 				String measu = rc.getMeasurement().toJson();
 				fw.addLineToFile(measu);
 				
@@ -131,7 +141,8 @@ public class AgentModel extends BaseAgentModel {
 				//outputCsv(rc.getMeasurement().timeProTick, rc.getName() + "Time");
 				
 			}
-			FileWorker fw = new FileWorker("exchange.txt");
+			FileWorker fw = new FileWorker("V" + Constants.configuration + "_CE" + Constants.NUMBER_EXPLORE_AGENTS + "_CH" + Constants.NUMBER_HOOVE_AGENTS +
+					"_CW" + Constants.NUMBER_WIPE_AGENTS + "_B" + Constants.NEW_FIELD_COUNT + "_D" + Constants.run + "_" + "exchange.txt");
 			int tester = 0;
 			for (ExchangeMeasurement em : Variables.exchange) {
 				tester++;

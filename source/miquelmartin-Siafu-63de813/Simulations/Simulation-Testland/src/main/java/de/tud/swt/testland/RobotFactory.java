@@ -6,7 +6,7 @@ import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.World;
 
 public abstract class RobotFactory {
-	
+		
 	/**
 	 * Create a number of random agents.
 	 * 

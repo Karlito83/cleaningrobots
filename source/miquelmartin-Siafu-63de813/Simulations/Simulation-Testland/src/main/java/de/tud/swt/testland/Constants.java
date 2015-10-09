@@ -30,9 +30,7 @@ import de.nec.nle.siafu.types.Text;
  * @author Miquel Martin
  */
 public class Constants {
-	/**
-	 * Population size, that is, how many agents should inhabit this simulation.
-	 */
+	/** Population size, that is, how many agents should inhabit this simulation. */
 	public static final int POPULATION = 3;
 
 	/** A small maximum distance to wander off a main point when wanderng. */
@@ -54,6 +52,14 @@ public class Constants {
 	public static final int HALF_HOUR_BLUR = 30;
 
 
+	public static final int NUMBER_EXPLORE_AGENTS = 3;
+	public static final int NUMBER_WIPE_AGENTS = 0;
+	public static final int NUMBER_HOOVE_AGENTS = 0;
+	public static int run = 0;
+	
+	public static int NEW_FIELD_COUNT = 0;
+	public static int configuration;
+	
 	/**
 	 * The names of the fields in each agent object.
 	 */

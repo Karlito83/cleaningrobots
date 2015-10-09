@@ -15,11 +15,13 @@ import de.tud.swt.cleaningrobots.goals.Goal;
 import de.tud.swt.cleaningrobots.hardware.Accu;
 import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
+import de.tud.swt.cleaningrobots.measure.ExchangeMeasurement;
 import de.tud.swt.cleaningrobots.measure.RobotMeasurement;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.model.World;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
+import de.tud.swt.cleaningrobots.util.Variables;
 
 public class RobotCore extends Robot {
 	
@@ -39,7 +41,6 @@ public class RobotCore extends Robot {
 	private double minEnergieNeed;
 	private double actualEnergieNeed;
 	
-	private List<Behaviour> behaviours;
 	private List<Goal> goals;
 	private List<HardwareComponent> hardwarecomponents;
 	private Set<State> supportedStates;
@@ -85,7 +86,6 @@ public class RobotCore extends Robot {
 		
 		this.roles = new ArrayList<RobotRole>();
 		this.hardwarecomponents = new LinkedList<HardwareComponent>();
-		this.behaviours = new LinkedList<Behaviour>();
 		this.goals = new LinkedList<Goal>();
 		this.supportedStates = new HashSet<State>();
 		this.knowledge = new LinkedList<RobotKnowledge>();
@@ -118,9 +118,7 @@ public class RobotCore extends Robot {
 				
 		long startTime = System.nanoTime();
 		
-		//boolean result;
 		try {
-			//executeBehaviours();
 			runGoals();
 			getEnergieConsumption();
 		} catch (Exception e) {
@@ -168,18 +166,6 @@ public class RobotCore extends Robot {
 			
 		}
 	}
-	
-	/*private void executeBehaviours() throws Exception {
-		try {
-			//Make action of all Behaviours
-			for (Behaviour behaviour : behaviours) {
-				behaviour.action();
-			}
-		} catch (Exception e) {
-			logger.error(
-					"There is no Exception handling defined if a Behaviour goes wrong...",e);
-		}		
-	}*/
 	
 	//Get Energie values of the robot
 	public double getMinEnergie() {
@@ -255,32 +241,20 @@ public class RobotCore extends Robot {
 		}
 		return false;
 	}
-	
-	/***
-	 * Removes a {@link Behaviour} from the {@link List} of behaviours. This
-	 * function behaves like {@link List#remove(int)}.
-	 * 
-	 * @param behaviour
-	 * @return
-	 */
-	public boolean removeBehaviour(Behaviour behaviour) {
-		boolean result = this.behaviours.remove(behaviour);
-		recalculateSupportedStates();
-		return result;
-	}
-
-	public boolean addBehaviour (Behaviour behaviour) {
-		boolean result = this.behaviours.add(behaviour);
-		recalculateSupportedStates();
-		return result;
-	}
-	
+		
 	public boolean addGoal (Goal goal) {
 		boolean result = this.goals.add(goal);
 		recalculateSupportedStates();
 		return result;
 	}
 	
+	/***
+	 * Removes a {@link Goal} from the {@link List} of goals. This
+	 * function behaves like {@link List#remove(int)}.
+	 * 
+	 * @param goal
+	 * @return
+	 */
 	public boolean removeGoal (Goal goal) {
 		boolean result = this.goals.remove(goal);
 		recalculateSupportedStates();
@@ -308,13 +282,6 @@ public class RobotCore extends Robot {
 				//	supportedStates.add(state);
 			}
 		}
-		for (Behaviour behavior : behaviours) {
-			for (State state : behavior.getSupportedStates()) {
-				supportedStates.add(state);
-				//if (!supportedStates.contains(state))
-				//	supportedStates.add(state);
-			}
-		}
 	}	
 
 	public Collection<State> getSupportedStates() {
@@ -323,11 +290,7 @@ public class RobotCore extends Robot {
 
 	public World getWorld() {
 		return this.world;
-	}		
-
-	public void moveTowardsDestination() {	
-		this.destinationContainer.moveTowardsDestination();
-	}
+	}	
 
 	/**
 	 * Set the Position of the robot
@@ -383,6 +346,42 @@ public class RobotCore extends Robot {
 			result = tmp.getName().equals(this.getName());
 		}
 		return result;
+	}
+	
+	public void addLastMeasurement () {
+		ExchangeMeasurement em = new ExchangeMeasurement(name, "FinalModel", 0);
+		em.addMeasurement(world.getHoleMeasurement());
+		//name not use because he is in
+		//accu
+		em.addAccuDoubleNumber(3);
+		//energie
+		em.addAccuDoubleNumber(3);
+		//knownstates
+		em.addStatesStringNumber(supportedStates.size());
+		for (State s : this.supportedStates) {
+			em.addStatesStringByteNumber(s.getName().getBytes().length);
+		}
+		//destcontainer
+		//3 Positions + liste Positions
+		//knowledge
+		for (RobotKnowledge rk : this.knowledge) {
+			em.addMeasurement(rk.getMeasurement());
+		}
+		//roles
+		for (RobotRole r : roles) {
+			if (r instanceof MasterRole) {
+				MasterRole m = (MasterRole)r;
+				em.addKnowledgeStringNumber(m.getFollowers().size());
+				for (RobotRole rr : m.getFollowers()) {
+					em.addKnowledgeStringByteNumber(rr.getRobotCore().getName().getBytes().length);
+				}
+			} else {
+				FollowerRole f = (FollowerRole)r;
+				em.addKnowledgeStringByteNumber(f.master.getRobotCore().getName().getBytes().length);
+				em.addKnowledgeStringNumber(1);
+			}
+		}
+		Variables.exchange.add(em);
 	}
 
 	public cleaningrobots.Robot exportModel(ImportExportConfiguration config) {

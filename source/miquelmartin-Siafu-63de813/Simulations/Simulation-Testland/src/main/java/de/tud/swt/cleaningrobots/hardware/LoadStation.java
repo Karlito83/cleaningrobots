@@ -14,7 +14,7 @@ public class LoadStation extends HardwareComponent{
 		workEnergie = 0.0;
 		outEnergie = 0.0;
 		
-		loadValue = 3;
+		loadValue = caluculateEnergie(80);
 		loadRadius = 0;
 	}
 	
