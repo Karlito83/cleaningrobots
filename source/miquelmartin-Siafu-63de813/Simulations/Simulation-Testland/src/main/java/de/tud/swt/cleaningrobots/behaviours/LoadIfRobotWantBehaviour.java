@@ -13,7 +13,7 @@ import de.tud.swt.cleaningrobots.hardware.LoadStation;
 
 public class LoadIfRobotWantBehaviour extends Behaviour {
 
-private LoadStation loadStation;
+	private LoadStation loadStation;
 	
 	public LoadIfRobotWantBehaviour(RobotCore robot) {
 		super(robot);
@@ -36,12 +36,9 @@ private LoadStation loadStation;
 
 	@Override
 	public boolean action() throws Exception {
-
-		//System.out.println("LoadActivty action");
 		
 		List<RobotCore> nearRobots = this.getRobot().getICommunicationProvider().getNearRobots(loadStation.getLoadRadius());
 		nearRobots.remove(this.getRobot());
-		//System.out.println("Size in Ladereichweite: " + nearRobots.size());
 		for (RobotCore nearRobot : nearRobots) {
 			if (nearRobot.getAccu() != null)
 			{
@@ -49,10 +46,9 @@ private LoadStation loadStation;
 					nearRobot.getAccu().load(loadStation.getLoadValue());
 				//wenn der akku voll ist soll er nicht mehr laden
 				if (nearRobot.getAccu().isFull()) {
-					System.out.println("Accu Full");
+					//System.out.println("Accu Full");
 					nearRobot.isLoading = false;
 				}
-				//System.out.println("Lade: Robot: " + nearRobot.getName() + " Accu:" + nearRobot.getAccu().getActualKWh());
 			}
 		}
 		

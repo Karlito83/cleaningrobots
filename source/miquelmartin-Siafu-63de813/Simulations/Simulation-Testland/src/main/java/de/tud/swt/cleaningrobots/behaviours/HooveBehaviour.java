@@ -94,7 +94,6 @@ public class HooveBehaviour extends Behaviour {
 						}
 					}
 				}				
-				logger.info("Executed DiscoverBehaviour.action().");
 			} else {
 				//no more hoove position found
 				//need no blocked field and proof if the hole world is discovered

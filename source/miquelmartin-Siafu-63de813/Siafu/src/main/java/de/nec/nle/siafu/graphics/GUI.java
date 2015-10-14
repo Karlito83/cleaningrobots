@@ -243,6 +243,11 @@ public class GUI implements Runnable {
 	private synchronized boolean isSimulationDataChanged() {
 		return simulationDataChanged;
 	}
+	
+	public void restartSimulationAndGui () {
+		System.out.println("restart");
+		reportSimulationDataChange(simulationDataPath);
+	}
 
 	/**
 	 * Acknowledge the simulation change and reset it.
@@ -285,7 +290,6 @@ public class GUI implements Runnable {
 			if (shell.isDisposed()) {
 				return;
 			}
-			
 			switch (status) {
 			case STATE_STANDBY:
 				if (simulationDataPath != null) {

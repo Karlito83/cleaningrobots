@@ -68,12 +68,7 @@ public class LoadStationAgent extends RobotAgent {
 		}
 	}
 	
-	public void addLoadIfRobotWantAndExploreGoal () {
-		LoadIfRobotWantGoal lirwg = new LoadIfRobotWantGoal(cleaningRobot);		
-		if (lirwg.isHardwareCorrect())
-		{
-			cleaningRobot.addGoal(lirwg);
-		}
+	public void addExploreDumpGoal () {
 		cleaningRobot.addGoal(new ExploreDumpGoal(cleaningRobot));
 	}
 	

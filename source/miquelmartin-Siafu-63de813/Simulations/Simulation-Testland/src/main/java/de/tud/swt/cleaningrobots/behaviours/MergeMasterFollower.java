@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
 import de.tud.swt.cleaningrobots.RobotKnowledge;
@@ -23,15 +21,10 @@ import de.tud.swt.cleaningrobots.merge.MergeAll;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
 public class MergeMasterFollower extends Behaviour {
-
-	private final Logger logger = LogManager.getRootLogger();
 	
 	private MergeAll ma;
 	private Wlan wlan;
-	
-	//private final State STATE_BLOCKED = State.createState("Blocked");
-	//private final State STATE_FREE = State.createState("Free");		
-	
+		
 	private List<RobotRole> lastChange;
 	
 	public MergeMasterFollower(RobotCore robot) {
@@ -42,10 +35,7 @@ public class MergeMasterFollower extends Behaviour {
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.WLAN, 1);
-		
-		//supportedStates.add(STATE_BLOCKED);
-		//supportedStates.add(STATE_FREE);
-		
+				
 		d = new Demand(hardware, robot);
 		hardwarecorrect = d.isCorrect();
 		
@@ -82,12 +72,8 @@ public class MergeMasterFollower extends Behaviour {
 		if (nearRobots.isEmpty())
 			return false;
 		
-		//System.out.println("NearRobots: " + nearRobots.size());
 		Map<RobotRole, ImportExportConfiguration> nearsNewInformation = new HashMap<RobotRole, ImportExportConfiguration>();
 		Map<RobotRole, ImportExportConfiguration> nearsNoNewInformation = new HashMap<RobotRole, ImportExportConfiguration>();
-		//List<FollowerRole> nearsNewInformation = new ArrayList<FollowerRole>();
-		//List<FollowerRole> nearsNoNewInformation = new ArrayList<FollowerRole>();
-		//System.out.println("Robots in Tausch reichweite: " + nearRobots.size());
 		for (RobotCore nearRobot : nearRobots) {
 			//darf nur mi Robotern in der nähe Kommunizieren wenn diese Wirklich die gleiche HardwareComponente habe und diese aktiv ist
 			if (nearRobot.hasActiveHardwareComponent(wlan.getComponents())) {
@@ -159,7 +145,7 @@ public class MergeMasterFollower extends Behaviour {
 		//füge gesammeltes Model den nahen Robotern hinzu
 		if (nearsNewInformation.size() >= 1)
 		{
-			System.out.println("LastChange: " + lastChange + " NewInfo: " + nearsNewInformation + " NoNewInfo: " + nearsNoNewInformation);
+			//System.out.println("LastChange: " + lastChange + " NewInfo: " + nearsNewInformation + " NoNewInfo: " + nearsNoNewInformation);
 			if (nearsNewInformation.size() == 1)
 			{
 				//muss model nur importieren wenn noch nicht in lastchange liste war oder er nicht der einzige mit neuen informationen ist

@@ -34,13 +34,11 @@ public class WipeRobotAgent extends RobotAgent {
 	
 	public void addRelativeStandardGoals () {		
 		WipeLoadGoal wlg = new WipeLoadGoal(cleaningRobot, true);
-		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
 		WlanLoadIfRobotWantMergeGoal wlmmg = new WlanLoadIfRobotWantMergeGoal(cleaningRobot);
 		
 		MasterGoal mg = new MasterGoal(cleaningRobot);
 		mg.subGoals.add(wlg);
 		mg.subGoals.add(wlmmg);
-		mg.subGoals.add(edg);
 		
 		if (mg.isHardwareCorrect())
 		{
@@ -50,13 +48,11 @@ public class WipeRobotAgent extends RobotAgent {
 	
 	public void addRandomStandardGoals () {
 		WipeLoadGoal wlg = new WipeLoadGoal(cleaningRobot, false);
-		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
 		WlanLoadIfRobotWantMergeGoal wlmmg = new WlanLoadIfRobotWantMergeGoal(cleaningRobot);
 		
 		MasterGoal mg = new MasterGoal(cleaningRobot);
 		mg.subGoals.add(wlg);
 		mg.subGoals.add(wlmmg);
-		mg.subGoals.add(edg);
 		
 		if (mg.isHardwareCorrect())
 		{
@@ -75,16 +71,14 @@ public class WipeRobotAgent extends RobotAgent {
 	
 	//without Master Configuration
 	public void addWithoutMasterConfiguration () {		
-		WithoutMasterWipeGoal wmg = new WithoutMasterWipeGoal(cleaningRobot);
-		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
-			
-		MasterGoal mg = new MasterGoal(cleaningRobot);
-		mg.subGoals.add(wmg);
-		mg.subGoals.add(edg);
-			
-		if (mg.isHardwareCorrect())
+		WithoutMasterWipeGoal wmg = new WithoutMasterWipeGoal(cleaningRobot);			
+		if (wmg.isHardwareCorrect())
 		{
-			cleaningRobot.addGoal(mg);
+			cleaningRobot.addGoal(wmg);
 		}
+	}
+	
+	public void addExploreDumpGoal () {
+		cleaningRobot.addGoal(new ExploreDumpGoal(cleaningRobot));
 	}
 }

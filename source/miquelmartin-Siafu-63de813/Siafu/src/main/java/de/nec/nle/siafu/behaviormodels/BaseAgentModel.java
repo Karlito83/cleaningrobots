@@ -41,6 +41,7 @@ import de.nec.nle.siafu.model.World;
 public abstract class BaseAgentModel {
 	/** The simulated world. */
 	protected World world;
+	protected boolean runFinish;
 
 	/**
 	 * Instantiate a BaseAgentModel.
@@ -49,6 +50,11 @@ public abstract class BaseAgentModel {
 	 */
 	public BaseAgentModel(final World world) {
 		this.world = world;
+		this.runFinish = false;
+	}
+	
+	public boolean isRunFinish () {
+		return this.runFinish;
 	}
 
 	/**

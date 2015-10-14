@@ -19,8 +19,6 @@
 
 package de.tud.swt.testland;
 
-import static de.tud.swt.testland.Constants.POPULATION;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -52,7 +50,6 @@ public class AgentModel extends BaseAgentModel {
 	
 	private boolean roboterFinish;
 	private boolean completeFinish;
-	private World siafuWorld;
 	
 	/**
 	 * Constructor for the agent model.
@@ -64,7 +61,6 @@ public class AgentModel extends BaseAgentModel {
 		super(world);
 		this.completeFinish = false;
 		this.roboterFinish = false;
-		this.siafuWorld = world;
 	}
 
 	/**
@@ -81,12 +77,13 @@ public class AgentModel extends BaseAgentModel {
 		ArrayList<Agent> agents = new ArrayList<Agent>();
 
 		try {
-			logger.info("Creating " + POPULATION + " random cleaning robots.");
+			logger.info("Creating cleaning robots.");
+			Variables.iteration = 0;
 			switch (EvaluationConstants.configuration) {
-	            case 0:  agents = new ExploreWithoutMasterFactory().createRobots(world);
-	                     break;
-	            case 1:  agents = new MasterExploreFactory().createRobots(world);
-	                     break;
+				case 0:  agents = new MasterExploreFactory().createRobots(world);
+						 break;
+	            case 1:  agents = new ExploreWithoutMasterFactory().createRobots(world);
+	                     break;	            
 	            case 2:  agents = new ExploreMergeMasterFactory().createRobots(world);
 	                     break;
 	            case 3:  agents = new ExploreMergeMasterCalculateFactory().createRobots(world);
@@ -119,7 +116,7 @@ public class AgentModel extends BaseAgentModel {
 	@Override
 	public void doIteration(final Collection<Agent> agents) {
 		Variables.iteration += 1;
-		System.out.println("New Iteration: ");
+		System.out.println("New Iteration: " + Variables.iteration);
 		if (!completeFinish) {
 			if (!roboterFinish) {			
 				roboterFinish = true;
@@ -128,7 +125,7 @@ public class AgentModel extends BaseAgentModel {
 					//nur wenn Robot noch nicht aus ist
 					if (!((RobotAgent)a).getRobot().isShutDown()) {
 						a.wander();
-						System.out.println("Robot: " + ((RobotAgent)a).getName() + " finish: " + ((RobotAgent)a).isFinish());
+						//System.out.println("Robot: " + ((RobotAgent)a).getName() + " finish: " + ((RobotAgent)a).isFinish());
 						if (!((RobotAgent)a).isFinish())
 							roboterFinish = false;
 					}
@@ -153,7 +150,7 @@ public class AgentModel extends BaseAgentModel {
 					//outputCsv(rc.getMeasurement().timeProTick, rc.getName() + "Time");
 					
 				}
-				FileWorker fw = new FileWorker("V" + EvaluationConstants.configuration + "_CE" + EvaluationConstants.NUMBER_EXPLORE_AGENTS + "_CH" + EvaluationConstants.NUMBER_HOOVE_AGENTS +
+				FileWorker fw = new FileWorker(EvaluationConstants.map + "_V" + EvaluationConstants.configuration + "_CE" + EvaluationConstants.NUMBER_EXPLORE_AGENTS + "_CH" + EvaluationConstants.NUMBER_HOOVE_AGENTS +
 						"_CW" + EvaluationConstants.NUMBER_WIPE_AGENTS + "_B" + EvaluationConstants.NEW_FIELD_COUNT + "_D" + EvaluationConstants.run + "_" + "exchange.txt");
 				int tester = 0;
 				for (ExchangeMeasurement em : Variables.exchange) {
@@ -165,14 +162,10 @@ public class AgentModel extends BaseAgentModel {
 				System.out.println("Programm Finish!");
 				System.out.println("Iterations: " + Variables.iteration);
 				this.completeFinish = true;
-				siafuWorld.pause(true);
+				//siafuWorld.pause(true);
 			}
 		} else {
-			try {
-				Thread.sleep(100000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			this.runFinish = true;
 		}
 	}
 	

@@ -36,6 +36,7 @@ import de.nec.nle.siafu.model.World;
 import de.nec.nle.siafu.output.CSVPrinter;
 import de.nec.nle.siafu.output.NullPrinter;
 import de.nec.nle.siafu.output.SimulatorOutputPrinter;
+import de.tud.evaluation.EvaluationConstants;
 
 /**
  * The simulation class implements the <code>Runnable</code> that performs
@@ -200,19 +201,22 @@ public class Simulation implements Runnable {
 	/**
 	 * Starts the simulation.
 	 */
-	public void run() {
+	/*public void run() {
+		System.out.println("Start Creating World");
 		this.world = new World(this, simData);
 		this.time = world.getTime();
 		this.iterationStep = simulationConfig.getInt("iterationstep");
 		this.agentModel = world.getAgentModel();
 		this.worldModel = world.getWorldModel();
 		this.contextModel = world.getContextModel();
+		System.out.println("End Creating World");
 		//not important because i do not nead any outputprinter
 		this.outputPrinter =
 				createOutputPrinter(siafuConfig.getString("output.type"));
 
 		Controller.getProgress().reportSimulationStarted();
 		simulationRunning = true;
+		System.out.println("Start While");
 		while (!isEnded()) {
 			if (!isPaused()) {
 				tickTime();
@@ -231,34 +235,80 @@ public class Simulation implements Runnable {
 
 		outputPrinter.cleanup();
 		Controller.getProgress().reportSimulationEnded();
-	}
+	}*/
 	
 	/**
 	 * Starts the Evaluation phase.
-	 *
+	 */
 	public void run() {
-		this.world = new World(this, simData);
-		this.time = world.getTime();
-		this.iterationStep = simulationConfig.getInt("iterationstep");
-		this.agentModel = world.getAgentModel();
-		this.worldModel = world.getWorldModel();
-		this.contextModel = world.getContextModel();
-		
-		Controller.getProgress().reportSimulationStarted();
-		simulationRunning = true;
-		while (!isEnded()) {
-			if (!isPaused()) {
-				tickTime();
-				worldModel.doIteration(world.getPlaces());
-				agentModel.doIteration(world.getPeople());
-				contextModel.doIteration(world.getOverlays());
+		boolean endAll = false;
+		//for (int i = 0; i < 15000; i++) {
+			//set Evaluation configuration
+			//if (i != 0) {
+				if (EvaluationConstants.run == 3) {
+					EvaluationConstants.run = 1;
+					if (EvaluationConstants.NEW_FIELD_COUNT == 1000 || EvaluationConstants.configuration < 2) {
+						EvaluationConstants.NEW_FIELD_COUNT = 0;
+						if (EvaluationConstants.NUMBER_EXPLORE_AGENTS == 10) {
+							EvaluationConstants.NUMBER_EXPLORE_AGENTS = 1;
+							if (EvaluationConstants.NUMBER_HOOVE_AGENTS == 10) {
+								EvaluationConstants.NUMBER_HOOVE_AGENTS = 0;
+								if (EvaluationConstants.NUMBER_WIPE_AGENTS == 10 || EvaluationConstants.NUMBER_HOOVE_AGENTS == 0) {
+									EvaluationConstants.NUMBER_WIPE_AGENTS = 0;
+									if (EvaluationConstants.configuration == 4) {
+										endAll = true;
+									} else {
+										EvaluationConstants.configuration +=1;
+									}
+								} else {
+									EvaluationConstants.NUMBER_WIPE_AGENTS +=1;
+								}
+							} else {
+								EvaluationConstants.NUMBER_HOOVE_AGENTS +=1;
+							}
+						} else {
+							EvaluationConstants.NUMBER_EXPLORE_AGENTS +=1;
+						}
+					} else {
+						EvaluationConstants.NEW_FIELD_COUNT += 100;
+					}
+				} else {
+					EvaluationConstants.run += 1;
+				}
+			//}
+			/*EvaluationConstants.NUMBER_EXPLORE_AGENTS = 1;
+			EvaluationConstants.NUMBER_HOOVE_AGENTS = 1;
+			EvaluationConstants.NUMBER_WIPE_AGENTS = 1;
+			EvaluationConstants.run = 1;
+			EvaluationConstants.configuration = 1;
+			EvaluationConstants.NEW_FIELD_COUNT = 1;*/
+			
+			this.world = new World(this, simData);
+			this.time = world.getTime();
+			this.iterationStep = simulationConfig.getInt("iterationstep");
+			this.agentModel = world.getAgentModel();
+			this.worldModel = world.getWorldModel();
+			this.contextModel = world.getContextModel();
+			
+			Controller.getProgress().reportSimulationStarted();
+			simulationRunning = true;
+			while (!agentModel.isRunFinish()) {
+				if (!isPaused()) {
+					tickTime();
+					worldModel.doIteration(world.getPlaces());
+					agentModel.doIteration(world.getPeople());
+					contextModel.doIteration(world.getOverlays());
+				}
+				//makes the drawing on the gui is important
+				control.scheduleDrawing();
 			}
-			//makes the drawing on the gui is important
-			control.scheduleDrawing();
-		}
-		simulationRunning = false;
-		Controller.getProgress().reportSimulationEnded();
-	}*/
+			simulationRunning = false;
+			Controller.getProgress().reportSimulationEnded();
+			if (!endAll) {
+				control.getGUI().restartSimulationAndGui();
+			}
+		//}
+	}
 
 	/**
 	 * Stop looping the simulatio and, well, kill the thread.

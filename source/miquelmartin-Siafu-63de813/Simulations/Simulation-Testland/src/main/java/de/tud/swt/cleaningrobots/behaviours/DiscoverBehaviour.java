@@ -102,7 +102,6 @@ public class DiscoverBehaviour extends Behaviour {
 						}
 					}
 				}
-				logger.info("Executed DiscoverBehaviour.action().");
 			}
 			else 
 			{

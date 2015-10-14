@@ -13,7 +13,6 @@ public class ExploreWithoutMasterFactory extends RobotFactory {
 	
 	public ExploreWithoutMasterFactory ()
 	{
-		EvaluationConstants.NEW_FIELD_COUNT = 0;
 		counter = 0;
 	}
 	

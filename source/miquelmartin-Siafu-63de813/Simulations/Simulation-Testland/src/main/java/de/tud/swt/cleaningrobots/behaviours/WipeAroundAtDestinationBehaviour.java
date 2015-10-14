@@ -5,9 +5,6 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.RobotCore;
@@ -25,9 +22,7 @@ public class WipeAroundAtDestinationBehaviour extends Behaviour {
 	
 	private final State STATE_WIPE = State.createState("Wipe");
 	private final State STATE_HOOVE = State.createState("Hoove");
-	
-	private final Logger logger = LogManager.getRootLogger(); 
-	
+		
 	public WipeAroundAtDestinationBehaviour(RobotCore robot) {
 		super(robot);
 				

@@ -88,7 +88,7 @@ public class MasterCalculateHooveBehaviour extends Behaviour {
 			}
 					
 			calculationAway = (int) maxAway;
-			System.out.println("Information: " + information.keySet() + " Away: " + calculationAway + " maxAway: " + maxAway);
+			//System.out.println("Information: " + information.keySet() + " Away: " + calculationAway + " maxAway: " + maxAway);
 					
 			firstStart = false;
 		}

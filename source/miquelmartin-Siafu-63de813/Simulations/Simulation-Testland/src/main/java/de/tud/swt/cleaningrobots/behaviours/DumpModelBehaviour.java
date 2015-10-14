@@ -14,8 +14,6 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -43,7 +41,6 @@ public class DumpModelBehaviour extends Behaviour {
 	private static final String CONST_PATH_DUMP_PNG = "dump/png";
 
 	private int counter;
-	private final Logger logger = LogManager.getRootLogger();
 
 	public DumpModelBehaviour(RobotCore robot) {
 		super(robot);

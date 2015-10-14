@@ -37,11 +37,8 @@ public class LoadBehaviour extends Behaviour {
 	@Override
 	public boolean action() throws Exception {
 
-		//System.out.println("LoadActivty action");
-		
 		List<RobotCore> nearRobots = this.getRobot().getICommunicationProvider().getNearRobots(loadStation.getLoadRadius());
 		nearRobots.remove(this.getRobot());
-		//System.out.println("Size in Ladereichweite: " + nearRobots.size());
 		for (RobotCore nearRobot : nearRobots) {
 			if (nearRobot.getAccu() != null)
 			{
@@ -55,7 +52,6 @@ public class LoadBehaviour extends Behaviour {
 					System.out.println("Accu Full");
 					nearRobot.isLoading = false;
 				}
-				//System.out.println("Lade: Robot: " + nearRobot.getName() + " Accu:" + nearRobot.getAccu().getActualKWh());
 			}
 		}
 		

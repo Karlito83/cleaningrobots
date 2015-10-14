@@ -5,9 +5,6 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.RobotCore;
@@ -25,9 +22,7 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 	
 	private final State STATE_HOOVE = State.createState("Hoove");
 	private final State STATE_FREE = State.createState("Free");
-	
-	private final Logger logger = LogManager.getRootLogger(); 
-	
+		
 	public HooveAroundAtDestinationBehaviour(RobotCore robot) {
 		super(robot);
 				
@@ -102,8 +97,7 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 				if (field != null)
 					data.add(field);
 			}
-		}
-		//System.out.println("Data: " + data);		
+		}	
 		return data;
 	}	
 	

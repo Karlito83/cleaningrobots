@@ -30,9 +30,6 @@ import de.nec.nle.siafu.types.Text;
  * @author Miquel Martin
  */
 public class Constants {
-	/** Population size, that is, how many agents should inhabit this simulation. */
-	public static final int POPULATION = 3;
-
 	/** A small maximum distance to wander off a main point when wanderng. */
 	public static final int SMALL_WANDER = 20;
 

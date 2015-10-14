@@ -154,7 +154,7 @@ public class MergeMaster extends Behaviour {
 		if (!nearsNewInformation.isEmpty())
 		{
 			mr.setNewInformation(true);
-			System.out.println("LastChange: " + lastChange + " NewInfo: " + nearsNewInformation + " NoNewInfo: " + nearsNoNewInformation);
+			//System.out.println("LastChange: " + lastChange + " NewInfo: " + nearsNewInformation + " NoNewInfo: " + nearsNoNewInformation);
 			if (nearsNewInformation.size() == 1)
 			{
 				//muss model nur importieren wenn noch nicht in lastchange liste war oder er nicht der einzige mit neuen informationen ist
@@ -197,7 +197,6 @@ public class MergeMaster extends Behaviour {
 					lastChange.clear();
 					lastChange.addAll(nearsNoNewInformation.keySet());
 				}
-				System.out.println("LastChange: " + lastChange);
 			}
 			//TODO:
 			//fall wen roboter ankommt keine neue information hat aber für ihn neue informationen da sind

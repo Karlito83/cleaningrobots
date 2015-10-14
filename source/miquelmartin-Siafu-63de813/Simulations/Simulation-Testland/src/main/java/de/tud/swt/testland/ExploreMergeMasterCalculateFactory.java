@@ -191,7 +191,7 @@ public class ExploreMergeMasterCalculateFactory extends RobotFactory {
 				}				
 			}
 			
-			lsa.addLoadIfRobotWantAndExploreGoal();
+			lsa.addLoadIfRobotWantGoal();
 		}
 		
 		for (Agent a: population)

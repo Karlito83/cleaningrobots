@@ -33,14 +33,12 @@ public class ExploreRobotAgent extends RobotAgent {
 	}
 	
 	public void addRelativeStandardGoals () {		
-		ExploreLoadGoal elg = new ExploreLoadGoal(cleaningRobot, true);
-		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);		
+		ExploreLoadGoal elg = new ExploreLoadGoal(cleaningRobot, true);	
 		WlanLoadIfRobotWantMergeGoal wlirwmg = new WlanLoadIfRobotWantMergeGoal(cleaningRobot);
 		
 		MasterGoal mg = new MasterGoal(cleaningRobot);
 		mg.subGoals.add(elg);
 		mg.subGoals.add(wlirwmg);
-		mg.subGoals.add(edg);
 		
 		if (mg.isHardwareCorrect())
 		{
@@ -50,13 +48,11 @@ public class ExploreRobotAgent extends RobotAgent {
 	
 	public void addRandomStandardGoals () {		
 		ExploreLoadGoal elg = new ExploreLoadGoal(cleaningRobot, false);
-		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);		
 		WlanLoadIfRobotWantMergeGoal wlirwmg = new WlanLoadIfRobotWantMergeGoal(cleaningRobot);
 		
 		MasterGoal mg = new MasterGoal(cleaningRobot);
 		mg.subGoals.add(elg);
 		mg.subGoals.add(wlirwmg);
-		mg.subGoals.add(edg);
 		
 		if (mg.isHardwareCorrect())
 		{
@@ -66,8 +62,7 @@ public class ExploreRobotAgent extends RobotAgent {
 	
 	//Goals for the MasterExploreFactory
 	public void addMasterExploreGoals () {
-		MasterExploreRobotGoal merg = new MasterExploreRobotGoal(cleaningRobot);
-		
+		MasterExploreRobotGoal merg = new MasterExploreRobotGoal(cleaningRobot);		
 		if (merg.isHardwareCorrect()) 
 		{
 			cleaningRobot.addGoal(merg);
@@ -77,15 +72,13 @@ public class ExploreRobotAgent extends RobotAgent {
 	//without Master Configuration
 	public void addWithoutMasterConfiguration () {		
 		WithoutMasterExploreGoal wmg = new WithoutMasterExploreGoal(cleaningRobot);
-		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
-		
-		MasterGoal mg = new MasterGoal(cleaningRobot);
-		mg.subGoals.add(wmg);
-		mg.subGoals.add(edg);
-		
-		if (mg.isHardwareCorrect())
+		if (wmg.isHardwareCorrect())
 		{
-			cleaningRobot.addGoal(mg);
+			cleaningRobot.addGoal(wmg);
 		}
+	}
+	
+	public void addExploreDumpGoal () {
+		cleaningRobot.addGoal(new ExploreDumpGoal(cleaningRobot));
 	}
 }

@@ -16,7 +16,6 @@ public class MasterExploreFactory extends RobotFactory {
 	
 	public MasterExploreFactory ()
 	{
-		EvaluationConstants.NEW_FIELD_COUNT = 0;
 		this.counter = 0;
 		this.relative = false;
 	}
@@ -186,7 +185,7 @@ public class MasterExploreFactory extends RobotFactory {
 				}
 				
 			}			
-			lsa.addLoadIfRobotWantAndExploreGoal();
+			lsa.addLoadIfRobotWantGoal();
 		}		
 				
 		for (Agent a: population)

@@ -5,9 +5,6 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
@@ -29,9 +26,7 @@ public class SeeAroundBehaviour extends Behaviour {
 	
 	private final State STATE_BLOCKED = State.createState("Blocked");
 	private final State STATE_FREE = State.createState("Free");
-	
-	private final Logger logger = LogManager.getRootLogger(); 
-	
+		
 	public SeeAroundBehaviour(RobotCore robot) {
 		super(robot);
 		

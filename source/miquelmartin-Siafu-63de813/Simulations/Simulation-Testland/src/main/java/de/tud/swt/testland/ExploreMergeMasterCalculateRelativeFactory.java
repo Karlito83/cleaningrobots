@@ -191,7 +191,7 @@ public class ExploreMergeMasterCalculateRelativeFactory extends RobotFactory {
 				}				
 			}
 			
-			lsa.addLoadIfRobotWantAndExploreGoal();
+			lsa.addLoadIfRobotWantGoal();
 		}
 		
 		//example output for master follower relation

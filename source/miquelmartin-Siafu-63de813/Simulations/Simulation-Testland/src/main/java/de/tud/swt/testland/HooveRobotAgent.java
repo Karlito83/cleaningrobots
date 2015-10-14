@@ -32,13 +32,11 @@ public class HooveRobotAgent extends RobotAgent {
 	
 	public void addRelativeStandardGoals () {		
 		HooveLoadGoal hlg = new HooveLoadGoal(cleaningRobot, true);
-		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
 		WlanLoadIfRobotWantMergeGoal wlmmg = new WlanLoadIfRobotWantMergeGoal(cleaningRobot);
 		
 		MasterGoal mg = new MasterGoal(cleaningRobot);
 		mg.subGoals.add(hlg);
 		mg.subGoals.add(wlmmg);
-		mg.subGoals.add(edg);
 		
 		if (mg.isHardwareCorrect())
 		{
@@ -48,13 +46,11 @@ public class HooveRobotAgent extends RobotAgent {
 	
 	public void addRandomStandardGoals () {
 		HooveLoadGoal hlg = new HooveLoadGoal(cleaningRobot, false);
-		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
 		WlanLoadIfRobotWantMergeGoal wlmmg = new WlanLoadIfRobotWantMergeGoal(cleaningRobot);
 		
 		MasterGoal mg = new MasterGoal(cleaningRobot);
 		mg.subGoals.add(hlg);
 		mg.subGoals.add(wlmmg);
-		mg.subGoals.add(edg);
 		
 		if (mg.isHardwareCorrect())
 		{
@@ -74,15 +70,13 @@ public class HooveRobotAgent extends RobotAgent {
 	//without Master Configuration
 	public void addWithoutMasterConfiguration () {		
 		WithoutMasterHooveGoal wmg = new WithoutMasterHooveGoal(cleaningRobot);
-		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
-			
-		MasterGoal mg = new MasterGoal(cleaningRobot);
-		mg.subGoals.add(wmg);
-		mg.subGoals.add(edg);
-			
-		if (mg.isHardwareCorrect())
+		if (wmg.isHardwareCorrect())
 		{
-			cleaningRobot.addGoal(mg);
+			cleaningRobot.addGoal(wmg);
 		}
+	}
+	
+	public void addExploreDumpGoal () {
+		cleaningRobot.addGoal(new ExploreDumpGoal(cleaningRobot));
 	}
 }

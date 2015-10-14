@@ -85,7 +85,7 @@ public class MasterDestinationHoove extends Behaviour {
 			}			
 			
 			this.calculationAway = (int) maxAway;
-			System.out.println("Information: " + information.keySet() + " Away: " + calculationAway + " maxAway: " + maxAway);			
+			//System.out.println("Information: " + information.keySet() + " Away: " + calculationAway + " maxAway: " + maxAway);			
 			this.firstStart = false;
 		}
 				
