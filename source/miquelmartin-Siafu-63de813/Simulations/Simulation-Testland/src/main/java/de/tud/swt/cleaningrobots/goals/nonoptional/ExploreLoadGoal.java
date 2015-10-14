@@ -17,7 +17,7 @@ public class ExploreLoadGoal extends NonOptionalGoal {
 
 	private DiscoverBehaviour d;
 	
-	public ExploreLoadGoal(RobotCore robot) {
+	public ExploreLoadGoal(RobotCore robot, boolean relative) {
 		super(robot);
 		
 		SeeAroundAtDestinationBehaviour s = new SeeAroundAtDestinationBehaviour(robot);
@@ -29,7 +29,7 @@ public class ExploreLoadGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		d = new DiscoverBehaviour(robot);
+		d = new DiscoverBehaviour(robot, relative);
 		System.out.println("Correct Discover: " + d.isHardwarecorrect());
 		if (d.isHardwarecorrect()) {
 			//robot.addBehaviour(d);
@@ -57,7 +57,6 @@ public class ExploreLoadGoal extends NonOptionalGoal {
 
 	@Override
 	public boolean postCondition() {
-		//muss auch als Follower alle Informationen abgegeben haben bevor Ziel erfüllt ist
 		if (!d.isFinishDiscovering())
 			return false;
 		else {
@@ -76,5 +75,4 @@ public class ExploreLoadGoal extends NonOptionalGoal {
 			return true;
 		return false;*/
 	}
-
 }

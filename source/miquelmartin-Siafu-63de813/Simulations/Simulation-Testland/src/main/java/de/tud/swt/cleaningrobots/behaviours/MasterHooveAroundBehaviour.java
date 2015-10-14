@@ -5,9 +5,6 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import de.nec.nle.siafu.model.Agent;
-import de.nec.nle.siafu.model.Position;
-import de.nec.nle.siafu.model.World;
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.FollowerRole;
@@ -15,47 +12,43 @@ import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
-import de.tud.swt.cleaningrobots.hardware.LookAroundSensor;
+import de.tud.swt.cleaningrobots.hardware.Hoover;
 import de.tud.swt.cleaningrobots.merge.MasterFieldMerge;
 import de.tud.swt.cleaningrobots.model.Field;
+import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
 
-public class MasterSeeAroundBehaviour extends Behaviour {
-
-	private Agent agent;
-	private World siafuWorld;
+public class MasterHooveAroundBehaviour extends Behaviour {
 	
 	private RobotCore master;
 	
-	private LookAroundSensor las;
+	private Hoover hoove;
 	private MasterFieldMerge mfm;
 	
-	private final State STATE_BLOCKED = State.createState("Blocked");
+	private final State STATE_HOOVE = State.createState("Hoove");
 	private final State STATE_FREE = State.createState("Free");
 	
 	private boolean firststart;
 	
-	public MasterSeeAroundBehaviour(RobotCore robot) {
+	public MasterHooveAroundBehaviour(RobotCore robot) {
 		super(robot);
 		
-		this.agent = robot.getINavigationController().getAgent();
-		this.siafuWorld = robot.getINavigationController().getSiafuWorld();	
 		this.mfm = new MasterFieldMerge();
 		this.firststart = true;
 		
-		supportedStates.add(STATE_BLOCKED);
+		supportedStates.add(STATE_HOOVE);
 		supportedStates.add(STATE_FREE);
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
-		hardware.put(Components.LOOKAROUNDSENSOR, 1);
+		hardware.put(Components.HOOVER, 1);
 		
 		d = new Demand(hardware, robot);
 		hardwarecorrect = d.isCorrect();
 				
 		for (HardwareComponent robothc : d.getHcs()) {
-			if (robothc.getComponents() == Components.LOOKAROUNDSENSOR)
+			if (robothc.getComponents() == Components.HOOVER)
 			{
-				las = (LookAroundSensor) robothc;
+				hoove = (Hoover) robothc;
 			}
 		}		
 	}
@@ -89,7 +82,7 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 			try {
 				List<Field> fields = getData();
 				//send Field to Robot and ask für new destination and Path
-				mfm.sendExploreFieldsAndMerge(getRobot().getName(), fields, master);
+				mfm.sendHooveFieldsAndMerge(getRobot().getName(), fields, master);
 			} catch (Exception e) {
 				throw e;
 			}
@@ -115,11 +108,13 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 	private List<Field> getData() {
 		
 		List<Field> data = new ArrayList<Field>();
-		int visionRadius = las.getRadius();
+		int visionRadius = hoove.getRadius();
 		for (int xOffset=-visionRadius; xOffset<=visionRadius; xOffset++){
 			for (int yOffset = -visionRadius; yOffset<=visionRadius; yOffset++ )
 			{
-				data.add(getField(xOffset, yOffset));
+				Field f = getField(xOffset, yOffset);
+				if (f != null)
+					data.add(f);
 			}
 		}
 				
@@ -130,27 +125,18 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 	{
 		Field result = null;
 		
-		//Offset mit Agenten position vereinigen
-		int row =  agent.getPos().getRow() + yOffset;
-		int column =  agent.getPos().getCol() + xOffset;
+		//Merge offset with Robot Position
+		int y =  getRobot().getPosition().getY() + yOffset;
+		int x =  getRobot().getPosition().getX() + xOffset;
 		
-		//prüfe ob es eine Wand ist
-		boolean positionIsAtWall = siafuWorld.isAWall(new Position(row, column));
-		
-		//neues Feld anlegen
-		result = new Field(column, row, !positionIsAtWall);
-		//wenn Wand ist dann status dazu anlegen ansonsten freien Status geben
-		if(positionIsAtWall)
+		Position p = new Position(x, y);
+		//could only hoove position he knows about
+		if (master.getWorld().isPassable(p))
 		{
-			logger.debug("Blocked field: " + this);
-			result.addState(STATE_BLOCKED);
-		}
-		else
-		{
-			result.addState(STATE_FREE);
-		}
-		
-		
-		return result;
+			logger.debug("Hoove field: " + x + ", " + y);
+			result = new Field(x, y, true);
+			result.addState(STATE_HOOVE);
+		}	
+		return result;		
 	}
 }

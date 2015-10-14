@@ -5,18 +5,20 @@ import java.util.ArrayList;
 import de.nec.nle.siafu.exceptions.PlaceNotFoundException;
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.World;
+import de.tud.evaluation.EvaluationConstants;
 import de.tud.swt.cleaningrobots.FollowerRole;
 import de.tud.swt.cleaningrobots.MasterRole;
 
 public class MasterExploreFactory extends RobotFactory {
 
 	private int counter;
+	private boolean relative;
 	
 	public MasterExploreFactory ()
 	{
-		Constants.configuration = 1;
-		Constants.NEW_FIELD_COUNT = 0;
-		counter = 0;
+		EvaluationConstants.NEW_FIELD_COUNT = 0;
+		this.counter = 0;
+		this.relative = false;
 	}
 	
 	/**
@@ -124,93 +126,74 @@ public class MasterExploreFactory extends RobotFactory {
 	 */
 	@Override
 	public ArrayList<Agent> createRobots(World world) {
-		//ArrayList<Agent> population = new ArrayList<Agent>(amount);		
+		
 		ArrayList<Agent> population = new ArrayList<Agent>();	
 		
 		//loadstation agent
 		LoadStationAgent lsa = createLoadStationAgent(world);
 		population.add(lsa);
 		
-		MasterRole mre = new MasterRole(lsa.getRobot());
-		mre.addRole(mre);
-		
-		//lsa.addMasterExploreGoals(mre);
-		lsa.addMasterExploreRandomGoals(mre);
-		
-		//explore agents
-		for (int i = 0; i < Constants.NUMBER_EXPLORE_AGENTS; i++) {
-			ExploreRobotAgent era = createExploreAgent(world);
-			era.addMasterExploreGoals();
-			population.add(era);		
+		if (EvaluationConstants.NUMBER_EXPLORE_AGENTS > 0) {
+			MasterRole mre = new MasterRole(lsa.getRobot());
+			mre.addRole(mre);			
+			lsa.addMasterExploreGoals(mre, relative);
 			
-			FollowerRole fre = new FollowerRole(era.getRobot());
-			fre.addRole(fre);
-			fre.master = mre;
-			mre.getFollowers().add(fre);
-		}
-		
-		/*//E1
-		ExploreRobotAgent era1 = createExploreAgent(world);
-		era1.addMasterExploreGoals();
-		population.add(era1);		
-		
-		FollowerRole fre1 = new FollowerRole(era1.getRobot());
-		fre1.addRole(fre1);
-		fre1.master = mre;
-		mre.getFollowers().add(fre1);
-		
-		//E2
-		ExploreRobotAgent era2 = createExploreAgent(world);
-		era2.addMasterExploreGoals();
-		population.add(era2);
-		
-		FollowerRole fre2 = new FollowerRole(era2.getRobot());
-		fre2.addRole(fre2);
-		fre2.master = mre;
-		mre.getFollowers().add(fre2);
-		
-		//E3
-		ExploreRobotAgent era3 = createExploreAgent(world);
-		era3.addMasterExploreGoals();
-		population.add(era3);
-		
-		FollowerRole fre3 = new FollowerRole(era3.getRobot());
-		fre3.addRole(fre3);
-		fre3.master = mre;
-		mre.getFollowers().add(fre3);*/
-		
-		//hoove agents
-		/*HooveRobotAgent hra = createHooveAgent(world);
-		hra.addStandardGoals();
-		population.add(hra);
-		
-		FollowerRole frh1 = new FollowerRole(hra.getRobot());
-		frh1.addRole(frh1);
-		frh1.master = mrh;
-		mrh.getFollowers().add(frh1);
-		mrh.getFollowers().add(mre);*/
-		
-		//wipe agents
-		/*WipeRobotAgent wra = createWipeAgent(world);
-		wra.addStandardGoals();
-		population.add(wra);
-		
-		FollowerRole frw1 = new FollowerRole(wra.getRobot());
-		frw1.addRole(frw1);
-		frw1.master = mrw;
-		mrw.getFollowers().add(frw1);
-		mrw.getFollowers().add(mrh);*/
-		
-		/*for (int i = 0; i < amount; i++) {
-			population.add(createExploreAgent(world));
-		}
-		population.add(createHooveAgent(world));*/
+			//explore agents
+			for (int i = 0; i < EvaluationConstants.NUMBER_EXPLORE_AGENTS; i++) {
+				ExploreRobotAgent era = createExploreAgent(world);
+				era.addMasterExploreGoals();
+				population.add(era);		
+				
+				FollowerRole fre = new FollowerRole(era.getRobot());
+				fre.addRole(fre);
+				fre.master = mre;
+				mre.getFollowers().add(fre);
+			}
+			
+			if (EvaluationConstants.NUMBER_HOOVE_AGENTS > 0) {
+				MasterRole mrh = new MasterRole(lsa.getRobot());
+				mrh.addRole(mrh);
+				lsa.addMasterHooveGoal(mrh, relative);
+				
+				//hoove agents
+				for (int i = 0; i < EvaluationConstants.NUMBER_HOOVE_AGENTS; i++) {
+					HooveRobotAgent hra = createHooveAgent(world);
+					hra.addMasterHooveGoals();
+					population.add(hra);
+					
+					FollowerRole frh = new FollowerRole(hra.getRobot());
+					frh.addRole(frh);
+					frh.master = mrh;
+					mrh.getFollowers().add(frh);
+				}
+								
+				if (EvaluationConstants.NUMBER_WIPE_AGENTS > 0) {
+					MasterRole mrw = new MasterRole(lsa.getRobot());
+					mrw.addRole(mrw);
+					lsa.addMasterWipeGoal(mrw, relative);
+					
+					//wipe agents
+					for (int i = 0; i < EvaluationConstants.NUMBER_WIPE_AGENTS; i++) {
+						WipeRobotAgent wra = createWipeAgent(world);
+						wra.addMasterWipeGoals();
+						population.add(wra);
+						
+						FollowerRole frw = new FollowerRole(wra.getRobot());
+						frw.addRole(frw);
+						frw.master = mrw;
+						mrw.getFollowers().add(frw);
+					}
+				}
+				
+			}			
+			lsa.addLoadIfRobotWantAndExploreGoal();
+		}		
+				
 		for (Agent a: population)
 		{
 			RobotAgent ra = (RobotAgent) a;
 			System.out.println("Name: " + ra.cleaningRobot.getName() + " Roles: " + ra.cleaningRobot.getRoles());
 		}
-		//population.add(createWipeAgent(world));
 		return population;
 	}
 }

@@ -1,15 +1,16 @@
 package de.tud.swt.cleaningrobots.goals.optional;
 
+import de.tud.swt.cleaningrobots.MasterRole;
 import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.behaviours.MasterDestinationExplore;
+import de.tud.swt.cleaningrobots.behaviours.MasterDestinationWipe;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
-public class CalculateRobotPositionGoal extends OptionalGoal{
+public class CalculateWipeRobotPositionGoal extends OptionalGoal {
 
-	public CalculateRobotPositionGoal(RobotCore robot) {
+	public CalculateWipeRobotPositionGoal(RobotCore robot, MasterRole mr) {
 		super(robot);
 		
-		MasterDestinationExplore mm = new MasterDestinationExplore(robot);
+		MasterDestinationWipe mm = new MasterDestinationWipe(robot, mr);
 		System.out.println("Correct Load: " + mm.isHardwarecorrect());
 		if (mm.isHardwarecorrect()) {
 			behaviours.add(mm);
@@ -18,5 +19,4 @@ public class CalculateRobotPositionGoal extends OptionalGoal{
 			correct = false;
 		}
 	}
-
 }

@@ -3,6 +3,7 @@ package de.tud.swt.cleaningrobots.behaviours;
 import java.util.EnumMap;
 import java.util.Map;
 
+import de.tud.evaluation.EvaluationConstants;
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.RobotCore;
@@ -19,17 +20,18 @@ public class WipeBehaviour extends Behaviour{
 	private final State WORLDSTATE_HOOVED = State.createState("Hooved");
 	
 	private boolean finishWiping;
+	private boolean relative;
 
-	public WipeBehaviour(RobotCore robot) {
+	public WipeBehaviour(RobotCore robot, boolean relative) {
 		super(robot);
+		
+		this.relative = relative;
+		this.finishWiping = false;
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		//same as in DiscoverBehaviour
-
 		d = new Demand(hardware, robot);
-		hardwarecorrect = d.isCorrect();
-		
-		finishWiping = false;
+		hardwarecorrect = d.isCorrect();		
 	}	
 	
 	public boolean isFinishWipe () {
@@ -40,11 +42,22 @@ public class WipeBehaviour extends Behaviour{
 	public boolean action() throws Exception {
 											
 		//Prüfe ob Hardwarecorrect oder entferne es vorher schon wieder
-		logger.trace("Entered HooveBehaviour.action().");
+		logger.trace("Entered WipeBehaviour.action().");
 		
 		if(getRobot().getDestinationContainer().isAtDestination()){
 			
-			Position nextNotWipePosition = this.getRobot().getWorld().getNextPassablePositionByStateWithoutState(STATE_HOOVE, STATE_WIPE);
+			//if you find more than the value of new field drive back to load station and give information to master
+			if (EvaluationConstants.NEW_FIELD_COUNT > 0 && this.getRobot().getWorld().getNewInformationCounter() > EvaluationConstants.NEW_FIELD_COUNT) {
+				getRobot().getDestinationContainer().setDestinationLoadStation();
+				this.getRobot().getWorld().resetNewInformationCounter();
+			}
+			
+			Position nextNotWipePosition;
+			//Look if you must use relative or non relative algorithm 
+			if (relative)
+				nextNotWipePosition = this.getRobot().getWorld().getNextPassableRelativePositionByStateWithoutState(this.getRobot().getDestinationContainer().getLastLoadDestination(), STATE_HOOVE, STATE_WIPE);
+			else
+				nextNotWipePosition = this.getRobot().getWorld().getNextPassablePositionByStateWithoutState(STATE_HOOVE, STATE_WIPE);
 						
 			if(nextNotWipePosition != null){
 				getRobot().getDestinationContainer().setDestination(nextNotWipePosition);
@@ -81,8 +94,7 @@ public class WipeBehaviour extends Behaviour{
 				logger.info("Executed DiscoverBehaviour.action().");
 			} else {
 				//no more wipe position found
-				boolean hooved = this.getRobot().getWorld().containsWorldState(WORLDSTATE_HOOVED);
-				if (hooved)
+				if (this.getRobot().getWorld().containsWorldState(WORLDSTATE_HOOVED))
 				{
 					this.getRobot().getWorld().addWorldState(WORLDSTATE_WIPED);
 					//finish back to load station

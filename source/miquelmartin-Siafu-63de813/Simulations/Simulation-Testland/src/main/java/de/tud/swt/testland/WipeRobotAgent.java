@@ -5,9 +5,11 @@ import de.nec.nle.siafu.model.World;
 import de.tud.swt.cleaningrobots.AgentNavigationAdapter;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.goals.MasterGoal;
+import de.tud.swt.cleaningrobots.goals.nonoptional.MasterWipeRobotGoal;
 import de.tud.swt.cleaningrobots.goals.nonoptional.WipeLoadGoal;
+import de.tud.swt.cleaningrobots.goals.nonoptional.WithoutMasterWipeGoal;
 import de.tud.swt.cleaningrobots.goals.optional.ExploreDumpGoal;
-import de.tud.swt.cleaningrobots.goals.optional.WlanActivateMasterPositionGoal;
+import de.tud.swt.cleaningrobots.goals.optional.WlanLoadIfRobotWantMergeGoal;
 import de.tud.swt.cleaningrobots.hardware.Accu;
 import de.tud.swt.cleaningrobots.hardware.Motor;
 import de.tud.swt.cleaningrobots.hardware.Rechner;
@@ -30,11 +32,10 @@ public class WipeRobotAgent extends RobotAgent {
 		//System.out.println("Name: " + cleaningRobot.getName() + " : States: " + cleaningRobot.getSupportedStates());
 	}
 	
-	public void addStandardGoals () {
-		
-		WipeLoadGoal wlg = new WipeLoadGoal(cleaningRobot);
+	public void addRelativeStandardGoals () {		
+		WipeLoadGoal wlg = new WipeLoadGoal(cleaningRobot, true);
 		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
-		WlanActivateMasterPositionGoal wlmmg = new WlanActivateMasterPositionGoal(cleaningRobot);
+		WlanLoadIfRobotWantMergeGoal wlmmg = new WlanLoadIfRobotWantMergeGoal(cleaningRobot);
 		
 		MasterGoal mg = new MasterGoal(cleaningRobot);
 		mg.subGoals.add(wlg);
@@ -46,5 +47,44 @@ public class WipeRobotAgent extends RobotAgent {
 			cleaningRobot.addGoal(mg);
 		}
 	}
-
+	
+	public void addRandomStandardGoals () {
+		WipeLoadGoal wlg = new WipeLoadGoal(cleaningRobot, false);
+		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
+		WlanLoadIfRobotWantMergeGoal wlmmg = new WlanLoadIfRobotWantMergeGoal(cleaningRobot);
+		
+		MasterGoal mg = new MasterGoal(cleaningRobot);
+		mg.subGoals.add(wlg);
+		mg.subGoals.add(wlmmg);
+		mg.subGoals.add(edg);
+		
+		if (mg.isHardwareCorrect())
+		{
+			cleaningRobot.addGoal(mg);
+		}
+	}
+	
+	//Goals for the MasterExploreFactory
+	public void addMasterWipeGoals () {
+		MasterWipeRobotGoal mrg = new MasterWipeRobotGoal(cleaningRobot);		
+		if (mrg.isHardwareCorrect()) 
+		{
+			cleaningRobot.addGoal(mrg);
+		}
+	}
+	
+	//without Master Configuration
+	public void addWithoutMasterConfiguration () {		
+		WithoutMasterWipeGoal wmg = new WithoutMasterWipeGoal(cleaningRobot);
+		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
+			
+		MasterGoal mg = new MasterGoal(cleaningRobot);
+		mg.subGoals.add(wmg);
+		mg.subGoals.add(edg);
+			
+		if (mg.isHardwareCorrect())
+		{
+			cleaningRobot.addGoal(mg);
+		}
+	}
 }

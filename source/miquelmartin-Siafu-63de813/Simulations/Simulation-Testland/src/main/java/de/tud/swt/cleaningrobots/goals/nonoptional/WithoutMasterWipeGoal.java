@@ -1,21 +1,23 @@
 package de.tud.swt.cleaningrobots.goals.nonoptional;
 
 import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.behaviours.DiscoverBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.LoadIfAtLoadStationBehaviour;
-import de.tud.swt.cleaningrobots.behaviours.MergeAllRonny;
+import de.tud.swt.cleaningrobots.behaviours.MergeAllOfNearBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
-import de.tud.swt.cleaningrobots.behaviours.SeeAroundAtDestinationBehaviour;
+import de.tud.swt.cleaningrobots.behaviours.WipeAroundAtDestinationBehaviour;
+import de.tud.swt.cleaningrobots.behaviours.WipeBehaviour;
 import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
+import de.tud.swt.cleaningrobots.model.State;
 
-public class RonnyConfigurationGoal extends NonOptionalGoal {
+public class WithoutMasterWipeGoal extends NonOptionalGoal {
 
-private DiscoverBehaviour d;
+	private WipeBehaviour d;
+	private final State WORLDSTATE_WIPED = State.createState("Wiped");
 	
-	public RonnyConfigurationGoal(RobotCore robot) {
+	public WithoutMasterWipeGoal(RobotCore robot) {
 		super(robot);
 		
-		SeeAroundAtDestinationBehaviour s = new SeeAroundAtDestinationBehaviour(robot);
+		WipeAroundAtDestinationBehaviour s = new WipeAroundAtDestinationBehaviour(robot);
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
 		if (s.isHardwarecorrect()) {
 			//robot.addBehaviour(s);
@@ -24,7 +26,7 @@ private DiscoverBehaviour d;
 			correct = false;
 		}
 		
-		d = new DiscoverBehaviour(robot);
+		d = new WipeBehaviour(robot, false);
 		System.out.println("Correct Discover: " + d.isHardwarecorrect());
 		if (d.isHardwarecorrect()) {
 			//robot.addBehaviour(d);
@@ -51,7 +53,7 @@ private DiscoverBehaviour d;
 			correct = false;
 		}
 		
-		MergeAllRonny mar = new MergeAllRonny(robot);
+		MergeAllOfNearBehaviour mar = new MergeAllOfNearBehaviour(robot);
 		System.out.println("Correct MergeRonny: " + mar.isHardwarecorrect());
 		if (mar.isHardwarecorrect()) {
 			behaviours.add(mar);
@@ -62,14 +64,14 @@ private DiscoverBehaviour d;
 
 	@Override
 	public boolean preCondition() {		
-		if (this.getRobotCore().getWorld().getNextUnknownFieldPosition() != null)
-			return true;
-		return false;
+		if (getRobotCore().getWorld().containsWorldState(WORLDSTATE_WIPED))
+			return false;
+		return true;
 	}
 
 	@Override
 	public boolean postCondition() {
 		//muss nur schauen ob discover behaviour fertig ist
-		return d.isFinishDiscovering();
+		return d.isFinishWipe();
 	}
 }

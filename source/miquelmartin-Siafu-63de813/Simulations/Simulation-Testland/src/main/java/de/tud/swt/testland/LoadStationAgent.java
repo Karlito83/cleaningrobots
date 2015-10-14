@@ -5,14 +5,14 @@ import de.nec.nle.siafu.model.World;
 import de.tud.swt.cleaningrobots.AgentNavigationAdapter;
 import de.tud.swt.cleaningrobots.MasterRole;
 import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.goals.MasterGoal;
 import de.tud.swt.cleaningrobots.goals.nonoptional.MasterExploreMasterGoal;
-import de.tud.swt.cleaningrobots.goals.nonoptional.MasterExploreRandomMasterGoal;
-import de.tud.swt.cleaningrobots.goals.optional.CalculateRobotPositionGoal;
+import de.tud.swt.cleaningrobots.goals.nonoptional.MasterHooveMasterGoal;
+import de.tud.swt.cleaningrobots.goals.nonoptional.MasterWipeMasterGoal;
+import de.tud.swt.cleaningrobots.goals.optional.CalculateExploreRobotPositionGoal;
+import de.tud.swt.cleaningrobots.goals.optional.CalculateHooveRobotPositionGoal;
+import de.tud.swt.cleaningrobots.goals.optional.CalculateWipeRobotPositionGoal;
 import de.tud.swt.cleaningrobots.goals.optional.ExploreDumpGoal;
 import de.tud.swt.cleaningrobots.goals.optional.LoadIfRobotWantGoal;
-import de.tud.swt.cleaningrobots.goals.optional.LoadRobotGoal;
-import de.tud.swt.cleaningrobots.goals.optional.MergeMasterFollowerGoal;
 import de.tud.swt.cleaningrobots.goals.optional.MergeMasterGoal;
 import de.tud.swt.cleaningrobots.hardware.LoadStation;
 import de.tud.swt.cleaningrobots.hardware.Rechner;
@@ -34,87 +34,89 @@ public class LoadStationAgent extends RobotAgent {
 		
 	}
 	
-	public void addStandardGoals () {
-		
-		CalculateRobotPositionGoal crpg = new CalculateRobotPositionGoal(cleaningRobot);
-		//LoadRobotGoal lrg = new LoadRobotGoal(cleaningRobot);
-		LoadIfRobotWantGoal lirwg = new LoadIfRobotWantGoal(cleaningRobot);
-		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
-		
-		MasterGoal mg = new MasterGoal(cleaningRobot);
-		//mg.subGoals.add(lrg);
-		mg.subGoals.add(lirwg);
-		mg.subGoals.add(crpg);		
-		mg.subGoals.add(edg);
-		
-		if (mg.isHardwareCorrect())
+	//calculate position goals
+	public void addCalculateExploreRobotPositionGoal (MasterRole mr) {
+		CalculateExploreRobotPositionGoal crpg = new CalculateExploreRobotPositionGoal(cleaningRobot, mr);
+		if (crpg.isHardwareCorrect())
 		{
-			cleaningRobot.addGoal(mg);
+			cleaningRobot.addGoal(crpg);
 		}
 	}
 	
-	public void addNonCalculateStandardGoals () {
-		
-		LoadIfRobotWantGoal lirwg = new LoadIfRobotWantGoal(cleaningRobot);
-		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
-		
-		MasterGoal mg = new MasterGoal(cleaningRobot);
-		mg.subGoals.add(lirwg);	
-		mg.subGoals.add(edg);
-		
-		if (mg.isHardwareCorrect())
+	public void addCalculateHooveRobotPositionGoal (MasterRole mr) {
+		CalculateHooveRobotPositionGoal crpg = new CalculateHooveRobotPositionGoal(cleaningRobot, mr);
+		if (crpg.isHardwareCorrect())
 		{
-			cleaningRobot.addGoal(mg);
+			cleaningRobot.addGoal(crpg);
 		}
 	}
 	
-	public void addLoadGoal () {
-		
-		LoadIfRobotWantGoal lirwg = new LoadIfRobotWantGoal(cleaningRobot);
-		
+	public void addCalculateWipeRobotPositionGoal (MasterRole mr) {
+		CalculateWipeRobotPositionGoal crpg = new CalculateWipeRobotPositionGoal(cleaningRobot, mr);
+		if (crpg.isHardwareCorrect())
+		{
+			cleaningRobot.addGoal(crpg);
+		}
+	}
+	
+	//Load and dump goals
+	public void addLoadIfRobotWantGoal () {		
+		LoadIfRobotWantGoal lirwg = new LoadIfRobotWantGoal(cleaningRobot);		
 		if (lirwg.isHardwareCorrect())
 		{
 			cleaningRobot.addGoal(lirwg);
 		}
 	}
 	
-	public void addMasterFollower () {
-		//MergeMasterFollowerGoal mmfg = new MergeMasterFollowerGoal(cleaningRobot);
-		cleaningRobot.addGoal(new MergeMasterFollowerGoal(cleaningRobot));
+	public void addLoadIfRobotWantAndExploreGoal () {
+		LoadIfRobotWantGoal lirwg = new LoadIfRobotWantGoal(cleaningRobot);		
+		if (lirwg.isHardwareCorrect())
+		{
+			cleaningRobot.addGoal(lirwg);
+		}
+		cleaningRobot.addGoal(new ExploreDumpGoal(cleaningRobot));
 	}
+	
+	//merge goals
+	/*public void addMasterFollower () {
+		MergeMasterFollowerGoal mmfg = new MergeMasterFollowerGoal(cleaningRobot);
+		if (mmfg.isHardwareCorrect())
+		{
+			cleaningRobot.addGoal(mmfg);
+		}
+	}*/
 	
 	public void addMasterMerge (MasterRole mr) {
-		cleaningRobot.addGoal(new MergeMasterGoal(cleaningRobot, mr));
+		MergeMasterGoal mmg = new MergeMasterGoal(cleaningRobot, mr);
+		if (mmg.isHardwareCorrect())
+		{
+			cleaningRobot.addGoal(mmg);
+		}
 	}
 	
-	public void addMasterExploreGoals (MasterRole mr) {
-		MasterExploreMasterGoal memg = new MasterExploreMasterGoal(cleaningRobot, mr);
-		LoadIfRobotWantGoal lirwg = new LoadIfRobotWantGoal(cleaningRobot);
-		
-		if (memg.isHardwareCorrect())
+	//Goals for the Master Explore Factory
+	public void addMasterExploreGoals (MasterRole mr, boolean relative) {
+		MasterExploreMasterGoal mmg = new MasterExploreMasterGoal(cleaningRobot, mr, relative);		
+		if (mmg.isHardwareCorrect())
 		{
-			cleaningRobot.addGoal(memg);
+			cleaningRobot.addGoal(mmg);
 		}
-		if (lirwg.isHardwareCorrect())
-		{
-			cleaningRobot.addGoal(lirwg);
-		}
-		cleaningRobot.addGoal(new ExploreDumpGoal(cleaningRobot));
 	}
 	
-	public void addMasterExploreRandomGoals (MasterRole mr) {
-		MasterExploreRandomMasterGoal memg = new MasterExploreRandomMasterGoal(cleaningRobot, mr);
-		LoadIfRobotWantGoal lirwg = new LoadIfRobotWantGoal(cleaningRobot);
-		
-		if (memg.isHardwareCorrect())
+	public void addMasterHooveGoal (MasterRole mr, boolean relative) {
+		MasterHooveMasterGoal mmg = new MasterHooveMasterGoal(cleaningRobot, mr, relative);		
+		if (mmg.isHardwareCorrect())
 		{
-			cleaningRobot.addGoal(memg);
+			cleaningRobot.addGoal(mmg);
 		}
-		if (lirwg.isHardwareCorrect())
+	}
+	
+	public void addMasterWipeGoal (MasterRole mr, boolean relative) {
+		MasterWipeMasterGoal mmg = new MasterWipeMasterGoal(cleaningRobot, mr, relative);		
+		if (mmg.isHardwareCorrect())
 		{
-			cleaningRobot.addGoal(lirwg);
+			cleaningRobot.addGoal(mmg);
 		}
-		cleaningRobot.addGoal(new ExploreDumpGoal(cleaningRobot));
 	}
 
 }

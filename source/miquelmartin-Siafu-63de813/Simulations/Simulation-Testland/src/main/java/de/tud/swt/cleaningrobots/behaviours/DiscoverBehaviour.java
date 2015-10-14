@@ -3,6 +3,7 @@ package de.tud.swt.cleaningrobots.behaviours;
 import java.util.EnumMap;
 import java.util.Map;
 
+import de.tud.evaluation.EvaluationConstants;
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.RobotCore;
@@ -11,35 +12,37 @@ import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
 
 /**
- * Search next unknown position and drive throw, if the accu is to low drive to loadstation
- *  and if there is no more onknown position drive back to loadstation again
+ * Search next unknown position and drive throw, if the Accu is to low drive to loadstation
+ * and if there is no more unknown position drive back to loadstation again
  *  
  * @author ChrissiMobil
  *
  */
 public class DiscoverBehaviour extends Behaviour {
 	
-	private boolean noMoreDiscovering;
-	
 	private final State STATE_BLOCKED = State.createState("Blocked");
 	private final State STATE_FREE = State.createState("Free");
 	
 	private final State WORLDSTATE_DISCOVERED = State.createState("Discovered");
+
+	private boolean noMoreDiscovering;	
+	private boolean relative;
 	
-	public DiscoverBehaviour(RobotCore robot) {
+	public DiscoverBehaviour(RobotCore robot, boolean relative) {
 		super(robot);
+		
+		this.relative = relative;
+		this.noMoreDiscovering = false;
 		
 		supportedStates.add(STATE_BLOCKED);
 		supportedStates.add(STATE_FREE);
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
-		//dont add motor because of you online search destination you don't move
+		//do not add motor because of you only search destination you don't move
 		//hardware.put(Components.MOTOR, 1);
 		
 		d = new Demand(hardware, robot);
-		hardwarecorrect = d.isCorrect();
-		
-		noMoreDiscovering = false;
+		hardwarecorrect = d.isCorrect();		
 	}	
 
 	public boolean isFinishDiscovering () {
@@ -49,33 +52,24 @@ public class DiscoverBehaviour extends Behaviour {
 	@Override
 	public boolean action() throws Exception {
 		
-		//Schalte alle Hardwarecomponenten an wenn sie nicht schon laufen
-		//hardwarecomponents are empty
-		/*for (HardwareComponent hard : d.getHcs())
-		{
-			if (!hard.isActive())
-			{
-				hard.changeActive();
-			}
-		}		*/
-		
-		//wenn accu vorhanden dann muss ladestatus geprüft werden
-		//wird immer geprüft und ist somit zeitaufwendiger
-		/*if (getRobot().getAccu() != null && getRobot().getDestination() != getRobot().loadStationPosition)
-		{
-			int size = getRobot().getPath(getRobot().getPosition(), getRobot().loadStationPosition).size();
-			size +=2;
-			if (size * getRobot().getActualEnergie() > getRobot().getAccu().getRestKWh())
-				getRobot().setDestination(getRobot().loadStationPosition);
-		}*/
-					
 		//Prüfe ob Hardwarecorrect oder entferne es vorher schon wieder
-		logger.trace("Entered DiscoverBehaviour.action().");
+		logger.trace("Entered DiscoverRelativeBehaviour.action().");
 		
-		if(getRobot().getDestinationContainer().isAtDestination()){
+		if(getRobot().getDestinationContainer().isAtDestination()) {
 			
-			Position nextUnknownPosition = this.getRobot().getWorld().getNextUnknownFieldPosition(); 
-						
+			//if you find more than the value of new field drive back to load station and give information to master
+			if (EvaluationConstants.NEW_FIELD_COUNT > 0 && this.getRobot().getWorld().getNewInformationCounter() > EvaluationConstants.NEW_FIELD_COUNT) {
+				getRobot().getDestinationContainer().setDestinationLoadStation();
+				this.getRobot().getWorld().resetNewInformationCounter();
+			}
+			
+			Position nextUnknownPosition;
+			//Look if you must use relative or non relative algorithm 
+			if (relative)
+				nextUnknownPosition = this.getRobot().getWorld().getNextUnknownRelativeFieldPosition(this.getRobot().getDestinationContainer().getLastLoadDestination()); 
+			else
+				nextUnknownPosition = this.getRobot().getWorld().getNextUnknownFieldPosition(); 
+			
 			if(nextUnknownPosition != null){
 				getRobot().getDestinationContainer().setDestination(nextUnknownPosition);
 				
@@ -115,7 +109,7 @@ public class DiscoverBehaviour extends Behaviour {
 				this.getRobot().getWorld().addWorldState(WORLDSTATE_DISCOVERED);
 				if(!getRobot().getPosition().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
 				{
-					//Ist noch nicht am ausgang muss noch zur ladestation fahren
+					//Ist an Ladestation angekommen muss geladen werden
 					getRobot().getDestinationContainer().setDestinationLoadStation();
 				} else {
 					//gibt true zurück wenn alles geschafft ist in der Behaviour

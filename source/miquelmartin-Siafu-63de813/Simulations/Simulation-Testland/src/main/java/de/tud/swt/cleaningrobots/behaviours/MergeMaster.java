@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
 import de.tud.swt.cleaningrobots.Behaviour;
@@ -23,15 +21,10 @@ import de.tud.swt.cleaningrobots.merge.MergeAll;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
 public class MergeMaster extends Behaviour {
-
-	private final Logger logger = LogManager.getRootLogger();
 	
 	private MasterRole mr;
 	private MergeAll ma;
-	private Wlan wlan;
-	
-	//private final State STATE_BLOCKED = State.createState("Blocked");
-	//private final State STATE_FREE = State.createState("Free");		
+	private Wlan wlan;	
 	
 	private List<RobotRole> lastChange;
 	
@@ -39,14 +32,11 @@ public class MergeMaster extends Behaviour {
 		super(robot);
 		
 		this.mr = mr;
-		lastChange = new ArrayList<RobotRole>();
-		ma = new MergeAll();
+		this.lastChange = new ArrayList<RobotRole>();
+		this.ma = new MergeAll();
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.WLAN, 1);
-		
-		//supportedStates.add(STATE_BLOCKED);
-		//supportedStates.add(STATE_FREE);
 		
 		d = new Demand(hardware, robot);
 		hardwarecorrect = d.isCorrect();
@@ -84,12 +74,9 @@ public class MergeMaster extends Behaviour {
 		if (nearRobots.isEmpty())
 			return false;
 						
-		//System.out.println("NearRobots: " + nearRobots.size());
+		//create the information maps for new robots with new information
 		Map<RobotRole, ImportExportConfiguration> nearsNewInformation = new HashMap<RobotRole, ImportExportConfiguration>();
 		Map<RobotRole, ImportExportConfiguration> nearsNoNewInformation = new HashMap<RobotRole, ImportExportConfiguration>();
-		//List<FollowerRole> nearsNewInformation = new ArrayList<FollowerRole>();
-		//List<FollowerRole> nearsNoNewInformation = new ArrayList<FollowerRole>();
-		//System.out.println("Robots in Tausch reichweite: " + nearRobots.size());
 		for (RobotCore nearRobot : nearRobots) {
 			//darf nur mi Robotern in der nähe Kommunizieren wenn diese Wirklich die gleiche HardwareComponente habe und diese aktiv ist
 			if (nearRobot.hasActiveHardwareComponent(wlan.getComponents())) {
@@ -177,6 +164,7 @@ public class MergeMaster extends Behaviour {
 					{
 						EObject model = this.getRobot().exportModel(nearsNewInformation.get(rr));
 						ma.importAllModel(model, rr.getRobotCore(), nearsNewInformation.get(rr));
+						rr.getRobotCore().getWorld().resetNewInformationCounter();
 					}
 				}
 			} else {
@@ -184,12 +172,14 @@ public class MergeMaster extends Behaviour {
 					//importiere allen nahen Robotern das neue Modell
 					EObject model = this.getRobot().exportModel(nearsNewInformation.get(rr));
 					ma.importAllModel(model, rr.getRobotCore(), nearsNewInformation.get(rr));
+					rr.getRobotCore().getWorld().resetNewInformationCounter();
 				}
 			}
 			for (RobotRole rr : nearsNoNewInformation.keySet()) {
 				//importiere allen nahen Robotern das neue Modell
 				EObject model = this.getRobot().exportModel(nearsNoNewInformation.get(rr));
 				ma.importAllModel(model, rr.getRobotCore(), nearsNoNewInformation.get(rr));
+				rr.getRobotCore().getWorld().resetNewInformationCounter();
 			}	
 			lastChange.clear();
 			lastChange.addAll(nearsNewInformation.keySet());
@@ -203,11 +193,14 @@ public class MergeMaster extends Behaviour {
 					//importiere allen nahen Robotern das neue Modell
 					EObject model = this.getRobot().exportModel(nearsNoNewInformation.get(rr));
 					ma.importAllModel(model, rr.getRobotCore(), nearsNoNewInformation.get(rr));
+					rr.getRobotCore().getWorld().resetNewInformationCounter();
 					lastChange.clear();
 					lastChange.addAll(nearsNoNewInformation.keySet());
 				}
 				System.out.println("LastChange: " + lastChange);
 			}
+			//TODO:
+			//fall wen roboter ankommt keine neue information hat aber für ihn neue informationen da sind
 		}
 		
 		

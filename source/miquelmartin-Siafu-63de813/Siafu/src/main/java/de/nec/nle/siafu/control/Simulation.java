@@ -207,6 +207,7 @@ public class Simulation implements Runnable {
 		this.agentModel = world.getAgentModel();
 		this.worldModel = world.getWorldModel();
 		this.contextModel = world.getContextModel();
+		//not important because i do not nead any outputprinter
 		this.outputPrinter =
 				createOutputPrinter(siafuConfig.getString("output.type"));
 
@@ -219,8 +220,11 @@ public class Simulation implements Runnable {
 				agentModel.doIteration(world.getPeople());
 				contextModel.doIteration(world.getOverlays());
 			}
+			//move agents is not important because i do this
 			moveAgents();
+			//makes the drawing on the gui is important
 			control.scheduleDrawing();
+			//creats csv is not important
 			outputPrinter.notifyIterationConcluded();
 		}
 		simulationRunning = false;
@@ -228,6 +232,33 @@ public class Simulation implements Runnable {
 		outputPrinter.cleanup();
 		Controller.getProgress().reportSimulationEnded();
 	}
+	
+	/**
+	 * Starts the Evaluation phase.
+	 *
+	public void run() {
+		this.world = new World(this, simData);
+		this.time = world.getTime();
+		this.iterationStep = simulationConfig.getInt("iterationstep");
+		this.agentModel = world.getAgentModel();
+		this.worldModel = world.getWorldModel();
+		this.contextModel = world.getContextModel();
+		
+		Controller.getProgress().reportSimulationStarted();
+		simulationRunning = true;
+		while (!isEnded()) {
+			if (!isPaused()) {
+				tickTime();
+				worldModel.doIteration(world.getPlaces());
+				agentModel.doIteration(world.getPeople());
+				contextModel.doIteration(world.getOverlays());
+			}
+			//makes the drawing on the gui is important
+			control.scheduleDrawing();
+		}
+		simulationRunning = false;
+		Controller.getProgress().reportSimulationEnded();
+	}*/
 
 	/**
 	 * Stop looping the simulatio and, well, kill the thread.

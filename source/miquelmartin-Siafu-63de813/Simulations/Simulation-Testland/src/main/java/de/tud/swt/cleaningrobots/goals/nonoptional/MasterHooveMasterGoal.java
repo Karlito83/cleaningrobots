@@ -2,19 +2,19 @@ package de.tud.swt.cleaningrobots.goals.nonoptional;
 
 import de.tud.swt.cleaningrobots.MasterRole;
 import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.behaviours.MasterCalculateExploreBehaviour;
+import de.tud.swt.cleaningrobots.behaviours.MasterCalculateHooveBehaviour;
 import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
 import de.tud.swt.cleaningrobots.model.State;
 
-public class MasterExploreMasterGoal extends NonOptionalGoal {
-	
-	private MasterCalculateExploreBehaviour mceb;
-	private final State WORLDSTATE_DISCOVERED = State.createState("Discovered");
+public class MasterHooveMasterGoal extends NonOptionalGoal {
 
-	public MasterExploreMasterGoal(RobotCore robot, MasterRole mr, boolean relative) {
+	private MasterCalculateHooveBehaviour mceb;
+	private final State WORLDSTATE_HOOVED = State.createState("Hooved");
+
+	public MasterHooveMasterGoal(RobotCore robot, MasterRole mr, boolean relative) {
 		super(robot);
 		
-		mceb = new MasterCalculateExploreBehaviour(robot, mr, relative);
+		mceb = new MasterCalculateHooveBehaviour(robot, mr, relative);
 		System.out.println("Correct SeeAround: " +mceb.isHardwarecorrect());
 		if (mceb.isHardwarecorrect()) {
 			//robot.addBehaviour(s);
@@ -26,13 +26,13 @@ public class MasterExploreMasterGoal extends NonOptionalGoal {
 
 	@Override
 	public boolean preCondition() {
-		if (getRobotCore().getWorld().containsWorldState(WORLDSTATE_DISCOVERED))
+		if (getRobotCore().getWorld().containsWorldState(WORLDSTATE_HOOVED))
 			return false;
 		return true;
 	}
 
 	@Override
 	public boolean postCondition() {
-		return mceb.isFinishDisscovering();
+		return mceb.isFinishHooving();
 	}
 }

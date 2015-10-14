@@ -93,8 +93,7 @@ public class WorldHelper {
 				result = currentNode.getPathGone();
 				break;
 			}
-			for (Position neighbour : getNeighbourPositions(
-					currentNode.getCurrentPosition(), true)) {
+			for (Position neighbour : getPassableNeighborPositions(currentNode.getCurrentPosition())) {
 				if (!expanded.contains(neighbour)){
 					List<Position> path = new LinkedList<Position>(
 							currentNode.getPathGone());
@@ -113,15 +112,13 @@ public class WorldHelper {
 
 		return result;
 	}
-
+	
 	/**
-	 * Gibt nachbar Position zurück die entweder Passierbar sind oder nicht
+	 * Returns all Neighbor Positions which are passable.
 	 * @param currentPosition
-	 * @param onlyPassable
 	 * @return
 	 */
-	public List<Position> getNeighbourPositions(Position currentPosition,
-			boolean onlyPassable) {
+	private List<Position> getPassableNeighborPositions(Position currentPosition) {
 		List<Position> result = new LinkedList<Position>();
 
 		for (int i = -1; i <= 1; i++) {
@@ -131,9 +128,30 @@ public class WorldHelper {
 				}
 				Position newPosition = new Position(currentPosition.getX() + i,
 						currentPosition.getY() + j);
-				if (!onlyPassable || world.isPassable(newPosition)) {
+				if (world.isPassable(newPosition)) {
 					result.add(newPosition);
 				}
+			}
+		}
+		
+		return result;
+	}
+
+	/**
+	 * Return all Neighbor Positions of the current Position.
+	 * @param currentPosition
+	 * @return
+	 */
+	public List<Position> getNeighbourPositions(Position currentPosition) {
+		List<Position> result = new LinkedList<Position>();
+
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				if (i == 0 && j == 0) {
+					continue;
+				}
+				result.add(new Position(currentPosition.getX() + i,
+						currentPosition.getY() + j));
 			}
 		}
 		

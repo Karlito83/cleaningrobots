@@ -1,23 +1,18 @@
 package de.tud.swt.cleaningrobots.goals.nonoptional;
 
 import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.RobotRole;
-import de.tud.swt.cleaningrobots.behaviours.DiscoverRelativeBehaviour;
+import de.tud.swt.cleaningrobots.behaviours.DiscoverBehaviour;
+import de.tud.swt.cleaningrobots.behaviours.LoadIfAtLoadStationBehaviour;
+import de.tud.swt.cleaningrobots.behaviours.MergeAllOfNearBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.SeeAroundAtDestinationBehaviour;
 import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
 
-/**
- * Discovers as long as no more unknown field exists and then drive back to Loadstation
- * 
- * @author ChrissiMobil
- *
- */
-public class ExploreRelativeLoadGoal extends NonOptionalGoal {
+public class WithoutMasterExploreGoal extends NonOptionalGoal {
 
-	private DiscoverRelativeBehaviour d;
+	private DiscoverBehaviour d;
 	
-	public ExploreRelativeLoadGoal(RobotCore robot) {
+	public WithoutMasterExploreGoal(RobotCore robot) {
 		super(robot);
 		
 		SeeAroundAtDestinationBehaviour s = new SeeAroundAtDestinationBehaviour(robot);
@@ -29,7 +24,7 @@ public class ExploreRelativeLoadGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		d = new DiscoverRelativeBehaviour(robot);
+		d = new DiscoverBehaviour(robot, false);
 		System.out.println("Correct Discover: " + d.isHardwarecorrect());
 		if (d.isHardwarecorrect()) {
 			//robot.addBehaviour(d);
@@ -46,6 +41,23 @@ public class ExploreRelativeLoadGoal extends NonOptionalGoal {
 		} else {
 			correct = false;
 		}
+		
+		LoadIfAtLoadStationBehaviour lialsb = new LoadIfAtLoadStationBehaviour(robot);
+		System.out.println("Correct LoadIfAtLoadStation: " + lialsb.isHardwarecorrect());
+		if (lialsb.isHardwarecorrect()) {
+			//robot.addBehaviour(b);
+			behaviours.add(lialsb);
+		} else {
+			correct = false;
+		}
+		
+		MergeAllOfNearBehaviour mar = new MergeAllOfNearBehaviour(robot);
+		System.out.println("Correct MergeRonny: " + mar.isHardwarecorrect());
+		if (mar.isHardwarecorrect()) {
+			behaviours.add(mar);
+		} else {
+			correct = false;
+		}
 	}
 
 	@Override
@@ -57,22 +69,7 @@ public class ExploreRelativeLoadGoal extends NonOptionalGoal {
 
 	@Override
 	public boolean postCondition() {
-		if (!d.isFinishDiscovering())
-			return false;
-		else {
-			boolean proof = true;
-			for (RobotRole rr : getRobotCore().getRoles()) {
-				if (rr.hasNewInformation())
-					proof = false;
-			}
-			return proof;
-		}
-		//return d.isFinishDiscovering();
-		/*if (d.noMoreDiscovering)
-			return true;
-		if (this.getRobotCore().getWorld().getNextUnknownFieldPosition() == null 
-				&& this.getRobotCore().getPosition().equals(this.getRobotCore().loadStationPosition))
-			return true;
-		return false;*/
+		//muss nur schauen ob discover behaviour fertig ist
+		return d.isFinishDiscovering();
 	}
 }

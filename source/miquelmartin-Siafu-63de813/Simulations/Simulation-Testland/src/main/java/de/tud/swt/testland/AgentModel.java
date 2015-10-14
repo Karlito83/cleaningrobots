@@ -31,6 +31,7 @@ import org.apache.logging.log4j.Logger;
 import de.nec.nle.siafu.behaviormodels.BaseAgentModel;
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.World;
+import de.tud.evaluation.EvaluationConstants;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.measure.ExchangeMeasurement;
 import de.tud.swt.cleaningrobots.measure.FileWorker;
@@ -49,8 +50,8 @@ public class AgentModel extends BaseAgentModel {
 
 	private final Logger logger = LogManager.getRootLogger();
 	
-	private boolean finish;
-	
+	private boolean roboterFinish;
+	private boolean completeFinish;
 	private World siafuWorld;
 	
 	/**
@@ -61,8 +62,9 @@ public class AgentModel extends BaseAgentModel {
 	 */
 	public AgentModel(final World world) {
 		super(world);
+		this.completeFinish = false;
+		this.roboterFinish = false;
 		this.siafuWorld = world;
-		counter = 0;
 	}
 
 	/**
@@ -80,11 +82,25 @@ public class AgentModel extends BaseAgentModel {
 
 		try {
 			logger.info("Creating " + POPULATION + " random cleaning robots.");
-			//agents = new ExploreWithoutMasterFactory().createRobots(world);
-			//agents = new ExploreWithMasterMergeFactory().createRobots(world);
-			//agents = new ExploreWithCalculateMasterFactory().createRobots(world);
-			agents = new ExploreFactory().createRobots(world);			
+			switch (EvaluationConstants.configuration) {
+	            case 0:  agents = new ExploreWithoutMasterFactory().createRobots(world);
+	                     break;
+	            case 1:  agents = new MasterExploreFactory().createRobots(world);
+	                     break;
+	            case 2:  agents = new ExploreMergeMasterFactory().createRobots(world);
+	                     break;
+	            case 3:  agents = new ExploreMergeMasterCalculateFactory().createRobots(world);
+	                     break;
+	            case 4:  agents = new ExploreMergeMasterCalculateRelativeFactory().createRobots(world);
+	                     break;
+	            default: agents = new MasterExploreFactory().createRobots(world);
+	                     break;
+	        }
+			//agents = new ExploreWithoutMasterFactory().createRobots(world);			
 			//agents = new MasterExploreFactory().createRobots(world);
+			//agents = new ExploreMergeMasterFactory().createRobots(world);
+			//agents = new ExploreMergeMasterCalculateFactory().createRobots(world);
+			//agents = new ExploreMergeMasterCalculateRelativeFactory().createRobots(world);
 		} catch (Exception ex) {
 			logger.error("An exception occured while creating the population.", ex);
 		}
@@ -92,8 +108,6 @@ public class AgentModel extends BaseAgentModel {
 		return agents;
 	}
 	
-	private int counter;
-
 	/**
 	 * Make all the normal agents wander around, and the postman, run errands
 	 * from one place to another. His speed depends on the time, slowing down at
@@ -104,59 +118,59 @@ public class AgentModel extends BaseAgentModel {
 	 */
 	@Override
 	public void doIteration(final Collection<Agent> agents) {
-		counter++;
 		Variables.iteration += 1;
 		System.out.println("New Iteration: ");
-		if (!finish) {			
-			finish = true;
-			//wemm noch nicht finsh dann mache das hier
-			for (Agent a : agents) {
-				//nur wenn Robot noch nicht aus ist
-				if (!((RobotAgent)a).getRobot().isShutDown()) {
-					a.wander();
-					System.out.println("Robot: " + ((RobotAgent)a).getName() + " finish: " + ((RobotAgent)a).isFinish());
-					if (!((RobotAgent)a).isFinish())
-						finish = false;
+		if (!completeFinish) {
+			if (!roboterFinish) {			
+				roboterFinish = true;
+				//wemm noch nicht finsh dann mache das hier
+				for (Agent a : agents) {
+					//nur wenn Robot noch nicht aus ist
+					if (!((RobotAgent)a).getRobot().isShutDown()) {
+						a.wander();
+						System.out.println("Robot: " + ((RobotAgent)a).getName() + " finish: " + ((RobotAgent)a).isFinish());
+						if (!((RobotAgent)a).isFinish())
+							roboterFinish = false;
+					}
 				}
+			} else {
+				for (Agent a : agents) {
+					//nur wenn Robot noch nicht aus ist
+					((RobotAgent)a).getRobot().addLastMeasurement();				
+				}
+				
+				//Programm ist fertig Lese Measurement aller Roboter und gebe in Datei aus
+				for (Agent a : agents) {
+					RobotCore rc = ((RobotAgent)a).getRobot();
+					
+					//Json Datein in .txt speicher
+					FileWorker fw = new FileWorker(EvaluationConstants.map + "_V" + EvaluationConstants.configuration + "_CE" + EvaluationConstants.NUMBER_EXPLORE_AGENTS + "_CH" + EvaluationConstants.NUMBER_HOOVE_AGENTS +
+							"_CW" + EvaluationConstants.NUMBER_WIPE_AGENTS + "_B" + EvaluationConstants.NEW_FIELD_COUNT + "_D" + EvaluationConstants.run + "_" + rc.getName()+ ".txt");				
+					String measu = rc.getMeasurement().toJson();
+					fw.addLineToFile(measu);
+					
+					//Roboter time in csv speichern
+					//outputCsv(rc.getMeasurement().timeProTick, rc.getName() + "Time");
+					
+				}
+				FileWorker fw = new FileWorker("V" + EvaluationConstants.configuration + "_CE" + EvaluationConstants.NUMBER_EXPLORE_AGENTS + "_CH" + EvaluationConstants.NUMBER_HOOVE_AGENTS +
+						"_CW" + EvaluationConstants.NUMBER_WIPE_AGENTS + "_B" + EvaluationConstants.NEW_FIELD_COUNT + "_D" + EvaluationConstants.run + "_" + "exchange.txt");
+				int tester = 0;
+				for (ExchangeMeasurement em : Variables.exchange) {
+					tester++;
+					em.setNumber(tester);
+					String result = em.toJson();
+					fw.addLineToFile(result);
+				}
+				System.out.println("Programm Finish!");
+				System.out.println("Iterations: " + Variables.iteration);
+				this.completeFinish = true;
+				siafuWorld.pause(true);
 			}
-			//if (counter == 1000)
-			//	finish = true;
 		} else {
-			for (Agent a : agents) {
-				//nur wenn Robot noch nicht aus ist
-				((RobotAgent)a).getRobot().addLastMeasurement();				
-			}
-			
-			//Programm ist fertig Lese Measurement aller Roboter und gebe in Datei aus
-			for (Agent a : agents) {
-				RobotCore rc = ((RobotAgent)a).getRobot();
-				
-				//Json Datein in .txt speicher
-				FileWorker fw = new FileWorker("V" + Constants.configuration + "_CE" + Constants.NUMBER_EXPLORE_AGENTS + "_CH" + Constants.NUMBER_HOOVE_AGENTS +
-						"_CW" + Constants.NUMBER_WIPE_AGENTS + "_B" + Constants.NEW_FIELD_COUNT + "_D" + Constants.run + "_" + rc.getName()+ ".txt");				
-				String measu = rc.getMeasurement().toJson();
-				fw.addLineToFile(measu);
-				
-				//Roboter time in csv speichern
-				//outputCsv(rc.getMeasurement().timeProTick, rc.getName() + "Time");
-				
-			}
-			FileWorker fw = new FileWorker("V" + Constants.configuration + "_CE" + Constants.NUMBER_EXPLORE_AGENTS + "_CH" + Constants.NUMBER_HOOVE_AGENTS +
-					"_CW" + Constants.NUMBER_WIPE_AGENTS + "_B" + Constants.NEW_FIELD_COUNT + "_D" + Constants.run + "_" + "exchange.txt");
-			int tester = 0;
-			for (ExchangeMeasurement em : Variables.exchange) {
-				tester++;
-				em.setNumber(tester);
-				String result = em.toJson();
-				fw.addLineToFile(result);
-			}
-			System.out.println("Programm Finish!");
-			System.out.println("Iterations: " + counter);
-			siafuWorld.pause(true);
 			try {
 				Thread.sleep(100000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

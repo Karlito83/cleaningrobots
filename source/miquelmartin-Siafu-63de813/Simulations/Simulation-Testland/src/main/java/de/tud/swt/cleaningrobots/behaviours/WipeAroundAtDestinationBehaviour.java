@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.Demand;
-import de.tud.swt.cleaningrobots.FollowerRole;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.Components;
@@ -20,7 +19,7 @@ import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
 
-public class WipeAroundBehaviour extends Behaviour {
+public class WipeAroundAtDestinationBehaviour extends Behaviour {
 	
 	private int visionRadius = 0;
 	
@@ -29,7 +28,7 @@ public class WipeAroundBehaviour extends Behaviour {
 	
 	private final Logger logger = LogManager.getRootLogger(); 
 	
-	public WipeAroundBehaviour(RobotCore robot) {
+	public WipeAroundAtDestinationBehaviour(RobotCore robot) {
 		super(robot);
 				
 		supportedStates.add(STATE_WIPE);
@@ -66,8 +65,7 @@ public class WipeAroundBehaviour extends Behaviour {
 					
 			//Activate Flage that he has new information
 			for (RobotRole rr : getRobot().getRoles()) {
-				if (rr instanceof FollowerRole)
-					rr.setNewInformation(true);
+				rr.setNewInformation(true);
 			}
 				
 			//scanne umgebung
@@ -108,7 +106,7 @@ public class WipeAroundBehaviour extends Behaviour {
 		return data;
 	}	
 	
-	//give new hooved field back
+	//give new wiped field back
 	private Field getField(int xOffset, int yOffset)
 	{		
 		Field result = null;
@@ -121,7 +119,7 @@ public class WipeAroundBehaviour extends Behaviour {
 		//could only hoove position he knows about
 		if (getRobot().getWorld().hasState(p, STATE_HOOVE))
 		{
-			logger.debug("Hoove field: " + x + ", " + y);
+			logger.debug("Wipe field: " + x + ", " + y);
 			result = getRobot().getWorld().getField(p);
 			result.addState(STATE_WIPE);
 		}	

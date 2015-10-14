@@ -50,15 +50,6 @@ public class Constants {
 
 	/** 30min time blur. */
 	public static final int HALF_HOUR_BLUR = 30;
-
-
-	public static final int NUMBER_EXPLORE_AGENTS = 3;
-	public static final int NUMBER_WIPE_AGENTS = 0;
-	public static final int NUMBER_HOOVE_AGENTS = 0;
-	public static int run = 0;
-	
-	public static int NEW_FIELD_COUNT = 0;
-	public static int configuration;
 	
 	/**
 	 * The names of the fields in each agent object.

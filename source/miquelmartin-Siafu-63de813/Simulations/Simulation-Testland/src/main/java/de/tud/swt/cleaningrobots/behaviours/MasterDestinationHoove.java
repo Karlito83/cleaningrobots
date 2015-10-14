@@ -14,11 +14,14 @@ import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
 import de.tud.swt.cleaningrobots.merge.MasterFieldMerge;
+import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.util.RobotDestinationCalculation;
 
-public class MasterDestinationExplore extends Behaviour {
+public class MasterDestinationHoove extends Behaviour {
 
 	private MasterRole mr;
+	
+	private final State STATE_HOOVE = State.createState("Hoove");
 	
 	private Wlan wlan;
 	private boolean firstStart;
@@ -27,7 +30,7 @@ public class MasterDestinationExplore extends Behaviour {
 	
 	private Map<String, RobotDestinationCalculation> information;
 	
-	public MasterDestinationExplore(RobotCore robot, MasterRole mr) {
+	public MasterDestinationHoove(RobotCore robot, MasterRole mr) {
 		super(robot);
 		
 		this.mr = mr;
@@ -70,7 +73,7 @@ public class MasterDestinationExplore extends Behaviour {
 				
 			for (RobotRole rr : follower) {
 				RobotCore core = rr.getRobotCore();
-				if (core.hasHardwareComponent(Components.WLAN) && core.hasHardwareComponent(Components.LOOKAROUNDSENSOR))
+				if (core.hasHardwareComponent(Components.WLAN) && core.hasHardwareComponent(Components.HOOVER))
 				{
 					//add Robot to Map
 					information.put(core.getName(), new RobotDestinationCalculation(core.getName()));
@@ -144,7 +147,7 @@ public class MasterDestinationExplore extends Behaviour {
 		if (!newOneFind)
 			return false;
 		
-		Map<String, RobotDestinationCalculation> result = this.getRobot().getWorld().getNextUnknownFields(information, calculationAway); 
+		Map<String, RobotDestinationCalculation> result = this.getRobot().getWorld().getNextPassablePositionsWithoutState(information, calculationAway, STATE_HOOVE); 
 		
 		if (result == null) {
 			//set all destination to null that the robot could shut down
@@ -174,5 +177,4 @@ public class MasterDestinationExplore extends Behaviour {
 		}
 		return false;
 	}
-
 }

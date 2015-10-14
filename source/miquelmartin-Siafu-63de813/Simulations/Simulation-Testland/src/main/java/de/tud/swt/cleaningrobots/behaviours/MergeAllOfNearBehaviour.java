@@ -1,11 +1,10 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import java.util.EnumMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
 import de.tud.swt.cleaningrobots.Behaviour;
@@ -16,24 +15,24 @@ import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
 import de.tud.swt.cleaningrobots.merge.MergeAll;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
+import de.tud.swt.cleaningrobots.util.NearRobotInformation;
 
-public class MergeAllRonny extends Behaviour {
-
-	private final Logger logger = LogManager.getRootLogger();
+public class MergeAllOfNearBehaviour extends Behaviour {
 	
-	private Wlan wlan;
-	
+	private Wlan wlan;	
 	private MergeAll ma;
 	
-	private int counter;
 	private int maxCount;
+	private List<NearRobotInformation> robotInformation;
+	private boolean firstStart;
 	
-	public MergeAllRonny(RobotCore robot) {
+	public MergeAllOfNearBehaviour(RobotCore robot) {
 		super(robot);
 		
 		this.ma = new MergeAll();
-		this.counter = 0;
 		this.maxCount = 100;
+		this.firstStart = true;
+		this.robotInformation = new LinkedList<NearRobotInformation>();
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.WLAN, 1);
@@ -54,8 +53,6 @@ public class MergeAllRonny extends Behaviour {
 	@Override
 	public boolean action() {
 		
-		counter++;
-		
 		//Schalte alle Hardwarecomponenten an wenn sie nicht schon laufen
 		for (HardwareComponent hard : d.getHcs())
 		{
@@ -65,12 +62,29 @@ public class MergeAllRonny extends Behaviour {
 			}
 		}
 		
+		if (this.firstStart) {
+			//create robot information map
+			List<RobotCore> nearRobots = this.getRobot().getICommunicationProvider().getAllRobots();
+			nearRobots.remove(this.getRobot());
+			
+			for (RobotCore core : nearRobots) {
+				robotInformation.add(new NearRobotInformation(core.getName()));
+			}
+		}
+		
+		for (NearRobotInformation i: robotInformation) {
+			if (i.getCounter() > -1) {
+				i.addCounterOne();
+				if (i.getCounter() > maxCount)
+					i.resetCounter();
+			}
+		}
+		
+		
+		
 		if (this.getRobot().getPosition().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
 			return false;
-		
-		if (counter < maxCount)
-			return false;
-		
+				
 		//Tausche komplettes modell von ronny
 		long startTime = System.nanoTime();
 		logger.trace("enter getNearRobotsAndImportModel");
@@ -80,14 +94,19 @@ public class MergeAllRonny extends Behaviour {
 		for (RobotCore nearRobot : nearRobots) {
 			//darf nur mi Robotern in der nähe Kommunizieren wenn diese Wirklich die gleiche HardwareComponente habe und diese aktiv ist
 			if (nearRobot.hasActiveHardwareComponent(wlan.getComponents())) {
-				ImportExportConfiguration config = new ImportExportConfiguration();
-				config.world = true;
-				config.knownstates = true;
-				config.knowledge = true;
-				EObject model = nearRobot.exportModel(config);
-				ma.importAllModel(model, this.getRobot(), config);
-				
-				counter = 0;
+				for (NearRobotInformation i: robotInformation) {
+					if (i.getName().equals(nearRobot.getName())) {
+						if (i.getCounter() == -1) {
+							ImportExportConfiguration config = new ImportExportConfiguration();
+							config.world = true;
+							config.knownstates = true;
+							config.knowledge = true;
+							EObject model = nearRobot.exportModel(config);
+							ma.importAllModel(model, this.getRobot(), config);
+							i.addCounterOne();
+						}
+					}
+				}				
 			}
 		}
 		

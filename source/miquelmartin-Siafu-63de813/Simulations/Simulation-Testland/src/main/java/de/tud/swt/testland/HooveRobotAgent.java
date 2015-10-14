@@ -6,8 +6,10 @@ import de.tud.swt.cleaningrobots.AgentNavigationAdapter;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.goals.MasterGoal;
 import de.tud.swt.cleaningrobots.goals.nonoptional.HooveLoadGoal;
+import de.tud.swt.cleaningrobots.goals.nonoptional.MasterHooveRobotGoal;
+import de.tud.swt.cleaningrobots.goals.nonoptional.WithoutMasterHooveGoal;
 import de.tud.swt.cleaningrobots.goals.optional.ExploreDumpGoal;
-import de.tud.swt.cleaningrobots.goals.optional.WlanActivateMasterPositionGoal;
+import de.tud.swt.cleaningrobots.goals.optional.WlanLoadIfRobotWantMergeGoal;
 import de.tud.swt.cleaningrobots.hardware.Accu;
 import de.tud.swt.cleaningrobots.hardware.Hoover;
 import de.tud.swt.cleaningrobots.hardware.Motor;
@@ -28,11 +30,10 @@ public class HooveRobotAgent extends RobotAgent {
 		cleaningRobot.addHardwareComponent(new Hoover());
 	}
 	
-	public void addStandardGoals () {
-		
-		HooveLoadGoal hlg = new HooveLoadGoal(cleaningRobot);
+	public void addRelativeStandardGoals () {		
+		HooveLoadGoal hlg = new HooveLoadGoal(cleaningRobot, true);
 		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
-		WlanActivateMasterPositionGoal wlmmg = new WlanActivateMasterPositionGoal(cleaningRobot);
+		WlanLoadIfRobotWantMergeGoal wlmmg = new WlanLoadIfRobotWantMergeGoal(cleaningRobot);
 		
 		MasterGoal mg = new MasterGoal(cleaningRobot);
 		mg.subGoals.add(hlg);
@@ -44,5 +45,44 @@ public class HooveRobotAgent extends RobotAgent {
 			cleaningRobot.addGoal(mg);
 		}
 	}
-
+	
+	public void addRandomStandardGoals () {
+		HooveLoadGoal hlg = new HooveLoadGoal(cleaningRobot, false);
+		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
+		WlanLoadIfRobotWantMergeGoal wlmmg = new WlanLoadIfRobotWantMergeGoal(cleaningRobot);
+		
+		MasterGoal mg = new MasterGoal(cleaningRobot);
+		mg.subGoals.add(hlg);
+		mg.subGoals.add(wlmmg);
+		mg.subGoals.add(edg);
+		
+		if (mg.isHardwareCorrect())
+		{
+			cleaningRobot.addGoal(mg);
+		}
+	}
+	
+	//Goals for the MasterExploreFactory
+	public void addMasterHooveGoals () {
+		MasterHooveRobotGoal mrg = new MasterHooveRobotGoal(cleaningRobot);			
+		if (mrg.isHardwareCorrect()) 
+		{
+			cleaningRobot.addGoal(mrg);
+		}
+	}
+	
+	//without Master Configuration
+	public void addWithoutMasterConfiguration () {		
+		WithoutMasterHooveGoal wmg = new WithoutMasterHooveGoal(cleaningRobot);
+		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
+			
+		MasterGoal mg = new MasterGoal(cleaningRobot);
+		mg.subGoals.add(wmg);
+		mg.subGoals.add(edg);
+			
+		if (mg.isHardwareCorrect())
+		{
+			cleaningRobot.addGoal(mg);
+		}
+	}
 }

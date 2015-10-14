@@ -3,6 +3,7 @@ package de.tud.swt.cleaningrobots.behaviours;
 import java.util.EnumMap;
 import java.util.Map;
 
+import de.tud.evaluation.EvaluationConstants;
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.RobotCore;
@@ -19,20 +20,21 @@ public class HooveBehaviour extends Behaviour {
 	private final State WORLDSTATE_HOOVED = State.createState("Hooved");
 	
 	private boolean finishHooving;
+	private boolean relative;
 
-	public HooveBehaviour(RobotCore robot) {
+	public HooveBehaviour(RobotCore robot, boolean relative) {
 		super(robot);
+		
+		this.relative = relative;
+		this.finishHooving = false;
 		
 		supportedStates.add(STATE_HOOVE);
 		supportedStates.add(STATE_FREE);
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
-		//same as in the DiscoverBehaviour
-		
+		//same as in the DiscoverBehaviour		
 		d = new Demand(hardware, robot);
-		hardwarecorrect = d.isCorrect();
-		
-		finishHooving = false;
+		hardwarecorrect = d.isCorrect();		
 	}	
 	
 	public boolean isFinishHoove () {
@@ -46,12 +48,20 @@ public class HooveBehaviour extends Behaviour {
 		logger.trace("Entered HooveBehaviour.action().");
 		
 		if(getRobot().getDestinationContainer().isAtDestination()){
-			//System.out.println("Hoove at Destination");
-			//long startTime = System.nanoTime();
-			Position nextNotHoovePosition = this.getRobot().getWorld().getNextPassablePositionWithoutState(STATE_HOOVE); 
-			//long endTime = System.nanoTime();
-			//System.out.println("NextNotHoovePosition: " + (endTime - startTime));
-			//System.out.println("NextNotHoovePosition: " + nextNotHoovePosition);			
+			
+			//if you find more than the value of new field drive back to load station and give information to master
+			if (EvaluationConstants.NEW_FIELD_COUNT > 0 && this.getRobot().getWorld().getNewInformationCounter() > EvaluationConstants.NEW_FIELD_COUNT) {
+				getRobot().getDestinationContainer().setDestinationLoadStation();
+				this.getRobot().getWorld().resetNewInformationCounter();
+			}
+			
+			Position nextNotHoovePosition;
+			//Look if you must use relative or non relative algorithm 
+			if (relative)
+				nextNotHoovePosition = this.getRobot().getWorld().getNextPassablePositionRelativeWithoutState(this.getRobot().getDestinationContainer().getLastLoadDestination(), STATE_HOOVE);
+			else
+				nextNotHoovePosition = this.getRobot().getWorld().getNextPassablePositionWithoutState(STATE_HOOVE); 
+			
 			if(nextNotHoovePosition != null){
 				getRobot().getDestinationContainer().setDestination(nextNotHoovePosition);
 				
@@ -88,8 +98,7 @@ public class HooveBehaviour extends Behaviour {
 			} else {
 				//no more hoove position found
 				//need no blocked field and proof if the hole world is discovered
-				boolean discovered = this.getRobot().getWorld().containsWorldState(WORLDSTATE_DISCOVERED);
-				if (discovered)
+				if (this.getRobot().getWorld().containsWorldState(WORLDSTATE_DISCOVERED))
 				{
 					this.getRobot().getWorld().addWorldState(WORLDSTATE_HOOVED);
 					//finish back to load station

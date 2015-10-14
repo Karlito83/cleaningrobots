@@ -52,13 +52,15 @@ public class World {
 	private RobotCore robot;
 	private Map<Position, Field> map;
 	private Set<State> worldStates;
-	//koordinaten von großer karte 
+	//Coordinations of the big map 
 	private int minX;
 	private int minY;
-	//dimensionen von kleiner Karte
+	//Dimensions of the local mini map
 	private int xDim;
 	private int yDim;
-
+	
+	private int newInformationCounter;
+	
 	private WorldHelper helper;
 
 	public World(RobotCore robot) {
@@ -66,33 +68,54 @@ public class World {
 		this.worldStates = new HashSet<State>();
 		this.map = new HashMap<Position, Field>();
 		this.helper = new WorldHelper(this);
+		this.newInformationCounter = 0;
+	}
+	
+	/**
+	 * Reset the NewInformationCounter to 0.
+	 */
+	public void resetNewInformationCounter () {
+		this.newInformationCounter = 0;
+	}
+	
+	/**
+	 * Return the NewInformationCounter.
+	 * @return
+	 */
+	public int getNewInformationCounter () {
+		return this.newInformationCounter;
 	}
 
+	/**
+	 * Add a new Field to the world.
+	 * @param newField
+	 */
 	public void addField(Field newField) {
 		Position p = newField.getPos();
-		//erweitere die Dimensionen der Karte anhand des neuen Feldes
-		if (p.getX() < this.minX) {
-			this.minX = p.getX();
-		}
-		if (p.getY() < this.minY) {
-			this.minY = p.getY();
-		}
-		if (p.getX() > this.minX + this.xDim) {
-			this.xDim = p.getX() + this.minX;
-		}
-		if (p.getY() > this.minY + this.yDim) {
-			this.yDim = p.getY() + this.minY;
-		}
-		//Wenn Feld mit Positon schon in Map drin ist dann update ansonsten füge hinzu
+		//if map contains Position then update Field else add
 		if (map.containsKey(p)) {
 			updateField(newField);
 		} else {
+			newInformationCounter++;
+			//extend the dimension of the map with the new Field
+			if (p.getX() < this.minX) {
+				this.minX = p.getX();
+			}
+			if (p.getY() < this.minY) {
+				this.minY = p.getY();
+			}
+			if (p.getX() > this.minX + this.xDim) {
+				this.xDim = p.getX() + this.minX;
+			}
+			if (p.getY() > this.minY + this.yDim) {
+				this.yDim = p.getY() + this.minY;
+			}			
 			map.put(p, newField);
 		}
 	}
 
 	/**
-	 * Update das Feld
+	 * Update the old Field with the States of the new Field.
 	 * @param newField
 	 */
 	private void updateField(Field newField) {
@@ -101,6 +124,7 @@ public class World {
 		for (State newState : newField.getStates()) {
 			if (!oldField.containsState(newState)) {
 				oldField.addState(newState);
+				newInformationCounter++;
 			}
 		}
 	}
@@ -109,27 +133,36 @@ public class World {
 		for (Field field : fields) {
 			this.addField(field);
 		}
-	}
+	}	
 
 	/***
-	 * Returns the next passable Field without a given State
-	 * 
+	 * Returns the next passable Field without a given State.
+	 * For example search field which is passable without state "hoove".	 * 
 	 * @param state
 	 * @return
 	 */
 	public Position getNextPassablePositionWithoutState(State state) {
+		return getNextPassablePositionWithoutState(this.robot.getPosition(), state);
+	}
+	
+	/**
+	 * Returns the next passable Field without a given State.
+	 * For example search field which is passable without state "hoove".
+	 * @param my
+	 * @param state
+	 * @return
+	 */
+	public Position getNextPassablePositionWithoutState(Position my, State state) {
 		logger.trace("Getting the next passable field without the state");
-		Position p = this.robot.getPosition();
-		
-		if (!map.containsKey(p))
+		if (!map.containsKey(my))
 			return null;
 		
 		boolean flag = true;
 		
 		Set<Position> visited = new HashSet<Position>();
-		visited.add(p);
+		visited.add(my);
 		Queue<Position> nodes = new LinkedList<Position>();
-		nodes.add(p);
+		nodes.add(my);
 
 		//tmp results hinzufügen
 		List<Position> tmpResult = new LinkedList<Position>();
@@ -142,7 +175,7 @@ public class World {
 			if (!map.get(currentNodePosition).containsState(state)) {
 				//wenn aktuelles Feld nicht den State enthält
 				//Position kann zu Ergebnis gehören
-				int actDist = getDistanceFromPositionToPosition(p, currentNodePosition);
+				int actDist = getDistanceFromPositionToPosition(my, currentNodePosition);
 				if (actDist <= dist) {
 					if (actDist < dist)	{
 						tmpResult.clear();
@@ -152,13 +185,11 @@ public class World {
 				} else {
 					flag = false;
 				}
-				//System.out.println("Dist: " + dist + " actDist: " + actDist + " Node: " + currentNodePosition + " Size: " + nodes.size());
 			} else {
 				//füge alle nachbar Felder der Nodeliste hinzu aber nur wenn sie existieren und den state enthalten
 				//und noch nicht besucht wurden
-				for (Position neighbour : helper.getNeighbourPositions(currentNodePosition, false)) {
+				for (Position neighbour : helper.getNeighbourPositions(currentNodePosition)) {
 					if (map.containsKey(neighbour) && map.get(neighbour).isPassable() && !visited.contains(neighbour)) {
-						//System.out.println("Neighbour added: " + getDistanceFromCurrentPosition(neighbour) + " Dist: " + dist);
 						visited.add(neighbour);
 						nodes.add(neighbour);
 					}
@@ -170,30 +201,204 @@ public class World {
 			int index = random.nextInt(tmpResult.size());
 			result = tmpResult.get(index);
 		}
-		//System.out.println("Result: " + result);
 		return result;
 	}
 	
-	/***
-	 * Returns the next state Field without a given State
-	 * 
+	/**
+	 * Returns the next passable Field without a given State, relative to a given Position.
+	 * For example search field which is passable without state "hoove".
+	 * @param relative
 	 * @param state
 	 * @return
 	 */
-	public Position getNextPassablePositionByStateWithoutState (State state, State without) {
-		logger.trace("Getting the next state field without a given state");
+	public Position getNextPassablePositionRelativeWithoutState(Position relative, State state) {
+		return getNextPassablePositionRelativeWithoutState(this.robot.getPosition(), relative, state);		
+	}
+	
+	/**
+	 * Returns the next passable Field without a given State, relative to a given Position.
+	 * For example search field which is passable without state "hoove".
+	 * @param my
+	 * @param relative
+	 * @param state
+	 * @return
+	 */
+	public Position getNextPassablePositionRelativeWithoutState(Position my, Position relative, State state) {
+				
+		if (relative == null)
+			return getNextPassablePositionWithoutState(my, state);
+		
+		if (!map.containsKey(my))
+			return null;
+
+		Position result = null;
+		List<Node> tmpResult = new LinkedList<Node>();
+		
+		boolean flag = true;
+
+		Set<Position> visited = new HashSet<Position>();
+		visited.add(my);
+		
+		PriorityQueue<Node> queue = new PriorityQueue<Node>();
+		Node start = new Node(my, getDistanceFromPositionToPosition(my, relative));
+		queue.add(start);
+
+		int dist = Integer.MAX_VALUE;
+		
+		while (flag && !queue.isEmpty()) {
+			Node currentNode = queue.poll();
+			if (!map.get(currentNode.getCurrentPosition()).containsState(state)) {
+				//wenn aktuelles Feld nicht den State enthält
+				//Position kann zu Ergebnis gehören
+				int actDist = currentNode.getWeight();
+				if (actDist <= dist) {
+					if (actDist < dist)	{
+						tmpResult.clear();
+						dist = actDist;
+					}
+					tmpResult.add(currentNode);
+				} else {
+					flag = false;
+				}
+			} else {
+				//füge alle nachbar Felder der Nodeliste hinzu aber nur wenn sie existieren und den state enthalten
+				//und noch nicht besucht wurden
+				for (Position neighbour : helper.getNeighbourPositions(currentNode.getCurrentPosition())) {
+					if (map.containsKey(neighbour) && map.get(neighbour).isPassable() && !visited.contains(neighbour)) {
+						int actDist = getDistanceFromPositionToPosition(my, neighbour) + getDistanceFromPositionToPosition(neighbour, relative);
+						Node n = new Node(neighbour, actDist);
+						visited.add(neighbour);
+						queue.add(n);
+					}
+				}
+			}
+		}		
+		
+		if(!tmpResult.isEmpty()){
+			int index = random.nextInt(tmpResult.size());
+			result = tmpResult.get(index).getCurrentPosition();
+		}
+		return result;
+	}
+	
+	/**
+	 * Search best next passable Field without a given State for different Robots that they are far away of each other.
+	 * For example search fields which are passable without state "hoove".
+	 * @param information
+	 * @param maxAway
+	 * @return
+	 */
+	public Map<String, RobotDestinationCalculation> getNextPassablePositionsWithoutState(Map<String, RobotDestinationCalculation> information, int maxAway, State state) {
+
+		if (this.containsWorldState(State.createState("Hooved"))) {
+			System.out.println("Welt schon gesaugt!");
+			return null;
+		}
+		
+		//Position des Masters und aller Roboter
 		Position p = this.robot.getPosition();
 		
+		if (!map.containsKey(p))
+			return null;
+		
+		for (RobotDestinationCalculation rdc : information.values()) {
+			if (rdc.needNew) {
+				rdc.distMax = -1;
+				
+				boolean flag = true;
+
+				Set<Position> visited = new HashSet<Position>();
+				visited.add(p);
+				Queue<Position> nodes = new LinkedList<Position>();
+				nodes.add(p);
+
+				while (flag && !nodes.isEmpty()) {
+					Position currentNodePosition = nodes.poll();
+					if (!map.get(currentNodePosition).containsState(state)) {
+						//wenn aktuelles Feld nicht den State enthält
+						//Position kann zu Ergebnis gehören
+						//Prüfung anders umsetzen: wenn von allen position so und so weit entfernt nimm das feld
+						boolean proofDist = true;
+						int minDistToOther = maxAway;
+						for (RobotDestinationCalculation proof : information.values())
+						{
+							if (!proof.getName().equals(rdc.getName()))
+							{
+								//wenn es eine beschriebene Position gibt dann Prüfe diese
+								if (proof.hasPostion())
+								{
+									int dist = getDistanceFromPositionToPosition(proof.getNewOldPosition(), currentNodePosition);									
+									if (dist < maxAway)
+									{
+										if (dist < minDistToOther)
+											minDistToOther = dist;
+										proofDist = false;
+									}
+								}
+							}
+						}
+						if (proofDist)
+						{
+							//alles stimmt nimm Position und setze sie als neue
+							rdc.newDest = currentNodePosition;
+							flag = false;
+							break;
+						}
+						else 
+						{
+							//nimm Position erstmal wenn sie besser ist als letzte gefundene
+							if (minDistToOther > rdc.distMax) {
+								rdc.newDest = currentNodePosition;
+								rdc.distMax = minDistToOther;
+							}
+						}
+					} else {
+						//füge alle nachbar Felder der Nodeliste hinzu aber nur wenn sie existieren und den state enthalten
+						//und noch nicht besucht wurden
+						for (Position neighbour : helper.getNeighbourPositions(currentNodePosition)) {
+							if (map.containsKey(neighbour) && map.get(neighbour).isPassable() && !visited.contains(neighbour)) {
+								visited.add(neighbour);
+								nodes.add(neighbour);
+							}
+						}
+					}
+				}
+			}
+		}
+				
+		return information;
+	}
+	
+	/**
+	 * Returns the next Field with a State but without an other State.
+	 * @param state
+	 * @param without
+	 * @return
+	 */
+	public Position getNextPassablePositionByStateWithoutState (State state, State without) {
+		return getNextPassablePositionByStateWithoutState(this.robot.getPosition(), state, without);
+	}		
+	
+	/**
+	 * Returns the next Field with a State but without an other State.
+	 * @param my
+	 * @param state
+	 * @param without
+	 * @return
+	 */
+	public Position getNextPassablePositionByStateWithoutState (Position my, State state, State without) {	
+		logger.trace("Getting the next state field without a given state");
+		
 		//gibt null zurück wenn Position nicht in Map und nicht state hat
-		if (!map.containsKey(p) || !map.get(p).containsState(state))
+		if (!map.containsKey(my) || !map.get(my).containsState(state))
 			return null;
 		
 		boolean flag = true;
 		
 		Set<Position> visited = new HashSet<Position>();
-		visited.add(p);
+		visited.add(my);
 		Queue<Position> nodes = new LinkedList<Position>();
-		nodes.add(p);
+		nodes.add(my);
 
 		//tmp results hinzufügen
 		List<Position> tmpResult = new LinkedList<Position>();
@@ -205,7 +410,7 @@ public class World {
 			Position currentNodePosition = nodes.poll();
 			if (!map.get(currentNodePosition).containsState(without)) {
 				//Position kann zu Ergebnis gehören
-				int actDist = getDistanceFromPositionToPosition(p, currentNodePosition);
+				int actDist = getDistanceFromPositionToPosition(my, currentNodePosition);
 				if (actDist <= dist) {
 					if (actDist < dist) {
 						tmpResult.clear();
@@ -218,7 +423,7 @@ public class World {
 			} else {
 				//füge alle nachbar Felder der Nodeliste hinzu aber nur wenn sie existieren und den state enthalten
 				//und noch nicht besucht wurden
-				for (Position neighbour : helper.getNeighbourPositions(currentNodePosition, false)) {
+				for (Position neighbour : helper.getNeighbourPositions(currentNodePosition)) {
 					if (map.containsKey(neighbour) && map.get(neighbour).containsState(state) && !visited.contains(neighbour)) {
 						visited.add(neighbour);
 						nodes.add(neighbour);
@@ -233,19 +438,193 @@ public class World {
 		}
 		return result;
 	}
-
-	public List<Position> getPath(Position destination) {
-		return helper.findPath(this.robot.getPosition(), destination);
+	
+	/**
+	 * Returns the next Field with a State but without an other State and relative to a given Position.
+	 * @param relative
+	 * @param state
+	 * @param without
+	 * @return
+	 */
+	public Position getNextPassableRelativePositionByStateWithoutState (Position relative, State state, State without) {
+		return getNextPassableRelativePositionByStateWithoutState(this.robot.getPosition(), relative, state, without);		
 	}
 	
+	/**
+	 * Returns the next Field with a State but without an other State and relative to a given Position.
+	 * @param my
+	 * @param relative
+	 * @param state
+	 * @param without
+	 * @return
+	 */
+	public Position getNextPassableRelativePositionByStateWithoutState (Position my, Position relative, State state, State without) {
+				
+		if (relative == null)
+			return getNextPassablePositionByStateWithoutState(my, state, without);
+		
+		if (!map.containsKey(my) || !map.get(my).containsState(state))
+			return null;
+
+		Position result = null;
+		List<Node> tmpResult = new LinkedList<Node>();
+		
+		boolean flag = true;
+
+		Set<Position> visited = new HashSet<Position>();
+		visited.add(my);
+		
+		PriorityQueue<Node> queue = new PriorityQueue<Node>();
+		Node start = new Node(my, getDistanceFromPositionToPosition(my, relative));
+		queue.add(start);
+
+		int dist = Integer.MAX_VALUE;
+		
+		while (flag && !queue.isEmpty()) {
+			Node currentNode = queue.poll();
+			if (!map.get(currentNode.getCurrentPosition()).containsState(without)) {
+				//Position kann zu Ergebnis gehören
+				int actDist = currentNode.getWeight();
+				if (actDist <= dist) {
+					if (actDist < dist) {
+						tmpResult.clear();
+						dist = actDist;
+					}
+					tmpResult.add(currentNode);
+				} else {
+					flag = false;
+				}
+			} else {
+				//füge alle nachbar Felder der Nodeliste hinzu aber nur wenn sie existieren und den state enthalten
+				//und noch nicht besucht wurden
+				for (Position neighbour : helper.getNeighbourPositions(currentNode.getCurrentPosition())) {
+					if (map.containsKey(neighbour) && map.get(neighbour).containsState(state) && !visited.contains(neighbour)) {
+						int actDist = getDistanceFromPositionToPosition(my, neighbour) + getDistanceFromPositionToPosition(neighbour, relative);
+						Node n = new Node(neighbour, actDist);
+						visited.add(neighbour);
+						queue.add(n);
+					}
+				}
+			}
+		}		
+		
+		if(!tmpResult.isEmpty()){
+			int index = random.nextInt(tmpResult.size());
+			result = tmpResult.get(index).getCurrentPosition();
+		}
+		return result;
+	}
+	
+	/**
+	 * Search best next Field with a State but without an other State for different Robots that they are far away of each other.
+	 * @param information
+	 * @param maxAway
+	 * @return
+	 */
+	public Map<String, RobotDestinationCalculation> getNextPassablePositionsByStateWithoutState(Map<String, RobotDestinationCalculation> information, int maxAway, State state, State without) {
+
+		if (this.containsWorldState(State.createState("Wiped"))) {
+			System.out.println("Welt schon gewischt!");
+			return null;
+		}
+		
+		//Position des Masters und aller Roboter
+		Position p = this.robot.getPosition();
+		
+		if (!map.containsKey(p) || !map.get(p).containsState(state))
+			return null;
+		
+		for (RobotDestinationCalculation rdc : information.values()) {
+			if (rdc.needNew) {
+				rdc.distMax = -1;
+				
+				boolean flag = true;
+
+				Set<Position> visited = new HashSet<Position>();
+				visited.add(p);
+				Queue<Position> nodes = new LinkedList<Position>();
+				nodes.add(p);
+
+				while (flag && !nodes.isEmpty()) {
+					Position currentNodePosition = nodes.poll();
+					if (!map.get(currentNodePosition).containsState(without)) {
+						//wenn aktuelles Feld nicht den State enthält
+						//Position kann zu Ergebnis gehören
+						//Prüfung anders umsetzen: wenn von allen position so und so weit entfernt nimm das feld
+						boolean proofDist = true;
+						int minDistToOther = maxAway;
+						for (RobotDestinationCalculation proof : information.values())
+						{
+							if (!proof.getName().equals(rdc.getName()))
+							{
+								//wenn es eine beschriebene Position gibt dann Prüfe diese
+								if (proof.hasPostion())
+								{
+									int dist = getDistanceFromPositionToPosition(proof.getNewOldPosition(), currentNodePosition);									
+									if (dist < maxAway)
+									{
+										if (dist < minDistToOther)
+											minDistToOther = dist;
+										proofDist = false;
+									}
+								}
+							}
+						}
+						if (proofDist)
+						{
+							//alles stimmt nimm Position und setze sie als neue
+							rdc.newDest = currentNodePosition;
+							flag = false;
+							break;
+						}
+						else 
+						{
+							//nimm Position erstmal wenn sie besser ist als letzte gefundene
+							if (minDistToOther > rdc.distMax) {
+								rdc.newDest = currentNodePosition;
+								rdc.distMax = minDistToOther;
+							}
+						}
+					} else {
+						//füge alle nachbar Felder der Nodeliste hinzu aber nur wenn sie existieren und den state enthalten
+						//und noch nicht besucht wurden
+						for (Position neighbour : helper.getNeighbourPositions(currentNodePosition)) {
+							if (map.containsKey(neighbour) && map.get(neighbour).containsState(state) && !visited.contains(neighbour)){
+								visited.add(neighbour);
+								nodes.add(neighbour);
+							}
+						}
+					}
+				}
+			}
+		}
+				
+		return information;
+	}
+
+	/**
+	 * Calculate the minimal way between the Robot Position and the Destination Position.
+	 * @param destination
+	 * @return
+	 */
+	public List<Position> getPath(Position destination) {
+		return getPathFromTo(this.robot.getPosition(), destination);
+	}
+	
+	/**
+	 * Calculate the minimal way between the Start Position and the Destination Position.
+	 * @param start
+	 * @param destination
+	 * @return
+	 */
 	public List<Position> getPathFromTo (Position start, Position destination)	{
 		return helper.findPath(start, destination);
 	}
 	
-	/***
-	 * Returns the yet unknown field
-	 * gibt Position von bekannter passierbarer Stelle zurück
-	 * 
+	/**
+	 * Search best NextUnknownPosition for different Robots that they are far away of each other.
+	 * @param information
+	 * @param maxAway
 	 * @return
 	 */
 	public Map<String, RobotDestinationCalculation> getNextUnknownFields(Map<String, RobotDestinationCalculation> information, int maxAway) {
@@ -272,7 +651,7 @@ public class World {
 				while (flag && !nodes.isEmpty()) {
 					Position currentNodePosition = nodes.poll();
 					for (Position neighbour : helper.getNeighbourPositions(
-							currentNodePosition, false)) {
+							currentNodePosition)) {
 						//bedeuted nimm nur auf wenn noch nicht gesehen wurde
 						if (!map.containsKey(neighbour)) {
 							//Prüfung anders umsetzen: wenn von allen position so und so weit entfernt nimm das feld
@@ -322,41 +701,23 @@ public class World {
 				}
 			}
 		}
-				
-		//outPutInformation(information);
 		return information;
 	}	
 	
-	/*private void outPutInformation (Map <String, RobotDestinationCalculation> information)
-	{
-		for (RobotDestinationCalculation out : information.values())
-		{			
-			System.out.print("*****Name: " + out.getName() + " " + out.needNew + " NewDest: " + out.newDest + " OldDest: " + out.oldDest );
-			for (RobotDestinationCalculation proof : information.values()) {
-				if (!proof.getName().equals(out.getName()))
-				{
-					if (out.hasPostion() && proof.hasPostion())
-					{
-						System.out.print(" Ab: " + getDistanceFromPositionToPosition(out.getActualPosition(), proof.getActualPosition()));
-					}
-				}
-			}
-			System.out.println("");
-		}
-	}*/
-	
-	public Position getNextUnknownFieldPosition() {
-		Position p = this.robot.getPosition();
-		return this.getNextUnknownFieldPosition(p);
-	}
-
-	/***
-	 * Returns the yet unknown field
-	 * gibt Position von bekannter passierbarer Stelle zurück die neben unknown position liegt
-	 * 
+	/**
+	 * Return the Position of an passable Field next to an unknown Position.
 	 * @return
 	 */
-	public Position getNextUnknownFieldPosition(Position p) {
+	public Position getNextUnknownFieldPosition() {
+		return this.getNextUnknownFieldPosition(this.robot.getPosition());
+	}
+
+	/**
+	 * Return the Position of an passable Field next to an unknown Position.
+	 * @param my
+	 * @return
+	 */
+	public Position getNextUnknownFieldPosition(Position my) {
 
 		logger.trace("getNextUnknownFieldPosition start");
 		long startTime = System.nanoTime();
@@ -366,18 +727,18 @@ public class World {
 		boolean flag = true;
 
 		Set<Position> visited = new HashSet<Position>();
-		visited.add(p);
+		visited.add(my);
 		Queue<Position> nodes = new LinkedList<Position>();
-		nodes.add(p);
+		nodes.add(my);
 
 		while (flag && !nodes.isEmpty()) {
 			Position currentNodePosition = nodes.poll();
 			for (Position neighbour : helper.getNeighbourPositions(
-					currentNodePosition, false)) {
+					currentNodePosition)) {
 				//bedeuted nimm nur auf wenn noch nicht gesehen wurde
 				if (!map.containsKey(neighbour)) {
 					if (!tmpResult.isEmpty()
-							&& getDistanceFromPositionToPosition(p, currentNodePosition) > getDistanceFromPositionToPosition(p, tmpResult
+							&& getDistanceFromPositionToPosition(my, currentNodePosition) > getDistanceFromPositionToPosition(my, tmpResult
 									.get(0))) {
 						flag = false;
 						break;
@@ -408,21 +769,25 @@ public class World {
 		return result;
 	}	
 	
-	public Position getNextUnknownRelativeFieldPosition(Position relative) {
-		Position p = this.robot.getPosition();
-		return getNextUnknownRelativeFieldPosition(p, relative);
-	}
-	
-	/***
-	 * Returns the yet unknown field
-	 * gibt Position von bekannter passierbarer Stelle zurück die neben unknown position liegt
-	 * 
+	/**
+	 * Return the Position of an passable Field next to an unknown Position, which is near the relative Position.
+	 * @param relative
 	 * @return
 	 */
-	public Position getNextUnknownRelativeFieldPosition(Position p, Position relative) {
+	public Position getNextUnknownRelativeFieldPosition(Position relative) {
+		return getNextUnknownRelativeFieldPosition(this.robot.getPosition(), relative);
+	}
+	
+	/**
+	 * Return the Position of an passable Field next to an unknown Position, which is near the relative Position.
+	 * @param my Position of Robot
+	 * @param relative Relative Position to Look
+	 * @return
+	 */
+	public Position getNextUnknownRelativeFieldPosition(Position my, Position relative) {
 		
 		if (relative == null)
-			return getNextUnknownFieldPosition(p);
+			return getNextUnknownFieldPosition(my);
 
 		Position result = null;
 		List<Node> tmpResult = new LinkedList<Node>();
@@ -430,10 +795,10 @@ public class World {
 		boolean flag = true;
 
 		Set<Position> visited = new HashSet<Position>();
-		visited.add(p);
+		visited.add(my);
 		
 		PriorityQueue<Node> queue = new PriorityQueue<Node>();
-		Node start = new Node(p, getDistanceFromPositionToPosition(p, relative));
+		Node start = new Node(my, getDistanceFromPositionToPosition(my, relative));
 		queue.add(start);
 
 		int dist = Integer.MAX_VALUE;
@@ -441,12 +806,11 @@ public class World {
 		while (flag && !queue.isEmpty()) {
 			Node currentNode = queue.poll();
 			for (Position neighbour : helper.getNeighbourPositions(
-					currentNode.getCurrentPosition(), false)) {
+					currentNode.getCurrentPosition())) {
 				//bedeuted nimm nur auf wenn noch nicht gesehen wurde
 				if (!map.containsKey(neighbour)) {
 					int actDist = currentNode.getWeight();
 					if (actDist <= dist) {
-						//System.out.println("actDist: " + actDist);
 						if (actDist < dist)
 						{
 							tmpResult.clear();
@@ -460,7 +824,7 @@ public class World {
 					//prüfe ob visited noch nicht Nachbar enthält und
 					//ob map Nachbar enthält und ob Nachbar passierbar ist
 					if (!visited.contains(neighbour) && map.get(neighbour).isPassable()) {
-						int actDist = getDistanceFromPositionToPosition(p, neighbour) + getDistanceFromPositionToPosition(neighbour, relative);
+						int actDist = getDistanceFromPositionToPosition(my, neighbour) + getDistanceFromPositionToPosition(neighbour, relative);
 						Node n = new Node(neighbour, actDist);
 						visited.add(neighbour);
 						queue.add(n);
@@ -468,9 +832,7 @@ public class World {
 				}
 			}
 		}
-		
-		//System.out.println("***Test: " + robot.getName() + " : " + tmpResult + " " + relative + " " + p);
-		
+				
 		if(!tmpResult.isEmpty()){
 			int index = random.nextInt(tmpResult.size());
 			result = tmpResult.get(index).getCurrentPosition();
@@ -478,39 +840,68 @@ public class World {
 		return result;
 	}
 	
-	private int getDistanceFromPositionToPosition(Position x, Position y) {
-		//return Math.max(Math.abs(x.getX() - y.getX()), Math.abs(x.getY() - y.getY()));
-		
-		int deltaX = 0, deltaY = 0;
-
-		deltaX = x.getX() - y.getX();
-		deltaY = x.getY() - y.getY();
-		deltaX = deltaX < 0 ? -deltaX : deltaX;
-		deltaY = deltaY < 0 ? -deltaY : deltaY;
-
-		return deltaX < deltaY ? deltaY : deltaX;
+	/**
+	 * Get the biggest distance between two positions
+	 * @param one first Position
+	 * @param two second Position
+	 * @return distance in int
+	 */
+	private int getDistanceFromPositionToPosition(Position one, Position two) {
+		return Math.max(Math.abs(one.getX() - two.getX()), Math.abs(one.getY() - two.getY()));
 	}
 
+	/**
+	 * Look if Position exists and if it is passable.
+	 * @param position
+	 * @return
+	 */
 	public boolean isPassable(Position position) {
 		return map.containsKey(position) && map.get(position).isPassable();
 	}
 	
+	/**
+	 * Look if Position exists and if it contains the given State.
+	 * @param position
+	 * @param state
+	 * @return
+	 */
 	public boolean hasState(Position position, State state) {
 		return map.containsKey(position) && map.get(position).containsState(state);
 	}
 	
+	/**
+	 * Get the Field with this Position from the World.
+	 * @param position
+	 * @return
+	 */
 	public Field getField (Position position) {
 		return map.get(position);
 	}
 	
+	//worldstate methods
+	/**
+	 * Look if the world contains this State as worldstate.
+	 * @param state
+	 * @return
+	 */
 	public boolean containsWorldState (State state) {
 		return this.worldStates.contains(state);
 	}
 	
+	/**
+	 * Add this State to the World as worldstate.
+	 * @param state
+	 * @return
+	 */
 	public boolean addWorldState (State state) {
 		return this.worldStates.add(state);
 	}
 	
+	/**
+	 * Remove this state form the World's worldstates.
+	 * @param state
+	 * @return
+	 */
 	public boolean removeWorldState (State state) {
 		return this.worldStates.remove(state);
 	}

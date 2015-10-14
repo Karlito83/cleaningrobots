@@ -6,12 +6,10 @@ import de.tud.swt.cleaningrobots.AgentNavigationAdapter;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.goals.MasterGoal;
 import de.tud.swt.cleaningrobots.goals.nonoptional.ExploreLoadGoal;
-import de.tud.swt.cleaningrobots.goals.nonoptional.ExploreRelativeLoadGoal;
 import de.tud.swt.cleaningrobots.goals.nonoptional.MasterExploreRobotGoal;
-import de.tud.swt.cleaningrobots.goals.nonoptional.RonnyConfigurationGoal;
+import de.tud.swt.cleaningrobots.goals.nonoptional.WithoutMasterExploreGoal;
 import de.tud.swt.cleaningrobots.goals.optional.ExploreDumpGoal;
 import de.tud.swt.cleaningrobots.goals.optional.WlanLoadIfRobotWantMergeGoal;
-import de.tud.swt.cleaningrobots.goals.optional.WlanLoadMasterMergeGoal;
 import de.tud.swt.cleaningrobots.hardware.Accu;
 import de.tud.swt.cleaningrobots.hardware.LookAroundSensor;
 import de.tud.swt.cleaningrobots.hardware.Motor;
@@ -34,19 +32,13 @@ public class ExploreRobotAgent extends RobotAgent {
 		//System.out.println("Name: " + cleaningRobot.getName() + " : States: " + cleaningRobot.getSupportedStates() + " Roles: " + cleaningRobot.getRoles());		
 	}
 	
-	public void addStandardGoals () {
-		
-		ExploreRelativeLoadGoal erlg = new ExploreRelativeLoadGoal(cleaningRobot);
-		//ExploreLoadGoal elg = new ExploreLoadGoal(cleaningRobot);
-		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
-		
+	public void addRelativeStandardGoals () {		
+		ExploreLoadGoal elg = new ExploreLoadGoal(cleaningRobot, true);
+		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);		
 		WlanLoadIfRobotWantMergeGoal wlirwmg = new WlanLoadIfRobotWantMergeGoal(cleaningRobot);
-		//WlanLoadMasterMergeGoal wlmmg = new WlanLoadMasterMergeGoal(cleaningRobot);
 		
 		MasterGoal mg = new MasterGoal(cleaningRobot);
-		mg.subGoals.add(erlg);
-		//mg.subGoals.add(elg);
-		//mg.subGoals.add(wlmmg);
+		mg.subGoals.add(elg);
 		mg.subGoals.add(wlirwmg);
 		mg.subGoals.add(edg);
 		
@@ -56,11 +48,9 @@ public class ExploreRobotAgent extends RobotAgent {
 		}
 	} 
 	
-	public void addNonRelativeStandardGoals () {
-		
-		ExploreLoadGoal elg = new ExploreLoadGoal(cleaningRobot);
-		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
-		
+	public void addRandomStandardGoals () {		
+		ExploreLoadGoal elg = new ExploreLoadGoal(cleaningRobot, false);
+		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);		
 		WlanLoadIfRobotWantMergeGoal wlirwmg = new WlanLoadIfRobotWantMergeGoal(cleaningRobot);
 		
 		MasterGoal mg = new MasterGoal(cleaningRobot);
@@ -74,6 +64,7 @@ public class ExploreRobotAgent extends RobotAgent {
 		}
 	}
 	
+	//Goals for the MasterExploreFactory
 	public void addMasterExploreGoals () {
 		MasterExploreRobotGoal merg = new MasterExploreRobotGoal(cleaningRobot);
 		
@@ -83,13 +74,13 @@ public class ExploreRobotAgent extends RobotAgent {
 		}
 	}
 	
-	public void addRonnyConfiguration () {
-		
-		RonnyConfigurationGoal rcg = new RonnyConfigurationGoal(cleaningRobot);
+	//without Master Configuration
+	public void addWithoutMasterConfiguration () {		
+		WithoutMasterExploreGoal wmg = new WithoutMasterExploreGoal(cleaningRobot);
 		ExploreDumpGoal edg = new ExploreDumpGoal(cleaningRobot);
 		
 		MasterGoal mg = new MasterGoal(cleaningRobot);
-		mg.subGoals.add(rcg);
+		mg.subGoals.add(wmg);
 		mg.subGoals.add(edg);
 		
 		if (mg.isHardwareCorrect())
