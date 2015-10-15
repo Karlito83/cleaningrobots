@@ -42,8 +42,9 @@ public class LoadIfRobotWantBehaviour extends Behaviour {
 		for (RobotCore nearRobot : nearRobots) {
 			if (nearRobot.getAccu() != null)
 			{
-				if (nearRobot.isLoading)
+				if (nearRobot.isLoading) {
 					nearRobot.getAccu().load(loadStation.getLoadValue());
+				}
 				//wenn der akku voll ist soll er nicht mehr laden
 				if (nearRobot.getAccu().isFull()) {
 					//System.out.println("Accu Full");

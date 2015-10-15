@@ -146,9 +146,9 @@ public class DumpModelBehaviour extends Behaviour {
 				File outputFile = new File(CONST_PATH_DUMP_PNG + File.separator + fileName);
 				ImageIO.write(image, "png", outputFile);
 				
-				logger.info("created png " + outputFile.getAbsolutePath());
+				//logger.info("created png " + outputFile.getAbsolutePath());
 			} catch (Exception e) {
-				logger.error("Something went wrong while exporting to PNG");
+				//logger.error("Something went wrong while exporting to PNG");
 			}
 			
 			
@@ -173,9 +173,9 @@ public class DumpModelBehaviour extends Behaviour {
 			    } catch (IOException e) {
 			    	throw new RuntimeException(e);
 			    }
-			    logger.info("created xml " + fileName);
+			    //logger.info("created xml " + fileName);
 			} catch (Exception ex) {
-				logger.error("Something went wrong while exporting to XML", ex);
+				//logger.error("Something went wrong while exporting to XML", ex);
 			}
 		}
 	}
@@ -203,7 +203,7 @@ public class DumpModelBehaviour extends Behaviour {
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap()
 				.put(ext, new XMLResourceFactoryImpl());
 		URI uri = URI.createFileURI(outputFile);
-		logger.debug(uri);
+		//logger.debug(uri);
 		Resource resource = rs.createResource(uri);
 		((ResourceImpl) resource).setIntrinsicIDToEObjectMap(new HashMap<String, EObject>());
 		return resource;
@@ -215,17 +215,10 @@ public class DumpModelBehaviour extends Behaviour {
 		File dir = new File(path);
 
 		if (!dir.exists()) {
-			logger.info("creating directory: " + path);
-
 			try {
 				result = dir.mkdirs();
 			} catch (Exception e) {
-				logger.error(e);
-			}
-			if (result) {
-				logger.info("created directory " + dir.getAbsolutePath());
-			} else {
-				logger.error("error while creating directory " + dir.getAbsolutePath());
+				//logger.error(e);
 			}
 		} else {
 			result = true;

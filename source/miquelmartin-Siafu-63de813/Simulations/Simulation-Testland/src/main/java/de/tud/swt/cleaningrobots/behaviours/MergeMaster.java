@@ -63,10 +63,6 @@ public class MergeMaster extends Behaviour {
 			}
 		}
 		
-		//Tausche komplettes modell von ronny
-		long startTime = System.nanoTime();
-		logger.trace("Merge Master Follower");
-		
 		List<RobotCore> nearRobots = this.getRobot().getICommunicationProvider().getNearRobots(wlan.getVisionRadius());
 		nearRobots.remove(this.getRobot());
 		
@@ -100,34 +96,37 @@ public class MergeMaster extends Behaviour {
 							config.knownstates = true;
 							config.knowledge = true;																		
 							//search timestamp of last meeting
-							for (RobotKnowledge rk : getRobot().getKnowledge()) {
+							//TODO
+							/*for (RobotKnowledge rk : getRobot().getKnowledge()) {
 								if (rk.getName().equals(nearRobot.getName())) {
 									config.iteration = rk.getLastArrange();
 								}											
-							}
+							}*/
 								
 							//export and Import the Models
 							EObject model = nearRobot.exportModel(config);
 							ma.importAllModel(model, this.getRobot(), config);
 							
 							//change the config for later export and import
-							for (RobotKnowledge rk : getRobot().getKnowledge()) {
+							/*for (RobotKnowledge rk : getRobot().getKnowledge()) {
 								if (rk.getName().equals(nearRobot.getName())) {
 									config.knownStates = rk.getKnownStates();
 								}											
-							}
+							}*/
 							nearsNewInformation.put(rr, config);
 						} else {
 							ImportExportConfiguration config = new ImportExportConfiguration();
 							config.world = true;
 							config.knownstates = true;
 							config.knowledge = true;
+							//TODO
+							/*
 							for (RobotKnowledge rk : getRobot().getKnowledge()) {
 								if (rk.getName().equals(nearRobot.getName())) {
 									config.iteration = rk.getLastArrange();
 									config.knownStates = rk.getKnownStates();
 								}											
-							}
+							}*/
 							nearsNoNewInformation.put(rr, config);								
 						}
 						break;
@@ -145,8 +144,10 @@ public class MergeMaster extends Behaviour {
 		//wenn ja leere lastChange um anderen Robotern neue Daten zu geben
 		for (RobotRole rr : mr.getFollowers()) {
 			if (rr.getRobotCore().equals(mr.getRobotCore()) && rr.hasNewInformation()) {
+				//System.out.println("Master hat neue informationen " + nearRobots.size() + " " + nearsNoNewInformation.size());
 				rr.setNewInformation(false);
 				newInfoForFollower = true;
+				lastChange.clear();
 			}
 		}
 		
@@ -160,11 +161,10 @@ public class MergeMaster extends Behaviour {
 				//muss model nur importieren wenn noch nicht in lastchange liste war oder er nicht der einzige mit neuen informationen ist
 				for (RobotRole rr : nearsNewInformation.keySet()) {
 					//fr schon vorher enthalten
-					if(!lastChange.contains(rr) || newInfoForFollower)
+					if(!lastChange.contains(rr))
 					{
 						EObject model = this.getRobot().exportModel(nearsNewInformation.get(rr));
 						ma.importAllModel(model, rr.getRobotCore(), nearsNewInformation.get(rr));
-						rr.getRobotCore().getWorld().resetNewInformationCounter();
 					}
 				}
 			} else {
@@ -172,41 +172,32 @@ public class MergeMaster extends Behaviour {
 					//importiere allen nahen Robotern das neue Modell
 					EObject model = this.getRobot().exportModel(nearsNewInformation.get(rr));
 					ma.importAllModel(model, rr.getRobotCore(), nearsNewInformation.get(rr));
-					rr.getRobotCore().getWorld().resetNewInformationCounter();
 				}
 			}
 			for (RobotRole rr : nearsNoNewInformation.keySet()) {
 				//importiere allen nahen Robotern das neue Modell
 				EObject model = this.getRobot().exportModel(nearsNoNewInformation.get(rr));
 				ma.importAllModel(model, rr.getRobotCore(), nearsNoNewInformation.get(rr));
-				rr.getRobotCore().getWorld().resetNewInformationCounter();
 			}	
 			lastChange.clear();
 			lastChange.addAll(nearsNewInformation.keySet());
 			lastChange.addAll(nearsNoNewInformation.keySet());
-			System.out.println("LastChange: " + lastChange);
 		} else {
 			//nearsNoNew kann hier nicht leer sein
 			if (newInfoForFollower)
 			{
 				for (RobotRole rr : nearsNoNewInformation.keySet()) {
 					//importiere allen nahen Robotern das neue Modell
+					//System.out.println(nearsNoNewInformation.get(rr));
 					EObject model = this.getRobot().exportModel(nearsNoNewInformation.get(rr));
 					ma.importAllModel(model, rr.getRobotCore(), nearsNoNewInformation.get(rr));
-					rr.getRobotCore().getWorld().resetNewInformationCounter();
 					lastChange.clear();
 					lastChange.addAll(nearsNoNewInformation.keySet());
 				}
 			}
 			//TODO:
 			//fall wen roboter ankommt keine neue information hat aber für ihn neue informationen da sind
-		}
-		
-		
-		long endTime = System.nanoTime();
-		logger.info("Importing the data from " + nearRobots.size() + " other agents took " + (endTime - startTime) + " ns.");
-		
-		logger.trace("exit getNearRobotsAndImportModel");
+		}		
 		return false;
 	}	
 }

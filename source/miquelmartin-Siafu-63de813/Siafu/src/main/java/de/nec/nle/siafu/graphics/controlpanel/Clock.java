@@ -167,7 +167,6 @@ public class Clock extends Composite {
 			}
 		});
 		leftComposite.pack();
-
 		gui.setSpeed(initialSpeed);
 		speedScale.setSelection(initialSpeed);
 

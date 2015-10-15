@@ -66,6 +66,7 @@ public class LoadStationAgent extends RobotAgent {
 		{
 			cleaningRobot.addGoal(lirwg);
 		}
+		cleaningRobot.addGoal(new ExploreDumpGoal(cleaningRobot));
 	}
 	
 	public void addExploreDumpGoal () {

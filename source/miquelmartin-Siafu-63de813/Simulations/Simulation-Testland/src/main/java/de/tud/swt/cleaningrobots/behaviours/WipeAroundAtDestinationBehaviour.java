@@ -114,7 +114,6 @@ public class WipeAroundAtDestinationBehaviour extends Behaviour {
 		//could only hoove position he knows about
 		if (getRobot().getWorld().hasState(p, STATE_HOOVE))
 		{
-			logger.debug("Wipe field: " + x + ", " + y);
 			result = getRobot().getWorld().getField(p);
 			result.addState(STATE_WIPE);
 		}	

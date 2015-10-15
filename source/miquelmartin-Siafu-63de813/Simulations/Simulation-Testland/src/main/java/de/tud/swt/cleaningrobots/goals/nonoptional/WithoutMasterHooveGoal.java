@@ -44,19 +44,19 @@ public class WithoutMasterHooveGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
+		MergeAllOfNearBehaviour mar = new MergeAllOfNearBehaviour(robot);
+		System.out.println("Correct MergeRonny: " + mar.isHardwarecorrect());
+		if (mar.isHardwarecorrect()) {
+			behaviours.add(mar);
+		} else {
+			correct = false;
+		}
+		
 		LoadIfAtLoadStationBehaviour lialsb = new LoadIfAtLoadStationBehaviour(robot);
 		System.out.println("Correct LoadIfAtLoadStation: " + lialsb.isHardwarecorrect());
 		if (lialsb.isHardwarecorrect()) {
 			//robot.addBehaviour(b);
 			behaviours.add(lialsb);
-		} else {
-			correct = false;
-		}
-		
-		MergeAllOfNearBehaviour mar = new MergeAllOfNearBehaviour(robot);
-		System.out.println("Correct MergeRonny: " + mar.isHardwarecorrect());
-		if (mar.isHardwarecorrect()) {
-			behaviours.add(mar);
 		} else {
 			correct = false;
 		}

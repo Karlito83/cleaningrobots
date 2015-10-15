@@ -60,11 +60,7 @@ public class MergeMasterFollower extends Behaviour {
 				hard.changeActive();
 			}
 		}
-		
-		//Tausche komplettes modell von ronny
-		long endTime, startTime = System.nanoTime();
-		logger.trace("Merge Master Follower");
-		
+				
 		List<RobotCore> nearRobots = this.getRobot().getICommunicationProvider().getNearRobots(wlan.getVisionRadius());
 		nearRobots.remove(this.getRobot());
 		
@@ -175,11 +171,6 @@ public class MergeMasterFollower extends Behaviour {
 			System.out.println("LastChange: " + lastChange);
 		}
 		
-		
-		endTime = System.nanoTime();
-		logger.info("Importing the data from " + nearRobots.size() + " other agents took " + (endTime - startTime) + " ns.");
-		
-		logger.trace("exit getNearRobotsAndImportModel");
 		return false;
 	}	
 }

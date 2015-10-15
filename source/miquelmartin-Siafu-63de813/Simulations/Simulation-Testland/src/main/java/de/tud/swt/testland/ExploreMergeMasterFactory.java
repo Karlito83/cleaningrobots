@@ -189,8 +189,7 @@ public class ExploreMergeMasterFactory extends RobotFactory {
 					}
 					mrw.getFollowers().add(mrh);
 				}				
-			}
-			
+			}			
 			lsa.addLoadIfRobotWantGoal();
 		}
 		

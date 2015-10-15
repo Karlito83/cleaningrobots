@@ -78,18 +78,12 @@ public class MergeAllOfNearBehaviour extends Behaviour {
 				if (i.getCounter() > maxCount)
 					i.resetCounter();
 			}
-		}
+		}		
 		
-		
-		
-		if (this.getRobot().getPosition().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
+		if (this.getRobot().isLoading)
 			return false;
-				
-		//Tausche komplettes modell von ronny
-		long startTime = System.nanoTime();
-		logger.trace("enter getNearRobotsAndImportModel");
-		
-		List<RobotCore> nearRobots = this.getRobot().getICommunicationProvider().getNearRobots(10);//wlan.getVisionRadius());
+						
+		List<RobotCore> nearRobots = this.getRobot().getICommunicationProvider().getNearRobots(20);//wlan.getVisionRadius());
 		nearRobots.remove(this.getRobot());
 		for (RobotCore nearRobot : nearRobots) {
 			//darf nur mi Robotern in der nähe Kommunizieren wenn diese Wirklich die gleiche HardwareComponente habe und diese aktiv ist
@@ -109,11 +103,6 @@ public class MergeAllOfNearBehaviour extends Behaviour {
 				}				
 			}
 		}
-		
-		long endTime = System.nanoTime();
-		logger.info("Importing the data from " + nearRobots.size() + " other agents took " + (endTime - startTime) + " ns.");
-		
-		logger.trace("exit getNearRobotsAndImportModel");
 		return false;
 	}
 }

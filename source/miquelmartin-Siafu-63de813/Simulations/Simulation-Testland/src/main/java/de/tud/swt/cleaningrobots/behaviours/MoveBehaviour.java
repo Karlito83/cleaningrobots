@@ -24,8 +24,6 @@ public class MoveBehaviour extends Behaviour {
 	@Override
 	public boolean action() throws Exception {
 		
-		logger.trace("Entered Movebehaviour");
-		
 		//wenn er nicht am Ziel ist und nicht am Laden ist soll er laufen
 		if (!getRobot().getDestinationContainer().isAtDestination() && !getRobot().isLoading){
 			//start all hardwarecomponents if not active
@@ -39,7 +37,6 @@ public class MoveBehaviour extends Behaviour {
 			
 			//make the move
 			getRobot().getDestinationContainer().moveTowardsDestination();
-			logger.info("Executed Movebehaviour");
 		} else {
 			//Schalte alle Hardwarecomponenten aus
 			for (HardwareComponent hard : d.getHcs())
@@ -51,8 +48,6 @@ public class MoveBehaviour extends Behaviour {
 			}
 		}
 		
-		logger.trace("Ended Movebehaviour");		
-
 		return false;
 	}
 

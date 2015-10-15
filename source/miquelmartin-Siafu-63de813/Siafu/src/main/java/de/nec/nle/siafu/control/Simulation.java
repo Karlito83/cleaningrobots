@@ -199,7 +199,7 @@ public class Simulation implements Runnable {
 	}
 
 	/**
-	 * Starts the simulation.
+	 * Old One. Starts the simulation.
 	 */
 	/*public void run() {
 		System.out.println("Start Creating World");
@@ -238,50 +238,16 @@ public class Simulation implements Runnable {
 	}*/
 	
 	/**
-	 * Starts the Evaluation phase.
+	 * Starts the Evaluation phase. With Console.
 	 */
 	public void run() {
-		boolean endAll = false;
-		//for (int i = 0; i < 15000; i++) {
-			//set Evaluation configuration
-			//if (i != 0) {
-				if (EvaluationConstants.run == 3) {
-					EvaluationConstants.run = 1;
-					if (EvaluationConstants.NEW_FIELD_COUNT == 1000 || EvaluationConstants.configuration < 2) {
-						EvaluationConstants.NEW_FIELD_COUNT = 0;
-						if (EvaluationConstants.NUMBER_EXPLORE_AGENTS == 10) {
-							EvaluationConstants.NUMBER_EXPLORE_AGENTS = 1;
-							if (EvaluationConstants.NUMBER_HOOVE_AGENTS == 10) {
-								EvaluationConstants.NUMBER_HOOVE_AGENTS = 0;
-								if (EvaluationConstants.NUMBER_WIPE_AGENTS == 10 || EvaluationConstants.NUMBER_HOOVE_AGENTS == 0) {
-									EvaluationConstants.NUMBER_WIPE_AGENTS = 0;
-									if (EvaluationConstants.configuration == 4) {
-										endAll = true;
-									} else {
-										EvaluationConstants.configuration +=1;
-									}
-								} else {
-									EvaluationConstants.NUMBER_WIPE_AGENTS +=1;
-								}
-							} else {
-								EvaluationConstants.NUMBER_HOOVE_AGENTS +=1;
-							}
-						} else {
-							EvaluationConstants.NUMBER_EXPLORE_AGENTS +=1;
-						}
-					} else {
-						EvaluationConstants.NEW_FIELD_COUNT += 100;
-					}
-				} else {
-					EvaluationConstants.run += 1;
-				}
-			//}
-			/*EvaluationConstants.NUMBER_EXPLORE_AGENTS = 1;
-			EvaluationConstants.NUMBER_HOOVE_AGENTS = 1;
-			EvaluationConstants.NUMBER_WIPE_AGENTS = 1;
+		if (EvaluationConstants.USE_GUI) {
+			EvaluationConstants.NUMBER_EXPLORE_AGENTS = 2;
+			EvaluationConstants.NUMBER_HOOVE_AGENTS = 2;
+			EvaluationConstants.NUMBER_WIPE_AGENTS = 2;
 			EvaluationConstants.run = 1;
-			EvaluationConstants.configuration = 1;
-			EvaluationConstants.NEW_FIELD_COUNT = 1;*/
+			EvaluationConstants.configuration = 4;//0 1 2 3 4
+			EvaluationConstants.NEW_FIELD_COUNT = 3000; //0 0 500 500 500
 			
 			this.world = new World(this, simData);
 			this.time = world.getTime();
@@ -289,7 +255,7 @@ public class Simulation implements Runnable {
 			this.agentModel = world.getAgentModel();
 			this.worldModel = world.getWorldModel();
 			this.contextModel = world.getContextModel();
-			
+					
 			Controller.getProgress().reportSimulationStarted();
 			simulationRunning = true;
 			while (!agentModel.isRunFinish()) {
@@ -300,15 +266,168 @@ public class Simulation implements Runnable {
 					contextModel.doIteration(world.getOverlays());
 				}
 				//makes the drawing on the gui is important
-				control.scheduleDrawing();
+				control.scheduleDrawing();				
 			}
 			simulationRunning = false;
 			Controller.getProgress().reportSimulationEnded();
-			if (!endAll) {
-				control.getGUI().restartSimulationAndGui();
+		} else {
+			for (int i = 0; i < 15000; i++) {
+				//set Evaluation configuration
+				if (EvaluationConstants.run == 3) {
+					EvaluationConstants.run = 1;
+					if (EvaluationConstants.NEW_FIELD_COUNT == 5000 || EvaluationConstants.configuration < 2) {
+						EvaluationConstants.NEW_FIELD_COUNT = 0;
+						if (EvaluationConstants.NUMBER_WIPE_AGENTS == 10 || EvaluationConstants.NUMBER_HOOVE_AGENTS == 0 || EvaluationConstants.NUMBER_WIPE_AGENTS > EvaluationConstants.NUMBER_HOOVE_AGENTS - 1) {
+							EvaluationConstants.NUMBER_WIPE_AGENTS = 0;
+							if (EvaluationConstants.NUMBER_HOOVE_AGENTS == 10 || EvaluationConstants.NUMBER_HOOVE_AGENTS > EvaluationConstants.NUMBER_EXPLORE_AGENTS - 1) {
+								EvaluationConstants.NUMBER_HOOVE_AGENTS = 0;
+								if (EvaluationConstants.NUMBER_EXPLORE_AGENTS == 10) {
+									EvaluationConstants.NUMBER_EXPLORE_AGENTS = 1;
+									if (EvaluationConstants.configuration == 4) {
+										System.out.println("i: " + i);
+										break;
+									} else {
+										EvaluationConstants.configuration +=1;
+									}
+								} else {
+									EvaluationConstants.NUMBER_EXPLORE_AGENTS +=1;
+								}
+							} else {
+								EvaluationConstants.NUMBER_HOOVE_AGENTS +=1;
+							}
+						} else {
+							EvaluationConstants.NUMBER_WIPE_AGENTS +=1;
+						}
+					} else {
+						EvaluationConstants.NEW_FIELD_COUNT += 1000;
+					}
+				} else {
+					EvaluationConstants.run += 1;
+				}
+				
+				this.world = new World(this, simData);
+				this.time = world.getTime();
+				this.iterationStep = simulationConfig.getInt("iterationstep");
+				this.agentModel = world.getAgentModel();
+				this.worldModel = world.getWorldModel();
+				this.contextModel = world.getContextModel();
+				
+				
+				Controller.getProgress().reportSimulationStarted();
+				simulationRunning = true;
+				while (!agentModel.isRunFinish()) {
+					if (!isPaused()) {
+						tickTime();
+						worldModel.doIteration(world.getPlaces());
+						agentModel.doIteration(world.getPeople());
+						contextModel.doIteration(world.getOverlays());
+					}
+					//makes the drawing on the gui is important
+					control.scheduleDrawing();				
+				}
+				simulationRunning = false;
+				Controller.getProgress().reportSimulationEnded();
 			}
-		//}
+		}
 	}
+	
+	/**
+	 * Complete GUI Run.
+	 */
+	/*public void run() {
+		boolean endAll = false;
+		if (EvaluationConstants.run == 3) {
+			EvaluationConstants.run = 1;
+			if (EvaluationConstants.NEW_FIELD_COUNT == 1000 || EvaluationConstants.configuration < 2) {
+				EvaluationConstants.NEW_FIELD_COUNT = 0;
+				if (EvaluationConstants.NUMBER_EXPLORE_AGENTS == 10) {
+					EvaluationConstants.NUMBER_EXPLORE_AGENTS = 1;
+					if (EvaluationConstants.NUMBER_HOOVE_AGENTS == 10) {
+						EvaluationConstants.NUMBER_HOOVE_AGENTS = 0;
+						if (EvaluationConstants.NUMBER_WIPE_AGENTS == 10 || EvaluationConstants.NUMBER_HOOVE_AGENTS == 0) {
+							EvaluationConstants.NUMBER_WIPE_AGENTS = 0;
+							if (EvaluationConstants.configuration == 4) {
+								endAll = true;
+							} else {
+								EvaluationConstants.configuration +=1;
+							}
+						} else {
+							EvaluationConstants.NUMBER_WIPE_AGENTS +=1;
+						}
+					} else {
+						EvaluationConstants.NUMBER_HOOVE_AGENTS +=1;
+					}
+				} else {
+					EvaluationConstants.NUMBER_EXPLORE_AGENTS +=1;
+				}
+			} else {
+				EvaluationConstants.NEW_FIELD_COUNT += 100;
+			}
+		} else {
+			EvaluationConstants.run += 1;
+		}
+			
+		this.world = new World(this, simData);
+		this.time = world.getTime();
+		this.iterationStep = simulationConfig.getInt("iterationstep");
+		this.agentModel = world.getAgentModel();
+		this.worldModel = world.getWorldModel();
+		this.contextModel = world.getContextModel();
+			
+			
+		Controller.getProgress().reportSimulationStarted();
+		simulationRunning = true;
+		while (!agentModel.isRunFinish()) {
+			if (!isPaused()) {
+				tickTime();
+				worldModel.doIteration(world.getPlaces());
+				agentModel.doIteration(world.getPeople());
+				contextModel.doIteration(world.getOverlays());
+			}
+			//makes the drawing on the gui is important
+			control.scheduleDrawing();
+			//control.getGUI().setSpeed(100);				
+		}
+		simulationRunning = false;
+		Controller.getProgress().reportSimulationEnded();
+		if (!endAll) {
+			control.getGUI().restartSimulationAndGui();
+		}		
+	}*/
+	
+	/**
+	 * GUI Example for one tests
+	 */
+	/*public void run() {
+		EvaluationConstants.NUMBER_EXPLORE_AGENTS = 3;
+		EvaluationConstants.NUMBER_HOOVE_AGENTS = 3;
+		EvaluationConstants.NUMBER_WIPE_AGENTS = 3;
+		EvaluationConstants.run = 1;
+		EvaluationConstants.configuration = 1;
+		EvaluationConstants.NEW_FIELD_COUNT = 1;
+		
+		this.world = new World(this, simData);
+		this.time = world.getTime();
+		this.iterationStep = simulationConfig.getInt("iterationstep");
+		this.agentModel = world.getAgentModel();
+		this.worldModel = world.getWorldModel();
+		this.contextModel = world.getContextModel();
+				
+		Controller.getProgress().reportSimulationStarted();
+		simulationRunning = true;
+		while (!agentModel.isRunFinish()) {
+			if (!isPaused()) {
+				tickTime();
+				worldModel.doIteration(world.getPlaces());
+				agentModel.doIteration(world.getPeople());
+				contextModel.doIteration(world.getOverlays());
+			}
+			//makes the drawing on the gui is important
+			control.scheduleDrawing();				
+		}
+		simulationRunning = false;
+		Controller.getProgress().reportSimulationEnded();
+	}*/
 
 	/**
 	 * Stop looping the simulatio and, well, kill the thread.

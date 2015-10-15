@@ -77,30 +77,30 @@ public class GUI implements Runnable {
 	/**
 	 * Speed value beyond which we start skipping frames to make the GUI faster.
 	 */
-	static final int SPEED_THRESHOLD = 50;
+	static final int SPEED_THRESHOLD = 50;//50
 
 	/**
 	 * Maximum number of iterations that can be skipped when displaying the
 	 * simulation GUI. More than that, and all becomes too jumpy.
 	 */
-	public static final int MAX_SKIP_ITERATIONS = 10;
+	public static final int MAX_SKIP_ITERATIONS = 10;//10
 
 	/**
 	 * Minimum number of iterations that can be skipped. One is the minimum.
 	 */
-	public static final int MIN_SKIP_ITERATIONS = 0;
+	public static final int MIN_SKIP_ITERATIONS = 0;//0
 
 	/**
 	 * Maximum refresh in ms allowed between screen redraws, as controled by the
 	 * speed variable.
 	 */
-	public static final int MAX_REFRESH = 600;
+	public static final int MAX_REFRESH = 600;//600
 
 	/**
 	 * Minimum refresh time in ms. Less than that, and the screen won't be ready
 	 * for redraw when the GUI tries to grab it.
 	 */
-	public static final int MIN_REFRESH = 40;
+	public static final int MIN_REFRESH = 40;//40
 
 	/** The state number when no simulation is loaded. */
 	private static final int STATE_STANDBY = 0;
@@ -245,7 +245,6 @@ public class GUI implements Runnable {
 	}
 	
 	public void restartSimulationAndGui () {
-		System.out.println("restart");
 		reportSimulationDataChange(simulationDataPath);
 	}
 

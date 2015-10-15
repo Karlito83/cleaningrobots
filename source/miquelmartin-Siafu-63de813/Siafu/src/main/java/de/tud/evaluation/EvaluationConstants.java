@@ -1,6 +1,8 @@
 package de.tud.evaluation;
 
 public class EvaluationConstants {
+	
+	public static final boolean USE_GUI = true; 
 
 	public static int NUMBER_EXPLORE_AGENTS = 0;
 	public static int NUMBER_WIPE_AGENTS = 0;

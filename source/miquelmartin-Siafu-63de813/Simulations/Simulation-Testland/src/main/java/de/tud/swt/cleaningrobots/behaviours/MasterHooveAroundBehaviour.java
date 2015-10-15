@@ -133,7 +133,6 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 		//could only hoove position he knows about
 		if (master.getWorld().isPassable(p))
 		{
-			logger.debug("Hoove field: " + x + ", " + y);
 			result = new Field(x, y, true);
 			result.addState(STATE_HOOVE);
 		}	

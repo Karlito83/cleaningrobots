@@ -37,6 +37,7 @@ import de.nec.nle.siafu.graphics.markers.Marker;
 import de.nec.nle.siafu.model.SimulationData;
 import de.nec.nle.siafu.model.Trackable;
 import de.nec.nle.siafu.model.World;
+import de.tud.evaluation.EvaluationConstants;
 
 /**
  * This is the main class of the simulator. Upon running its main method, a
@@ -62,7 +63,7 @@ public class Controller {
 	private static final int DEFAULT_CACHE_SIZE = 100;
 
 	/** Default value for the UI speed. */
-	private static final int DEFAULT_UI_SPEED = 50;
+	private static final int DEFAULT_UI_SPEED = 50;//50
 
 	/** Default value for the TCP listening port. */
 	private static final int DEFAULT_PORT = 4444;
@@ -138,7 +139,7 @@ public class Controller {
 	 *            simulation
 	 * @param simulationPath the path to the simulation data
 	 */
-	public Controller(final String configPath, final String simulationPath) {
+	public Controller(final String configPath, String simulationPath) {
 		String verifiedConfigPath = configPath;
 
 		if (configPath == null) {
@@ -171,8 +172,13 @@ public class Controller {
 				return;
 			}
 		}
-
-		guiUsed = config.getBoolean("ui.usegui");
+		
+		guiUsed = EvaluationConstants.USE_GUI;
+		if (!guiUsed)
+			simulationPath = "C:\\Users\\ChrissiMobil\\git\\cleaningrobots\\source\\miquelmartin-Siafu-63de813\\Simulations\\Simulation-Testland\\target\\classes";
+		
+		//guiUsed = false;		
+		//guiUsed = config.getBoolean("ui.usegui");
 
 		if (guiUsed) {
 			// Printout to the GUI

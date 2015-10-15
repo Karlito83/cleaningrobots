@@ -3,8 +3,6 @@ package de.tud.swt.cleaningrobots.merge;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
 import cleaningrobots.CleaningrobotsFactory;
@@ -23,12 +21,6 @@ public class MergeAll {
 	
 	private ExchangeMeasurement em; 
 	
-	private final Logger logger = LogManager.getRootLogger();
-	
-	/*public void mergeAll () {
-		
-	}*/
-	
 	public void newInformationMeasure (String name) {
 		em = new ExchangeMeasurement(name, "New Info", Variables.iteration);
 		em.addKnowledgeIntegerNumber(1);
@@ -39,7 +31,6 @@ public class MergeAll {
 	
 	public void importAllModel(EObject model, RobotCore importcore, ImportExportConfiguration config) {
 		if (model instanceof cleaningrobots.Robot) {
-			logger.trace("importing model " + model);
 			cleaningrobots.Robot robot = (cleaningrobots.Robot) model;
 			
 			//Namen Information die immer mitgesendet wird
@@ -114,8 +105,6 @@ public class MergeAll {
 				importFieldsFromWorldModel(rootWorldPart, importcore);
 			}
 			Variables.exchange.add(em);
-		} else {
-			logger.warn("unknown model " + model);
 		}
 	}
 	
@@ -161,7 +150,8 @@ public class MergeAll {
 			em.addKnowledgeStringByteNumber(exportRk.getName().getBytes().length);
 			em.addKnowledgeStringNumber(1);
 			//anderer Robot hat ihn als letztes gesehen also aktualisiere deine Daten
-			importRk.setLastArrange(exportRk.getLastArrange());
+			//TODO: proof if this must in or not
+			//importRk.setLastArrange(exportRk.getLastArrange());
 			em.addKnowledgeIntegerNumber(1);
 			if (exportRk.getDestination() != null) {
 				Position dest = new Position(exportRk.getDestination().getXpos(), exportRk.getDestination().getYpos());
@@ -230,6 +220,7 @@ public class MergeAll {
 				em.addWorldIntegerNumber(2);
 				importcore.getWorld().addField(f);
 			}
+			importcore.getWorld().resetNewInformationCounter();
 		}
 		if (worldPart instanceof cleaningrobots.World) {
 			for (WorldPart innerWorldPart : ((cleaningrobots.World) worldPart)

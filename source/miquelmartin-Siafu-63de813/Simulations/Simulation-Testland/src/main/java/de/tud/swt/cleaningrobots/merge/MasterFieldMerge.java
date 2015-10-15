@@ -101,6 +101,7 @@ public class MasterFieldMerge {
 	} 
 	
 	public void sendDestPath (String name, RobotCore follower, List<Position> path, Position destination) {
+		//System.out.println(name + " Dest: " + destination + " Path: " + path);
 		follower.getDestinationContainer().setDestinationAndPath(path, destination);
 		//measurement
 		em = new ExchangeMeasurement(name, follower.getName(), Variables.iteration);

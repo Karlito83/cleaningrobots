@@ -45,14 +45,14 @@ public class HooveBehaviour extends Behaviour {
 	public boolean action() throws Exception {
 											
 		//Prüfe ob Hardwarecorrect oder entferne es vorher schon wieder
-		logger.trace("Entered HooveBehaviour.action().");
-		
 		if(getRobot().getDestinationContainer().isAtDestination()){
 			
 			//if you find more than the value of new field drive back to load station and give information to master
 			if (EvaluationConstants.NEW_FIELD_COUNT > 0 && this.getRobot().getWorld().getNewInformationCounter() > EvaluationConstants.NEW_FIELD_COUNT) {
+				System.out.println("Hoove NEW FIELD COUNT");
 				getRobot().getDestinationContainer().setDestinationLoadStation();
 				this.getRobot().getWorld().resetNewInformationCounter();
+				return false;
 			}
 			
 			Position nextNotHoovePosition;
@@ -101,9 +101,9 @@ public class HooveBehaviour extends Behaviour {
 				{
 					this.getRobot().getWorld().addWorldState(WORLDSTATE_HOOVED);
 					//finish back to load station
-					if(!getRobot().getDestinationContainer().getDestination().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
+					if(!getRobot().getPosition().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
 					{
-						//Ist an Ladestation angekommen muss geladen werden
+						//must drive to load station for end
 						getRobot().getDestinationContainer().setDestinationLoadStation();
 					} else {
 						//is at loadstation
@@ -111,14 +111,11 @@ public class HooveBehaviour extends Behaviour {
 						return true;
 					}
 				} else {
+					//not finish wait for new data, drive back to master
 					getRobot().getDestinationContainer().setDestinationLoadStation();
-					return false;
 				}
 			}
-		}
-		
-		logger.trace("Ended HooveBehaviour.action().");
-		
+		}		
 		return false;		
 	}
 

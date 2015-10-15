@@ -42,6 +42,7 @@ public class HooveRobotAgent extends RobotAgent {
 		{
 			cleaningRobot.addGoal(mg);
 		}
+		cleaningRobot.addGoal(new ExploreDumpGoal(cleaningRobot));
 	}
 	
 	public void addRandomStandardGoals () {
@@ -56,6 +57,7 @@ public class HooveRobotAgent extends RobotAgent {
 		{
 			cleaningRobot.addGoal(mg);
 		}
+		cleaningRobot.addGoal(new ExploreDumpGoal(cleaningRobot));
 	}
 	
 	//Goals for the MasterExploreFactory

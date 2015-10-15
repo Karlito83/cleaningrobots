@@ -123,7 +123,6 @@ public class SeeAroundAtDestinationBehaviour extends Behaviour {
 		//wenn Wand ist dann status dazu anlegen ansonsten freien Status geben
 		if(positionIsAtWall)
 		{
-			logger.debug("Blocked field: " + this);
 			result.addState(STATE_BLOCKED);
 		}
 		else

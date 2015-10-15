@@ -114,7 +114,6 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 		//could only hoove position he knows about
 		if (getRobot().getWorld().hasState(p, STATE_FREE))
 		{
-			logger.debug("Hoove field: " + x + ", " + y);
 			result = getRobot().getWorld().getField(p);
 			result.addState(STATE_HOOVE);
 		}	

@@ -52,15 +52,15 @@ public class DiscoverBehaviour extends Behaviour {
 	@Override
 	public boolean action() throws Exception {
 		
-		//Prüfe ob Hardwarecorrect oder entferne es vorher schon wieder
-		logger.trace("Entered DiscoverRelativeBehaviour.action().");
-		
+		//Prüfe ob Hardwarecorrect oder entferne es vorher schon wieder		
 		if(getRobot().getDestinationContainer().isAtDestination()) {
 			
 			//if you find more than the value of new field drive back to load station and give information to master
 			if (EvaluationConstants.NEW_FIELD_COUNT > 0 && this.getRobot().getWorld().getNewInformationCounter() > EvaluationConstants.NEW_FIELD_COUNT) {
+				System.out.println("Discover NEW FIELD COUNT");
 				getRobot().getDestinationContainer().setDestinationLoadStation();
 				this.getRobot().getWorld().resetNewInformationCounter();
+				return false;
 			}
 			
 			Position nextUnknownPosition;
@@ -117,10 +117,7 @@ public class DiscoverBehaviour extends Behaviour {
 					return true;
 				}
 			}
-		}
-		
-		logger.trace("Ended DiscoverBehaviour.action().");
-		
+		}		
 		return false;		
 	}
 }

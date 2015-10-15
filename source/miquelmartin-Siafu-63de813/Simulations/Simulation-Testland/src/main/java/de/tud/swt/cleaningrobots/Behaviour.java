@@ -3,15 +3,11 @@ package de.tud.swt.cleaningrobots;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import de.tud.swt.cleaningrobots.model.State;
 
 public abstract class Behaviour {
 	
 	private RobotCore robot;
-	protected final Logger logger = LogManager.getRootLogger();
 	
 	protected Demand d;
 	protected boolean hardwarecorrect;

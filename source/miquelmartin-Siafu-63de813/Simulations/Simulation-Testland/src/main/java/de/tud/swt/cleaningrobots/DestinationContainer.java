@@ -56,9 +56,13 @@ public class DestinationContainer {
 	}
 	
 	public void setDestinationLoadStation () {
+		if (!robot.getPosition().equals(loadStationPosition)) {
+			this.destination = loadStationPosition;
+			refreshPath();
+		} else {
+			this.path = null;
+		}
 		loadDestination = true;
-		this.destination = loadStationPosition;
-		refreshPath();
 	}
 
 	/***
@@ -70,7 +74,10 @@ public class DestinationContainer {
 	 */
 	public void setDestination (Position destination) {		
 		if (destination == null) {
-			this.destination = null;
+			this.path = null;
+		} else if (destination.equals(robot.getPosition())) {
+			this.destinationSet = true;
+			this.loadDestination = false;
 			this.path = null;
 		} else {
 			//speichere die erste Destination nachdem er laden war
@@ -79,14 +86,17 @@ public class DestinationContainer {
 			}
 			this.destinationSet = true;
 			this.destination = destination;
-			refreshPath();
-			loadDestination = false;	
+			this.loadDestination = false;
+			refreshPath();	
 		}	
 	}
 	
 	public void setMasterDestination (Position destination) {
 		if (destination == null) {
-			this.destination = null;
+			this.path = null;
+		} else if (destination.equals(robot.getPosition())) {
+			this.destinationSet = true;
+			this.loadDestination = false;
 			this.path = null;
 		} else {
 			lastLoadDestination = destination;
@@ -112,12 +122,8 @@ public class DestinationContainer {
 	public void moveTowardsDestination () {		
 		if (this.path != null) {
 			//sollte nicht auftreten
-			if (this.path.size() == 0) {
-				//refreshPath();
-				System.err.println(this.destination);
-				path = null;
+			if (this.path.isEmpty())
 				return;
-			}
 			Position nextPosition = this.path.get(0);
 			if (robot.getWorld().isPassable(nextPosition)) {
 				path.remove(nextPosition);
@@ -132,12 +138,10 @@ public class DestinationContainer {
 				//da sich welt nicht verändert sollte das nicht vorkommen
 				refreshPath();
 			}
-		} /*else {
-			//logger.warn(getName()
-			//		+ ": can't move towards destination because no destination given.");
-		}*/
+		}
 	}
 	
+	//Master Do all Szenario
 	public boolean setDestinationAndPath (List<Position> path, Position dest) {
 		if (dest == null || path == null || path.isEmpty())
 			return false;

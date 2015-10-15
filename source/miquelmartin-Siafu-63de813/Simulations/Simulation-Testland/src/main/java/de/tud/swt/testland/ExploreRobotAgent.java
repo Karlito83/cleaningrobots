@@ -27,9 +27,7 @@ public class ExploreRobotAgent extends RobotAgent {
 		cleaningRobot.addHardwareComponent(new Rechner());
 		cleaningRobot.addHardwareComponent(new Wlan());
 		cleaningRobot.addHardwareComponent(new Motor());
-		cleaningRobot.addHardwareComponent(new LookAroundSensor());		
-		
-		//System.out.println("Name: " + cleaningRobot.getName() + " : States: " + cleaningRobot.getSupportedStates() + " Roles: " + cleaningRobot.getRoles());		
+		cleaningRobot.addHardwareComponent(new LookAroundSensor());				
 	}
 	
 	public void addRelativeStandardGoals () {		
@@ -44,6 +42,7 @@ public class ExploreRobotAgent extends RobotAgent {
 		{
 			cleaningRobot.addGoal(mg);
 		}
+		cleaningRobot.addGoal(new ExploreDumpGoal(cleaningRobot));
 	} 
 	
 	public void addRandomStandardGoals () {		
@@ -58,6 +57,7 @@ public class ExploreRobotAgent extends RobotAgent {
 		{
 			cleaningRobot.addGoal(mg);
 		}
+		cleaningRobot.addGoal(new ExploreDumpGoal(cleaningRobot));
 	}
 	
 	//Goals for the MasterExploreFactory

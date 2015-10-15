@@ -58,7 +58,7 @@ public final class Siafu {
 	public static void main(final String[] args) {
 		String configPath = null;
 		String simulationPath = null;
-
+		
 		for (int i = 0; i < args.length; i++) {
 			try {
 				if (args[i].startsWith("-c=")
@@ -82,7 +82,6 @@ public final class Siafu {
 			}
 
 		}
-
 		new Controller(configPath, simulationPath);
 	}
 }
