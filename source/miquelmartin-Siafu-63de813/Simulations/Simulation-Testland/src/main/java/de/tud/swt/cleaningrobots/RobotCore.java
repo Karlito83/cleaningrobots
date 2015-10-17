@@ -7,9 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import cleaningrobots.CleaningrobotsFactory;
 import de.tud.swt.cleaningrobots.goals.Goal;
 import de.tud.swt.cleaningrobots.hardware.Accu;
@@ -30,8 +27,6 @@ public class RobotCore extends Robot {
 	private List<RobotRole> roles;
 	private List<RobotKnowledge> knowledge;
 
-	private final Logger logger = LogManager.getRootLogger();
-	
 	private String name;
 	private World world;
 	
@@ -71,8 +66,6 @@ public class RobotCore extends Robot {
 			INavigationController navigationController,
 			ICommunicationProvider communicationProvider, Accu accu) {
 
-		logger.info("Initializing robot \"" + name + "\"");
-		
 		this.name = name;
 		this.world = new World(this);
 		this.measure = new RobotMeasurement(name);
@@ -122,7 +115,6 @@ public class RobotCore extends Robot {
 			runGoals();
 			getEnergieConsumption();
 		} catch (Exception e) {
-			logger.error(this + ": Error while action().", e);
 		}
 		
 		long endTime = System.nanoTime();
@@ -297,7 +289,6 @@ public class RobotCore extends Robot {
 	 * @param position
 	 */
 	public void setPosition(Position position) {
-		logger.debug("Set new position of " + this + " to " + position + ".");
 		this.navigationController.setPosition(position);
 	}
 
@@ -431,7 +422,6 @@ public class RobotCore extends Robot {
 			
 			result = robot;
 		} catch (Exception e) {
-			logger.error("An error occured while exporting the model", e);
 		}
 
 		return result;

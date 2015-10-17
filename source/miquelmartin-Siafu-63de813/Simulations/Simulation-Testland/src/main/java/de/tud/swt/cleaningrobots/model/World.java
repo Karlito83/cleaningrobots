@@ -10,9 +10,6 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import cleaningrobots.CleaningrobotsFactory;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.measure.ExchangeMeasurement;
@@ -46,8 +43,6 @@ public class World {
 	}
 
 	private final Random random = new Random();
-
-	private final Logger logger = LogManager.getRootLogger();
 
 	private RobotCore robot;
 	private Map<Position, Field> map;
@@ -153,7 +148,6 @@ public class World {
 	 * @return
 	 */
 	public Position getNextPassablePositionWithoutState(Position my, State state) {
-		logger.trace("Getting the next passable field without the state");
 		if (!map.containsKey(my))
 			return null;
 		
@@ -387,8 +381,6 @@ public class World {
 	 * @return
 	 */
 	public Position getNextPassablePositionByStateWithoutState (Position my, State state, State without) {	
-		logger.trace("Getting the next state field without a given state");
-		
 		//gibt null zurück wenn Position nicht in Map und nicht state hat
 		if (!map.containsKey(my) || !map.get(my).containsState(state))
 			return null;
@@ -719,9 +711,6 @@ public class World {
 	 */
 	public Position getNextUnknownFieldPosition(Position my) {
 
-		logger.trace("getNextUnknownFieldPosition start");
-		long startTime = System.nanoTime();
-
 		Position result = null;
 		List<Position> tmpResult = new LinkedList<Position>();
 		boolean flag = true;
@@ -760,12 +749,6 @@ public class World {
 			int index = random.nextInt(tmpResult.size());
 			result = tmpResult.get(index);
 		}
-
-		long endTime = System.nanoTime();
-		logger.info("Determinig the next Unknown field position took "
-				+ (endTime - startTime) + " ns.");
-		logger.trace("getNextUnknownFieldPosition end");
-
 		return result;
 	}	
 	

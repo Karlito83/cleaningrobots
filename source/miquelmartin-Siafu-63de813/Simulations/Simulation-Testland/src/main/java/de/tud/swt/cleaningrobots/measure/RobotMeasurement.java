@@ -13,6 +13,8 @@ public class RobotMeasurement {
 	
 	public String name;
 	
+	public long benchmarkTime;
+	
 	public double completeEnergie;
 	public int completeTicks;
 	public double completeTime;

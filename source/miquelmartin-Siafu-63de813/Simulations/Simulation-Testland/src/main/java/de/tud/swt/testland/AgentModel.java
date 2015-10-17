@@ -23,9 +23,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import de.nec.nle.siafu.behaviormodels.BaseAgentModel;
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.World;
@@ -45,9 +42,9 @@ import de.tud.swt.cleaningrobots.util.Variables;
  * 
  */
 public class AgentModel extends BaseAgentModel {
-
-	private final Logger logger = LogManager.getRootLogger();
 	
+	public long startTime;
+
 	private boolean roboterFinish;
 	private boolean completeFinish;
 	
@@ -77,8 +74,8 @@ public class AgentModel extends BaseAgentModel {
 		ArrayList<Agent> agents = new ArrayList<Agent>();
 
 		try {
-			logger.info("Creating cleaning robots.");
 			Variables.iteration = 0;
+			Variables.exchange.clear();
 			switch (EvaluationConstants.configuration) {
 				case 0:  agents = new MasterExploreFactory().createRobots(world);
 						 break;
@@ -99,9 +96,8 @@ public class AgentModel extends BaseAgentModel {
 			//agents = new ExploreMergeMasterCalculateFactory().createRobots(world);
 			//agents = new ExploreMergeMasterCalculateRelativeFactory().createRobots(world);
 		} catch (Exception ex) {
-			logger.error("An exception occured while creating the population.", ex);
 		}
-
+		startTime = System.nanoTime();
 		return agents;
 	}
 	
@@ -116,7 +112,7 @@ public class AgentModel extends BaseAgentModel {
 	@Override
 	public void doIteration(final Collection<Agent> agents) {
 		Variables.iteration += 1;
-		System.out.println("New Iteration: " + Variables.iteration);
+		//System.out.println("New Iteration: " + Variables.iteration);
 		if (!completeFinish) {
 			if (!roboterFinish) {			
 				roboterFinish = true;
@@ -131,6 +127,8 @@ public class AgentModel extends BaseAgentModel {
 					}
 				}
 			} else {
+				long endTime = System.nanoTime();
+				
 				for (Agent a : agents) {
 					//nur wenn Robot noch nicht aus ist
 					((RobotAgent)a).getRobot().addLastMeasurement();				
@@ -143,6 +141,7 @@ public class AgentModel extends BaseAgentModel {
 					//Json Datein in .txt speicher
 					FileWorker fw = new FileWorker(EvaluationConstants.map + "_V" + EvaluationConstants.configuration + "_CE" + EvaluationConstants.NUMBER_EXPLORE_AGENTS + "_CH" + EvaluationConstants.NUMBER_HOOVE_AGENTS +
 							"_CW" + EvaluationConstants.NUMBER_WIPE_AGENTS + "_B" + EvaluationConstants.NEW_FIELD_COUNT + "_D" + EvaluationConstants.run + "_" + rc.getName()+ ".txt");				
+					rc.getMeasurement().benchmarkTime = (endTime - startTime);
 					String measu = rc.getMeasurement().toJson();
 					fw.addLineToFile(measu);
 					

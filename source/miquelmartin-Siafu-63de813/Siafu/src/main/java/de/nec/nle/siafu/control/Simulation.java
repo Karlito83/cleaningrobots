@@ -273,13 +273,13 @@ public class Simulation implements Runnable {
 		} else {
 			for (int i = 0; i < 15000; i++) {
 				//set Evaluation configuration
-				if (EvaluationConstants.run == 3) {
+				if (EvaluationConstants.run == 5) {
 					EvaluationConstants.run = 1;
-					if (EvaluationConstants.NEW_FIELD_COUNT == 5000 || EvaluationConstants.configuration < 2) {
+					if (EvaluationConstants.NEW_FIELD_COUNT == 5000 || EvaluationConstants.configuration < 3) {
 						EvaluationConstants.NEW_FIELD_COUNT = 0;
-						if (EvaluationConstants.NUMBER_WIPE_AGENTS == 10 || EvaluationConstants.NUMBER_HOOVE_AGENTS == 0 || EvaluationConstants.NUMBER_WIPE_AGENTS > EvaluationConstants.NUMBER_HOOVE_AGENTS - 1) {
+						if (EvaluationConstants.NUMBER_WIPE_AGENTS == 0 || EvaluationConstants.NUMBER_HOOVE_AGENTS == 0 || EvaluationConstants.NUMBER_WIPE_AGENTS > EvaluationConstants.NUMBER_HOOVE_AGENTS - 2) {
 							EvaluationConstants.NUMBER_WIPE_AGENTS = 0;
-							if (EvaluationConstants.NUMBER_HOOVE_AGENTS == 10 || EvaluationConstants.NUMBER_HOOVE_AGENTS > EvaluationConstants.NUMBER_EXPLORE_AGENTS - 1) {
+							if (EvaluationConstants.NUMBER_HOOVE_AGENTS == 0 || EvaluationConstants.NUMBER_HOOVE_AGENTS > EvaluationConstants.NUMBER_EXPLORE_AGENTS - 2) {
 								EvaluationConstants.NUMBER_HOOVE_AGENTS = 0;
 								if (EvaluationConstants.NUMBER_EXPLORE_AGENTS == 10) {
 									EvaluationConstants.NUMBER_EXPLORE_AGENTS = 1;

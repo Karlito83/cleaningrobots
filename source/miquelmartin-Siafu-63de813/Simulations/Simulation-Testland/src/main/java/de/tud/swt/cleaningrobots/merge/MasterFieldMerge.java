@@ -35,7 +35,6 @@ public class MasterFieldMerge {
 		em.addKnowledgeStringNumber(1);
 		em.addKnowledgeStringByteNumber(name.getBytes().length);
 		em.addWorldPositionCount(1);
-		em.addWorldIntegerNumber(2);
 	}
 	
 	public void sendExploreFieldsAndMerge (String name, List<Field> fields, RobotCore master) {
@@ -47,7 +46,6 @@ public class MasterFieldMerge {
 		em.addKnowledgeStringByteNumber(name.getBytes().length);		
 		for (Field field : fields) {
 			em.addWorldPositionCount(1);
-			em.addWorldIntegerNumber(2);
 			//blockstate because of its passable
 			for (State state : field.getStates()) {
 				em.addWorldStringByteNumber(state.getName().getBytes().length);
@@ -68,7 +66,6 @@ public class MasterFieldMerge {
 		em.addKnowledgeStringByteNumber(name.getBytes().length);		
 		for (Field field : fields) {
 			em.addWorldPositionCount(1);
-			em.addWorldIntegerNumber(2);
 			//blockstate because of its passable
 			for (State state : field.getStates()) {
 				em.addWorldStringByteNumber(state.getName().getBytes().length);
@@ -89,7 +86,6 @@ public class MasterFieldMerge {
 		em.addKnowledgeStringByteNumber(name.getBytes().length);		
 		for (Field field : fields) {
 			em.addWorldPositionCount(1);
-			em.addWorldIntegerNumber(2);
 			//blockstate because of its passable
 			for (State state : field.getStates()) {
 				em.addWorldStringByteNumber(state.getName().getBytes().length);
@@ -109,7 +105,6 @@ public class MasterFieldMerge {
 		em.addKnowledgeStringByteNumber(name.getBytes().length);
 		int posCount = path.size(); 
 		em.addWorldPositionCount(posCount);
-		em.addWorldIntegerNumber(2*posCount);
 		Variables.exchange.add(em);
 	}
 }

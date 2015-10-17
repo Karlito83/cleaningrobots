@@ -213,11 +213,10 @@ public class MergeAll {
 				for (cleaningrobots.State modelState : modelField.getStates()) {
 					State state = State.createState(modelState.getName());
 					f.addState(state);
-					em.addWorldPositionCount(1);
 					em.addWorldStringByteNumber(modelState.getName().getBytes().length);
 					em.addWorldStringNumber(1);
 				}
-				em.addWorldIntegerNumber(2);
+				em.addWorldPositionCount(1);
 				importcore.getWorld().addField(f);
 			}
 			importcore.getWorld().resetNewInformationCounter();

@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
-
 public class WorldHelper {
 
 	private class Node implements Comparable<Node> {
@@ -56,8 +53,6 @@ public class WorldHelper {
 
 	}
 	
-	private final Logger logger = LogManager.getRootLogger();
-
 	private World world;
 
 	public WorldHelper(World world) {
@@ -74,9 +69,6 @@ public class WorldHelper {
 	 *         position
 	 */
 	public List<Position> findPath(Position startPosition, Position destination) {
-		
-		logger.trace("Start findPath");
-		long startTime = System.nanoTime();
 		
 		List<Position> result = new LinkedList<Position>();
 
@@ -105,11 +97,6 @@ public class WorldHelper {
 				}
 			}
 		}
-		
-		long endTime = System.nanoTime();
-		logger.info("Determinig the Path from " + startPosition + " to " + destination + " took " + (endTime - startTime) + " ns.");
-		logger.trace("End findPath");
-
 		return result;
 	}
 	

@@ -29,9 +29,6 @@ public class LoadStationAgent extends RobotAgent {
 		cleaningRobot.addHardwareComponent(new Rechner());
 		cleaningRobot.addHardwareComponent(new LoadStation());
 		cleaningRobot.addHardwareComponent(new Wlan());
-				
-		//System.out.println("Name: " + cleaningRobot.getName() + " : States: " + cleaningRobot.getSupportedStates() + " Roles: " + cleaningRobot.getRoles());
-		
 	}
 	
 	//calculate position goals
