@@ -353,6 +353,7 @@ public class RobotCore extends Robot {
 			em.addStatesStringByteNumber(s.getName().getBytes().length);
 		}
 		//destcontainer
+		em.addKnowledgeIntegerNumber(6);
 		//3 Positions + liste Positions
 		//knowledge
 		for (RobotKnowledge rk : this.knowledge) {

@@ -96,37 +96,34 @@ public class MergeMaster extends Behaviour {
 							config.knownstates = true;
 							config.knowledge = true;																		
 							//search timestamp of last meeting
-							//TODO
-							/*for (RobotKnowledge rk : getRobot().getKnowledge()) {
+							for (RobotKnowledge rk : getRobot().getKnowledge()) {
 								if (rk.getName().equals(nearRobot.getName())) {
 									config.iteration = rk.getLastArrange();
 								}											
-							}*/
+							}
 								
 							//export and Import the Models
 							EObject model = nearRobot.exportModel(config);
 							ma.importAllModel(model, this.getRobot(), config);
 							
 							//change the config for later export and import
-							/*for (RobotKnowledge rk : getRobot().getKnowledge()) {
+							for (RobotKnowledge rk : getRobot().getKnowledge()) {
 								if (rk.getName().equals(nearRobot.getName())) {
 									config.knownStates = rk.getKnownStates();
 								}											
-							}*/
+							}
 							nearsNewInformation.put(rr, config);
 						} else {
 							ImportExportConfiguration config = new ImportExportConfiguration();
 							config.world = true;
 							config.knownstates = true;
 							config.knowledge = true;
-							//TODO
-							/*
 							for (RobotKnowledge rk : getRobot().getKnowledge()) {
 								if (rk.getName().equals(nearRobot.getName())) {
 									config.iteration = rk.getLastArrange();
 									config.knownStates = rk.getKnownStates();
 								}											
-							}*/
+							}
 							nearsNoNewInformation.put(rr, config);								
 						}
 						break;

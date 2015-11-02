@@ -82,7 +82,7 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 			try {
 				List<Field> fields = getData();
 				//send Field to Robot and ask für new destination and Path
-				mfm.sendHooveFieldsAndMerge(getRobot().getName(), fields, master);
+				mfm.sendFieldsAndMerge(getRobot().getName(), fields, master, "Hoove");
 			} catch (Exception e) {
 				throw e;
 			}

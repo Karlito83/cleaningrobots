@@ -36,7 +36,6 @@ public class ExploreMergeMasterFactory extends RobotFactory {
 			mre.addRole(mre);			
 			
 			lsa.addMasterMerge(mre);
-			lsa.addCalculateExploreRobotPositionGoal(mre);
 			
 			//explore agents
 			for (int i = 0; i < EvaluationConstants.NUMBER_EXPLORE_AGENTS; i++) {
@@ -55,7 +54,6 @@ public class ExploreMergeMasterFactory extends RobotFactory {
 				mrh.addRole(mrh);
 				
 				lsa.addMasterMerge(mrh);
-				lsa.addCalculateHooveRobotPositionGoal(mrh);
 
 				//hoove agents
 				for (int i = 0; i < EvaluationConstants.NUMBER_HOOVE_AGENTS; i++) {
@@ -75,7 +73,6 @@ public class ExploreMergeMasterFactory extends RobotFactory {
 					mrw.addRole(mrw);
 					
 					lsa.addMasterMerge(mrw);
-					lsa.addCalculateWipeRobotPositionGoal(mrw);
 					
 					//wipe agents
 					for (int i = 0; i < EvaluationConstants.NUMBER_WIPE_AGENTS; i++) {
@@ -94,10 +91,11 @@ public class ExploreMergeMasterFactory extends RobotFactory {
 			lsa.addLoadIfRobotWantGoal();
 		}
 		
+		//example output for correct robots
 		for (Agent a: population)
 		{
 			RobotAgent ra = (RobotAgent) a;
-			System.out.println("Name: " + ra.cleaningRobot.getName() + " Roles: " + ra.cleaningRobot.getRoles());
+			System.out.println("Name: " + ra.cleaningRobot.getName() + " Roles: " + ra.cleaningRobot.getRoles() + " States: " + ra.cleaningRobot.getSupportedStates());
 		}
 		return population;
 	}

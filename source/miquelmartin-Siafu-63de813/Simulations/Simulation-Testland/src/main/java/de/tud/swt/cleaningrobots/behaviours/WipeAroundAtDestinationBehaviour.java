@@ -27,6 +27,7 @@ public class WipeAroundAtDestinationBehaviour extends Behaviour {
 		super(robot);
 				
 		supportedStates.add(STATE_WIPE);
+		supportedStates.add(STATE_HOOVE);
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.WIPER, 1);

@@ -90,16 +90,16 @@ public class ExploreMergeMasterCalculateFactory extends RobotFactory {
 					}
 					mrw.getFollowers().add(mrh);
 				}				
-			}
-			
+			}			
 			lsa.addLoadIfRobotWantGoal();
 		}
 		
+		//example output for master follower relation
 		for (Agent a: population)
 		{
 			RobotAgent ra = (RobotAgent) a;
-			System.out.println("Name: " + ra.cleaningRobot.getName() + " Roles: " + ra.cleaningRobot.getRoles());
-		}
+			System.out.println("Name: " + ra.cleaningRobot.getName() + " Roles: " + ra.cleaningRobot.getRoles() + " States: " + ra.cleaningRobot.getSupportedStates());
+		}		
 		return population;
 	}
 }

@@ -90,11 +90,6 @@ public class AgentModel extends BaseAgentModel {
 	            default: agents = new MasterExploreFactory().createRobots(world);
 	                     break;
 	        }
-			//agents = new ExploreWithoutMasterFactory().createRobots(world);			
-			//agents = new MasterExploreFactory().createRobots(world);
-			//agents = new ExploreMergeMasterFactory().createRobots(world);
-			//agents = new ExploreMergeMasterCalculateFactory().createRobots(world);
-			//agents = new ExploreMergeMasterCalculateRelativeFactory().createRobots(world);
 		} catch (Exception ex) {
 		}
 		startTime = System.nanoTime();

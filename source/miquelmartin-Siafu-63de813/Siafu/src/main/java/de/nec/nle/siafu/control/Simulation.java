@@ -242,12 +242,12 @@ public class Simulation implements Runnable {
 	 */
 	public void run() {
 		if (EvaluationConstants.USE_GUI) {
-			EvaluationConstants.NUMBER_EXPLORE_AGENTS = 2;
-			EvaluationConstants.NUMBER_HOOVE_AGENTS = 2;
+			EvaluationConstants.NUMBER_EXPLORE_AGENTS = 6;
+			EvaluationConstants.NUMBER_HOOVE_AGENTS = 4;
 			EvaluationConstants.NUMBER_WIPE_AGENTS = 2;
 			EvaluationConstants.run = 1;
-			EvaluationConstants.configuration = 4;//0 1 2 3 4
-			EvaluationConstants.NEW_FIELD_COUNT = 3000; //0 0 500 500 500
+			EvaluationConstants.configuration = 1;//0 1 2 3 4
+			EvaluationConstants.NEW_FIELD_COUNT = 0; //0 0 500 500 500
 			
 			this.world = new World(this, simData);
 			this.time = world.getTime();

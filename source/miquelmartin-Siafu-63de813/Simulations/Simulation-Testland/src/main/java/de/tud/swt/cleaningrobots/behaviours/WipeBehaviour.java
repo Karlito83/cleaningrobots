@@ -46,7 +46,6 @@ public class WipeBehaviour extends Behaviour{
 			
 			//if you find more than the value of new field drive back to load station and give information to master
 			if (EvaluationConstants.NEW_FIELD_COUNT > 0 && this.getRobot().getWorld().getNewInformationCounter() > EvaluationConstants.NEW_FIELD_COUNT) {
-				System.out.println("Wipe NEW FIELD COUNT");
 				getRobot().getDestinationContainer().setDestinationLoadStation();
 				this.getRobot().getWorld().resetNewInformationCounter();
 				return false;

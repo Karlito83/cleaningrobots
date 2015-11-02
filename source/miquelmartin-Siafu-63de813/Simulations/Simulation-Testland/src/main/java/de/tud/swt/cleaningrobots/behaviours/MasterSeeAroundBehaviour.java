@@ -89,7 +89,7 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 			try {
 				List<Field> fields = getData();
 				//send Field to Robot and ask für new destination and Path
-				mfm.sendExploreFieldsAndMerge(getRobot().getName(), fields, master);
+				mfm.sendFieldsAndMerge(getRobot().getName(), fields, master, "Explore");
 			} catch (Exception e) {
 				throw e;
 			}

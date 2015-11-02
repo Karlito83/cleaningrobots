@@ -12,8 +12,7 @@ public class WipeLoadGoal extends NonOptionalGoal {
 
 	private WipeBehaviour d;
 	
-	private final State STATE_WIPE = State.createState("Wipe");
-	
+	private final State STATE_WIPE = State.createState("Wipe");	
 	private final State WORLDSTATE_DISCOVERED = State.createState("Discovered");
 	
 	public WipeLoadGoal(RobotCore robot, boolean relative) {

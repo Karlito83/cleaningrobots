@@ -899,7 +899,6 @@ public class World {
 		}
 		//Map durchlaufen
 		em.addWorldPositionCount(map.keySet().size() * 2);
-		em.addWorldIntegerNumber(map.keySet().size() * 4);
 		
 		for (Field f : map.values()) {
 			em.addWorldStringNumber(f.getStates().size());

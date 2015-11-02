@@ -33,6 +33,7 @@ public class MasterDestinationExplore extends Behaviour {
 		this.mr = mr;
 		this.mfm = new MasterFieldMerge();
 		this.information = new HashMap<String, RobotDestinationCalculation>();
+		this.firstStart = true;
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.WLAN, 1);		
@@ -48,7 +49,6 @@ public class MasterDestinationExplore extends Behaviour {
 				wlan = (Wlan)hard;
 			}
 		}		
-		firstStart = true;
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class MasterDestinationExplore extends Behaviour {
 			}
 		}
 		
-		if (firstStart)
+		if (this.firstStart)
 		{
 			double maxAway = 0;
 			//create information list with follower robots

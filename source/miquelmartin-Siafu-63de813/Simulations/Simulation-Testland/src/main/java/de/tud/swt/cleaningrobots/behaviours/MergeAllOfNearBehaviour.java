@@ -30,7 +30,7 @@ public class MergeAllOfNearBehaviour extends Behaviour {
 		super(robot);
 		
 		this.ma = new MergeAll();
-		this.maxCount = 100;
+		this.maxCount = 200;
 		this.firstStart = true;
 		this.robotInformation = new LinkedList<NearRobotInformation>();
 		
@@ -70,6 +70,7 @@ public class MergeAllOfNearBehaviour extends Behaviour {
 			for (RobotCore core : nearRobots) {
 				robotInformation.add(new NearRobotInformation(core.getName()));
 			}
+			this.firstStart = false;
 		}
 		
 		for (NearRobotInformation i: robotInformation) {

@@ -82,7 +82,7 @@ public class MasterWipeAroundBehaviour extends Behaviour {
 			try {
 				List<Field> fields = getData();
 				//send Field to Robot and ask für new destination and Path
-				mfm.sendWipeFieldsAndMerge(getRobot().getName(), fields, master);
+				mfm.sendFieldsAndMerge(getRobot().getName(), fields, master, "Wipe");
 			} catch (Exception e) {
 				throw e;
 			}
