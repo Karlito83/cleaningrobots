@@ -28,6 +28,10 @@ public class RobotMeasurement {
 		timeProTick = new LinkedList<Double>();
 	}
 	
+	public void setName (String name) {
+		this.name = name;
+	}
+	
 	public RobotMeasurement fromJson(String json) {
         return gson.fromJson(json, RobotMeasurement.class);
     }

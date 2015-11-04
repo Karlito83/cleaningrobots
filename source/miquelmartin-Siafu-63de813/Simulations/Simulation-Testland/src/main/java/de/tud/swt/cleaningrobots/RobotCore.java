@@ -293,6 +293,7 @@ public class RobotCore extends Robot {
 	}
 
 	public void setName(String name) {
+		this.measure.setName(name);
 		this.name = name;
 	}
 

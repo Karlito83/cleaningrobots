@@ -197,6 +197,20 @@ public class ExchangeMeasurement {
 		this.addWorldStringNumber(em.getWorldStringNumber());
 	}
 	
+	public int getCompleteByteNumber () {
+		int result = knowledgeStringByteNumber + statesStringByteNumber + worldStringByteNumber + worldStatesStringByteNumber;
+		result += (knowledgeIntegerNumber + worldIntegerNumber + worldPositionCount*2) * 4;
+		result += accuDoubleNumber * 8;
+		return result;
+	}
+	
+	public int getCompleteNumberExchange () {
+		int result = knowledgeIntegerNumber + worldPositionCount*2 + worldIntegerNumber;
+		result += knowledgeStringNumber + statesStringNumber+worldStringNumber + worldStatesStringNumber;
+		result += accuDoubleNumber;
+		return result;
+	}
+	
 	public ExchangeMeasurement fromJson(String json) {
         return gson.fromJson(json, ExchangeMeasurement.class);
     }
