@@ -8,20 +8,21 @@ import java.util.List;
 import java.util.Set;
 
 import cleaningrobots.CleaningrobotsFactory;
+import de.tud.evaluation.ExchangeMeasurement;
+import de.tud.evaluation.WorkingConfiguration;
 import de.tud.swt.cleaningrobots.goals.Goal;
 import de.tud.swt.cleaningrobots.hardware.Accu;
 import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
-import de.tud.swt.cleaningrobots.measure.ExchangeMeasurement;
 import de.tud.swt.cleaningrobots.measure.RobotMeasurement;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.model.World;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
-import de.tud.swt.cleaningrobots.util.Variables;
 
 public class RobotCore extends Robot {
 	
+	public WorkingConfiguration configuration;
 	private RobotMeasurement measure;
 	
 	private List<RobotRole> roles;
@@ -57,15 +58,16 @@ public class RobotCore extends Robot {
 
 	public RobotCore(IPositionProvider positionProvider,
 			INavigationController navigationController,
-			ICommunicationProvider communicationProvider, Accu accu) {
+			ICommunicationProvider communicationProvider, Accu accu, WorkingConfiguration configuration) {
 		this("Robby_" + counter++, positionProvider, navigationController,
-				communicationProvider, accu);
+				communicationProvider, accu, configuration);
 	}
 
 	public RobotCore(String name, IPositionProvider positionProvider,
 			INavigationController navigationController,
-			ICommunicationProvider communicationProvider, Accu accu) {
+			ICommunicationProvider communicationProvider, Accu accu, WorkingConfiguration configuration) {
 
+		this.configuration = configuration;
 		this.name = name;
 		this.world = new World(this);
 		this.measure = new RobotMeasurement(name);
@@ -374,7 +376,8 @@ public class RobotCore extends Robot {
 				em.addKnowledgeStringNumber(1);
 			}
 		}
-		Variables.exchange.add(em);
+		configuration.exchange.add(em);
+		//Variables.exchange.add(em);
 	}
 
 	public cleaningrobots.Robot exportModel(ImportExportConfiguration config) {

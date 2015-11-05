@@ -29,7 +29,7 @@ public class MergeAllOfNearBehaviour extends Behaviour {
 	public MergeAllOfNearBehaviour(RobotCore robot) {
 		super(robot);
 		
-		this.ma = new MergeAll();
+		this.ma = new MergeAll(this.getRobot().configuration);
 		this.maxCount = 200;
 		this.firstStart = true;
 		this.robotInformation = new LinkedList<NearRobotInformation>();

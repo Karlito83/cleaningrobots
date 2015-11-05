@@ -24,6 +24,7 @@ import java.util.Collection;
 
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.World;
+import de.tud.evaluation.WorkingConfiguration;
 
 /**
  * Extensions of this class define the behaviour of the agents. The methos
@@ -42,13 +43,15 @@ public abstract class BaseAgentModel {
 	/** The simulated world. */
 	protected World world;
 	protected boolean runFinish;
+	protected WorkingConfiguration configuration;
 
 	/**
 	 * Instantiate a BaseAgentModel.
 	 * 
 	 * @param world the simulation's world
 	 */
-	public BaseAgentModel(final World world) {
+	public BaseAgentModel(final World world, WorkingConfiguration configuration) {
+		this.configuration = configuration;
 		this.world = world;
 		this.runFinish = false;
 	}

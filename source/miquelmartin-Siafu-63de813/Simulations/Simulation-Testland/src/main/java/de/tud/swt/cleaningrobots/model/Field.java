@@ -6,7 +6,6 @@ import java.util.Set;
 
 import cleaningrobots.CleaningrobotsFactory;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
-import de.tud.swt.cleaningrobots.util.Variables;
 
 public class Field {
 	private Position pos;
@@ -14,9 +13,9 @@ public class Field {
 	private int changedIteration;
 	private Map<State, Integer> states;
 	
-	public Field(int x, int y, boolean isPassable)
+	public Field(int x, int y, boolean isPassable, int iteration)
 	{
-		this.changedIteration = Variables.iteration;
+		this.changedIteration = iteration;
 		this.pos = new Position(x, y);
 		this.isPassable = isPassable;
 		this.states = new HashMap<State, Integer>();		
@@ -30,8 +29,8 @@ public class Field {
 		return this.changedIteration;
 	}
 
-	public void addState(State state) {
-		this.changedIteration = Variables.iteration;
+	public void addState(State state, int iteration) {
+		this.changedIteration = iteration;
 		states.put(state, this.changedIteration);
 	}
 	

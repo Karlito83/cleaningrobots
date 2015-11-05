@@ -31,7 +31,7 @@ public class MasterDestinationExplore extends Behaviour {
 		super(robot);
 		
 		this.mr = mr;
-		this.mfm = new MasterFieldMerge();
+		this.mfm = new MasterFieldMerge(this.getRobot().configuration);
 		this.information = new HashMap<String, RobotDestinationCalculation>();
 		this.firstStart = true;
 		

@@ -50,6 +50,7 @@ import de.nec.nle.siafu.exceptions.PlacesTypeIsEmptyException;
 import de.nec.nle.siafu.exceptions.PositionOnAWallException;
 import de.nec.nle.siafu.exceptions.PositionUnreachableException;
 import de.nec.nle.siafu.graphics.markers.Marker;
+import de.tud.evaluation.WorkingConfiguration;
 
 /**
  * This class represents the world being simulated. It is the main class in what
@@ -202,6 +203,8 @@ public class World {
 	public static void setCacheSize(final int cacheSize) {
 		World.cacheSize = cacheSize;
 	}
+	
+	private WorkingConfiguration configuration;
 
 	/**
 	 * Instantiate the world in which the simulation will run.
@@ -212,7 +215,9 @@ public class World {
 	 *            the simulation data (maps, sprites, classes) for this
 	 *            simulation.
 	 */
-	public World(final Simulation simulation, final SimulationData simData) {
+	public World(final Simulation simulation, final SimulationData simData, WorkingConfiguration configuration) {
+		System.out.println("World erstellt");
+		this.configuration = configuration;
 		this.simulation = simulation;
 		this.simData = simData;
 		this.simulationConfig = simData.getConfigFile();
@@ -849,8 +854,8 @@ public class World {
 
 		try {
 			agentModel = (BaseAgentModel) simData.getAgentModelClass()
-					.getConstructor(new Class[] { this.getClass() })
-					.newInstance(new Object[] { this });
+					.getConstructor(new Class[] { this.getClass() , configuration.getClass() })
+					.newInstance(new Object[] { this , configuration });
 		} catch (Exception e) {
 			throw new RuntimeException("Can't instantiate the agent model", e);
 		}

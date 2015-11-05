@@ -2,26 +2,33 @@ package de.tud.swt.cleaningrobots.merge;
 
 import java.util.List;
 
+import de.tud.evaluation.ExchangeMeasurement;
+import de.tud.evaluation.WorkingConfiguration;
 import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.measure.ExchangeMeasurement;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
-import de.tud.swt.cleaningrobots.util.Variables;
 
 public class MasterFieldMerge {
 
+	private WorkingConfiguration configuration;
+	
+	public MasterFieldMerge (WorkingConfiguration configuration) {
+		this.configuration = configuration;
+	}
+	
 	/**
 	 * Only Methods that saves the data exchange if destination is set to null.
 	 * @param name
 	 */
 	public void sendNullDestination (String name) {
 		//measurement
-		ExchangeMeasurement em = new ExchangeMeasurement(name, "SendNULLDest", Variables.iteration);
+		ExchangeMeasurement em = new ExchangeMeasurement(name, "SendNULLDest", configuration.iteration);
 		em.addKnowledgeStringNumber(1);
 		em.addKnowledgeStringByteNumber(name.getBytes().length);
 		em.addWorldIntegerNumber(1);
-		Variables.exchange.add(em);
+		configuration.exchange.add(em);
+		//Variables.exchange.add(em);
 	}
 	
 	/**
@@ -30,11 +37,12 @@ public class MasterFieldMerge {
 	 */
 	public void sendDestination (String name) {
 		//measurement
-		ExchangeMeasurement em = new ExchangeMeasurement(name, "SendNewDest", Variables.iteration);
+		ExchangeMeasurement em = new ExchangeMeasurement(name, "SendNewDest", configuration.iteration);
 		em.addKnowledgeStringNumber(1);
 		em.addKnowledgeStringByteNumber(name.getBytes().length);
 		em.addWorldPositionCount(1);
-		Variables.exchange.add(em);
+		configuration.exchange.add(em);
+		//Variables.exchange.add(em);
 	}
 	
 	/**
@@ -47,7 +55,7 @@ public class MasterFieldMerge {
 	public void sendFieldsAndMerge (String name, List<Field> fields, RobotCore master, String doing) {
 		master.getWorld().addFields(fields);
 		//measurement
-		ExchangeMeasurement em = new ExchangeMeasurement(name, (doing + "InformationNewDest"), Variables.iteration);
+		ExchangeMeasurement em = new ExchangeMeasurement(name, (doing + "InformationNewDest"), configuration.iteration);
 		em.addWorldPositionCount(fields.size());
 		em.addKnowledgeStringNumber(1);
 		em.addKnowledgeStringByteNumber(name.getBytes().length);		
@@ -59,7 +67,8 @@ public class MasterFieldMerge {
 			}
 		}
 		em.addAccuDoubleNumber(2);
-		Variables.exchange.add(em);
+		configuration.exchange.add(em);
+		//Variables.exchange.add(em);
 	} 
 	
 	/**
@@ -72,10 +81,11 @@ public class MasterFieldMerge {
 	public void sendDestPath (String name, RobotCore follower, List<Position> path, Position destination) {
 		follower.getDestinationContainer().setDestinationAndPath(path, destination);
 		//measurement
-		ExchangeMeasurement em = new ExchangeMeasurement(name, follower.getName(), Variables.iteration);
+		ExchangeMeasurement em = new ExchangeMeasurement(name, follower.getName(), configuration.iteration);
 		em.addKnowledgeStringNumber(1);
 		em.addKnowledgeStringByteNumber(name.getBytes().length);
 		em.addWorldPositionCount(path.size());
-		Variables.exchange.add(em);
+		configuration.exchange.add(em);
+		//Variables.exchange.add(em);
 	}
 }

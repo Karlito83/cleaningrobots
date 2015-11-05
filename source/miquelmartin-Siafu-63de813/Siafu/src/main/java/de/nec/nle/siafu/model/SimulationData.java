@@ -29,7 +29,9 @@ import java.util.HashMap;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
+
 import de.nec.nle.siafu.behaviormodels.BaseAgentModel;
+import de.nec.nle.siafu.behaviormodels.BaseAgentModelMulti;
 import de.nec.nle.siafu.behaviormodels.BaseContextModel;
 import de.nec.nle.siafu.behaviormodels.BaseWorldModel;
 
@@ -137,6 +139,29 @@ public abstract class SimulationData {
 		try {
 			return Class.forName(simulationConfig
 					.getString("models.agentmodel"), true, classLoader).asSubclass(BaseAgentModel.class);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public String getString () {
+		System.out.println(simulationConfig.getString("models.contextmodel"));
+		System.out.println(simulationConfig.getString("models.agentmodel"));
+		return simulationConfig.getString("models");
+		//return simulationConfig.getString("models.multiagentmodel");
+	}
+	
+	/**
+	 * Get the AgentModel using the class loader set to the simulation data
+	 * path.
+	 * 
+	 * @return the AgentModel for this simulation
+	 */
+	public Class<? extends BaseAgentModelMulti> getMultiAgentModelClass() {
+		System.out.println(simulationConfig.getString("models.multiagentmodel"));
+		try {
+			return Class.forName(simulationConfig
+					.getString("models.multiagentmodel"), true, classLoader).asSubclass(BaseAgentModelMulti.class);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

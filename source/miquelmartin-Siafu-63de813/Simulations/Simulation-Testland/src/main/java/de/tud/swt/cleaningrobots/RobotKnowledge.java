@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cleaningrobots.CleaningrobotsFactory;
-import de.tud.swt.cleaningrobots.measure.ExchangeMeasurement;
+import de.tud.evaluation.ExchangeMeasurement;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
 

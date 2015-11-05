@@ -40,7 +40,7 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 		this.mr = mr;
 		this.firstStart = true;
 		this.relative = relative;
-		this.mfm = new MasterFieldMerge();
+		this.mfm = new MasterFieldMerge(this.getRobot().configuration);
 		this.information = new HashMap<String, RobotDestinationCalculation>();
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);

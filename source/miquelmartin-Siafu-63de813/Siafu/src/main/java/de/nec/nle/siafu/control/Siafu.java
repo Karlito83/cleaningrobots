@@ -19,6 +19,13 @@
 
 package de.nec.nle.siafu.control;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+import de.tud.evaluation.EvaluationConstants;
+import de.tud.evaluation.WorkingConfiguration;
+
 /**
  * Siafu's main class. It simply parses the command line parameters and starts
  * the controller.
@@ -82,6 +89,86 @@ public final class Siafu {
 			}
 
 		}
-		new Controller(configPath, simulationPath);
+		if (!EvaluationConstants.USE_GUI) {
+			int maxThreadCounter = 2;
+			Queue<WorkingConfiguration> configurations = new LinkedList<WorkingConfiguration>();
+			boolean running = true;
+			int NUMBER_EXPLORE_AGENTS = 1;
+			int NUMBER_WIPE_AGENTS = 0;
+			int NUMBER_HOOVE_AGENTS = 0;
+			int NEW_FIELD_COUNT = 0;
+			String map = "R"; //F...Fakultät R...Rechteck L...Labyrinth	
+			int run = 0;	
+			int configuration = 0;
+			
+			while (running) {
+				if (run == 1) {
+					run = 1;
+					if (NEW_FIELD_COUNT == 5000 || configuration < 3) {
+						NEW_FIELD_COUNT = 0;
+						if (NUMBER_WIPE_AGENTS == 0 || NUMBER_HOOVE_AGENTS == 0 || NUMBER_WIPE_AGENTS > NUMBER_HOOVE_AGENTS - 2) {
+							NUMBER_WIPE_AGENTS = 0;
+							if (NUMBER_HOOVE_AGENTS == 0 || NUMBER_HOOVE_AGENTS > NUMBER_EXPLORE_AGENTS - 2) {
+								NUMBER_HOOVE_AGENTS = 0;
+								if (NUMBER_EXPLORE_AGENTS == 10) {
+									NUMBER_EXPLORE_AGENTS = 1;
+									if (configuration == 0) {
+										running = false;
+										break;
+									} else {
+										configuration +=1;
+									}
+								} else {
+									NUMBER_EXPLORE_AGENTS +=1;
+								}
+							} else {
+								NUMBER_HOOVE_AGENTS +=1;
+							}
+						} else {
+							NUMBER_WIPE_AGENTS +=1;
+						}
+					} else {
+						NEW_FIELD_COUNT += 1000;
+					}
+				} else {
+					run += 1;
+				}
+				WorkingConfiguration wc = new WorkingConfiguration(NUMBER_EXPLORE_AGENTS, NUMBER_HOOVE_AGENTS, NUMBER_WIPE_AGENTS, run, configuration, NEW_FIELD_COUNT, map);
+				configurations.add(wc);
+			}
+			
+			System.out.println("Configurationen erstellt: " + configurations.size());
+			
+			List<MultiSimulation> controllers = new LinkedList<MultiSimulation>();
+			while (configurations.size() > 0 || controllers.size() > 0)
+			{
+				List<MultiSimulation> controllersDel = new LinkedList<MultiSimulation>();
+				for (MultiSimulation c : controllers)
+				{
+					if (!c.isSimulationRunning())
+					{
+						controllersDel.add(c);
+					}
+				}
+				controllers.removeAll(controllersDel);
+				if (controllers.size() < maxThreadCounter && configurations.size() > 0)
+				{
+					controllers.add(new MultiSimulation(configurations.poll()));
+				}
+				else
+				{
+					try {
+						Thread.sleep(10000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		else 
+		{
+			new Controller(configPath, simulationPath, new WorkingConfiguration(1, 0, 0, 1, 0, 0, "R"));
+		}
+		//new Controller(configPath, simulationPath);
 	}
 }

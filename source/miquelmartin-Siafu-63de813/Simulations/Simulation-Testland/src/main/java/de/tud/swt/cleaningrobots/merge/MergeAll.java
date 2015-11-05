@@ -7,26 +7,32 @@ import org.eclipse.emf.ecore.EObject;
 
 import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.WorldPart;
+import de.tud.evaluation.ExchangeMeasurement;
+import de.tud.evaluation.WorkingConfiguration;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotKnowledge;
-import de.tud.swt.cleaningrobots.measure.ExchangeMeasurement;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.util.EMFUtils;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
-import de.tud.swt.cleaningrobots.util.Variables;
 
 public class MergeAll {
 	
 	private ExchangeMeasurement em; 
+	private WorkingConfiguration configuration;
+	
+	public MergeAll (WorkingConfiguration configuration) {
+		this.configuration = configuration;
+	}
+	
 	
 	public void newInformationMeasure (String name) {
-		em = new ExchangeMeasurement(name, "New Info", Variables.iteration);
+		em = new ExchangeMeasurement(name, "New Info", configuration.iteration);
 		em.addKnowledgeIntegerNumber(1);
 		em.addKnowledgeStringNumber(1);
 		em.addKnowledgeStringByteNumber(name.getBytes().length);
-		Variables.exchange.add(em);
+		configuration.exchange.add(em);
 	}
 	
 	public void importAllModel(EObject model, RobotCore importcore, ImportExportConfiguration config) {
@@ -34,7 +40,7 @@ public class MergeAll {
 			cleaningrobots.Robot robot = (cleaningrobots.Robot) model;
 			
 			//Namen Information die immer mitgesendet wird
-			em = new ExchangeMeasurement(robot.getName(), importcore.getName(), Variables.iteration);
+			em = new ExchangeMeasurement(robot.getName(), importcore.getName(), configuration.iteration);
 			em.addKnowledgeStringNumber(1);
 			em.addKnowledgeStringByteNumber(robot.getName().getBytes().length);
 			//für alle noch measurement erweitern
@@ -104,13 +110,13 @@ public class MergeAll {
 				cleaningrobots.WorldPart rootWorldPart = robot.getWorld();
 				importFieldsFromWorldModel(rootWorldPart, importcore);
 			}
-			Variables.exchange.add(em);
+			configuration.exchange.add(em);
 		}
 	}
 	
 	private void importRobotKnowledge (RobotKnowledge importRk, cleaningrobots.Robot exportR) {
 		//Füge die neuen Information vom Robot ein
-		importRk.setLastArrange(Variables.iteration);
+		importRk.setLastArrange(configuration.iteration);
 		em.addKnowledgeIntegerNumber(1);
 		if (exportR.getDestination() != null) {
 			Position dest = new Position(exportR.getDestination().getXpos(), exportR.getDestination().getYpos());
@@ -209,10 +215,10 @@ public class MergeAll {
 				boolean isBlocked = EMFUtils.listContains(modelField.getStates(), blockedState);
 				//test about the supported states of the new robot
 				//core is the new robot
-				Field f = new Field(modelField.getPos().getXpos(), modelField.getPos().getYpos(), !isBlocked);
+				Field f = new Field(modelField.getPos().getXpos(), modelField.getPos().getYpos(), !isBlocked, configuration.iteration);
 				for (cleaningrobots.State modelState : modelField.getStates()) {
 					State state = State.createState(modelState.getName());
-					f.addState(state);
+					f.addState(state, configuration.iteration);
 					em.addWorldStringByteNumber(modelState.getName().getBytes().length);
 					em.addWorldStringNumber(1);
 				}

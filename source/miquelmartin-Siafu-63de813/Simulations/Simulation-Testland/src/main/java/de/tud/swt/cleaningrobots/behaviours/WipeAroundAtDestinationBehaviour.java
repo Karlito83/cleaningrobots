@@ -116,7 +116,7 @@ public class WipeAroundAtDestinationBehaviour extends Behaviour {
 		if (getRobot().getWorld().hasState(p, STATE_HOOVE))
 		{
 			result = getRobot().getWorld().getField(p);
-			result.addState(STATE_WIPE);
+			result.addState(STATE_WIPE, this.getRobot().configuration.iteration);
 		}	
 		return result;
 	}

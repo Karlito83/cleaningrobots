@@ -33,7 +33,7 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 	public MasterHooveAroundBehaviour(RobotCore robot) {
 		super(robot);
 		
-		this.mfm = new MasterFieldMerge();
+		this.mfm = new MasterFieldMerge(this.getRobot().configuration);
 		this.firststart = true;
 		
 		supportedStates.add(STATE_HOOVE);
@@ -133,8 +133,8 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 		//could only hoove position he knows about
 		if (master.getWorld().isPassable(p))
 		{
-			result = new Field(x, y, true);
-			result.addState(STATE_HOOVE);
+			result = new Field(x, y, true, this.getRobot().configuration.iteration);
+			result.addState(STATE_HOOVE, this.getRobot().configuration.iteration);
 		}	
 		return result;		
 	}

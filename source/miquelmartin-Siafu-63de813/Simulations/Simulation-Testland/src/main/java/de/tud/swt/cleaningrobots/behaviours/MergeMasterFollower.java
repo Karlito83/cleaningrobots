@@ -31,7 +31,7 @@ public class MergeMasterFollower extends Behaviour {
 		super(robot);
 		
 		lastChange = new ArrayList<RobotRole>();
-		ma = new MergeAll();
+		ma = new MergeAll(this.getRobot().configuration);
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.WLAN, 1);

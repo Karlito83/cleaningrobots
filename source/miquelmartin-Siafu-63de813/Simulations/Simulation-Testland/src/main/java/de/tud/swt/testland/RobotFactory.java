@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import de.nec.nle.siafu.exceptions.PlaceNotFoundException;
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.World;
+import de.tud.evaluation.WorkingConfiguration;
 
 public abstract class RobotFactory {
 	
 	private int counter;
+	protected WorkingConfiguration configuration;
 	
-	public RobotFactory () {
+	public RobotFactory (WorkingConfiguration configuration) {
+		this.configuration = configuration;
 		counter = 0;
 	}
 	
@@ -26,7 +29,7 @@ public abstract class RobotFactory {
 
 			LoadStationAgent agent = new LoadStationAgent(world
 					.getRandomPlaceOfType("Center").getPos(), "Master",
-					world);
+					world, configuration);
 
 			counter++;
 			agent.setName("Robbi_" + counter);
@@ -50,7 +53,7 @@ public abstract class RobotFactory {
 
 			ExploreRobotAgent agent = new ExploreRobotAgent(world
 					.getRandomPlaceOfType("Center").getPos(), "HumanMagenta",
-					world);
+					world, configuration);
 
 			counter++;
 			agent.setName("Robbi_" + counter);
@@ -74,7 +77,7 @@ public abstract class RobotFactory {
 
 			WipeRobotAgent agent = new WipeRobotAgent(world
 					.getRandomPlaceOfType("Center").getPos(), "HumanYellow",
-					world);
+					world, configuration);
 
 			counter++;
 			agent.setName("Robbi_" + counter);
@@ -98,7 +101,7 @@ public abstract class RobotFactory {
 
 			HooveRobotAgent agent = new HooveRobotAgent(world
 					.getRandomPlaceOfType("Center").getPos(), "HumanGreen",
-					world);
+					world, configuration);
 
 			counter++;
 			agent.setName("Robbi_" + counter);

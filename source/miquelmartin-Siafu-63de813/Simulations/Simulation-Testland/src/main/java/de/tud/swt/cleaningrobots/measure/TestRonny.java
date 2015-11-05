@@ -1,6 +1,5 @@
 package de.tud.swt.cleaningrobots.measure;
 
-import de.tud.evaluation.EvaluationConstants;
 import de.tud.swt.cleaningrobots.model.Position;
 
 public class TestRonny {
@@ -49,47 +48,48 @@ public class TestRonny {
 	}
 	
 	public void testNumberEvaluations2 () {
-		EvaluationConstants.NUMBER_EXPLORE_AGENTS = 1;
-		EvaluationConstants.NUMBER_HOOVE_AGENTS = 0;
-		EvaluationConstants.NUMBER_WIPE_AGENTS = 0;
-		EvaluationConstants.run = 0;
-		EvaluationConstants.configuration = 0;//0 1 2 3 4
-		EvaluationConstants.NEW_FIELD_COUNT = 0; //0 0 500 500 500
+		int NUMBER_EXPLORE_AGENTS = 1;
+		int NUMBER_HOOVE_AGENTS = 0;
+		int NUMBER_WIPE_AGENTS = 0;
+		int run = 0;
+		int configuration = 0;//0 1 2 3 4
+		int NEW_FIELD_COUNT = 0; //0 0 500 500 500
+		String map = "R";
 		for (int i = 0; i < 128000; i++) {
 			//set Evaluation configuration			
-			if (EvaluationConstants.run == 3) {
-				EvaluationConstants.run = 1;
-				if (EvaluationConstants.NEW_FIELD_COUNT == 5000 || EvaluationConstants.configuration < 2) {
-					EvaluationConstants.NEW_FIELD_COUNT = 0;
-					if (EvaluationConstants.NUMBER_WIPE_AGENTS == 0 || EvaluationConstants.NUMBER_HOOVE_AGENTS == 0 || EvaluationConstants.NUMBER_WIPE_AGENTS > EvaluationConstants.NUMBER_HOOVE_AGENTS - 2) {
-						EvaluationConstants.NUMBER_WIPE_AGENTS = 0;
-						if (EvaluationConstants.NUMBER_HOOVE_AGENTS == 0 || EvaluationConstants.NUMBER_HOOVE_AGENTS > EvaluationConstants.NUMBER_EXPLORE_AGENTS - 2) {
-							EvaluationConstants.NUMBER_HOOVE_AGENTS = 0;
-							if (EvaluationConstants.NUMBER_EXPLORE_AGENTS == 10) {
-								EvaluationConstants.NUMBER_EXPLORE_AGENTS = 1;
-								if (EvaluationConstants.configuration == 0) {
+			if (run == 3) {
+				run = 1;
+				if (NEW_FIELD_COUNT == 5000 || configuration < 2) {
+					NEW_FIELD_COUNT = 0;
+					if (NUMBER_WIPE_AGENTS == 0 || NUMBER_HOOVE_AGENTS == 0 || NUMBER_WIPE_AGENTS > NUMBER_HOOVE_AGENTS - 2) {
+						NUMBER_WIPE_AGENTS = 0;
+						if (NUMBER_HOOVE_AGENTS == 0 || NUMBER_HOOVE_AGENTS > NUMBER_EXPLORE_AGENTS - 2) {
+							NUMBER_HOOVE_AGENTS = 0;
+							if (NUMBER_EXPLORE_AGENTS == 10) {
+								NUMBER_EXPLORE_AGENTS = 1;
+								if (configuration == 0) {
 									System.out.println("i: " + i);
 									break;
 								} else {
-									EvaluationConstants.configuration +=1;
+									configuration +=1;
 								}
 							} else {
-								EvaluationConstants.NUMBER_EXPLORE_AGENTS +=1;
+								NUMBER_EXPLORE_AGENTS +=1;
 							}
 						} else {
-							EvaluationConstants.NUMBER_HOOVE_AGENTS +=1;
+							NUMBER_HOOVE_AGENTS +=1;
 						}
 					} else {
-						EvaluationConstants.NUMBER_WIPE_AGENTS +=1;
+						NUMBER_WIPE_AGENTS +=1;
 					}
 				} else {
-					EvaluationConstants.NEW_FIELD_COUNT += 1000;
+					NEW_FIELD_COUNT += 1000;
 				}
 			} else {
-				EvaluationConstants.run += 1;
+				run += 1;
 			}	
-			System.out.println(EvaluationConstants.map + "_V" + EvaluationConstants.configuration + "_CE" + EvaluationConstants.NUMBER_EXPLORE_AGENTS + "_CH" + EvaluationConstants.NUMBER_HOOVE_AGENTS +
-						"_CW" + EvaluationConstants.NUMBER_WIPE_AGENTS + "_B" + EvaluationConstants.NEW_FIELD_COUNT + "_D" + EvaluationConstants.run);
+			System.out.println(map + "_V" + configuration + "_CE" + NUMBER_EXPLORE_AGENTS + "_CH" + NUMBER_HOOVE_AGENTS +
+						"_CW" + NUMBER_WIPE_AGENTS + "_B" + NEW_FIELD_COUNT + "_D" + run);
 		}
 	}
 

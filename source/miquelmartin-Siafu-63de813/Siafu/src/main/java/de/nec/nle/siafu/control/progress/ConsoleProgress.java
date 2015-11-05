@@ -117,7 +117,6 @@ public class ConsoleProgress implements Progress {
 	/** Report the event on the standard output. */
 	public void reportSimulationStarted() {
 		System.out.println("Starting the simulation");
-
 	}
 
 	/** Report the event on the standard output. */

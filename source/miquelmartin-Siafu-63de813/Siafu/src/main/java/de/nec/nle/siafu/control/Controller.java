@@ -38,6 +38,7 @@ import de.nec.nle.siafu.model.SimulationData;
 import de.nec.nle.siafu.model.Trackable;
 import de.nec.nle.siafu.model.World;
 import de.tud.evaluation.EvaluationConstants;
+import de.tud.evaluation.WorkingConfiguration;
 
 /**
  * This is the main class of the simulator. Upon running its main method, a
@@ -56,6 +57,7 @@ import de.tud.evaluation.EvaluationConstants;
  * 
  */
 public class Controller {
+	
 	/** Default value for CSV interval. */
 	private static final int DEFAULT_CSV_INTERVAL = 300;
 
@@ -131,6 +133,8 @@ public class Controller {
 	public static Progress getProgress() {
 		return progress;
 	}
+	
+	private WorkingConfiguration configuration;
 
 	/**
 	 * Initialize the simulator itself, and run the simulation.
@@ -139,7 +143,10 @@ public class Controller {
 	 *            simulation
 	 * @param simulationPath the path to the simulation data
 	 */
-	public Controller(final String configPath, String simulationPath) {
+	public Controller(final String configPath, String simulationPath, WorkingConfiguration configuration) {
+		this.configuration = configuration;
+		this.guiUsed = EvaluationConstants.USE_GUI;
+		
 		String verifiedConfigPath = configPath;
 
 		if (configPath == null) {
@@ -156,24 +163,25 @@ public class Controller {
 			config = createDefaultConfigFile();
 		}
 
-		// Command Listener thread (for external commands)
-		if (config.getBoolean("commandlistener.enable")) {
-			int tcpPort = config.getInt("commandlistener.tcpport");
-			try {
-				commandListener = new CommandListener(this, tcpPort);
-				// Start threads
-				new Thread(commandListener, "Command Listener thread")
-						.start();
-			} catch (IOException e) {
-				System.err.println("The TCP port " + tcpPort
-						+ " is already in use. Is there another copy of "
-						+ "Siafu running? Consider changing the port "
-						+ "number in the config file.");
-				return;
+		if (guiUsed) {
+			// Command Listener thread (for external commands)
+			if (config.getBoolean("commandlistener.enable")) {
+				int tcpPort = config.getInt("commandlistener.tcpport");
+				try {
+					commandListener = new CommandListener(this, tcpPort);
+					// Start threads
+					new Thread(commandListener, "Command Listener thread")
+							.start();
+				} catch (IOException e) {
+					System.err.println("The TCP port " + tcpPort
+							+ " is already in use. Is there another copy of "
+							+ "Siafu running? Consider changing the port "
+							+ "number in the config file.");
+					return;
+				}
 			}
 		}
 		
-		guiUsed = EvaluationConstants.USE_GUI;
 		if (!guiUsed)
 			simulationPath = "C:\\Users\\ChrissiMobil\\git\\cleaningrobots\\source\\miquelmartin-Siafu-63de813\\Simulations\\Simulation-Testland\\target\\classes";
 		
@@ -193,8 +201,8 @@ public class Controller {
 			// Printout to the Console
 			progress = new ConsoleProgress();
 
-			// Start the simulation without a GUI
-			simulation = new Simulation(simulationPath, this);
+			// Start the simulation without a GUI			
+			simulation = new Simulation(simulationPath, this, configuration);
 		} else {
 			// No simulation and no GUI to load. This won't
 			// work. Die.
@@ -261,7 +269,7 @@ public class Controller {
 	 *            simulation.
 	 */
 	public void startSimulation(final String simulationPath) {
-		simulation = new Simulation(simulationPath, this);
+		simulation = new Simulation(simulationPath, this, configuration);
 	}
 
 	/**

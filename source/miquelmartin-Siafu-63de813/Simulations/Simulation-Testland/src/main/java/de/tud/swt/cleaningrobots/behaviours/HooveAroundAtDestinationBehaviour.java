@@ -115,7 +115,7 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 		if (getRobot().getWorld().hasState(p, STATE_FREE))
 		{
 			result = getRobot().getWorld().getField(p);
-			result.addState(STATE_HOOVE);
+			result.addState(STATE_HOOVE, this.getRobot().configuration.iteration);
 		}	
 		return result;
 	}

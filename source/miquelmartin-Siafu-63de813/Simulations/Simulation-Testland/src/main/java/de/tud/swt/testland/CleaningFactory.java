@@ -5,14 +5,16 @@ import java.util.ArrayList;
 import de.nec.nle.siafu.exceptions.PlaceNotFoundException;
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.World;
+import de.tud.evaluation.WorkingConfiguration;
 
 public class CleaningFactory extends RobotFactory {
 
 	private int counter;
 	private int amount;
 	
-	public CleaningFactory ()
+	public CleaningFactory (WorkingConfiguration configuration)
 	{
+		super(configuration);
 		counter = 0;
 		amount = 3;
 	}

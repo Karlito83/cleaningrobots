@@ -33,7 +33,7 @@ public class MergeMaster extends Behaviour {
 		
 		this.mr = mr;
 		this.lastChange = new ArrayList<RobotRole>();
-		this.ma = new MergeAll();
+		this.ma = new MergeAll(this.getRobot().configuration);
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.WLAN, 1);

@@ -67,15 +67,15 @@ public class BlockedOnlySensor implements ISensor {
 		
 		boolean positionIsAtWall = siafuWorld.isAWall(new Position(row, column));
 		
-		result = new Field(column, row, !positionIsAtWall);
+		result = new Field(column, row, !positionIsAtWall, 0);
 		if(positionIsAtWall)
 		{
 			logger.debug("Blocked field: " + this);
-			result.addState(STATE_BLOCKED);
+			result.addState(STATE_BLOCKED, 0);
 		}
 		else
 		{
-			result.addState(STATE_FREE);
+			result.addState(STATE_FREE, 0);
 		}
 		
 		

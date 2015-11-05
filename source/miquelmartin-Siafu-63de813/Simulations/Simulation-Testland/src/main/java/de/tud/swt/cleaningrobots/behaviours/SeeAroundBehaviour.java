@@ -5,9 +5,6 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Map;
 
-import de.nec.nle.siafu.model.Agent;
-import de.nec.nle.siafu.model.Position;
-import de.nec.nle.siafu.model.World;
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.RobotCore;
@@ -19,9 +16,6 @@ import de.tud.swt.cleaningrobots.model.State;
 
 public class SeeAroundBehaviour extends Behaviour {
 
-	private Agent agent;
-	private World siafuWorld;
-	
 	private int visionRadius = 0;
 	
 	private final State STATE_BLOCKED = State.createState("Blocked");
@@ -29,10 +23,7 @@ public class SeeAroundBehaviour extends Behaviour {
 		
 	public SeeAroundBehaviour(RobotCore robot) {
 		super(robot);
-		
-		this.agent = robot.getINavigationController().getAgent();
-		this.siafuWorld = robot.getINavigationController().getSiafuWorld();		
-		
+				
 		supportedStates.add(STATE_BLOCKED);
 		supportedStates.add(STATE_FREE);
 		
@@ -91,22 +82,22 @@ public class SeeAroundBehaviour extends Behaviour {
 		Field result = null;
 		
 		//Offset mit Agenten position vereinigen
-		int row =  agent.getPos().getRow() + yOffset;
-		int column =  agent.getPos().getCol() + xOffset;
+		int row =  getRobot().getINavigationController().getRow() + yOffset;
+		int col =  getRobot().getINavigationController().getCol() + xOffset;
 		
 		//prüfe ob es eine Wand ist
-		boolean positionIsAtWall = siafuWorld.isAWall(new Position(row, column));
+		boolean positionIsAtWall = getRobot().getINavigationController().isWall(row, col);
 		
 		//neues Feld anlegen
-		result = new Field(column, row, !positionIsAtWall);
+		result = new Field(col, row, !positionIsAtWall, this.getRobot().configuration.iteration);
 		//wenn Wand ist dann status dazu anlegen ansonsten freien Status geben
 		if(positionIsAtWall)
 		{
-			result.addState(STATE_BLOCKED);
+			result.addState(STATE_BLOCKED, this.getRobot().configuration.iteration);
 		}
 		else
 		{
-			result.addState(STATE_FREE);
+			result.addState(STATE_FREE, this.getRobot().configuration.iteration);
 		}
 		
 		

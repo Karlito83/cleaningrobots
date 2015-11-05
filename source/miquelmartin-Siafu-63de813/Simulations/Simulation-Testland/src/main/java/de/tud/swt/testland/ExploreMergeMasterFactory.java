@@ -4,15 +4,15 @@ import java.util.ArrayList;
 
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.World;
-import de.tud.evaluation.EvaluationConstants;
+import de.tud.evaluation.WorkingConfiguration;
 import de.tud.swt.cleaningrobots.FollowerRole;
 import de.tud.swt.cleaningrobots.MasterRole;
 
 public class ExploreMergeMasterFactory extends RobotFactory {
 
-	public ExploreMergeMasterFactory ()
+	public ExploreMergeMasterFactory (WorkingConfiguration configuration)
 	{
-		super();
+		super(configuration);
 	}
 	
 	/**
@@ -31,14 +31,14 @@ public class ExploreMergeMasterFactory extends RobotFactory {
 		LoadStationAgent lsa = createLoadStationAgent(world);
 		population.add(lsa);
 		
-		if (EvaluationConstants.NUMBER_EXPLORE_AGENTS > 0) {
+		if (configuration.number_explore_agents > 0) {
 			MasterRole mre = new MasterRole(lsa.getRobot());
 			mre.addRole(mre);			
 			
 			lsa.addMasterMerge(mre);
 			
 			//explore agents
-			for (int i = 0; i < EvaluationConstants.NUMBER_EXPLORE_AGENTS; i++) {
+			for (int i = 0; i < configuration.number_explore_agents; i++) {
 				ExploreRobotAgent era = createExploreAgent(world);
 				era.addRandomStandardGoals();
 				population.add(era);		
@@ -49,14 +49,14 @@ public class ExploreMergeMasterFactory extends RobotFactory {
 				mre.getFollowers().add(fre);
 			}
 		
-			if (EvaluationConstants.NUMBER_HOOVE_AGENTS > 0) {
+			if (configuration.number_hoove_agents > 0) {
 				MasterRole mrh = new MasterRole(lsa.getRobot());
 				mrh.addRole(mrh);
 				
 				lsa.addMasterMerge(mrh);
 
 				//hoove agents
-				for (int i = 0; i < EvaluationConstants.NUMBER_HOOVE_AGENTS; i++) {
+				for (int i = 0; i < configuration.number_hoove_agents; i++) {
 					HooveRobotAgent hra = createHooveAgent(world);
 					hra.addRandomStandardGoals();
 					population.add(hra);
@@ -68,14 +68,14 @@ public class ExploreMergeMasterFactory extends RobotFactory {
 				}
 				mrh.getFollowers().add(mre);
 							
-				if (EvaluationConstants.NUMBER_WIPE_AGENTS > 0) {
+				if (configuration.number_wipe_agents > 0) {
 					MasterRole mrw = new MasterRole(lsa.getRobot());
 					mrw.addRole(mrw);
 					
 					lsa.addMasterMerge(mrw);
 					
 					//wipe agents
-					for (int i = 0; i < EvaluationConstants.NUMBER_WIPE_AGENTS; i++) {
+					for (int i = 0; i < configuration.number_wipe_agents; i++) {
 						WipeRobotAgent wra = createWipeAgent(world);
 						wra.addRandomStandardGoals();
 						population.add(wra);

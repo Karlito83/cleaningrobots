@@ -26,11 +26,10 @@ import java.util.List;
 import de.nec.nle.siafu.behaviormodels.BaseAgentModel;
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.World;
-import de.tud.evaluation.EvaluationConstants;
+import de.tud.evaluation.ExchangeMeasurement;
+import de.tud.evaluation.WorkingConfiguration;
 import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.measure.ExchangeMeasurement;
 import de.tud.swt.cleaningrobots.measure.FileWorker;
-import de.tud.swt.cleaningrobots.util.Variables;
 
 /**
  * This Agent Model defines the behavior of users in this test simulation.
@@ -54,8 +53,8 @@ public class AgentModel extends BaseAgentModel {
 	 * @param world
 	 *            the simulation's world
 	 */
-	public AgentModel(final World world) {
-		super(world);
+	public AgentModel(final World world, WorkingConfiguration configuration) {
+		super(world, configuration);
 		this.completeFinish = false;
 		this.roboterFinish = false;
 	}
@@ -74,20 +73,20 @@ public class AgentModel extends BaseAgentModel {
 		ArrayList<Agent> agents = new ArrayList<Agent>();
 
 		try {
-			Variables.iteration = 0;
-			Variables.exchange.clear();
-			switch (EvaluationConstants.configuration) {
-				case 0:  agents = new MasterExploreFactory().createRobots(world);
+			//Variables.iteration = 0;
+			//Variables.exchange.clear();
+			switch (configuration.config) {
+				case 0:  agents = new MasterExploreFactory(configuration).createRobots(world);
 						 break;
-	            case 1:  agents = new ExploreWithoutMasterFactory().createRobots(world);
+	            case 1:  agents = new ExploreWithoutMasterFactory(configuration).createRobots(world);
 	                     break;	            
-	            case 2:  agents = new ExploreMergeMasterFactory().createRobots(world);
+	            case 2:  agents = new ExploreMergeMasterFactory(configuration).createRobots(world);
 	                     break;
-	            case 3:  agents = new ExploreMergeMasterCalculateFactory().createRobots(world);
+	            case 3:  agents = new ExploreMergeMasterCalculateFactory(configuration).createRobots(world);
 	                     break;
-	            case 4:  agents = new ExploreMergeMasterCalculateRelativeFactory().createRobots(world);
+	            case 4:  agents = new ExploreMergeMasterCalculateRelativeFactory(configuration).createRobots(world);
 	                     break;
-	            default: agents = new MasterExploreFactory().createRobots(world);
+	            default: agents = new MasterExploreFactory(configuration).createRobots(world);
 	                     break;
 	        }
 		} catch (Exception ex) {
@@ -106,7 +105,8 @@ public class AgentModel extends BaseAgentModel {
 	 */
 	@Override
 	public void doIteration(final Collection<Agent> agents) {
-		Variables.iteration += 1;
+		configuration.iteration = configuration.iteration + 1;
+		//Variables.iteration += 1;
 		//System.out.println("New Iteration: " + Variables.iteration);
 		if (!completeFinish) {
 			if (!roboterFinish) {			
@@ -134,8 +134,8 @@ public class AgentModel extends BaseAgentModel {
 					RobotCore rc = ((RobotAgent)a).getRobot();
 					
 					//Json Datein in .txt speicher
-					FileWorker fw = new FileWorker(EvaluationConstants.map + "_V" + EvaluationConstants.configuration + "_CE" + EvaluationConstants.NUMBER_EXPLORE_AGENTS + "_CH" + EvaluationConstants.NUMBER_HOOVE_AGENTS +
-							"_CW" + EvaluationConstants.NUMBER_WIPE_AGENTS + "_B" + EvaluationConstants.NEW_FIELD_COUNT + "_D" + EvaluationConstants.run + "_" + rc.getName()+ ".txt");				
+					FileWorker fw = new FileWorker(configuration.map + "_V" + configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
+							"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + rc.getName()+ ".txt");				
 					rc.getMeasurement().benchmarkTime = (endTime - startTime);
 					String measu = rc.getMeasurement().toJson();
 					fw.addLineToFile(measu);
@@ -144,17 +144,17 @@ public class AgentModel extends BaseAgentModel {
 					//outputCsv(rc.getMeasurement().timeProTick, rc.getName() + "Time");
 					
 				}
-				FileWorker fw = new FileWorker(EvaluationConstants.map + "_V" + EvaluationConstants.configuration + "_CE" + EvaluationConstants.NUMBER_EXPLORE_AGENTS + "_CH" + EvaluationConstants.NUMBER_HOOVE_AGENTS +
-						"_CW" + EvaluationConstants.NUMBER_WIPE_AGENTS + "_B" + EvaluationConstants.NEW_FIELD_COUNT + "_D" + EvaluationConstants.run + "_" + "exchange.txt");
+				FileWorker fw = new FileWorker(configuration.map + "_V" +configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
+						"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + "exchange.txt");
 				int tester = 0;
-				for (ExchangeMeasurement em : Variables.exchange) {
+				for (ExchangeMeasurement em : configuration.exchange) {
 					tester++;
 					em.setNumber(tester);
 					String result = em.toJson();
 					fw.addLineToFile(result);
 				}
 				System.out.println("Programm Finish!");
-				System.out.println("Iterations: " + Variables.iteration);
+				System.out.println("Iterations: " + configuration.iteration);
 				this.completeFinish = true;
 				//siafuWorld.pause(true);
 			}

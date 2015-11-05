@@ -13,26 +13,26 @@ public class AgentNavigationAdapter implements INavigationController {
 		this.agent = agent;
 		this.siafuWorld = siafuWorld;
 	}
-	
-	public Agent getAgent()	{
-		return agent;
-	}
 
-	public World getSiafuWorld() {
-		return siafuWorld;
-	}
-	
-	public void moveTowardsDestination() {
-		agent.moveTowardsDestination();
-	}
-
-	public boolean isAtDestination() {
-		return agent.isAtDestination();
-	}
-
+	@Override
 	public void setPosition(Position position) {
 		de.nec.nle.siafu.model.Position siafuPosition = new de.nec.nle.siafu.model.Position(
 				position.getY(), position.getX());
 		agent.setPos(siafuPosition);
+	}
+
+	@Override
+	public boolean isWall(int row, int col) {
+		return siafuWorld.isAWall(new de.nec.nle.siafu.model.Position(row, col));
+	}
+
+	@Override
+	public int getCol() {
+		return agent.getPos().getCol();
+	}
+
+	@Override
+	public int getRow() {
+		return agent.getPos().getRow();
 	}
 }

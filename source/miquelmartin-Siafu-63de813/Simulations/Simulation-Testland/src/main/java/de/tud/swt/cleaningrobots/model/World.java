@@ -11,8 +11,8 @@ import java.util.Random;
 import java.util.Set;
 
 import cleaningrobots.CleaningrobotsFactory;
+import de.tud.evaluation.ExchangeMeasurement;
 import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.measure.ExchangeMeasurement;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 import de.tud.swt.cleaningrobots.util.RobotDestinationCalculation;
 
@@ -118,7 +118,7 @@ public class World {
 		
 		for (State newState : newField.getStates()) {
 			if (!oldField.containsState(newState)) {
-				oldField.addState(newState);
+				oldField.addState(newState, robot.configuration.iteration);
 				newInformationCounter++;
 			}
 		}

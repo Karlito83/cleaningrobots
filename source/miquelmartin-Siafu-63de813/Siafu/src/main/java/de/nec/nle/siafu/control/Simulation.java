@@ -37,6 +37,7 @@ import de.nec.nle.siafu.output.CSVPrinter;
 import de.nec.nle.siafu.output.NullPrinter;
 import de.nec.nle.siafu.output.SimulatorOutputPrinter;
 import de.tud.evaluation.EvaluationConstants;
+import de.tud.evaluation.WorkingConfiguration;
 
 /**
  * The simulation class implements the <code>Runnable</code> that performs
@@ -138,6 +139,8 @@ public class Simulation implements Runnable {
 	public boolean isSimulationRunning() {
 		return simulationRunning;
 	}
+	
+	private WorkingConfiguration configuration;
 
 	/**
 	 * Build a <code>Simulation</code> object and start a thread that
@@ -147,7 +150,12 @@ public class Simulation implements Runnable {
 	 *            maps, sprites, behavior models, etc...
 	 * @param control the simulation <code>Controller</code>
 	 */
-	public Simulation(final String simulationPath, final Controller control) {
+	public Simulation(final String simulationPath, final Controller control, WorkingConfiguration configuration) {
+		this.configuration = configuration;
+		
+		if (!EvaluationConstants.USE_GUI)
+			this.simulationRunning = true;
+		
 		this.simData = SimulationData.getInstance(simulationPath);
 		this.siafuConfig = control.getSiafuConfig();
 		this.simulationConfig = simData.getConfigFile();
@@ -242,14 +250,16 @@ public class Simulation implements Runnable {
 	 */
 	public void run() {
 		if (EvaluationConstants.USE_GUI) {
-			EvaluationConstants.NUMBER_EXPLORE_AGENTS = 6;
-			EvaluationConstants.NUMBER_HOOVE_AGENTS = 4;
-			EvaluationConstants.NUMBER_WIPE_AGENTS = 2;
-			EvaluationConstants.run = 1;
-			EvaluationConstants.configuration = 1;//0 1 2 3 4
-			EvaluationConstants.NEW_FIELD_COUNT = 0; //0 0 500 500 500
 			
-			this.world = new World(this, simData);
+			configuration.config = 0;
+			configuration.run = 1;
+			configuration.new_field_count = 0;
+			configuration.number_explore_agents = 1;
+			configuration.number_hoove_agents = 0;
+			configuration.number_wipe_agents = 0;
+			configuration.map = "R";			
+			
+			this.world = new World(this, simData, configuration);
 			this.time = world.getTime();
 			this.iterationStep = simulationConfig.getInt("iterationstep");
 			this.agentModel = world.getAgentModel();
@@ -271,7 +281,22 @@ public class Simulation implements Runnable {
 			simulationRunning = false;
 			Controller.getProgress().reportSimulationEnded();
 		} else {
-			for (int i = 0; i < 15000; i++) {
+			this.world = new World(this, simData, configuration);
+			this.time = world.getTime();
+			this.iterationStep = simulationConfig.getInt("iterationstep");
+			this.agentModel = world.getAgentModel();
+			this.worldModel = world.getWorldModel();
+			this.contextModel = world.getContextModel();
+			
+			//unwichtig
+			while (!agentModel.isRunFinish()) {
+				tickTime();
+				worldModel.doIteration(world.getPlaces());
+				agentModel.doIteration(world.getPeople());
+				contextModel.doIteration(world.getOverlays());
+			}
+			simulationRunning = false;
+			/*for (int i = 0; i < 15000; i++) {
 				//set Evaluation configuration
 				if (EvaluationConstants.run == 5) {
 					EvaluationConstants.run = 1;
@@ -305,14 +330,14 @@ public class Simulation implements Runnable {
 					EvaluationConstants.run += 1;
 				}
 				
-				this.world = new World(this, simData);
+				this.world = new World(this, simData, configuration);
 				this.time = world.getTime();
 				this.iterationStep = simulationConfig.getInt("iterationstep");
 				this.agentModel = world.getAgentModel();
 				this.worldModel = world.getWorldModel();
 				this.contextModel = world.getContextModel();
 				
-				
+				//unwichtig
 				Controller.getProgress().reportSimulationStarted();
 				simulationRunning = true;
 				while (!agentModel.isRunFinish()) {
@@ -326,8 +351,8 @@ public class Simulation implements Runnable {
 					control.scheduleDrawing();				
 				}
 				simulationRunning = false;
-				Controller.getProgress().reportSimulationEnded();
-			}
+				Controller.getProgress().reportSimulationEnded();				
+			}*/
 		}
 	}
 	

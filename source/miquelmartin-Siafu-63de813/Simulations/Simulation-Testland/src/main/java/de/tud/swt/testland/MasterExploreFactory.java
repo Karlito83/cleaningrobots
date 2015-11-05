@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.World;
-import de.tud.evaluation.EvaluationConstants;
+import de.tud.evaluation.WorkingConfiguration;
 import de.tud.swt.cleaningrobots.FollowerRole;
 import de.tud.swt.cleaningrobots.MasterRole;
 
@@ -12,9 +12,9 @@ public class MasterExploreFactory extends RobotFactory {
 
 	private boolean relative;
 	
-	public MasterExploreFactory ()
+	public MasterExploreFactory (WorkingConfiguration configuration)
 	{
-		super();
+		super(configuration);
 		this.relative = false;
 	}
 	
@@ -34,13 +34,13 @@ public class MasterExploreFactory extends RobotFactory {
 		LoadStationAgent lsa = createLoadStationAgent(world);
 		population.add(lsa);
 		
-		if (EvaluationConstants.NUMBER_EXPLORE_AGENTS > 0) {
+		if (configuration.number_explore_agents > 0) {
 			MasterRole mre = new MasterRole(lsa.getRobot());
 			mre.addRole(mre);			
 			lsa.addMasterExploreGoals(mre, relative);
 			
 			//explore agents
-			for (int i = 0; i < EvaluationConstants.NUMBER_EXPLORE_AGENTS; i++) {
+			for (int i = 0; i < configuration.number_explore_agents; i++) {
 				ExploreRobotAgent era = createExploreAgent(world);
 				era.addMasterExploreGoals();
 				population.add(era);		
@@ -51,13 +51,13 @@ public class MasterExploreFactory extends RobotFactory {
 				mre.getFollowers().add(fre);
 			}
 			
-			if (EvaluationConstants.NUMBER_HOOVE_AGENTS > 0) {
+			if (configuration.number_hoove_agents > 0) {
 				MasterRole mrh = new MasterRole(lsa.getRobot());
 				mrh.addRole(mrh);
 				lsa.addMasterHooveGoal(mrh, relative);
 				
 				//hoove agents
-				for (int i = 0; i < EvaluationConstants.NUMBER_HOOVE_AGENTS; i++) {
+				for (int i = 0; i < configuration.number_hoove_agents; i++) {
 					HooveRobotAgent hra = createHooveAgent(world);
 					hra.addMasterHooveGoals();
 					population.add(hra);
@@ -68,13 +68,13 @@ public class MasterExploreFactory extends RobotFactory {
 					mrh.getFollowers().add(frh);
 				}
 								
-				if (EvaluationConstants.NUMBER_WIPE_AGENTS > 0) {
+				if (configuration.number_wipe_agents > 0) {
 					MasterRole mrw = new MasterRole(lsa.getRobot());
 					mrw.addRole(mrw);
 					lsa.addMasterWipeGoal(mrw, relative);
 					
 					//wipe agents
-					for (int i = 0; i < EvaluationConstants.NUMBER_WIPE_AGENTS; i++) {
+					for (int i = 0; i < configuration.number_wipe_agents; i++) {
 						WipeRobotAgent wra = createWipeAgent(world);
 						wra.addMasterWipeGoals();
 						population.add(wra);

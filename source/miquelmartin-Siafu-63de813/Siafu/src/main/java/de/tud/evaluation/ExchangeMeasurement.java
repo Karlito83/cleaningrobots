@@ -1,4 +1,4 @@
-package de.tud.swt.cleaningrobots.measure;
+package de.tud.evaluation;
 
 import com.google.gson.Gson;
 

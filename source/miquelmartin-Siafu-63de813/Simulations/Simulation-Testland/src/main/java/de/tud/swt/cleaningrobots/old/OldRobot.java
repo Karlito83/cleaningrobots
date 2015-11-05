@@ -130,10 +130,10 @@ private final Logger logger = LogManager.getRootLogger();
 					.getFields()) {
 				boolean isBlocked = EMFUtils.listContains(modelField
 						.getStates(), blockedState);
-				Field f = new Field(modelField.getPos().getXpos(), modelField.getPos().getYpos(), !isBlocked);
+				Field f = new Field(modelField.getPos().getXpos(), modelField.getPos().getYpos(), !isBlocked, 0);
 				for (cleaningrobots.State modelState : modelField.getStates()) {
 					State state = State.createState(modelState.getName());
-					f.addState(state);
+					f.addState(state, 0);
 				}
 				world.addField(f);
 			}

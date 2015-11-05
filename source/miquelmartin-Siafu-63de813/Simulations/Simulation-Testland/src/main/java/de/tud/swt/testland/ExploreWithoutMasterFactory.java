@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.World;
-import de.tud.evaluation.EvaluationConstants;
+import de.tud.evaluation.WorkingConfiguration;
 
 public class ExploreWithoutMasterFactory extends RobotFactory {
 	
-	public ExploreWithoutMasterFactory ()
+	public ExploreWithoutMasterFactory (WorkingConfiguration configuration)
 	{
-		super();
+		super(configuration);
 	}
 	
 	/**
@@ -30,28 +30,28 @@ public class ExploreWithoutMasterFactory extends RobotFactory {
 		lsa.addLoadIfRobotWantGoal();
 		population.add(lsa);
 		
-		if (EvaluationConstants.NUMBER_EXPLORE_AGENTS > 0) {
+		if (configuration.number_explore_agents > 0) {
 			
 			//explore agents
-			for (int i = 0; i < EvaluationConstants.NUMBER_EXPLORE_AGENTS; i++) {
+			for (int i = 0; i < configuration.number_explore_agents; i++) {
 				ExploreRobotAgent era = createExploreAgent(world);
 				era.addWithoutMasterConfiguration();
 				population.add(era);
 			}
 			
-			if (EvaluationConstants.NUMBER_HOOVE_AGENTS > 0) {
+			if (configuration.number_hoove_agents > 0) {
 				
 				//hoove agents
-				for (int i = 0; i < EvaluationConstants.NUMBER_HOOVE_AGENTS; i++) {
+				for (int i = 0; i < configuration.number_hoove_agents; i++) {
 					HooveRobotAgent hra = createHooveAgent(world);
 					hra.addWithoutMasterConfiguration();
 					population.add(hra);
 				}
 				
-				if (EvaluationConstants.NUMBER_WIPE_AGENTS > 0) {
+				if (configuration.number_wipe_agents > 0) {
 					
 					//wipe agents
-					for (int i = 0; i < EvaluationConstants.NUMBER_WIPE_AGENTS; i++) {
+					for (int i = 0; i < configuration.number_wipe_agents; i++) {
 						WipeRobotAgent wra = createWipeAgent(world);
 						wra.addWithoutMasterConfiguration();
 						population.add(wra);

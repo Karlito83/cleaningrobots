@@ -3,7 +3,6 @@ package de.tud.swt.cleaningrobots.behaviours;
 import java.util.EnumMap;
 import java.util.Map;
 
-import de.tud.evaluation.EvaluationConstants;
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.RobotCore;
@@ -48,7 +47,7 @@ public class HooveBehaviour extends Behaviour {
 		if(getRobot().getDestinationContainer().isAtDestination()){
 			
 			//if you find more than the value of new field drive back to load station and give information to master
-			if (EvaluationConstants.NEW_FIELD_COUNT > 0 && this.getRobot().getWorld().getNewInformationCounter() > EvaluationConstants.NEW_FIELD_COUNT) {
+			if (this.getRobot().configuration.new_field_count > 0 && this.getRobot().getWorld().getNewInformationCounter() > this.getRobot().configuration.new_field_count) {
 				getRobot().getDestinationContainer().setDestinationLoadStation();
 				this.getRobot().getWorld().resetNewInformationCounter();
 				return false;

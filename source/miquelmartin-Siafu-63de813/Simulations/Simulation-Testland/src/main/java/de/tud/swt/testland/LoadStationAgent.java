@@ -2,6 +2,7 @@ package de.tud.swt.testland;
 
 import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
+import de.tud.evaluation.WorkingConfiguration;
 import de.tud.swt.cleaningrobots.AgentNavigationAdapter;
 import de.tud.swt.cleaningrobots.MasterRole;
 import de.tud.swt.cleaningrobots.RobotCore;
@@ -20,11 +21,13 @@ import de.tud.swt.cleaningrobots.hardware.Wlan;
 
 public class LoadStationAgent extends RobotAgent {
 
-	public LoadStationAgent(Position start, String image, World world) {
+	public LoadStationAgent(Position start, String image, World world, WorkingConfiguration configuration) {
 		super(start, image, world);
+		
+		//System.out.println("Start Position: Col: " + start.getCol() + " Row: " + start.getRow());
 
 		siafuWorld = world;
-		cleaningRobot = new RobotCore(this, new AgentNavigationAdapter(this, siafuWorld), this, null);
+		cleaningRobot = new RobotCore(this, new AgentNavigationAdapter(this, siafuWorld), this, null, configuration);
 		
 		cleaningRobot.addHardwareComponent(new Rechner());
 		cleaningRobot.addHardwareComponent(new LoadStation());
@@ -63,22 +66,13 @@ public class LoadStationAgent extends RobotAgent {
 		{
 			cleaningRobot.addGoal(lirwg);
 		}
-		cleaningRobot.addGoal(new ExploreDumpGoal(cleaningRobot));
 	}
 	
 	public void addExploreDumpGoal () {
 		cleaningRobot.addGoal(new ExploreDumpGoal(cleaningRobot));
 	}
 	
-	//merge goals
-	/*public void addMasterFollower () {
-		MergeMasterFollowerGoal mmfg = new MergeMasterFollowerGoal(cleaningRobot);
-		if (mmfg.isHardwareCorrect())
-		{
-			cleaningRobot.addGoal(mmfg);
-		}
-	}*/
-	
+	//merge goals	
 	public void addMasterMerge (MasterRole mr) {
 		MergeMasterGoal mmg = new MergeMasterGoal(cleaningRobot, mr);
 		if (mmg.isHardwareCorrect())

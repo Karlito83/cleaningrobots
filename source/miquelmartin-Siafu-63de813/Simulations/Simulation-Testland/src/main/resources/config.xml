@@ -29,6 +29,7 @@
 	and context? -->
 	<models>
 		<agentmodel>de.tud.swt.testland.AgentModel</agentmodel>
+		<multiagentmodel>de.tud.swt.testland.AgentModelMulti</multiagentmodel>
 		<worldmodel>de.tud.swt.testland.WorldModel</worldmodel>
 		<contextmodel>de.tud.swt.testland.ContextModel</contextmodel>
 	</models>

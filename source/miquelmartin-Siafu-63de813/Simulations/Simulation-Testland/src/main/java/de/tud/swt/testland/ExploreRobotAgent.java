@@ -2,6 +2,7 @@ package de.tud.swt.testland;
 
 import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
+import de.tud.evaluation.WorkingConfiguration;
 import de.tud.swt.cleaningrobots.AgentNavigationAdapter;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.goals.MasterGoal;
@@ -18,11 +19,11 @@ import de.tud.swt.cleaningrobots.hardware.Wlan;
 
 public class ExploreRobotAgent extends RobotAgent {
 
-	public ExploreRobotAgent(Position start, String image, World world) {
+	public ExploreRobotAgent(Position start, String image, World world, WorkingConfiguration configuration) {
 		super(start, image, world);
 
 		siafuWorld = world;
-		cleaningRobot = new RobotCore(this, new AgentNavigationAdapter(this, siafuWorld), this, new Accu(48.0)); //new Accu(0, 1000)
+		cleaningRobot = new RobotCore(this, new AgentNavigationAdapter(this, siafuWorld), this, new Accu(48.0), configuration); //new Accu(0, 1000)
 		
 		cleaningRobot.addHardwareComponent(new Rechner());
 		cleaningRobot.addHardwareComponent(new Wlan());
