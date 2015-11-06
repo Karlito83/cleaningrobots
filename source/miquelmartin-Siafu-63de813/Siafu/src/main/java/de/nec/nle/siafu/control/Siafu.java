@@ -97,44 +97,45 @@ public final class Siafu {
 			int NUMBER_WIPE_AGENTS = 0;
 			int NUMBER_HOOVE_AGENTS = 0;
 			int NEW_FIELD_COUNT = 0;
-			String map = "R"; //F...Fakultät R...Rechteck L...Labyrinth	
 			int run = 0;	
 			int configuration = 0;
 			
 			while (running) {
-				if (run == 1) {
-					run = 1;
-					if (NEW_FIELD_COUNT == 5000 || configuration < 3) {
-						NEW_FIELD_COUNT = 0;
-						if (NUMBER_WIPE_AGENTS == 0 || NUMBER_HOOVE_AGENTS == 0 || NUMBER_WIPE_AGENTS > NUMBER_HOOVE_AGENTS - 2) {
-							NUMBER_WIPE_AGENTS = 0;
-							if (NUMBER_HOOVE_AGENTS == 0 || NUMBER_HOOVE_AGENTS > NUMBER_EXPLORE_AGENTS - 2) {
-								NUMBER_HOOVE_AGENTS = 0;
-								if (NUMBER_EXPLORE_AGENTS == 10) {
-									NUMBER_EXPLORE_AGENTS = 1;
-									if (configuration == 0) {
-										running = false;
-										break;
+				for (int i = 0; i <= 3; i++) {
+					if (run == 1) {
+						run = 1;
+						if (NEW_FIELD_COUNT == 5000 || configuration < 3) {
+							NEW_FIELD_COUNT = 0;
+							if (NUMBER_WIPE_AGENTS == 0 || NUMBER_HOOVE_AGENTS == 0 || NUMBER_WIPE_AGENTS > NUMBER_HOOVE_AGENTS - 2) {
+								NUMBER_WIPE_AGENTS = 0;
+								if (NUMBER_HOOVE_AGENTS == 0 || NUMBER_HOOVE_AGENTS > NUMBER_EXPLORE_AGENTS - 2) {
+									NUMBER_HOOVE_AGENTS = 0;
+									if (NUMBER_EXPLORE_AGENTS == 10) {
+										NUMBER_EXPLORE_AGENTS = 1;
+										if (configuration == 0) {
+											running = false;
+											break;
+										} else {
+											configuration +=1;
+										}
 									} else {
-										configuration +=1;
+										NUMBER_EXPLORE_AGENTS +=1;
 									}
 								} else {
-									NUMBER_EXPLORE_AGENTS +=1;
+									NUMBER_HOOVE_AGENTS +=1;
 								}
 							} else {
-								NUMBER_HOOVE_AGENTS +=1;
+								NUMBER_WIPE_AGENTS +=1;
 							}
 						} else {
-							NUMBER_WIPE_AGENTS +=1;
+							NEW_FIELD_COUNT += 1000;
 						}
 					} else {
-						NEW_FIELD_COUNT += 1000;
+						run += 1;
 					}
-				} else {
-					run += 1;
+					WorkingConfiguration wc = new WorkingConfiguration(NUMBER_EXPLORE_AGENTS, NUMBER_HOOVE_AGENTS, NUMBER_WIPE_AGENTS, run, configuration, NEW_FIELD_COUNT, i);
+					configurations.add(wc);
 				}
-				WorkingConfiguration wc = new WorkingConfiguration(NUMBER_EXPLORE_AGENTS, NUMBER_HOOVE_AGENTS, NUMBER_WIPE_AGENTS, run, configuration, NEW_FIELD_COUNT, map);
-				configurations.add(wc);
 			}
 			
 			System.out.println("Configurationen erstellt: " + configurations.size());
@@ -167,7 +168,7 @@ public final class Siafu {
 		}
 		else 
 		{
-			new Controller(configPath, simulationPath, new WorkingConfiguration(1, 0, 0, 1, 0, 0, "R"));
+			new Controller(configPath, simulationPath, new WorkingConfiguration(1, 0, 0, 1, 0, 0, 0));
 		}
 		//new Controller(configPath, simulationPath);
 	}

@@ -257,7 +257,7 @@ public class Simulation implements Runnable {
 			configuration.number_explore_agents = 1;
 			configuration.number_hoove_agents = 0;
 			configuration.number_wipe_agents = 0;
-			configuration.map = "R";			
+			configuration.map = 0;			
 			
 			this.world = new World(this, simData, configuration);
 			this.time = world.getTime();

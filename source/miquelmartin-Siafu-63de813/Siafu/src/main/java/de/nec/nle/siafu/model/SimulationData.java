@@ -63,6 +63,9 @@ public abstract class SimulationData {
 	 * Path to the walls image of the simulation data.
 	 */
 	public static final String WALLS_FILE = "map/walls.png";
+	public static final String WALLS_FILE_LAB = "map/wallsLab.png";
+	public static final String WALLS_FILE_FAKK = "map/wallsFakK.png";
+	public static final String WALLS_FILE_FAK = "map/wallsFak.png";
 
 	/**
 	 * Path to the backgroundimage of the simulation data.
@@ -247,6 +250,18 @@ public abstract class SimulationData {
 	 */
 	public InputStream getWallsFile() {
 		return getFile(WALLS_FILE);
+	}
+	
+	public InputStream getWallsLabFile() {
+		return getFile(WALLS_FILE_LAB);
+	}
+	
+	public InputStream getWallsFakFile() {
+		return getFile(WALLS_FILE_FAK);
+	}
+	
+	public InputStream getWallsFakKFile() {
+		return getFile(WALLS_FILE_FAKK);
 	}
 
 	/**

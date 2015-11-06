@@ -52,6 +52,7 @@ public class MultiSimulation implements Runnable {
 	 */
 	public MultiSimulation(WorkingConfiguration configuration) {
 		String simulationPath = "C:\\Users\\ChrissiMobil\\git\\cleaningrobots\\source\\miquelmartin-Siafu-63de813\\Simulations\\Simulation-Testland\\target\\classes";
+		//simulationPath = "C:\\Users\\cwerner\\Documents\\cleaningrobots-master\\source\\miquelmartin-Siafu-63de813\\Simulations\\Simulation-Testland\\target\\classes";
 		this.configuration = configuration;
 		
 		this.simulationRunning = true;

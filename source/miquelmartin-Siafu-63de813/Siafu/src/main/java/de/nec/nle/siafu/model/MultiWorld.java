@@ -92,7 +92,19 @@ public class MultiWorld {
 	 * 
 	 */
 	private void buildWalls() {
-		InputStream wallsIS = simData.getWallsFile();
+		InputStream wallsIS;
+		switch (configuration.map) {
+			case 0:  wallsIS = simData.getWallsFile();
+					 break;
+	        case 1:  wallsIS = simData.getWallsLabFile();
+	                 break;	            
+	        case 2:  wallsIS = simData.getWallsFakKFile();
+	                 break;
+	        case 3:  wallsIS = simData.getWallsFakFile();
+	                 break;
+	        default: wallsIS = simData.getWallsFile();
+	                 break;
+		}
 		ImageData img = new ImageData(wallsIS);
 		height = img.height;
 		width = img.width;

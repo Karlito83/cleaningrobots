@@ -140,7 +140,7 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 					RobotCore rc = ((RobotAgentMulti)a).getRobot();
 					
 					//Json Datein in .txt speicher
-					FileWorker fw = new FileWorker(configuration.map + "_V" + configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
+					FileWorker fw = new FileWorker("M" + configuration.map + "_V" + configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
 							"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + rc.getName()+ ".txt");				
 					rc.getMeasurement().benchmarkTime = (endTime - startTime);
 					String measu = rc.getMeasurement().toJson();
@@ -150,7 +150,7 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 					//outputCsv(rc.getMeasurement().timeProTick, rc.getName() + "Time");
 					
 				}
-				FileWorker fw = new FileWorker(configuration.map + "_V" +configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
+				FileWorker fw = new FileWorker("M" + configuration.map + "_V" +configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
 						"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + "exchange.txt");
 				int tester = 0;
 				for (ExchangeMeasurement em : configuration.exchange) {

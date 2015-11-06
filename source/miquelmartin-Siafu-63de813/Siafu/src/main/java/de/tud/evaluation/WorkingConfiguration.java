@@ -9,13 +9,13 @@ public class WorkingConfiguration {
 	public int number_wipe_agents;
 	public int number_hoove_agents;
 	public int new_field_count; //0-5000
-	public String map = "R"; //F...Fakultät R...Rechteck L...Labyrinth	
+	public int map = 0; //0...Rechteck 1...Labyrinth 2...FakKomplett 3...Fak	
 	public int run;	
 	public int config; //0-4
 	public int iteration;
 	public List<ExchangeMeasurement> exchange; 
 	
-	public WorkingConfiguration (int explore, int hoove, int wipe, int run, int configuration, int newField, String map) {
+	public WorkingConfiguration (int explore, int hoove, int wipe, int run, int configuration, int newField, int map) {
 		this.iteration = 0;
 		this.exchange = new LinkedList<ExchangeMeasurement>();
 		
