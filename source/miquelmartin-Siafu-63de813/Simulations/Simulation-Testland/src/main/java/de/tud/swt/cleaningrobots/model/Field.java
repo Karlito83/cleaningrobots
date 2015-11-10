@@ -8,6 +8,7 @@ import cleaningrobots.CleaningrobotsFactory;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
 public class Field {
+	
 	private Position pos;
 	private boolean isPassable;
 	private int changedIteration;

@@ -1,9 +1,10 @@
 package de.nec.nle.siafu.model;
 
-import java.io.InputStream;
+//import java.io.IOException;
+//import java.io.InputStream;
 import java.util.List;
 
-import org.eclipse.swt.graphics.ImageData;
+//import org.eclipse.swt.graphics.ImageData;
 
 import de.nec.nle.siafu.behaviormodels.BaseAgentModelMulti;
 import de.tud.evaluation.WorkingConfiguration;
@@ -11,27 +12,10 @@ import de.tud.evaluation.WorkingConfiguration;
 public class MultiWorld {
 	
 	/** The white color. Used to identify walls. */
-	private int COLOR_WHITE = 0xFFFFFF;
+	//private int COLOR_WHITE = 0xFFFFFF;
 	
-	/**
-	 * The data that defines this simulation, including maps, sprites and
-	 * behavioral classes.
-	 */
 	private SimulationData simData;
 	
-	/**
-	 * The world's height.
-	 */
-	private int height;
-
-	/**
-	 * The worlds width.
-	 */
-	private int width;
-	
-	/**
-	 * The matrix of points that defines where an agent can walk or not.
-	 */
 	private boolean[][] walls;
 	
 	private List<MultiAgent> people;
@@ -52,7 +36,7 @@ public class MultiWorld {
 	public MultiWorld(SimulationData simData, WorkingConfiguration configuration) {
 		this.configuration = configuration;
 		this.simData = simData;
-		simData.getConfigFile();
+		//simData.getConfigFile();
 		
 		buildWalls();
 		createPeople();
@@ -92,6 +76,19 @@ public class MultiWorld {
 	 * 
 	 */
 	private void buildWalls() {
+		switch (configuration.map) {
+			case 0:  walls = simData.getWallsR();
+					 break;
+	        case 1:  walls = simData.getWallsLab();
+	                 break;	            
+	        case 2:  walls = simData.getWallsFakK();
+	                 break;
+	        case 3:  walls = simData.getWallsFak();
+	                 break;
+	        default: walls = simData.getWallsR();
+	                 break;
+		}
+		/*
 		InputStream wallsIS;
 		switch (configuration.map) {
 			case 0:  wallsIS = simData.getWallsFile();
@@ -106,8 +103,13 @@ public class MultiWorld {
 	                 break;
 		}
 		ImageData img = new ImageData(wallsIS);
-		height = img.height;
-		width = img.width;
+		try {
+			wallsIS.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		int height = img.height;
+		int width = img.width;
 
 		walls = new boolean[height][width];
 
@@ -118,7 +120,7 @@ public class MultiWorld {
 			for (int j = 0; j < width; j++) {
 				walls[i][j] = (colors[j] == COLOR_WHITE);
 			}
-		}
+		}*/
 	}
 	
 	/**

@@ -2,7 +2,6 @@ package de.tud.swt.cleaningrobots.multithreaded;
 
 import de.nec.nle.siafu.model.MultiWorld;
 import de.tud.evaluation.WorkingConfiguration;
-import de.tud.swt.cleaningrobots.AgentNavigationAdapterMulti;
 import de.tud.swt.cleaningrobots.MasterRole;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.goals.nonoptional.MasterExploreMasterGoal;
@@ -24,7 +23,7 @@ public class LoadstationAgentMulti extends RobotAgentMulti {
 	public LoadstationAgentMulti (Position start, MultiWorld world, WorkingConfiguration configuration) {
 		super(start, world);
 
-		cleaningRobot = new RobotCore(this, new AgentNavigationAdapterMulti(this, world), this, null, configuration);
+		cleaningRobot = new RobotCore(this, null, configuration);
 		
 		cleaningRobot.addHardwareComponent(new Rechner());
 		cleaningRobot.addHardwareComponent(new LoadStation());

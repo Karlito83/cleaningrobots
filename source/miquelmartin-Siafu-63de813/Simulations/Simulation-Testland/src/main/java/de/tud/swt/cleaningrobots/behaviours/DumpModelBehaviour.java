@@ -55,21 +55,19 @@ public class DumpModelBehaviour extends Behaviour {
 	@Override
 	public boolean action() throws Exception {
 		
-		//System.out.println("DUMP ACTION");
-
 		counter++;
 		EObject model = null;
 		if (counter % CONST_PNG_DUMP_INTERVAL == 0 && counter > 0) {
 			ImportExportConfiguration config = new ImportExportConfiguration();
 			config.world = true;
 			config.knownstates = true;
-			model = getRobot().exportModel(config);
+			model = robot.exportModel(config);
 			exportPNG(model);
 		}
 		/*if (counter % CONST_XML_DUMP_INTERVAL == 0 && counter > 0){
 			System.out.println("ExportXML");
 			if (model == null){
-				model = getRobot().exportModel();
+				model = robot.exportModel();
 			}
 			exportXML(model);
 			System.out.println("ExportXMLFinish");
@@ -173,9 +171,7 @@ public class DumpModelBehaviour extends Behaviour {
 			    } catch (IOException e) {
 			    	throw new RuntimeException(e);
 			    }
-			    //logger.info("created xml " + fileName);
 			} catch (Exception ex) {
-				//logger.error("Something went wrong while exporting to XML", ex);
 			}
 		}
 	}
@@ -193,7 +189,7 @@ public class DumpModelBehaviour extends Behaviour {
 		}
 		
 		fileName += (CONST_FILENAME_NUMBERPREFIX + counter);
-		fileName =  getRobot().getName() + "_" + fileName.substring(1) + extension;
+		fileName =  robot.getName() + "_" + fileName.substring(1) + extension;
 		
 		return fileName;
 	}

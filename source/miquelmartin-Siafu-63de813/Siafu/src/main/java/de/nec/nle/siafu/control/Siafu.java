@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import de.nec.nle.siafu.model.SimulationData;
 import de.tud.evaluation.EvaluationConstants;
 import de.tud.evaluation.WorkingConfiguration;
 
@@ -89,57 +90,71 @@ public final class Siafu {
 			}
 
 		}
+		
+		//Simulation Run Multithreaded
 		if (!EvaluationConstants.USE_GUI) {
-			int maxThreadCounter = 2;
+			int maxThreadCounter = 1;
 			Queue<WorkingConfiguration> configurations = new LinkedList<WorkingConfiguration>();
 			boolean running = true;
-			int NUMBER_EXPLORE_AGENTS = 1;
+			int NUMBER_EXPLORE_AGENTS = 2;
 			int NUMBER_WIPE_AGENTS = 0;
 			int NUMBER_HOOVE_AGENTS = 0;
 			int NEW_FIELD_COUNT = 0;
 			int run = 0;	
 			int configuration = 0;
+			int map = 0;
 			
 			while (running) {
-				for (int i = 0; i <= 3; i++) {
-					if (run == 1) {
-						run = 1;
-						if (NEW_FIELD_COUNT == 5000 || configuration < 3) {
-							NEW_FIELD_COUNT = 0;
-							if (NUMBER_WIPE_AGENTS == 0 || NUMBER_HOOVE_AGENTS == 0 || NUMBER_WIPE_AGENTS > NUMBER_HOOVE_AGENTS - 2) {
-								NUMBER_WIPE_AGENTS = 0;
-								if (NUMBER_HOOVE_AGENTS == 0 || NUMBER_HOOVE_AGENTS > NUMBER_EXPLORE_AGENTS - 2) {
-									NUMBER_HOOVE_AGENTS = 0;
-									if (NUMBER_EXPLORE_AGENTS == 10) {
-										NUMBER_EXPLORE_AGENTS = 1;
-										if (configuration == 0) {
+				if (run == 10) {
+					run = 5;
+					if (NEW_FIELD_COUNT == 5000 || configuration < 2) {
+						NEW_FIELD_COUNT = 0;
+						if (NUMBER_WIPE_AGENTS == 0 || NUMBER_HOOVE_AGENTS == 0 || NUMBER_WIPE_AGENTS > NUMBER_HOOVE_AGENTS - 2) {
+							NUMBER_WIPE_AGENTS = 0;
+							if (NUMBER_HOOVE_AGENTS == 0 || NUMBER_HOOVE_AGENTS > NUMBER_EXPLORE_AGENTS - 2) {
+								NUMBER_HOOVE_AGENTS = 0;
+								if (NUMBER_EXPLORE_AGENTS == 10) {
+									NUMBER_EXPLORE_AGENTS = 1;
+									if (configuration == 4) {
+										configuration = 0;
+										if (map == 3) {
 											running = false;
 											break;
 										} else {
-											configuration +=1;
-										}
+											map+=1;
+										}											
 									} else {
-										NUMBER_EXPLORE_AGENTS +=1;
+										configuration +=1;
+										if (configuration == 1)
+											configuration +=1;
 									}
 								} else {
-									NUMBER_HOOVE_AGENTS +=1;
+									NUMBER_EXPLORE_AGENTS +=1;
 								}
 							} else {
-								NUMBER_WIPE_AGENTS +=1;
+								NUMBER_HOOVE_AGENTS +=1;
 							}
 						} else {
-							NEW_FIELD_COUNT += 1000;
+							NUMBER_WIPE_AGENTS +=1;
 						}
 					} else {
-						run += 1;
+						NEW_FIELD_COUNT += 1000;
 					}
-					WorkingConfiguration wc = new WorkingConfiguration(NUMBER_EXPLORE_AGENTS, NUMBER_HOOVE_AGENTS, NUMBER_WIPE_AGENTS, run, configuration, NEW_FIELD_COUNT, i);
-					configurations.add(wc);
+				} else {
+					run += 1;
 				}
+				WorkingConfiguration wc = new WorkingConfiguration(NUMBER_EXPLORE_AGENTS, NUMBER_HOOVE_AGENTS, NUMBER_WIPE_AGENTS, run, configuration, NEW_FIELD_COUNT, map);
+				configurations.add(wc);
 			}
 			
 			System.out.println("Configurationen erstellt: " + configurations.size());
 			
+			String simulationPathpfad = "C:\\Users\\ChrissiMobil\\git\\cleaningrobots\\source\\miquelmartin-Siafu-63de813\\Simulations\\Simulation-Testland\\target\\classes";
+			SimulationData simData = SimulationData.getInstance(simulationPathpfad);
+			simData.getConfigFile();
+			simData.createWallFiles();
+			
+			int workingConfigs = 0;
 			List<MultiSimulation> controllers = new LinkedList<MultiSimulation>();
 			while (configurations.size() > 0 || controllers.size() > 0)
 			{
@@ -154,7 +169,9 @@ public final class Siafu {
 				controllers.removeAll(controllersDel);
 				if (controllers.size() < maxThreadCounter && configurations.size() > 0)
 				{
-					controllers.add(new MultiSimulation(configurations.poll()));
+					workingConfigs++;
+					System.out.println("Configuration angestellt: " + workingConfigs);
+					controllers.add(new MultiSimulation(configurations.poll(), simData));
 				}
 				else
 				{

@@ -31,7 +31,7 @@ public class MergeMasterFollower extends Behaviour {
 		super(robot);
 		
 		lastChange = new ArrayList<RobotRole>();
-		ma = new MergeAll(this.getRobot().configuration);
+		ma = new MergeAll(this.robot.configuration);
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.WLAN, 1);
@@ -61,8 +61,8 @@ public class MergeMasterFollower extends Behaviour {
 			}
 		}
 				
-		List<RobotCore> nearRobots = this.getRobot().getICommunicationProvider().getNearRobots(wlan.getVisionRadius());
-		nearRobots.remove(this.getRobot());
+		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(wlan.getVisionRadius());
+		nearRobots.remove(this.robot);
 		
 		//if no nearRobots end this behavior
 		if (nearRobots.isEmpty())
@@ -74,7 +74,7 @@ public class MergeMasterFollower extends Behaviour {
 			//darf nur mi Robotern in der nähe Kommunizieren wenn diese Wirklich die gleiche HardwareComponente habe und diese aktiv ist
 			if (nearRobot.hasActiveHardwareComponent(wlan.getComponents())) {
 				//darf auch nur das modell von Robotern einfügen die follower dieses Knotens sind
-				List<RobotRole> lrr = getRobot().getRoles();
+				List<RobotRole> lrr = robot.getRoles();
 				for (RobotRole rr : lrr)
 				{
 					if (rr instanceof MasterRole)
@@ -98,7 +98,7 @@ public class MergeMasterFollower extends Behaviour {
 									config.knownstates = true;
 									config.knowledge = true;																		
 									//search timestamp of last meeting
-									for (RobotKnowledge rk : getRobot().getKnowledge()) {
+									for (RobotKnowledge rk : robot.getKnowledge()) {
 										if (rk.getName().equals(nearRobot.getName())) {
 											config.iteration = rk.getLastArrange();
 										}											
@@ -106,10 +106,10 @@ public class MergeMasterFollower extends Behaviour {
 									
 									//export and Import the Models
 									EObject model = nearRobot.exportModel(config);
-									ma.importAllModel(model, this.getRobot(), config);
+									ma.importAllModel(model, this.robot, config);
 									
 									//change the config for later export and import
-									for (RobotKnowledge rk : getRobot().getKnowledge()) {
+									for (RobotKnowledge rk : robot.getKnowledge()) {
 										if (rk.getName().equals(nearRobot.getName())) {
 											System.out.println(rk.getName() + " RK KnownStates: " + rk.getKnownStates());
 											config.knownStates = rk.getKnownStates();
@@ -122,7 +122,7 @@ public class MergeMasterFollower extends Behaviour {
 									config.world = true;
 									config.knownstates = true;
 									config.knowledge = true;
-									for (RobotKnowledge rk : getRobot().getKnowledge()) {
+									for (RobotKnowledge rk : robot.getKnowledge()) {
 										if (rk.getName().equals(nearRobot.getName())) {
 											config.iteration = rk.getLastArrange();
 											config.knownStates = rk.getKnownStates();
@@ -149,20 +149,20 @@ public class MergeMasterFollower extends Behaviour {
 					//fr schon vorher enthalten
 					if(!lastChange.contains(fr))
 					{
-						EObject model = this.getRobot().exportModel(nearsNewInformation.get(fr));
+						EObject model = this.robot.exportModel(nearsNewInformation.get(fr));
 						ma.importAllModel(model, fr.getRobotCore(), nearsNewInformation.get(fr));
 					}
 				}
 			} else {
 				for (RobotRole fr : nearsNewInformation.keySet()) {
 					//importiere allen nahen Robotern das neue Modell
-					EObject model = this.getRobot().exportModel(nearsNewInformation.get(fr));
+					EObject model = this.robot.exportModel(nearsNewInformation.get(fr));
 					ma.importAllModel(model, fr.getRobotCore(), nearsNewInformation.get(fr));
 				}
 			}
 			for (RobotRole fr : nearsNoNewInformation.keySet()) {
 				//importiere allen nahen Robotern das neue Modell
-				EObject model = this.getRobot().exportModel(nearsNoNewInformation.get(fr));
+				EObject model = this.robot.exportModel(nearsNoNewInformation.get(fr));
 				ma.importAllModel(model, fr.getRobotCore(), nearsNoNewInformation.get(fr));
 			}	
 			lastChange.clear();

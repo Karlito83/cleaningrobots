@@ -8,25 +8,6 @@ import de.tud.evaluation.WorkingConfiguration;
 public class MultiSimulation implements Runnable {
 
 	/**
-	 * The jar file or folder containing the simulation data.
-	 */
-	private SimulationData simData;
-
-	/**
-	 * The simulation's world. This is only a reference to the
-	 * <code>World</code> in <code>control</code>.
-	 */
-	private MultiWorld world;
-
-	/**
-	 * The Agent Model, as defined by the configuration file.
-	 * <p>
-	 * The agent model determines the behaviour of an agent, deciding what he
-	 * does next at each iteration, and how it changes over time.
-	 */
-	private BaseAgentModelMulti agentModel;
-
-	/**
 	 * Whether the simulation is already running.
 	 */
 	private boolean simulationRunning;
@@ -39,8 +20,8 @@ public class MultiSimulation implements Runnable {
 	public boolean isSimulationRunning() {
 		return simulationRunning;
 	}
-	
-	private WorkingConfiguration configuration;
+		
+	private MultiWorld world;
 
 	/**
 	 * Build a <code>Simulation</code> object and start a thread that
@@ -50,46 +31,25 @@ public class MultiSimulation implements Runnable {
 	 *            maps, sprites, behavior models, etc...
 	 * @param control the simulation <code>Controller</code>
 	 */
-	public MultiSimulation(WorkingConfiguration configuration) {
-		String simulationPath = "C:\\Users\\ChrissiMobil\\git\\cleaningrobots\\source\\miquelmartin-Siafu-63de813\\Simulations\\Simulation-Testland\\target\\classes";
-		//simulationPath = "C:\\Users\\cwerner\\Documents\\cleaningrobots-master\\source\\miquelmartin-Siafu-63de813\\Simulations\\Simulation-Testland\\target\\classes";
-		this.configuration = configuration;
-		
+	public MultiSimulation(WorkingConfiguration configuration, SimulationData simData) {
+		//String simulationPath = "C:\\Users\\ChrissiMobil\\git\\cleaningrobots\\source\\miquelmartin-Siafu-63de813\\Simulations\\Simulation-Testland\\target\\classes";
+		//String simulationPath = "C:\\Users\\cwerner\\Documents\\cleaningrobots-master\\source\\miquelmartin-Siafu-63de813\\Simulations\\Simulation-Testland\\target\\classes";
 		this.simulationRunning = true;
 		
-		this.simData = SimulationData.getInstance(simulationPath);
-				
+		this.world = new MultiWorld(simData, configuration);
+		System.out.println("World created: " + configuration.toString());
+						
 		new Thread(this, "Simulation thread").start();
-	}
-
-	/**
-	 * Get the simulation's world.
-	 * 
-	 * @return the simulation's world
-	 */
-	public MultiWorld getWorld() {
-		return world;
 	}
 	
 	/**
 	 * Starts the Evaluation phase. With Console.
 	 */
 	public void run() {
-		this.world = new MultiWorld(simData, configuration);
-		System.out.println("World created: " + configuration.toString());
-		this.agentModel = world.getAgentModel();
+		BaseAgentModelMulti agentModel = world.getAgentModel();
 		while (!agentModel.isRunFinish()) {
 			world.wander();
 		}
 		simulationRunning = false;
-	}	
-
-	/**
-	 * Get the Simulation's Data object.
-	 * 
-	 * @return the SimulationData for the running simulation
-	 */
-	public SimulationData getSimulationData() {
-		return simData;
 	}
 }

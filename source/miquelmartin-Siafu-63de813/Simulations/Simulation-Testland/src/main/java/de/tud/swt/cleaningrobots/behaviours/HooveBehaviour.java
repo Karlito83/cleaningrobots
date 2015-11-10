@@ -44,47 +44,47 @@ public class HooveBehaviour extends Behaviour {
 	public boolean action() throws Exception {
 											
 		//Prüfe ob Hardwarecorrect oder entferne es vorher schon wieder
-		if(getRobot().getDestinationContainer().isAtDestination()){
+		if(robot.getDestinationContainer().isAtDestination()){
 			
 			//if you find more than the value of new field drive back to load station and give information to master
-			if (this.getRobot().configuration.new_field_count > 0 && this.getRobot().getWorld().getNewInformationCounter() > this.getRobot().configuration.new_field_count) {
-				getRobot().getDestinationContainer().setDestinationLoadStation();
-				this.getRobot().getWorld().resetNewInformationCounter();
+			if (this.robot.configuration.new_field_count > 0 && this.robot.getWorld().getNewInformationCounter() > this.robot.configuration.new_field_count) {
+				robot.getDestinationContainer().setDestinationLoadStation();
+				this.robot.getWorld().resetNewInformationCounter();
 				return false;
 			}
 			
 			Position nextNotHoovePosition;
 			//Look if you must use relative or non relative algorithm 
 			if (relative)
-				nextNotHoovePosition = this.getRobot().getWorld().getNextPassablePositionRelativeWithoutState(this.getRobot().getDestinationContainer().getLastLoadDestination(), STATE_HOOVE);
+				nextNotHoovePosition = this.robot.getWorld().getNextPassablePositionRelativeWithoutState(this.robot.getDestinationContainer().getLastLoadDestination(), STATE_HOOVE);
 			else
-				nextNotHoovePosition = this.getRobot().getWorld().getNextPassablePositionWithoutState(STATE_HOOVE); 
+				nextNotHoovePosition = this.robot.getWorld().getNextPassablePositionWithoutState(STATE_HOOVE); 
 			
 			if(nextNotHoovePosition != null){
-				getRobot().getDestinationContainer().setDestination(nextNotHoovePosition);
+				robot.getDestinationContainer().setDestination(nextNotHoovePosition);
 				
 				//wenn accu vorhanden dann muss ladestatus geprüft werden Prüfe,
 				//ob ziel vorher erreicht wird oder ob accu beim fahren leer wird
-				if (getRobot().getAccu() != null)
+				if (robot.getAccu() != null)
 				{
-					if (getRobot().isLoading)
+					if (robot.isLoading)
 						return false;
 					
 					//Entfernung Robot bis Ziel
-					int sizeOne = getRobot().getDestinationContainer().getPathFromTo(getRobot().getPosition(), nextNotHoovePosition).size();
+					int sizeOne = robot.getDestinationContainer().getPathFromTo(robot.getPosition(), nextNotHoovePosition).size();
 					//Entfernung Robot bis Ladestation
-					//int sizeTwo = getRobot().getPath(getRobot().getPosition(), getRobot().loadStationPosition).size();
+					//int sizeTwo = robot.getPath(robot.getPosition(), robot.loadStationPosition).size();
 					//Entfernung Ziel bis Ladestation
-					int sizeThree = getRobot().getDestinationContainer().getPathFromTo(nextNotHoovePosition, getRobot().getDestinationContainer().getLoadStationPosition()).size();
+					int sizeThree = robot.getDestinationContainer().getPathFromTo(nextNotHoovePosition, robot.getDestinationContainer().getLoadStationPosition()).size();
 					int size = sizeOne + sizeThree;
 					size +=2;
 					//Wenn akku bis zu Ziel nicht mehr 
-					if (size * getRobot().getActualEnergie() > getRobot().getAccu().getRestKWh())
+					if (size * robot.getActualEnergie() > robot.getAccu().getRestKWh())
 					{
 						//Robot schafft Weg nicht also Fahre zurück zu Ladestation
-						getRobot().getDestinationContainer().setDestinationLoadStation();
+						robot.getDestinationContainer().setDestinationLoadStation();
 						//lohnt sich für Robot nicht mehr rauszufahren
-						if (getRobot().getDestinationContainer().getLoadStationPosition().equals(getRobot().getPosition()))
+						if (robot.getDestinationContainer().getLoadStationPosition().equals(robot.getPosition()))
 						{
 							System.out.println("Robot erreicht keine Hooveposition mehr obwohl diese noch existiert!");
 							finishHooving = true;
@@ -95,14 +95,14 @@ public class HooveBehaviour extends Behaviour {
 			} else {
 				//no more hoove position found
 				//need no blocked field and proof if the hole world is discovered
-				if (this.getRobot().getWorld().containsWorldState(WORLDSTATE_DISCOVERED))
+				if (this.robot.getWorld().containsWorldState(WORLDSTATE_DISCOVERED))
 				{
-					this.getRobot().getWorld().addWorldState(WORLDSTATE_HOOVED);
+					this.robot.getWorld().addWorldState(WORLDSTATE_HOOVED);
 					//finish back to load station
-					if(!getRobot().getPosition().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
+					if(!robot.getPosition().equals(robot.getDestinationContainer().getLoadStationPosition()))
 					{
 						//must drive to load station for end
-						getRobot().getDestinationContainer().setDestinationLoadStation();
+						robot.getDestinationContainer().setDestinationLoadStation();
 					} else {
 						//is at loadstation
 						finishHooving = true;
@@ -110,7 +110,7 @@ public class HooveBehaviour extends Behaviour {
 					}
 				} else {
 					//not finish wait for new data, drive back to master
-					getRobot().getDestinationContainer().setDestinationLoadStation();
+					robot.getDestinationContainer().setDestinationLoadStation();
 				}
 			}
 		}		

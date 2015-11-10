@@ -34,7 +34,7 @@ public class MasterDestinationHoove extends Behaviour {
 		super(robot);
 		
 		this.mr = mr;
-		this.mfm = new MasterFieldMerge(this.getRobot().configuration);
+		this.mfm = new MasterFieldMerge(this.robot.configuration);
 		this.information = new HashMap<String, RobotDestinationCalculation>();
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
@@ -90,8 +90,8 @@ public class MasterDestinationHoove extends Behaviour {
 		}
 				
 		//search near Explore Robots
-		List<RobotCore> nearRobots = this.getRobot().getICommunicationProvider().getNearRobots(wlan.getVisionRadius());
-		nearRobots.remove(this.getRobot());
+		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(wlan.getVisionRadius());
+		nearRobots.remove(this.robot);
 				
 		for (RobotDestinationCalculation rdc : information.values()) {
 			//alle NeedNew auf false setzen
@@ -147,7 +147,7 @@ public class MasterDestinationHoove extends Behaviour {
 		if (!newOneFind)
 			return false;
 		
-		Map<String, RobotDestinationCalculation> result = this.getRobot().getWorld().getNextPassablePositionsWithoutState(information, calculationAway, STATE_HOOVE); 
+		Map<String, RobotDestinationCalculation> result = this.robot.getWorld().getNextPassablePositionsWithoutState(information, calculationAway, STATE_HOOVE); 
 		
 		if (result == null) {
 			//set all destination to null that the robot could shut down

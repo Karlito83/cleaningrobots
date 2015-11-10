@@ -33,7 +33,7 @@ public class MergeMaster extends Behaviour {
 		
 		this.mr = mr;
 		this.lastChange = new ArrayList<RobotRole>();
-		this.ma = new MergeAll(this.getRobot().configuration);
+		this.ma = new MergeAll(this.robot.configuration);
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.WLAN, 1);
@@ -63,8 +63,8 @@ public class MergeMaster extends Behaviour {
 			}
 		}
 		
-		List<RobotCore> nearRobots = this.getRobot().getICommunicationProvider().getNearRobots(wlan.getVisionRadius());
-		nearRobots.remove(this.getRobot());
+		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(wlan.getVisionRadius());
+		nearRobots.remove(this.robot);
 		
 		//if no nearRobots end this behavior
 		if (nearRobots.isEmpty())
@@ -96,7 +96,7 @@ public class MergeMaster extends Behaviour {
 							config.knownstates = true;
 							config.knowledge = true;																		
 							//search timestamp of last meeting
-							for (RobotKnowledge rk : getRobot().getKnowledge()) {
+							for (RobotKnowledge rk : robot.getKnowledge()) {
 								if (rk.getName().equals(nearRobot.getName())) {
 									config.iteration = rk.getLastArrange();
 								}											
@@ -104,10 +104,10 @@ public class MergeMaster extends Behaviour {
 								
 							//export and Import the Models
 							EObject model = nearRobot.exportModel(config);
-							ma.importAllModel(model, this.getRobot(), config);
+							ma.importAllModel(model, this.robot, config);
 							
 							//change the config for later export and import
-							for (RobotKnowledge rk : getRobot().getKnowledge()) {
+							for (RobotKnowledge rk : robot.getKnowledge()) {
 								if (rk.getName().equals(nearRobot.getName())) {
 									config.knownStates = rk.getKnownStates();
 								}											
@@ -118,7 +118,7 @@ public class MergeMaster extends Behaviour {
 							config.world = true;
 							config.knownstates = true;
 							config.knowledge = true;
-							for (RobotKnowledge rk : getRobot().getKnowledge()) {
+							for (RobotKnowledge rk : robot.getKnowledge()) {
 								if (rk.getName().equals(nearRobot.getName())) {
 									config.iteration = rk.getLastArrange();
 									config.knownStates = rk.getKnownStates();
@@ -160,20 +160,20 @@ public class MergeMaster extends Behaviour {
 					//fr schon vorher enthalten
 					if(!lastChange.contains(rr))
 					{
-						EObject model = this.getRobot().exportModel(nearsNewInformation.get(rr));
+						EObject model = this.robot.exportModel(nearsNewInformation.get(rr));
 						ma.importAllModel(model, rr.getRobotCore(), nearsNewInformation.get(rr));
 					}
 				}
 			} else {
 				for (RobotRole rr : nearsNewInformation.keySet()) {
 					//importiere allen nahen Robotern das neue Modell
-					EObject model = this.getRobot().exportModel(nearsNewInformation.get(rr));
+					EObject model = this.robot.exportModel(nearsNewInformation.get(rr));
 					ma.importAllModel(model, rr.getRobotCore(), nearsNewInformation.get(rr));
 				}
 			}
 			for (RobotRole rr : nearsNoNewInformation.keySet()) {
 				//importiere allen nahen Robotern das neue Modell
-				EObject model = this.getRobot().exportModel(nearsNoNewInformation.get(rr));
+				EObject model = this.robot.exportModel(nearsNoNewInformation.get(rr));
 				ma.importAllModel(model, rr.getRobotCore(), nearsNoNewInformation.get(rr));
 			}	
 			lastChange.clear();
@@ -186,7 +186,7 @@ public class MergeMaster extends Behaviour {
 				for (RobotRole rr : nearsNoNewInformation.keySet()) {
 					//importiere allen nahen Robotern das neue Modell
 					//System.out.println(nearsNoNewInformation.get(rr));
-					EObject model = this.getRobot().exportModel(nearsNoNewInformation.get(rr));
+					EObject model = this.robot.exportModel(nearsNoNewInformation.get(rr));
 					ma.importAllModel(model, rr.getRobotCore(), nearsNoNewInformation.get(rr));
 					lastChange.clear();
 					lastChange.addAll(nearsNoNewInformation.keySet());

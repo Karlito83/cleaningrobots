@@ -33,7 +33,7 @@ public class FollowerRoleImpl extends RoleImpl implements FollowerRole {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String MASTER_NAME_EDEFAULT = null;
+	//protected String MASTER_NAME_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getMasterName() <em>Master Name</em>}' attribute.
@@ -43,7 +43,7 @@ public class FollowerRoleImpl extends RoleImpl implements FollowerRole {
 	 * @generated
 	 * @ordered
 	 */
-	protected String masterName = MASTER_NAME_EDEFAULT;
+	protected String masterName = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -123,7 +123,7 @@ public class FollowerRoleImpl extends RoleImpl implements FollowerRole {
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case CleaningrobotsPackage.FOLLOWER_ROLE__MASTER_NAME:
-				setMasterName(MASTER_NAME_EDEFAULT);
+				setMasterName(null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -138,7 +138,7 @@ public class FollowerRoleImpl extends RoleImpl implements FollowerRole {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case CleaningrobotsPackage.FOLLOWER_ROLE__MASTER_NAME:
-				return MASTER_NAME_EDEFAULT == null ? masterName != null : !MASTER_NAME_EDEFAULT.equals(masterName);
+				return masterName != null;
 		}
 		return super.eIsSet(featureID);
 	}

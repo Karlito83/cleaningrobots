@@ -31,7 +31,7 @@ public class MasterDestinationExplore extends Behaviour {
 		super(robot);
 		
 		this.mr = mr;
-		this.mfm = new MasterFieldMerge(this.getRobot().configuration);
+		this.mfm = new MasterFieldMerge(this.robot.configuration);
 		this.information = new HashMap<String, RobotDestinationCalculation>();
 		this.firstStart = true;
 		
@@ -87,8 +87,8 @@ public class MasterDestinationExplore extends Behaviour {
 		}
 				
 		//search near Explore Robots
-		List<RobotCore> nearRobots = this.getRobot().getICommunicationProvider().getNearRobots(wlan.getVisionRadius());
-		nearRobots.remove(this.getRobot());
+		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(wlan.getVisionRadius());
+		nearRobots.remove(this.robot);
 				
 		for (RobotDestinationCalculation rdc : information.values()) {
 			//alle NeedNew auf false setzen
@@ -144,7 +144,7 @@ public class MasterDestinationExplore extends Behaviour {
 		if (!newOneFind)
 			return false;
 		
-		Map<String, RobotDestinationCalculation> result = this.getRobot().getWorld().getNextUnknownFields(information, calculationAway); 
+		Map<String, RobotDestinationCalculation> result = this.robot.getWorld().getNextUnknownFields(information, calculationAway); 
 		
 		if (result == null) {
 			//set all destination to null that the robot could shut down

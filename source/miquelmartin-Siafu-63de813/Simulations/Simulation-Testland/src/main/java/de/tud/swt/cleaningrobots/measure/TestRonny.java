@@ -7,7 +7,8 @@ public class TestRonny {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		TestRonny tr = new TestRonny();
-		tr.testNumberEvaluations2();
+		//tr.testNumberEvaluations2();
+		tr.testNumber();
 		/*
 		Position x = new Position (27, 36);
 		Position y = new Position (13, 59);
@@ -91,6 +92,60 @@ public class TestRonny {
 			System.out.println(map + "_V" + configuration + "_CE" + NUMBER_EXPLORE_AGENTS + "_CH" + NUMBER_HOOVE_AGENTS +
 						"_CW" + NUMBER_WIPE_AGENTS + "_B" + NEW_FIELD_COUNT + "_D" + run);
 		}
+	}
+	
+	public void testNumber () {
+		boolean running = true;
+		int NUMBER_EXPLORE_AGENTS = 1;
+		int NUMBER_WIPE_AGENTS = 0;
+		int NUMBER_HOOVE_AGENTS = 0;
+		int NEW_FIELD_COUNT = 0;
+		int run = 0;	
+		int configuration = 0;
+		int map = 0;
+		
+		int i = 0;
+		
+		while (running) {
+			if (run == 5) {
+				run = 1;
+				if (NEW_FIELD_COUNT == 5000 || configuration < 3) {
+					NEW_FIELD_COUNT = 0;
+					if (NUMBER_WIPE_AGENTS == 0 || NUMBER_HOOVE_AGENTS == 0 || NUMBER_WIPE_AGENTS > NUMBER_HOOVE_AGENTS - 2) {
+						NUMBER_WIPE_AGENTS = 0;
+						if (NUMBER_HOOVE_AGENTS == 0 || NUMBER_HOOVE_AGENTS > NUMBER_EXPLORE_AGENTS - 2) {
+							NUMBER_HOOVE_AGENTS = 0;
+							if (NUMBER_EXPLORE_AGENTS == 10) {
+								NUMBER_EXPLORE_AGENTS = 1;
+								if (configuration == 4) {
+									configuration = 0;
+									if (map == 3) {
+										running = false;
+										break;
+									} else {
+										map+=1;
+									}											
+								} else {
+									configuration +=1;
+								}
+							} else {
+								NUMBER_EXPLORE_AGENTS +=1;
+							}
+						} else {
+							NUMBER_HOOVE_AGENTS +=1;
+						}
+					} else {
+						NUMBER_WIPE_AGENTS +=1;
+					}
+				} else {
+					NEW_FIELD_COUNT += 1000;
+				}
+			} else {
+				run += 1;
+			}
+			i++;
+		}
+		System.out.println("I: " + i);
 	}
 
 }

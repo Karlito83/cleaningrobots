@@ -26,6 +26,7 @@ public class State {
 		}
 		else
 		{
+			//System.out.println("New State: " + name);
 			result = new State(name);
 			states.put(name, result);
 		}

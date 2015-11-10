@@ -7,5 +7,4 @@ public class FollowerRole extends RobotRole {
 	public FollowerRole(RobotCore robotCore) {
 		super(robotCore);
 	}
-
 }

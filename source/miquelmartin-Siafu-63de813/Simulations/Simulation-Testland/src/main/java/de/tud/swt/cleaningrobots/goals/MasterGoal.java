@@ -16,7 +16,7 @@ public class MasterGoal extends Goal {
 	public MasterGoal(RobotCore robot) {
 		super(robot);
 
-		subGoals = new ArrayList<Goal>();
+		this.subGoals = new ArrayList<Goal>();
 	}
 
 	@Override

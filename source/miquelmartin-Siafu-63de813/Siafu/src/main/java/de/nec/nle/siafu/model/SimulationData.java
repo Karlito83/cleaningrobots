@@ -20,6 +20,7 @@
 package de.nec.nle.siafu.model;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -29,6 +30,7 @@ import java.util.HashMap;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
+import org.eclipse.swt.graphics.ImageData;
 
 import de.nec.nle.siafu.behaviormodels.BaseAgentModel;
 import de.nec.nle.siafu.behaviormodels.BaseAgentModelMulti;
@@ -147,13 +149,6 @@ public abstract class SimulationData {
 		}
 	}
 	
-	public String getString () {
-		System.out.println(simulationConfig.getString("models.contextmodel"));
-		System.out.println(simulationConfig.getString("models.agentmodel"));
-		return simulationConfig.getString("models");
-		//return simulationConfig.getString("models.multiagentmodel");
-	}
-	
 	/**
 	 * Get the AgentModel using the class loader set to the simulation data
 	 * path.
@@ -161,7 +156,6 @@ public abstract class SimulationData {
 	 * @return the AgentModel for this simulation
 	 */
 	public Class<? extends BaseAgentModelMulti> getMultiAgentModelClass() {
-		System.out.println(simulationConfig.getString("models.multiagentmodel"));
 		try {
 			return Class.forName(simulationConfig
 					.getString("models.multiagentmodel"), true, classLoader).asSubclass(BaseAgentModelMulti.class);
@@ -262,6 +256,118 @@ public abstract class SimulationData {
 	
 	public InputStream getWallsFakKFile() {
 		return getFile(WALLS_FILE_FAKK);
+	}
+	
+	private int COLOR_WHITE = 0xFFFFFF;
+	/*private boolean[][] wallReck;
+	private boolean[][] wallLab;
+	private boolean[][] wallFak;
+	private boolean[][] wallFakK;*/
+	private ImageData imgFakK;
+	private ImageData imgR;
+	private ImageData imgLab;
+	private ImageData imgFak;
+	
+	public boolean[][] getWallsFakK () {
+		int height = imgFakK.height;
+		int width = imgFakK.width;
+
+		boolean[][] walls = new boolean[height][width];
+
+		for (int i = 0; i < height; i++) {
+			int[] colors = new int[width];
+			imgFakK.getPixels(0, i, width, colors, 0);
+
+			for (int j = 0; j < width; j++) {
+				walls[i][j] = (colors[j] == COLOR_WHITE);
+			}
+		}
+		return walls;
+	}
+	
+	public boolean[][] getWallsLab () {
+		int height = imgLab.height;
+		int width = imgLab.width;
+
+		boolean[][] walls = new boolean[height][width];
+
+		for (int i = 0; i < height; i++) {
+			int[] colors = new int[width];
+			imgLab.getPixels(0, i, width, colors, 0);
+
+			for (int j = 0; j < width; j++) {
+				walls[i][j] = (colors[j] == COLOR_WHITE);
+			}
+		}
+		return walls;
+	}
+	
+	public boolean[][] getWallsFak () {
+		int height = imgFak.height;
+		int width = imgFak.width;
+
+		boolean[][] walls = new boolean[height][width];
+
+		for (int i = 0; i < height; i++) {
+			int[] colors = new int[width];
+			imgFak.getPixels(0, i, width, colors, 0);
+
+			for (int j = 0; j < width; j++) {
+				walls[i][j] = (colors[j] == COLOR_WHITE);
+			}
+		}
+		return walls;
+	}
+	
+	public boolean[][] getWallsR () {
+		int height = imgR.height;
+		int width = imgR.width;
+
+		boolean[][] walls = new boolean[height][width];
+
+		for (int i = 0; i < height; i++) {
+			int[] colors = new int[width];
+			imgR.getPixels(0, i, width, colors, 0);
+
+			for (int j = 0; j < width; j++) {
+				walls[i][j] = (colors[j] == COLOR_WHITE);
+			}
+		}
+		return walls;
+	}
+	
+	public void createWallFiles () {
+		InputStream wallsR = getWallsFile();
+		imgR = new ImageData(wallsR);
+		try {
+			wallsR.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		InputStream wallsLab = getWallsLabFile();
+		imgLab = new ImageData(wallsLab);
+		try {
+			wallsLab.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		InputStream wallsFak = getWallsFakKFile();
+		imgFak = new ImageData(wallsFak);
+		try {
+			wallsFak.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		InputStream wallsFakK = getWallsFakFile();
+		imgFakK = new ImageData(wallsFakK);
+		try {
+			wallsFakK.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
 	}
 
 	/**

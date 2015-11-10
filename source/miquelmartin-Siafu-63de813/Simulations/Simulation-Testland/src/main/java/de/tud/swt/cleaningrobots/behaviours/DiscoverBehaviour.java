@@ -52,47 +52,47 @@ public class DiscoverBehaviour extends Behaviour {
 	public boolean action() throws Exception {
 		
 		//Prüfe ob Hardwarecorrect oder entferne es vorher schon wieder		
-		if(getRobot().getDestinationContainer().isAtDestination()) {
+		if(robot.getDestinationContainer().isAtDestination()) {
 			
 			//if you find more than the value of new field drive back to load station and give information to master
-			if (this.getRobot().configuration.new_field_count > 0 && this.getRobot().getWorld().getNewInformationCounter() > this.getRobot().configuration.new_field_count) {
-				getRobot().getDestinationContainer().setDestinationLoadStation();
-				this.getRobot().getWorld().resetNewInformationCounter();
+			if (this.robot.configuration.new_field_count > 0 && this.robot.getWorld().getNewInformationCounter() > this.robot.configuration.new_field_count) {
+				robot.getDestinationContainer().setDestinationLoadStation();
+				this.robot.getWorld().resetNewInformationCounter();
 				return false;
 			}
 			
 			Position nextUnknownPosition;
 			//Look if you must use relative or non relative algorithm 
 			if (relative)
-				nextUnknownPosition = this.getRobot().getWorld().getNextUnknownRelativeFieldPosition(this.getRobot().getDestinationContainer().getLastLoadDestination()); 
+				nextUnknownPosition = this.robot.getWorld().getNextUnknownRelativeFieldPosition(this.robot.getDestinationContainer().getLastLoadDestination()); 
 			else
-				nextUnknownPosition = this.getRobot().getWorld().getNextUnknownFieldPosition(); 
+				nextUnknownPosition = this.robot.getWorld().getNextUnknownFieldPosition(); 
 			
 			if(nextUnknownPosition != null){
-				getRobot().getDestinationContainer().setDestination(nextUnknownPosition);
+				robot.getDestinationContainer().setDestination(nextUnknownPosition);
 				
 				//wenn accu vorhanden dann muss ladestatus geprüft werden Prüfe,
 				//ob ziel vorher erreicht wird oder ob accu beim fahren leer wird
-				if (getRobot().getAccu() != null)
+				if (robot.getAccu() != null)
 				{
-					if (getRobot().isLoading)
+					if (robot.isLoading)
 						return false;
 					
 					//Entfernung Robot bis Ziel
-					int sizeOne = getRobot().getDestinationContainer().getPathFromTo(getRobot().getPosition(), nextUnknownPosition).size();
+					int sizeOne = robot.getDestinationContainer().getPathFromTo(robot.getPosition(), nextUnknownPosition).size();
 					//Entfernung Robot bis Ladestation
-					//int sizeTwo = getRobot().getPath(getRobot().getPosition(), getRobot().loadStationPosition).size();
+					//int sizeTwo = robot.getPath(robot.getPosition(), robot.loadStationPosition).size();
 					//Entfernung Ziel bis Ladestation
-					int sizeThree = getRobot().getDestinationContainer().getPathFromTo(nextUnknownPosition, getRobot().getDestinationContainer().getLoadStationPosition()).size();
+					int sizeThree = robot.getDestinationContainer().getPathFromTo(nextUnknownPosition, robot.getDestinationContainer().getLoadStationPosition()).size();
 					int size = sizeOne + sizeThree;
 					size +=2;
 					//Wenn akku bis zu Ziel nicht mehr 
-					if (size * getRobot().getActualEnergie() > getRobot().getAccu().getRestKWh())
+					if (size * robot.getActualEnergie() > robot.getAccu().getRestKWh())
 					{
 						//Robot schafft Weg nicht also Fahre zurück zu Ladestation
-						getRobot().getDestinationContainer().setDestinationLoadStation();
+						robot.getDestinationContainer().setDestinationLoadStation();
 						//
-						if (getRobot().getDestinationContainer().getLoadStationPosition().equals(getRobot().getPosition()))
+						if (robot.getDestinationContainer().getLoadStationPosition().equals(robot.getPosition()))
 						{
 							System.out.println("Robot erreicht keine Unknownposition mehr obwohl diese noch existiert!");
 							noMoreDiscovering = true;
@@ -103,11 +103,11 @@ public class DiscoverBehaviour extends Behaviour {
 			}
 			else 
 			{
-				this.getRobot().getWorld().addWorldState(WORLDSTATE_DISCOVERED);
-				if(!getRobot().getPosition().equals(getRobot().getDestinationContainer().getLoadStationPosition()))
+				this.robot.getWorld().addWorldState(WORLDSTATE_DISCOVERED);
+				if(!robot.getPosition().equals(robot.getDestinationContainer().getLoadStationPosition()))
 				{
 					//Ist an Ladestation angekommen muss geladen werden
-					getRobot().getDestinationContainer().setDestinationLoadStation();
+					robot.getDestinationContainer().setDestinationLoadStation();
 				} else {
 					//gibt true zurück wenn alles geschafft ist in der Behaviour
 					//Keine Unknown Positon mehr und schon an Ladestation

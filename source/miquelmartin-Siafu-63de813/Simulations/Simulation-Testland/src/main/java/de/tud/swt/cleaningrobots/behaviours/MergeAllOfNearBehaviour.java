@@ -29,7 +29,7 @@ public class MergeAllOfNearBehaviour extends Behaviour {
 	public MergeAllOfNearBehaviour(RobotCore robot) {
 		super(robot);
 		
-		this.ma = new MergeAll(this.getRobot().configuration);
+		this.ma = new MergeAll(this.robot.configuration);
 		this.maxCount = 200;
 		this.firstStart = true;
 		this.robotInformation = new LinkedList<NearRobotInformation>();
@@ -64,8 +64,8 @@ public class MergeAllOfNearBehaviour extends Behaviour {
 		
 		if (this.firstStart) {
 			//create robot information map
-			List<RobotCore> nearRobots = this.getRobot().getICommunicationProvider().getAllRobots();
-			nearRobots.remove(this.getRobot());
+			List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getAllRobots();
+			nearRobots.remove(this.robot);
 			
 			for (RobotCore core : nearRobots) {
 				robotInformation.add(new NearRobotInformation(core.getName()));
@@ -81,11 +81,11 @@ public class MergeAllOfNearBehaviour extends Behaviour {
 			}
 		}		
 		
-		if (this.getRobot().isLoading)
+		if (this.robot.isLoading)
 			return false;
 						
-		List<RobotCore> nearRobots = this.getRobot().getICommunicationProvider().getNearRobots(20);//wlan.getVisionRadius());
-		nearRobots.remove(this.getRobot());
+		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(20);//wlan.getVisionRadius());
+		nearRobots.remove(this.robot);
 		for (RobotCore nearRobot : nearRobots) {
 			//darf nur mi Robotern in der nähe Kommunizieren wenn diese Wirklich die gleiche HardwareComponente habe und diese aktiv ist
 			if (nearRobot.hasActiveHardwareComponent(wlan.getComponents())) {
@@ -97,7 +97,7 @@ public class MergeAllOfNearBehaviour extends Behaviour {
 							config.knownstates = true;
 							config.knowledge = true;
 							EObject model = nearRobot.exportModel(config);
-							ma.importAllModel(model, this.getRobot(), config);
+							ma.importAllModel(model, this.robot, config);
 							i.addCounterOne();
 						}
 					}

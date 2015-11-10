@@ -10,7 +10,7 @@ public class MasterRole extends RobotRole {
 	public MasterRole(RobotCore robotCore) {
 		super(robotCore);
 		
-		followers = new ArrayList<RobotRole>();
+		this.followers = new ArrayList<RobotRole>();
 	}
 	
 	public List<RobotRole> getFollowers () {

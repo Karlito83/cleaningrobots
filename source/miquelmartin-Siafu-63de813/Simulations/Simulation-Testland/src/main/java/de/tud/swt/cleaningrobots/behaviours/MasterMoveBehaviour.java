@@ -25,7 +25,7 @@ public class MasterMoveBehaviour extends Behaviour {
 	public boolean action() throws Exception {
 		
 		//wenn er nicht am Ziel ist und nicht am Laden ist soll er laufen
-		if (!getRobot().getDestinationContainer().isAtDestination() && !getRobot().isLoading){
+		if (!robot.getDestinationContainer().isAtDestination() && !robot.isLoading){
 			//start all hardwarecomponents if not active
 			for (HardwareComponent hard : d.getHcs())
 			{
@@ -36,7 +36,7 @@ public class MasterMoveBehaviour extends Behaviour {
 			}
 			
 			//make the move
-			getRobot().getDestinationContainer().moveTowardsDestinationWithoutInformation();
+			robot.getDestinationContainer().moveTowardsDestinationWithoutInformation();
 		} else {
 			//Schalte alle Hardwarecomponenten aus
 			for (HardwareComponent hard : d.getHcs())

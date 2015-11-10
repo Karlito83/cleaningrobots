@@ -32,7 +32,7 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 	public MasterSeeAroundBehaviour(RobotCore robot) {
 		super(robot);
 		
-		this.mfm = new MasterFieldMerge(this.getRobot().configuration);
+		this.mfm = new MasterFieldMerge(this.robot.configuration);
 		this.firststart = true;
 		
 		supportedStates.add(STATE_BLOCKED);
@@ -57,7 +57,7 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 		
 		if (firststart) {
 			//gehe davon aus das Master im Wlan sichtbereich ist
-			for (RobotRole rr : getRobot().getRoles()) {
+			for (RobotRole rr : robot.getRoles()) {
 				if (rr instanceof FollowerRole) {
 					master = ((FollowerRole) rr).master.getRobotCore();
 				}
@@ -66,7 +66,7 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 		}
 		
 		//Wenn Roboter an Ziel dann machen ann Scanne umgebung und machen wieder aus
-		if (getRobot().getDestinationContainer().isAtDestination() && !getRobot().getDestinationContainer().isAtLoadDestination()) {
+		if (robot.getDestinationContainer().isAtDestination() && !robot.getDestinationContainer().isAtLoadDestination()) {
 			//Schalte alle Hardwarecomponenten an wenn sie nicht schon laufen
 			for (HardwareComponent hard : d.getHcs())
 			{
@@ -81,7 +81,7 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 			try {
 				List<Field> fields = getData();
 				//send Field to Robot and ask für new destination and Path
-				mfm.sendFieldsAndMerge(getRobot().getName(), fields, master, "Explore");
+				mfm.sendFieldsAndMerge(robot.getName(), fields, master, "Explore");
 			} catch (Exception e) {
 				throw e;
 			}
@@ -97,9 +97,9 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 				}
 			}
 		}
-		if (getRobot().getDestinationContainer().isAtDestination())
+		if (robot.getDestinationContainer().isAtDestination())
 		{
-			getRobot().setNewInformation(true);
+			robot.setNewInformation(true);
 		}
 		return false;
 	}
@@ -123,22 +123,22 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 		Field result = null;
 		
 		//Offset mit Agenten position vereinigen
-		int row =  getRobot().getINavigationController().getRow() + yOffset;
-		int col =  getRobot().getINavigationController().getCol() + xOffset;
+		int row =  robot.getPosition().getY() + yOffset;
+		int col =  robot.getPosition().getX() + xOffset;
 		
 		//prüfe ob es eine Wand ist
-		boolean positionIsAtWall = getRobot().getINavigationController().isWall(row, col);
+		boolean positionIsAtWall = robot.getICommunicationAdapter().isWall(row, col);
 		
 		//neues Feld anlegen
-		result = new Field(col, row, !positionIsAtWall, this.getRobot().configuration.iteration);
+		result = new Field(col, row, !positionIsAtWall, this.robot.configuration.iteration);
 		//wenn Wand ist dann status dazu anlegen ansonsten freien Status geben
 		if(positionIsAtWall)
 		{
-			result.addState(STATE_BLOCKED, this.getRobot().configuration.iteration);
+			result.addState(STATE_BLOCKED, this.robot.configuration.iteration);
 		}
 		else
 		{
-			result.addState(STATE_FREE, this.getRobot().configuration.iteration);
+			result.addState(STATE_FREE, this.robot.configuration.iteration);
 		}
 		
 		

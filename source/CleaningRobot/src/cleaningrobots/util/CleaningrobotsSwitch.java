@@ -29,7 +29,7 @@ public class CleaningrobotsSwitch<T> extends Switch<T> {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected static CleaningrobotsPackage modelPackage;
+	protected CleaningrobotsPackage modelPackage;
 
 	/**
 	 * Creates an instance of the switch.

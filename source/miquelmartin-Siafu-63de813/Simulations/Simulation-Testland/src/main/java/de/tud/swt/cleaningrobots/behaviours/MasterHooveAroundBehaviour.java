@@ -33,7 +33,7 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 	public MasterHooveAroundBehaviour(RobotCore robot) {
 		super(robot);
 		
-		this.mfm = new MasterFieldMerge(this.getRobot().configuration);
+		this.mfm = new MasterFieldMerge(this.robot.configuration);
 		this.firststart = true;
 		
 		supportedStates.add(STATE_HOOVE);
@@ -58,7 +58,7 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 		
 		if (firststart) {
 			//gehe davon aus das Master im Wlan sichtbereich ist
-			for (RobotRole rr : getRobot().getRoles()) {
+			for (RobotRole rr : robot.getRoles()) {
 				if (rr instanceof FollowerRole) {
 					master = ((FollowerRole) rr).master.getRobotCore();
 				}
@@ -67,7 +67,7 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 		}
 		
 		//Wenn Roboter an Ziel dann machen ann Scanne umgebung und machen wieder aus
-		if (getRobot().getDestinationContainer().isAtDestination() && !getRobot().getDestinationContainer().isAtLoadDestination()) {
+		if (robot.getDestinationContainer().isAtDestination() && !robot.getDestinationContainer().isAtLoadDestination()) {
 			//Schalte alle Hardwarecomponenten an wenn sie nicht schon laufen
 			for (HardwareComponent hard : d.getHcs())
 			{
@@ -82,7 +82,7 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 			try {
 				List<Field> fields = getData();
 				//send Field to Robot and ask für new destination and Path
-				mfm.sendFieldsAndMerge(getRobot().getName(), fields, master, "Hoove");
+				mfm.sendFieldsAndMerge(robot.getName(), fields, master, "Hoove");
 			} catch (Exception e) {
 				throw e;
 			}
@@ -98,9 +98,9 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 				}
 			}
 		}
-		if (getRobot().getDestinationContainer().isAtDestination())
+		if (robot.getDestinationContainer().isAtDestination())
 		{
-			getRobot().setNewInformation(true);
+			robot.setNewInformation(true);
 		}
 		return false;
 	}
@@ -126,15 +126,15 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 		Field result = null;
 		
 		//Merge offset with Robot Position
-		int y =  getRobot().getPosition().getY() + yOffset;
-		int x =  getRobot().getPosition().getX() + xOffset;
+		int y =  robot.getPosition().getY() + yOffset;
+		int x =  robot.getPosition().getX() + xOffset;
 		
 		Position p = new Position(x, y);
 		//could only hoove position he knows about
 		if (master.getWorld().isPassable(p))
 		{
-			result = new Field(x, y, true, this.getRobot().configuration.iteration);
-			result.addState(STATE_HOOVE, this.getRobot().configuration.iteration);
+			result = new Field(x, y, true, this.robot.configuration.iteration);
+			result.addState(STATE_HOOVE, this.robot.configuration.iteration);
 		}	
 		return result;		
 	}

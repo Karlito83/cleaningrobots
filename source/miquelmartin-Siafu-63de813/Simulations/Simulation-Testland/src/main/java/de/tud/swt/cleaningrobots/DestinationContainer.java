@@ -115,10 +115,6 @@ public class DestinationContainer {
 		return robot.getWorld().getPathFromTo(start, dest);
 	}
 	
-	public List<Position> getPath () {
-		return path;
-	}
-	
 	public void moveTowardsDestination () {		
 		if (this.path != null) {
 			//sollte nicht auftreten

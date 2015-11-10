@@ -41,13 +41,9 @@ public class RobotCore extends Robot {
 	private List<HardwareComponent> hardwarecomponents;
 	private Set<State> supportedStates;
 	
-	private IPositionProvider positionProvider;
-	private INavigationController navigationController;
-	private ICommunicationProvider communicationProvider;
+	private ICommunicationAdapter communicationAdapter;
 	
 	private DestinationContainer destinationContainer;
-	
-	private static int counter = 1; // counter for the standard-name
 	
 	//ob es Ladestation ist
 	private boolean loadStation;
@@ -56,16 +52,11 @@ public class RobotCore extends Robot {
 	
 	private boolean shutDown;
 
-	public RobotCore(IPositionProvider positionProvider,
-			INavigationController navigationController,
-			ICommunicationProvider communicationProvider, Accu accu, WorkingConfiguration configuration) {
-		this("Robby_" + counter++, positionProvider, navigationController,
-				communicationProvider, accu, configuration);
+	public RobotCore(ICommunicationAdapter communicationAdapter, Accu accu, WorkingConfiguration configuration) {
+		this("Robby_0", communicationAdapter, accu, configuration);
 	}
 
-	public RobotCore(String name, IPositionProvider positionProvider,
-			INavigationController navigationController,
-			ICommunicationProvider communicationProvider, Accu accu, WorkingConfiguration configuration) {
+	public RobotCore(String name, ICommunicationAdapter communicationAdapter, Accu accu, WorkingConfiguration configuration) {
 
 		this.configuration = configuration;
 		this.name = name;
@@ -85,9 +76,7 @@ public class RobotCore extends Robot {
 		this.supportedStates = new HashSet<State>();
 		this.knowledge = new LinkedList<RobotKnowledge>();
 		
-		this.navigationController = navigationController;
-		this.communicationProvider = communicationProvider;
-		this.positionProvider = positionProvider;
+		this.communicationAdapter = communicationAdapter;
 		this.destinationContainer = new DestinationContainer(this);
 		
 	}
@@ -204,21 +193,13 @@ public class RobotCore extends Robot {
 	}
 	
 	//Get Methods for all Objects
-	public INavigationController getINavigationController () {
-		return this.navigationController;
-	}
-	
-	public ICommunicationProvider getICommunicationProvider () {
-		return this.communicationProvider;
+	public ICommunicationAdapter getICommunicationAdapter () {
+		return this.communicationAdapter;
 	}
 	
 	public List<HardwareComponent> getHardwarecomponents ()	{
 		return this.hardwarecomponents;
 	}
-	
-	/*public List<Goal> getGoals () {
-		return this.goals;
-	}*/
 	
 	public boolean hasActiveHardwareComponent (Components c) {
 		for (HardwareComponent hard : hardwarecomponents) {
@@ -264,7 +245,7 @@ public class RobotCore extends Robot {
 	}
 
 	public Position getPosition() {
-		return positionProvider.getPosition();
+		return this.communicationAdapter.getPosition();
 	}
 	
 	private void recalculateSupportedStates () {
@@ -291,7 +272,7 @@ public class RobotCore extends Robot {
 	 * @param position
 	 */
 	public void setPosition(Position position) {
-		this.navigationController.setPosition(position);
+		this.communicationAdapter.setPosition(position);
 	}
 
 	public void setName(String name) {

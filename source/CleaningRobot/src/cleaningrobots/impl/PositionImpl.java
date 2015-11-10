@@ -35,7 +35,7 @@ public class PositionImpl extends MinimalEObjectImpl.Container implements Positi
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int XPOS_EDEFAULT = 0;
+	//protected int XPOS_EDEFAULT = 0;
 
 	/**
 	 * The cached value of the '{@link #getXpos() <em>Xpos</em>}' attribute.
@@ -45,7 +45,7 @@ public class PositionImpl extends MinimalEObjectImpl.Container implements Positi
 	 * @generated
 	 * @ordered
 	 */
-	protected int xpos = XPOS_EDEFAULT;
+	protected int xpos = 0;
 
 	/**
 	 * The default value of the '{@link #getYpos() <em>Ypos</em>}' attribute.
@@ -55,7 +55,7 @@ public class PositionImpl extends MinimalEObjectImpl.Container implements Positi
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int YPOS_EDEFAULT = 0;
+	//protected int YPOS_EDEFAULT = 0;
 
 	/**
 	 * The cached value of the '{@link #getYpos() <em>Ypos</em>}' attribute.
@@ -65,7 +65,7 @@ public class PositionImpl extends MinimalEObjectImpl.Container implements Positi
 	 * @generated
 	 * @ordered
 	 */
-	protected int ypos = YPOS_EDEFAULT;
+	protected int ypos = 0;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -171,10 +171,10 @@ public class PositionImpl extends MinimalEObjectImpl.Container implements Positi
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case CleaningrobotsPackage.POSITION__XPOS:
-				setXpos(XPOS_EDEFAULT);
+				setXpos(0);
 				return;
 			case CleaningrobotsPackage.POSITION__YPOS:
-				setYpos(YPOS_EDEFAULT);
+				setYpos(0);
 				return;
 		}
 		super.eUnset(featureID);
@@ -189,9 +189,9 @@ public class PositionImpl extends MinimalEObjectImpl.Container implements Positi
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case CleaningrobotsPackage.POSITION__XPOS:
-				return xpos != XPOS_EDEFAULT;
+				return xpos != 0;
 			case CleaningrobotsPackage.POSITION__YPOS:
-				return ypos != YPOS_EDEFAULT;
+				return ypos != 0;
 		}
 		return super.eIsSet(featureID);
 	}

@@ -38,7 +38,7 @@ public class LoadWlanActivateBehaviour extends Behaviour {
 	public boolean action() throws Exception {
 
 		//if isLoading mache Wlan an
-		if (getRobot().isLoading)
+		if (robot.isLoading)
 		{
 			if (!wlan.isActive())
 			{

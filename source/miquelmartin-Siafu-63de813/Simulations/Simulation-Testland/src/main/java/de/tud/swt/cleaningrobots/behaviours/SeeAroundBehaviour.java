@@ -56,7 +56,7 @@ public class SeeAroundBehaviour extends Behaviour {
 		
 		//der Welt des Roboters die neuen Felder hinzufügen
 		try {
-			this.getRobot().getWorld().addFields(getData());
+			this.robot.getWorld().addFields(getData());
 		} catch (Exception e) {
 			throw e;
 		}		
@@ -82,22 +82,22 @@ public class SeeAroundBehaviour extends Behaviour {
 		Field result = null;
 		
 		//Offset mit Agenten position vereinigen
-		int row =  getRobot().getINavigationController().getRow() + yOffset;
-		int col =  getRobot().getINavigationController().getCol() + xOffset;
+		int row =  robot.getPosition().getY() + yOffset;
+		int col =  robot.getPosition().getX() + xOffset;
 		
 		//prüfe ob es eine Wand ist
-		boolean positionIsAtWall = getRobot().getINavigationController().isWall(row, col);
+		boolean positionIsAtWall = robot.getICommunicationAdapter().isWall(row, col);
 		
 		//neues Feld anlegen
-		result = new Field(col, row, !positionIsAtWall, this.getRobot().configuration.iteration);
+		result = new Field(col, row, !positionIsAtWall, this.robot.configuration.iteration);
 		//wenn Wand ist dann status dazu anlegen ansonsten freien Status geben
 		if(positionIsAtWall)
 		{
-			result.addState(STATE_BLOCKED, this.getRobot().configuration.iteration);
+			result.addState(STATE_BLOCKED, this.robot.configuration.iteration);
 		}
 		else
 		{
-			result.addState(STATE_FREE, this.getRobot().configuration.iteration);
+			result.addState(STATE_FREE, this.robot.configuration.iteration);
 		}
 		
 		

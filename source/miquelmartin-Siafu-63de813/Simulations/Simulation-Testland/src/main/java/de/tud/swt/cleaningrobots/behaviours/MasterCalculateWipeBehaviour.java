@@ -41,7 +41,7 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 		this.mr = mr;
 		this.firstStart = true;
 		this.relative = relative;
-		this.mfm = new MasterFieldMerge(this.getRobot().configuration);
+		this.mfm = new MasterFieldMerge(this.robot.configuration);
 		this.information = new HashMap<String, RobotDestinationCalculation>();
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
@@ -94,8 +94,8 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 		}
 						
 		//search all wipe robots
-		List<RobotCore> allRobots = this.getRobot().getICommunicationProvider().getAllRobots();
-		allRobots.remove(this.getRobot());
+		List<RobotCore> allRobots = this.robot.getICommunicationAdapter().getAllRobots();
+		allRobots.remove(this.robot);
 										
 		for (RobotDestinationCalculation rdc : information.values()) {
 			//alle NeedNew auf false setzen
@@ -129,7 +129,7 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 						
 		//wenn neue gefunden dann bestimmt neue destination und setze diese
 		if (newOneFind) {
-			Map<String, RobotDestinationCalculation> result = this.getRobot().getWorld().getNextPassablePositionsByStateWithoutState(information, calculationAway, STATE_HOOVE, STATE_WIPE);
+			Map<String, RobotDestinationCalculation> result = this.robot.getWorld().getNextPassablePositionsByStateWithoutState(information, calculationAway, STATE_HOOVE, STATE_WIPE);
 							
 			if (result != null) {			
 				information = result; 
@@ -139,7 +139,7 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 					for (RobotDestinationCalculation rdc : information.values()) {
 						if (rdc.getName().equals(oneRobot.getName()) && rdc.needNew)
 						{
-							mfm.sendDestPath(getRobot().getName(), oneRobot, getRobot().getWorld().getPath(rdc.newDest), rdc.newDest);
+							mfm.sendDestPath(robot.getName(), oneRobot, robot.getWorld().getPath(rdc.newDest), rdc.newDest);
 							rdc.actualPosition = rdc.newDest;
 						}
 					}
@@ -162,9 +162,9 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 						Position nextWipePosition; 
 						//proof if you need relative or not relative position
 						if (relative)
-							nextWipePosition = this.getRobot().getWorld().getNextPassableRelativePositionByStateWithoutState(rdc.actualPosition, rdc.oldDest, STATE_HOOVE, STATE_WIPE); 
+							nextWipePosition = this.robot.getWorld().getNextPassableRelativePositionByStateWithoutState(rdc.actualPosition, rdc.oldDest, STATE_HOOVE, STATE_WIPE); 
 						else
-							nextWipePosition = this.getRobot().getWorld().getNextPassablePositionByStateWithoutState(rdc.actualPosition, STATE_HOOVE, STATE_WIPE);
+							nextWipePosition = this.robot.getWorld().getNextPassablePositionByStateWithoutState(rdc.actualPosition, STATE_HOOVE, STATE_WIPE);
 									
 						if(nextWipePosition != null){								
 							//wenn accu vorhanden dann muss ladestatus geprüft werden Prüfe,
@@ -172,43 +172,43 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 							if (oneRobot.getAccu() != null)
 							{
 								//Entfernung Robot bis Ziel
-								int sizeOne = getRobot().getWorld().getPathFromTo(rdc.actualPosition, nextWipePosition).size();
+								int sizeOne = robot.getWorld().getPathFromTo(rdc.actualPosition, nextWipePosition).size();
 								//Entfernung Ziel bis Ladestation
-								int sizeThree = getRobot().getWorld().getPathFromTo(nextWipePosition, getRobot().getPosition()).size();
+								int sizeThree = robot.getWorld().getPathFromTo(nextWipePosition, robot.getPosition()).size();
 								int size = sizeOne + sizeThree;
 								size +=2;
 								//Wenn akku bis zu Ziel nicht mehr 
 								if (size * oneRobot.getActualEnergie() > oneRobot.getAccu().getRestKWh())
 								{
 									//Robot schafft Weg nicht also Fahre zurück zu Ladestation
-									if (rdc.actualPosition.equals(getRobot().getPosition()))
+									if (rdc.actualPosition.equals(robot.getPosition()))
 									{
 										System.out.println("Robot erreicht keine Unknownposition mehr obwohl diese noch existiert!");
 										rdc.finish = true;
 									} else {
-										mfm.sendDestPath(getRobot().getName(), oneRobot, getRobot().getWorld().getPathFromTo(rdc.actualPosition, getRobot().getPosition()), getRobot().getPosition());
-										rdc.actualPosition = getRobot().getPosition();
+										mfm.sendDestPath(robot.getName(), oneRobot, robot.getWorld().getPathFromTo(rdc.actualPosition, robot.getPosition()), robot.getPosition());
+										rdc.actualPosition = robot.getPosition();
 									}
 								} else {
 									//Robot schafft weg also fahre hin
-									mfm.sendDestPath(getRobot().getName(), oneRobot, getRobot().getWorld().getPathFromTo(rdc.actualPosition, nextWipePosition), nextWipePosition);
+									mfm.sendDestPath(robot.getName(), oneRobot, robot.getWorld().getPathFromTo(rdc.actualPosition, nextWipePosition), nextWipePosition);
 									rdc.actualPosition = nextWipePosition;
 								}
 							} else {
-								mfm.sendDestPath(getRobot().getName(), oneRobot, getRobot().getWorld().getPathFromTo(rdc.actualPosition, nextWipePosition), nextWipePosition);
+								mfm.sendDestPath(robot.getName(), oneRobot, robot.getWorld().getPathFromTo(rdc.actualPosition, nextWipePosition), nextWipePosition);
 								rdc.actualPosition = nextWipePosition;
 							}
 						}
 						else 
 						{
 							//proof if the world is complete hooved
-							if (this.getRobot().getWorld().containsWorldState(WORLDSTATE_HOOVED)) {
-								this.getRobot().getWorld().addWorldState(WORLDSTATE_WIPED);
-								if(!rdc.actualPosition.equals(getRobot().getPosition()))
+							if (this.robot.getWorld().containsWorldState(WORLDSTATE_HOOVED)) {
+								this.robot.getWorld().addWorldState(WORLDSTATE_WIPED);
+								if(!rdc.actualPosition.equals(robot.getPosition()))
 								{
 									//Ist an Ladestation angekommen muss geladen werden
-									mfm.sendDestPath(getRobot().getName(), oneRobot, getRobot().getWorld().getPathFromTo(rdc.actualPosition, getRobot().getPosition()), getRobot().getPosition());
-									rdc.actualPosition = getRobot().getPosition();
+									mfm.sendDestPath(robot.getName(), oneRobot, robot.getWorld().getPathFromTo(rdc.actualPosition, robot.getPosition()), robot.getPosition());
+									rdc.actualPosition = robot.getPosition();
 								} else {
 									rdc.finish = true;
 								}
@@ -228,9 +228,9 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 			if (!rdc.finish)
 				return false;
 		}
-		if (this.getRobot().getWorld().containsWorldState(WORLDSTATE_WIPED))
+		if (this.robot.getWorld().containsWorldState(WORLDSTATE_WIPED))
 		{
-			for (RobotCore core : this.getRobot().getICommunicationProvider().getAllRobots())
+			for (RobotCore core : this.robot.getICommunicationAdapter().getAllRobots())
 				core.getWorld().addWorldState(WORLDSTATE_WIPED);
 			return true;
 		} else {

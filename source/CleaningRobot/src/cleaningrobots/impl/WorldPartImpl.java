@@ -37,7 +37,7 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int XDIM_EDEFAULT = 0;
+	//protected int XDIM_EDEFAULT = 0;
 
 	/**
 	 * The cached value of the '{@link #getXdim() <em>Xdim</em>}' attribute.
@@ -47,7 +47,7 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 	 * @generated
 	 * @ordered
 	 */
-	protected int xdim = XDIM_EDEFAULT;
+	protected int xdim = 0;
 
 	/**
 	 * The default value of the '{@link #getYdim() <em>Ydim</em>}' attribute.
@@ -57,7 +57,7 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int YDIM_EDEFAULT = 0;
+	//protected int YDIM_EDEFAULT = 0;
 
 	/**
 	 * The cached value of the '{@link #getYdim() <em>Ydim</em>}' attribute.
@@ -67,7 +67,7 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 	 * @generated
 	 * @ordered
 	 */
-	protected int ydim = YDIM_EDEFAULT;
+	protected int ydim = 0;
 
 	/**
 	 * The cached value of the '{@link #getWorldStates() <em>World States</em>}' reference list.
@@ -202,10 +202,10 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case CleaningrobotsPackage.WORLD_PART__XDIM:
-				setXdim(XDIM_EDEFAULT);
+				setXdim(0);
 				return;
 			case CleaningrobotsPackage.WORLD_PART__YDIM:
-				setYdim(YDIM_EDEFAULT);
+				setYdim(0);
 				return;
 			case CleaningrobotsPackage.WORLD_PART__WORLD_STATES:
 				getWorldStates().clear();
@@ -223,9 +223,9 @@ public class WorldPartImpl extends MinimalEObjectImpl.Container implements World
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case CleaningrobotsPackage.WORLD_PART__XDIM:
-				return xdim != XDIM_EDEFAULT;
+				return xdim != 0;
 			case CleaningrobotsPackage.WORLD_PART__YDIM:
-				return ydim != YDIM_EDEFAULT;
+				return ydim != 0;
 			case CleaningrobotsPackage.WORLD_PART__WORLD_STATES:
 				return worldStates != null && !worldStates.isEmpty();
 		}

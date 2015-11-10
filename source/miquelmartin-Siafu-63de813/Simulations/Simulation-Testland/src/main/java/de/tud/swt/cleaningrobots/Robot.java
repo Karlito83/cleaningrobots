@@ -8,8 +8,8 @@ public abstract class Robot {
 		return newInformation;
 	}
 	
-	public void setNewInformation (boolean value) {
-		newInformation = value;
+	public void setNewInformation (boolean newInformation) {
+		this.newInformation = newInformation;
 	}
 	
 	public abstract boolean addRole (RobotRole role);	

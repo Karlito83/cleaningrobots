@@ -21,15 +21,12 @@ package de.tud.swt.testland;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-
 import de.nec.nle.siafu.behaviormodels.BaseAgentModelMulti;
 import de.nec.nle.siafu.model.MultiAgent;
 import de.nec.nle.siafu.model.MultiWorld;
-import de.tud.evaluation.ExchangeMeasurement;
 import de.tud.evaluation.WorkingConfiguration;
 import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.measure.FileWorker;
+import de.tud.swt.cleaningrobots.measure.ExportFiles;
 import de.tud.swt.cleaningrobots.multithreaded.ExploreMergeMasterCalculateFactoryMulti;
 import de.tud.swt.cleaningrobots.multithreaded.ExploreMergeMasterCalculateRelativeFactoryMulti;
 import de.tud.swt.cleaningrobots.multithreaded.ExploreMergeMasterFactoryMulti;
@@ -48,8 +45,7 @@ import de.tud.swt.cleaningrobots.multithreaded.RobotAgentMulti;
  */
 public class AgentModelMulti extends BaseAgentModelMulti {
 	
-	public long startTime;
-
+	private long startTime;
 	private boolean roboterFinish;
 	private boolean completeFinish;
 	
@@ -79,8 +75,6 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 		ArrayList<MultiAgent> agents = new ArrayList<MultiAgent>();
 
 		try {
-			//Variables.iteration = 0;
-			//Variables.exchange.clear();
 			switch (configuration.config) {
 				case 0:  agents = new MasterExploreFactoryMulti(configuration).createRobots(world);
 						 break;
@@ -112,8 +106,7 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 	@Override
 	public void doIteration(Collection<MultiAgent> agents) {
 		configuration.iteration = configuration.iteration + 1;
-		//Variables.iteration += 1;
-		//System.out.println("New Iteration: " + Variables.iteration);
+		
 		if (!completeFinish) {
 			if (!roboterFinish) {			
 				roboterFinish = true;
@@ -122,7 +115,6 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 					//nur wenn Robot noch nicht aus ist
 					if (!((RobotAgentMulti)a).getRobot().isShutDown()) {
 						((RobotAgentMulti)a).wander();
-						//System.out.println("Robot: " + ((RobotAgent)a).getName() + " finish: " + ((RobotAgent)a).isFinish());
 						if (!((RobotAgentMulti)a).isFinish())
 							roboterFinish = false;
 					}
@@ -140,17 +132,28 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 					RobotCore rc = ((RobotAgentMulti)a).getRobot();
 					
 					//Json Datein in .txt speicher
-					FileWorker fw = new FileWorker("M" + configuration.map + "_V" + configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
-							"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + rc.getName()+ ".txt");				
 					rc.getMeasurement().benchmarkTime = (endTime - startTime);
 					String measu = rc.getMeasurement().toJson();
-					fw.addLineToFile(measu);
+					
+					ExportFiles ef = new ExportFiles();
+					String path = "M" + configuration.map + "_V" + configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
+							"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + rc.getName()+ ".txt";
+					ef.addLineToFile(measu, path);
+					/*FileWorker fw = new FileWorker("M" + configuration.map + "_V" + configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
+							"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + rc.getName()+ ".txt");				
+					fw.addLineToFile(measu);*/
 					
 					//Roboter time in csv speichern
 					//outputCsv(rc.getMeasurement().timeProTick, rc.getName() + "Time");
 					
 				}
-				FileWorker fw = new FileWorker("M" + configuration.map + "_V" +configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
+				ExportFiles ef = new ExportFiles();
+				String path = "M" + configuration.map + "_V" +configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
+						"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + "exchange.txt";
+				ef.addConfigurationToFile(configuration, path);
+				
+				
+				/*FileWorker fw = new FileWorker("M" + configuration.map + "_V" +configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
 						"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + "exchange.txt");
 				int tester = 0;
 				for (ExchangeMeasurement em : configuration.exchange) {
@@ -158,30 +161,13 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 					em.setNumber(tester);
 					String result = em.toJson();
 					fw.addLineToFile(result);
-				}
+				}*/
 				System.out.println("Programm Finish!");
 				System.out.println("Iterations: " + configuration.iteration);
 				this.completeFinish = true;
-				//siafuWorld.pause(true);
 			}
 		} else {
 			this.runFinish = true;
 		}
-	}
-	
-	public void outputCsv (List<Double> liste, String name) {
-		FileWorker fw = new FileWorker(name + ".csv");
-		String svalue = "";
-		String skey = "";
-		if (!liste.isEmpty()) {
-			svalue = "" + liste.get(0);
-			skey = "" + 0;
-		}
-		for (int i = 1; i < liste.size(); i++) {
-			svalue = svalue + ";" + liste.get(i);
-			skey = skey + ";" + i;
-		}
-		fw.addLineToFile(skey);
-		fw.addLineToFile(svalue);
 	}
 }

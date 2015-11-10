@@ -50,7 +50,7 @@ public class RobotKnowledgeImpl extends MinimalEObjectImpl.Container implements 
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String NAME_EDEFAULT = null;
+	//protected String NAME_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -60,7 +60,7 @@ public class RobotKnowledgeImpl extends MinimalEObjectImpl.Container implements 
 	 * @generated
 	 * @ordered
 	 */
-	protected String name = NAME_EDEFAULT;
+	protected String name = null;
 
 	/**
 	 * The default value of the '{@link #getLastArrange() <em>Last Arrange</em>}' attribute.
@@ -70,7 +70,7 @@ public class RobotKnowledgeImpl extends MinimalEObjectImpl.Container implements 
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int LAST_ARRANGE_EDEFAULT = 0;
+	//protected int LAST_ARRANGE_EDEFAULT = 0;
 
 	/**
 	 * The cached value of the '{@link #getLastArrange() <em>Last Arrange</em>}' attribute.
@@ -80,7 +80,7 @@ public class RobotKnowledgeImpl extends MinimalEObjectImpl.Container implements 
 	 * @generated
 	 * @ordered
 	 */
-	protected int lastArrange = LAST_ARRANGE_EDEFAULT;
+	protected int lastArrange = 0;
 
 	/**
 	 * The cached value of the '{@link #getDestination() <em>Destination</em>}' reference.
@@ -325,10 +325,10 @@ public class RobotKnowledgeImpl extends MinimalEObjectImpl.Container implements 
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case CleaningrobotsPackage.ROBOT_KNOWLEDGE__NAME:
-				setName(NAME_EDEFAULT);
+				setName(null);
 				return;
 			case CleaningrobotsPackage.ROBOT_KNOWLEDGE__LAST_ARRANGE:
-				setLastArrange(LAST_ARRANGE_EDEFAULT);
+				setLastArrange(0);
 				return;
 			case CleaningrobotsPackage.ROBOT_KNOWLEDGE__DESTINATION:
 				setDestination((Position)null);
@@ -355,9 +355,9 @@ public class RobotKnowledgeImpl extends MinimalEObjectImpl.Container implements 
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case CleaningrobotsPackage.ROBOT_KNOWLEDGE__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+				return name != null;
 			case CleaningrobotsPackage.ROBOT_KNOWLEDGE__LAST_ARRANGE:
-				return lastArrange != LAST_ARRANGE_EDEFAULT;
+				return lastArrange != 0;
 			case CleaningrobotsPackage.ROBOT_KNOWLEDGE__DESTINATION:
 				return destination != null;
 			case CleaningrobotsPackage.ROBOT_KNOWLEDGE__COMPONENTS:

@@ -10,6 +10,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.tud.evaluation.ExchangeMeasurement;
+import de.tud.evaluation.WorkingConfiguration;
+
 /**
  * <span class="de">Erfasst das Dokument zum durchlaufen.</span>
  * <span class="en">Gets the file to work.</span>
@@ -49,11 +52,28 @@ public class FileWorker
 	public boolean addLineToFile(String s)
 	{
 		try {
-            FileWriter writer;
-			writer = new FileWriter(file,true);
-            BufferedWriter bw = new BufferedWriter(writer);
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file,true));
     		bw.write(s);
     		bw.newLine();
+    		bw.close();
+    		return true;
+        }
+		catch (IOException e) 
+		{
+            return false;
+        }
+	}
+	
+	public boolean addConfigurationToFile(WorkingConfiguration wc) {
+		try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file,true));
+            int tester = 0;
+			for (ExchangeMeasurement em : wc.exchange) {
+				tester++;
+				em.setNumber(tester);
+	    		bw.write(em.toJson());
+	    		bw.newLine();
+			}
     		bw.close();
     		return true;
         }

@@ -24,9 +24,9 @@ public class LoadIfAtLoadStationBehaviour extends Behaviour {
 	public boolean action() throws Exception {
 
 		//if at load destination activate loading
-		if (getRobot().getDestinationContainer().isAtLoadDestination())
+		if (robot.getDestinationContainer().isAtLoadDestination())
 		{
-			getRobot().isLoading = true;
+			robot.isLoading = true;
 		}		
 		return false;
 	}

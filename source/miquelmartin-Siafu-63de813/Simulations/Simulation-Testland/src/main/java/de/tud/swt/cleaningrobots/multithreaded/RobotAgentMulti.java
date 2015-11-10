@@ -5,12 +5,11 @@ import java.util.List;
 
 import de.nec.nle.siafu.model.MultiAgent;
 import de.nec.nle.siafu.model.MultiWorld;
-import de.tud.swt.cleaningrobots.ICommunicationProvider;
-import de.tud.swt.cleaningrobots.IPositionProvider;
+import de.tud.swt.cleaningrobots.ICommunicationAdapter;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.model.Position;
 
-public class RobotAgentMulti extends MultiAgent implements IPositionProvider, ICommunicationProvider {
+public class RobotAgentMulti extends MultiAgent implements ICommunicationAdapter {
 
 	private boolean finish;
 	
@@ -35,6 +34,22 @@ public class RobotAgentMulti extends MultiAgent implements IPositionProvider, IC
 	public void setName(String name) {
 		this.name = name;
 		this.cleaningRobot.setName(name);
+	}
+	
+	@Override
+	public void setPosition(Position position) {
+		setCol(position.getX());
+		setRow(position.getY());		
+	}
+
+	@Override
+	public boolean isWall(int row, int col) {
+		return siafuWorld.isAWall(row, col);
+	}
+	
+	@Override
+	public Position getPosition() {
+		return new Position(getCol(), getRow());
 	}
 
 	@Override
@@ -61,10 +76,5 @@ public class RobotAgentMulti extends MultiAgent implements IPositionProvider, IC
 			result.add(((RobotAgentMulti)nearAgent).getRobot());
 		}
 		return result;
-	}
-	
-	@Override
-	public Position getPosition() {
-		return new Position(getCol(), getRow());
 	}
 }

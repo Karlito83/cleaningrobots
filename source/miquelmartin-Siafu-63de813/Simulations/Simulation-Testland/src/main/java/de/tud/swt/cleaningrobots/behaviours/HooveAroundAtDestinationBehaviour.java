@@ -48,8 +48,8 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 	public boolean action() throws Exception {
 		
 		//Wenn Roboter an Ziel dann machen ann Scanne umgebung und machen wieder aus
-		if (getRobot().getDestinationContainer().isAtDestination() && getRobot().getDestinationContainer().isDestinationSet() 
-				&& !getRobot().getDestinationContainer().isAtLoadDestination()) {
+		if (robot.getDestinationContainer().isAtDestination() && robot.getDestinationContainer().isDestinationSet() 
+				&& !robot.getDestinationContainer().isAtLoadDestination()) {
 			//Schalte alle Hardwarecomponenten an wenn sie nicht schon laufen
 			for (HardwareComponent hard : d.getHcs())
 			{
@@ -60,14 +60,14 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 			}
 			
 			//Activate Flage that he has new information
-			for (RobotRole rr : getRobot().getRoles()) {
+			for (RobotRole rr : robot.getRoles()) {
 				rr.setNewInformation(true);
 			}
 					
 			//scanne umgebung
 			//der Welt des Roboters die neuen Felder hinzufügen
 			try {
-				this.getRobot().getWorld().addFields(getData());
+				this.robot.getWorld().addFields(getData());
 			} catch (Exception e) {
 				throw e;
 			}
@@ -107,15 +107,15 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 		Field result = null;
 		
 		//Offset mit Agenten position vereinigen
-		int y =  getRobot().getPosition().getY() + yOffset;
-		int x =  getRobot().getPosition().getX() + xOffset;
+		int y =  robot.getPosition().getY() + yOffset;
+		int x =  robot.getPosition().getX() + xOffset;
 		
 		Position p = new Position(x, y);
 		//could only hoove position he knows about
-		if (getRobot().getWorld().hasState(p, STATE_FREE))
+		if (robot.getWorld().hasState(p, STATE_FREE))
 		{
-			result = getRobot().getWorld().getField(p);
-			result.addState(STATE_HOOVE, this.getRobot().configuration.iteration);
+			result = robot.getWorld().getField(p);
+			result.addState(STATE_HOOVE, this.robot.configuration.iteration);
 		}	
 		return result;
 	}

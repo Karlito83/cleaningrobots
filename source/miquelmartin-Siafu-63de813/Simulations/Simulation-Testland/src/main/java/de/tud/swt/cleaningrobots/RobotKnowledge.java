@@ -124,7 +124,6 @@ public class RobotKnowledge {
 					
 			result = robotknowledge;
 		} catch (Exception e) {
-			//Logger hier nicht drin
 		}
 
 		return result;

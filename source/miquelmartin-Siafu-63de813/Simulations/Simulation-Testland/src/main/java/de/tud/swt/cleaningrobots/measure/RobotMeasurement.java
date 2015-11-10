@@ -3,11 +3,9 @@ package de.tud.swt.cleaningrobots.measure;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.google.gson.Gson;
+import de.tud.evaluation.EvaluationConstants;
 
 public class RobotMeasurement {
-	
-	private static final Gson gson = new Gson();
 	
 	public int memory;
 	
@@ -33,10 +31,10 @@ public class RobotMeasurement {
 	}
 	
 	public RobotMeasurement fromJson(String json) {
-        return gson.fromJson(json, RobotMeasurement.class);
+        return EvaluationConstants.gson.fromJson(json, RobotMeasurement.class);
     }
 
 	public String toJson() {
-        return gson.toJson(this);
+        return EvaluationConstants.gson.toJson(this);
     }	
 }

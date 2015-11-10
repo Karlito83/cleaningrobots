@@ -50,7 +50,7 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String NAME_EDEFAULT = null;
+	//protected String NAME_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -60,7 +60,7 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	 * @generated
 	 * @ordered
 	 */
-	protected String name = NAME_EDEFAULT;
+	protected String name = null;
 
 	/**
 	 * The cached value of the '{@link #getWorld() <em>World</em>}' containment reference.
@@ -381,7 +381,7 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case CleaningrobotsPackage.ROBOT__NAME:
-				setName(NAME_EDEFAULT);
+				setName(null);
 				return;
 			case CleaningrobotsPackage.ROBOT__WORLD:
 				setWorld((WorldPart)null);
@@ -414,7 +414,7 @@ public class RobotImpl extends MinimalEObjectImpl.Container implements Robot {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case CleaningrobotsPackage.ROBOT__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+				return name != null;
 			case CleaningrobotsPackage.ROBOT__WORLD:
 				return world != null;
 			case CleaningrobotsPackage.ROBOT__DESTINATION:

@@ -25,7 +25,7 @@ public class MoveBehaviour extends Behaviour {
 	public boolean action() throws Exception {
 		
 		//wenn er nicht am Ziel ist und nicht am Laden ist soll er laufen
-		if (!getRobot().getDestinationContainer().isAtDestination() && !getRobot().isLoading){
+		if (!robot.getDestinationContainer().isAtDestination() && !robot.isLoading){
 			//start all hardwarecomponents if not active
 			for (HardwareComponent hard : d.getHcs())
 			{
@@ -36,7 +36,7 @@ public class MoveBehaviour extends Behaviour {
 			}
 			
 			//make the move
-			getRobot().getDestinationContainer().moveTowardsDestination();
+			robot.getDestinationContainer().moveTowardsDestination();
 		} else {
 			//Schalte alle Hardwarecomponenten aus
 			for (HardwareComponent hard : d.getHcs())

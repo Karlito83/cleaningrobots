@@ -6,11 +6,10 @@ import java.util.List;
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
-import de.tud.swt.cleaningrobots.ICommunicationProvider;
-import de.tud.swt.cleaningrobots.IPositionProvider;
+import de.tud.swt.cleaningrobots.ICommunicationAdapter;
 import de.tud.swt.cleaningrobots.RobotCore;
 
-public class RobotAgent extends Agent implements IPositionProvider, ICommunicationProvider {
+public class RobotAgent extends Agent implements ICommunicationAdapter {
 
 	private boolean finish;
 	
@@ -82,5 +81,16 @@ public class RobotAgent extends Agent implements IPositionProvider, ICommunicati
 		de.tud.swt.cleaningrobots.model.Position result = new de.tud.swt.cleaningrobots.model.Position(
 				this.getPos().getCol(), this.getPos().getRow());
 		return result;
+	}
+	
+	@Override
+	public void setPosition(de.tud.swt.cleaningrobots.model.Position position) {
+		Position siafuPosition = new Position(position.getY(), position.getX());
+		setPos(siafuPosition);
+	}
+
+	@Override
+	public boolean isWall(int row, int col) {
+		return siafuWorld.isAWall(new de.nec.nle.siafu.model.Position(row, col));
 	}
 }

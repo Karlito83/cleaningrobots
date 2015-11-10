@@ -26,9 +26,9 @@ import java.util.List;
 import de.nec.nle.siafu.behaviormodels.BaseAgentModel;
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.World;
-import de.tud.evaluation.ExchangeMeasurement;
 import de.tud.evaluation.WorkingConfiguration;
 import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.measure.ExportFiles;
 import de.tud.swt.cleaningrobots.measure.FileWorker;
 
 /**
@@ -42,8 +42,7 @@ import de.tud.swt.cleaningrobots.measure.FileWorker;
  */
 public class AgentModel extends BaseAgentModel {
 	
-	public long startTime;
-
+	private long startTime;
 	private boolean roboterFinish;
 	private boolean completeFinish;
 	
@@ -106,8 +105,7 @@ public class AgentModel extends BaseAgentModel {
 	@Override
 	public void doIteration(final Collection<Agent> agents) {
 		configuration.iteration = configuration.iteration + 1;
-		//Variables.iteration += 1;
-		//System.out.println("New Iteration: " + Variables.iteration);
+		
 		if (!completeFinish) {
 			if (!roboterFinish) {			
 				roboterFinish = true;
@@ -116,7 +114,6 @@ public class AgentModel extends BaseAgentModel {
 					//nur wenn Robot noch nicht aus ist
 					if (!((RobotAgent)a).getRobot().isShutDown()) {
 						a.wander();
-						//System.out.println("Robot: " + ((RobotAgent)a).getName() + " finish: " + ((RobotAgent)a).isFinish());
 						if (!((RobotAgent)a).isFinish())
 							roboterFinish = false;
 					}
@@ -134,17 +131,26 @@ public class AgentModel extends BaseAgentModel {
 					RobotCore rc = ((RobotAgent)a).getRobot();
 					
 					//Json Datein in .txt speicher
-					FileWorker fw = new FileWorker("M" + configuration.map + "_V" + configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
-							"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + rc.getName()+ ".txt");				
 					rc.getMeasurement().benchmarkTime = (endTime - startTime);
 					String measu = rc.getMeasurement().toJson();
-					fw.addLineToFile(measu);
 					
+					ExportFiles ef = new ExportFiles();
+					String path = "M" + configuration.map + "_V" + configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
+							"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + rc.getName()+ ".txt";
+					ef.addLineToFile(measu, path);
+					/*FileWorker fw = new FileWorker("M" + configuration.map + "_V" + configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
+							"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + rc.getName()+ ".txt");				
+					fw.addLineToFile(measu);*/
 					//Roboter time in csv speichern
 					//outputCsv(rc.getMeasurement().timeProTick, rc.getName() + "Time");
 					
 				}
-				FileWorker fw = new FileWorker("M" + configuration.map + "_V" +configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
+				ExportFiles ef = new ExportFiles();
+				String path = "M" + configuration.map + "_V" +configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
+						"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + "exchange.txt";
+				ef.addConfigurationToFile(configuration, path);
+				
+				/*FileWorker fw = new FileWorker("M" + configuration.map + "_V" +configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
 						"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + "exchange.txt");
 				int tester = 0;
 				for (ExchangeMeasurement em : configuration.exchange) {
@@ -152,11 +158,10 @@ public class AgentModel extends BaseAgentModel {
 					em.setNumber(tester);
 					String result = em.toJson();
 					fw.addLineToFile(result);
-				}
+				}*/
 				System.out.println("Programm Finish!");
 				System.out.println("Iterations: " + configuration.iteration);
 				this.completeFinish = true;
-				//siafuWorld.pause(true);
 			}
 		} else {
 			this.runFinish = true;

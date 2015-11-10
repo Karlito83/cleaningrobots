@@ -3,7 +3,6 @@ package de.tud.swt.testland;
 import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
 import de.tud.evaluation.WorkingConfiguration;
-import de.tud.swt.cleaningrobots.AgentNavigationAdapter;
 import de.tud.swt.cleaningrobots.MasterRole;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.goals.nonoptional.MasterExploreMasterGoal;
@@ -27,7 +26,7 @@ public class LoadStationAgent extends RobotAgent {
 		//System.out.println("Start Position: Col: " + start.getCol() + " Row: " + start.getRow());
 
 		siafuWorld = world;
-		cleaningRobot = new RobotCore(this, new AgentNavigationAdapter(this, siafuWorld), this, null, configuration);
+		cleaningRobot = new RobotCore(this, null, configuration);
 		
 		cleaningRobot.addHardwareComponent(new Rechner());
 		cleaningRobot.addHardwareComponent(new LoadStation());

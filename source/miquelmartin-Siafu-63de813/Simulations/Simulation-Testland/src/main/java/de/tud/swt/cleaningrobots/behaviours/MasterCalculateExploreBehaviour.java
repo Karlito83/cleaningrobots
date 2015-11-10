@@ -40,7 +40,7 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 		this.mr = mr;
 		this.firstStart = true;
 		this.relative = relative;
-		this.mfm = new MasterFieldMerge(this.getRobot().configuration);
+		this.mfm = new MasterFieldMerge(this.robot.configuration);
 		this.information = new HashMap<String, RobotDestinationCalculation>();
 		
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
@@ -94,8 +94,8 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 		}
 		
 		//Suche Explore Robots in der nähe einmal ausführen
-		List<RobotCore> allRobots = this.getRobot().getICommunicationProvider().getAllRobots();
-		allRobots.remove(this.getRobot());
+		List<RobotCore> allRobots = this.robot.getICommunicationAdapter().getAllRobots();
+		allRobots.remove(this.robot);
 						
 		for (RobotDestinationCalculation rdc : information.values()) {
 			//alle NeedNew auf false setzen
@@ -129,7 +129,7 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 		
 		//wenn neue gefunden dann bestimmt neue destination und setze diese
 		if (newOneFind) {
-			Map<String, RobotDestinationCalculation> result = this.getRobot().getWorld().getNextUnknownFields(information, calculationAway);
+			Map<String, RobotDestinationCalculation> result = this.robot.getWorld().getNextUnknownFields(information, calculationAway);
 			
 			if (result != null) {			
 				information = result; 
@@ -139,7 +139,7 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 					for (RobotDestinationCalculation rdc : information.values()) {
 						if (rdc.getName().equals(oneRobot.getName()) && rdc.needNew)
 						{
-							mfm.sendDestPath(getRobot().getName(), oneRobot, getRobot().getWorld().getPath(rdc.newDest), rdc.newDest);
+							mfm.sendDestPath(robot.getName(), oneRobot, robot.getWorld().getPath(rdc.newDest), rdc.newDest);
 							rdc.actualPosition = rdc.newDest;
 						}
 					}
@@ -163,9 +163,9 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 						
 						//look if you need relative algorithm or not
 						if (relative)	
-							nextUnknownPosition = this.getRobot().getWorld().getNextUnknownRelativeFieldPosition(rdc.actualPosition, rdc.oldDest); 
+							nextUnknownPosition = this.robot.getWorld().getNextUnknownRelativeFieldPosition(rdc.actualPosition, rdc.oldDest); 
 						else
-							nextUnknownPosition = this.getRobot().getWorld().getNextUnknownFieldPosition(rdc.actualPosition);
+							nextUnknownPosition = this.robot.getWorld().getNextUnknownFieldPosition(rdc.actualPosition);
 						
 						if(nextUnknownPosition != null){								
 							//wenn accu vorhanden dann muss ladestatus geprüft werden Prüfe,
@@ -173,41 +173,41 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 							if (oneRobot.getAccu() != null)
 							{
 								//Entfernung Robot bis Ziel
-								int sizeOne = getRobot().getWorld().getPathFromTo(rdc.actualPosition, nextUnknownPosition).size();
+								int sizeOne = robot.getWorld().getPathFromTo(rdc.actualPosition, nextUnknownPosition).size();
 								//Entfernung Ziel bis Ladestation
-								int sizeThree = getRobot().getWorld().getPathFromTo(nextUnknownPosition, getRobot().getPosition()).size();
+								int sizeThree = robot.getWorld().getPathFromTo(nextUnknownPosition, robot.getPosition()).size();
 								int size = sizeOne + sizeThree;
 								size +=2;
 								//Wenn akku bis zu Ziel nicht mehr 
 								if (size * oneRobot.getActualEnergie() > oneRobot.getAccu().getRestKWh())
 								{
 									//Robot schafft Weg nicht also Fahre zurück zu Ladestation
-									if (rdc.actualPosition.equals(getRobot().getPosition()))
+									if (rdc.actualPosition.equals(robot.getPosition()))
 									{
 										System.out.println("Robot erreicht keine Unknownposition mehr obwohl diese noch existiert!");
 										rdc.finish = true;
 									} else {
-										mfm.sendDestPath(getRobot().getName(), oneRobot, getRobot().getWorld().getPathFromTo(rdc.actualPosition, getRobot().getPosition()), getRobot().getPosition());
-										rdc.actualPosition = getRobot().getPosition();
+										mfm.sendDestPath(robot.getName(), oneRobot, robot.getWorld().getPathFromTo(rdc.actualPosition, robot.getPosition()), robot.getPosition());
+										rdc.actualPosition = robot.getPosition();
 									}
 								} else {
 									//Robot schafft weg also fahre hin
-									mfm.sendDestPath(getRobot().getName(), oneRobot, getRobot().getWorld().getPathFromTo(rdc.actualPosition, nextUnknownPosition), nextUnknownPosition);
+									mfm.sendDestPath(robot.getName(), oneRobot, robot.getWorld().getPathFromTo(rdc.actualPosition, nextUnknownPosition), nextUnknownPosition);
 									rdc.actualPosition = nextUnknownPosition;
 								}
 							} else {
-								mfm.sendDestPath(getRobot().getName(), oneRobot, getRobot().getWorld().getPathFromTo(rdc.actualPosition, nextUnknownPosition), nextUnknownPosition);
+								mfm.sendDestPath(robot.getName(), oneRobot, robot.getWorld().getPathFromTo(rdc.actualPosition, nextUnknownPosition), nextUnknownPosition);
 								rdc.actualPosition = nextUnknownPosition;
 							}
 						}
 						else 
 						{
-							this.getRobot().getWorld().addWorldState(WORLDSTATE_DISCOVERED);
-							if(!rdc.actualPosition.equals(getRobot().getPosition()))
+							this.robot.getWorld().addWorldState(WORLDSTATE_DISCOVERED);
+							if(!rdc.actualPosition.equals(robot.getPosition()))
 							{
 								//Ist an Ladestation angekommen muss geladen werden
-								mfm.sendDestPath(getRobot().getName(), oneRobot, getRobot().getWorld().getPathFromTo(rdc.actualPosition, getRobot().getPosition()), getRobot().getPosition());
-								rdc.actualPosition = getRobot().getPosition();
+								mfm.sendDestPath(robot.getName(), oneRobot, robot.getWorld().getPathFromTo(rdc.actualPosition, robot.getPosition()), robot.getPosition());
+								rdc.actualPosition = robot.getPosition();
 							} else {
 								rdc.finish = true;
 							}
@@ -226,9 +226,9 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 			if (!rdc.finish)
 				return false;
 		}
-		if (this.getRobot().getWorld().containsWorldState(WORLDSTATE_DISCOVERED))
+		if (this.robot.getWorld().containsWorldState(WORLDSTATE_DISCOVERED))
 		{
-			for (RobotCore core : this.getRobot().getICommunicationProvider().getAllRobots())
+			for (RobotCore core : this.robot.getICommunicationAdapter().getAllRobots())
 				core.getWorld().addWorldState(WORLDSTATE_DISCOVERED);
 			return true;
 		} else {

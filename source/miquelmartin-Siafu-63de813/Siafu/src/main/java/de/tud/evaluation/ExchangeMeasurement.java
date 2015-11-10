@@ -1,11 +1,7 @@
 package de.tud.evaluation;
 
-import com.google.gson.Gson;
-
 public class ExchangeMeasurement {
 	
-	private static final Gson gson = new Gson();
-
 	private int number;
 	private String robotName1;
 	private String robotName2;
@@ -212,10 +208,10 @@ public class ExchangeMeasurement {
 	}
 	
 	public ExchangeMeasurement fromJson(String json) {
-        return gson.fromJson(json, ExchangeMeasurement.class);
+        return EvaluationConstants.gson.fromJson(json, ExchangeMeasurement.class);
     }
 
 	public String toJson() {
-        return gson.toJson(this);
+        return EvaluationConstants.gson.toJson(this);
     }	
 }

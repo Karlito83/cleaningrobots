@@ -29,8 +29,9 @@ public class ScenarioGenerator {
 	public static void main(String[] args) {
 		Random r = new Random();
 		
+		ScenarioGenerator scGe = new ScenarioGenerator();
 		//load real map
-		boolean[][] fullMap = readMap("input/map.png");		
+		boolean[][] fullMap = scGe.readMap("input/map.png");		
 		
 		for (int nr = 1; nr <= 10; nr++) {
 			//randomly set a position for the robot
@@ -101,7 +102,7 @@ public class ScenarioGenerator {
 			}
 
 			ResourceSet rs = new ResourceSetImpl();
-			Resource res = createAndAddResource("output/robot"+nr+".cleaningrobots", "cleaningrobots", rs);
+			Resource res = scGe.createAndAddResource("output/robot"+nr+".cleaningrobots", "cleaningrobots", rs);
 			res.getContents().add(robby);
 			java.util.Map<Object,Object> saveOptions = ((XMLResource)res).getDefaultSaveOptions();
 		     saveOptions.put(XMLResource.OPTION_CONFIGURATION_CACHE, Boolean.TRUE);
@@ -114,7 +115,7 @@ public class ScenarioGenerator {
 		}
 	}
 	
-	public static boolean[][] readMap(String file) {
+	public boolean[][] readMap(String file) {
 		
 		try {
 			BufferedImage img = ImageIO.read(new File(file));
@@ -135,7 +136,7 @@ public class ScenarioGenerator {
 		return null;
 	}
 
-	public static Resource createAndAddResource(String outputFile, String ext,
+	public Resource createAndAddResource(String outputFile, String ext,
 			ResourceSet rs) {
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap()
 				.put(ext, new XMLResourceFactoryImpl());

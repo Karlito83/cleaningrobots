@@ -37,7 +37,7 @@ public class StateImpl extends MinimalEObjectImpl.Container implements State {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String NAME_EDEFAULT = null;
+	//protected String NAME_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -47,7 +47,7 @@ public class StateImpl extends MinimalEObjectImpl.Container implements State {
 	 * @generated
 	 * @ordered
 	 */
-	protected String name = NAME_EDEFAULT;
+	protected String name = null;
 
 	/**
 	 * The cached value of the '{@link #getTransition() <em>Transition</em>}' reference list.
@@ -156,7 +156,7 @@ public class StateImpl extends MinimalEObjectImpl.Container implements State {
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case CleaningrobotsPackage.STATE__NAME:
-				setName(NAME_EDEFAULT);
+				setName(null);
 				return;
 			case CleaningrobotsPackage.STATE__TRANSITION:
 				getTransition().clear();
@@ -174,7 +174,7 @@ public class StateImpl extends MinimalEObjectImpl.Container implements State {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case CleaningrobotsPackage.STATE__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+				return name != null;
 			case CleaningrobotsPackage.STATE__TRANSITION:
 				return transition != null && !transition.isEmpty();
 		}

@@ -51,7 +51,7 @@ public abstract class BaseAgentModelMulti {
 	 * 
 	 * @param world the simulation's world
 	 */
-	public BaseAgentModelMulti(final MultiWorld world, WorkingConfiguration configuration) {
+	public BaseAgentModelMulti(MultiWorld world, WorkingConfiguration configuration) {
 		this.configuration = configuration;
 		this.world = world;
 		this.runFinish = false;
@@ -84,5 +84,5 @@ public abstract class BaseAgentModelMulti {
 	 * @param agents a Collection containing the agents in the simulation,
 	 *            ready for your manipulation.
 	 */
-	public abstract void doIteration(final Collection<MultiAgent> agents);
+	public abstract void doIteration(Collection<MultiAgent> agents);
 }

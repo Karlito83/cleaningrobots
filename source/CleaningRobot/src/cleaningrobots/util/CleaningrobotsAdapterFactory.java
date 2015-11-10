@@ -26,7 +26,7 @@ public class CleaningrobotsAdapterFactory extends AdapterFactoryImpl {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected static CleaningrobotsPackage modelPackage;
+	protected CleaningrobotsPackage modelPackage;
 
 	/**
 	 * Creates an instance of the adapter factory.
