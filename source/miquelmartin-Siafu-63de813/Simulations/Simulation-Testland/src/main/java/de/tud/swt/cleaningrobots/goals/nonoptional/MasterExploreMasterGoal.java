@@ -9,10 +9,12 @@ import de.tud.swt.cleaningrobots.model.State;
 public class MasterExploreMasterGoal extends NonOptionalGoal {
 	
 	private MasterCalculateExploreBehaviour mceb;
-	private final State WORLDSTATE_DISCOVERED = State.createState("Discovered");
+	private State WORLDSTATE_DISCOVERED;
 
 	public MasterExploreMasterGoal(RobotCore robot, MasterRole mr, boolean relative) {
 		super(robot);
+		
+		this.WORLDSTATE_DISCOVERED = ((State)robot.configuration.as).createState("Discovered");
 		
 		mceb = new MasterCalculateExploreBehaviour(robot, mr, relative);
 		System.out.println("Correct SeeAround: " +mceb.isHardwarecorrect());

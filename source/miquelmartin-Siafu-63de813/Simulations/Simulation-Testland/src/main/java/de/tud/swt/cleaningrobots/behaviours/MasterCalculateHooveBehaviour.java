@@ -21,11 +21,10 @@ public class MasterCalculateHooveBehaviour extends Behaviour {
 
 	private MasterRole mr;
 	
-	private final State STATE_HOOVE = State.createState("Hoove");
-	private final State STATE_FREE = State.createState("Free");
-	
-	private final State WORLDSTATE_DISCOVERED = State.createState("Discovered");
-	private final State WORLDSTATE_HOOVED = State.createState("Hooved");	
+	private State STATE_HOOVE;
+	private State STATE_FREE;
+	private State WORLDSTATE_DISCOVERED;
+	private State WORLDSTATE_HOOVED;	
 		
 	private boolean firstStart;
 	private int calculationAway;
@@ -37,6 +36,11 @@ public class MasterCalculateHooveBehaviour extends Behaviour {
 	
 	public MasterCalculateHooveBehaviour(RobotCore robot, MasterRole mr, boolean relative) {
 		super(robot);
+		
+		this.STATE_HOOVE = ((State)robot.configuration.as).createState("Hoove");
+		this.STATE_FREE = ((State)robot.configuration.as).createState("Free");		
+		this.WORLDSTATE_DISCOVERED = ((State)robot.configuration.as).createState("Discovered");
+		this.WORLDSTATE_HOOVED = ((State)robot.configuration.as).createState("Hooved");
 
 		this.mr = mr;
 		this.firstStart = true;

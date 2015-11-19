@@ -28,7 +28,6 @@ public class MasterFieldMerge {
 		em.addKnowledgeStringByteNumber(name.getBytes().length);
 		em.addWorldIntegerNumber(1);
 		configuration.exchange.add(em);
-		//Variables.exchange.add(em);
 	}
 	
 	/**
@@ -42,7 +41,6 @@ public class MasterFieldMerge {
 		em.addKnowledgeStringByteNumber(name.getBytes().length);
 		em.addWorldPositionCount(1);
 		configuration.exchange.add(em);
-		//Variables.exchange.add(em);
 	}
 	
 	/**
@@ -68,7 +66,6 @@ public class MasterFieldMerge {
 		}
 		em.addAccuDoubleNumber(2);
 		configuration.exchange.add(em);
-		//Variables.exchange.add(em);
 	} 
 	
 	/**
@@ -86,6 +83,5 @@ public class MasterFieldMerge {
 		em.addKnowledgeStringByteNumber(name.getBytes().length);
 		em.addWorldPositionCount(path.size());
 		configuration.exchange.add(em);
-		//Variables.exchange.add(em);
 	}
 }

@@ -12,11 +12,14 @@ public class WipeLoadGoal extends NonOptionalGoal {
 
 	private WipeBehaviour d;
 	
-	private final State STATE_WIPE = State.createState("Wipe");	
-	private final State WORLDSTATE_DISCOVERED = State.createState("Discovered");
+	private State STATE_WIPE;	
+	private State WORLDSTATE_DISCOVERED;
 	
 	public WipeLoadGoal(RobotCore robot, boolean relative) {
 		super(robot);
+		
+		this.STATE_WIPE = ((State)robot.configuration.as).createState("Wipe");	
+		this.WORLDSTATE_DISCOVERED = ((State)robot.configuration.as).createState("Discovered");
 		
 		WipeAroundAtDestinationBehaviour s = new WipeAroundAtDestinationBehaviour(robot);
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());

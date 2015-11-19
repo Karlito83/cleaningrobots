@@ -20,11 +20,14 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 	
 	private int visionRadius = 0;
 	
-	private final State STATE_HOOVE = State.createState("Hoove");
-	private final State STATE_FREE = State.createState("Free");
+	private State STATE_HOOVE;
+	private State STATE_FREE;
 		
 	public HooveAroundAtDestinationBehaviour(RobotCore robot) {
 		super(robot);
+		
+		this.STATE_HOOVE = ((State)robot.configuration.as).createState("Hoove");
+		this.STATE_FREE = ((State)robot.configuration.as).createState("Free");
 				
 		supportedStates.add(STATE_HOOVE);
 		supportedStates.add(STATE_FREE);

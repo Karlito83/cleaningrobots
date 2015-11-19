@@ -9,10 +9,12 @@ import de.tud.swt.cleaningrobots.model.State;
 
 public class MasterHooveRobotGoal extends NonOptionalGoal {
 
-private final State WORLDSTATE_HOOVED = State.createState("Hooved");
+	private State WORLDSTATE_HOOVED;
 	
 	public MasterHooveRobotGoal(RobotCore robot) {
 		super(robot);
+		
+		this.WORLDSTATE_HOOVED = ((State)robot.configuration.as).createState("Hooved");
 		
 		WlanOnBehaviour w = new WlanOnBehaviour(robot);
 		System.out.println("Correct SeeAround: " + w.isHardwarecorrect());

@@ -12,17 +12,22 @@ import de.tud.swt.cleaningrobots.model.State;
 
 public class WipeBehaviour extends Behaviour{
 
-	private final State STATE_HOOVE = State.createState("Hoove");
-	private final State STATE_WIPE = State.createState("Wipe");
+	private State STATE_HOOVE;
+	private State STATE_WIPE;
 	
-	private final State WORLDSTATE_WIPED = State.createState("Wiped");
-	private final State WORLDSTATE_HOOVED = State.createState("Hooved");
+	private State WORLDSTATE_WIPED;
+	private State WORLDSTATE_HOOVED;
 	
 	private boolean finishWiping;
 	private boolean relative;
 
 	public WipeBehaviour(RobotCore robot, boolean relative) {
 		super(robot);
+		
+		this.STATE_HOOVE = ((State)robot.configuration.as).createState("Hoove");
+		this.STATE_WIPE = ((State)robot.configuration.as).createState("Wipe");		
+		this.WORLDSTATE_WIPED = ((State)robot.configuration.as).createState("Wiped");
+		this.WORLDSTATE_HOOVED = ((State)robot.configuration.as).createState("Hooved");
 		
 		this.relative = relative;
 		this.finishWiping = false;

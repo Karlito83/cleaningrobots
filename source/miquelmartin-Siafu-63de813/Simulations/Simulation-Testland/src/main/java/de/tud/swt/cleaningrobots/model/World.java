@@ -1,5 +1,6 @@
 package de.tud.swt.cleaningrobots.model;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -56,9 +57,16 @@ public class World {
 	
 	private int newInformationCounter;
 	
+	private State DISCOVERED_STATE;
+	private State HOOVED_STATE;
+	private State WIPED_STATE;
+	
 	private WorldHelper helper;
 
 	public World(RobotCore robot) {
+		this.DISCOVERED_STATE = ((State)robot.configuration.as).createState("Discovered");
+		this.HOOVED_STATE = ((State)robot.configuration.as).createState("Hooved");
+		this.WIPED_STATE = ((State)robot.configuration.as).createState("Wiped");				
 		this.robot = robot;
 		this.worldStates = new HashSet<State>();
 		this.map = new HashMap<Position, Field>();
@@ -284,7 +292,7 @@ public class World {
 	 */
 	public Map<String, RobotDestinationCalculation> getNextPassablePositionsWithoutState(Map<String, RobotDestinationCalculation> information, int maxAway, State state) {
 
-		if (this.containsWorldState(State.createState("Hooved"))) {
+		if (this.containsWorldState(HOOVED_STATE)) {
 			System.out.println("Welt schon gesaugt!");
 			return null;
 		}
@@ -515,7 +523,7 @@ public class World {
 	 */
 	public Map<String, RobotDestinationCalculation> getNextPassablePositionsByStateWithoutState(Map<String, RobotDestinationCalculation> information, int maxAway, State state, State without) {
 
-		if (this.containsWorldState(State.createState("Wiped"))) {
+		if (this.containsWorldState(WIPED_STATE)) {
 			System.out.println("Welt schon gewischt!");
 			return null;
 		}
@@ -621,7 +629,7 @@ public class World {
 	 */
 	public Map<String, RobotDestinationCalculation> getNextUnknownFields(Map<String, RobotDestinationCalculation> information, int maxAway) {
 
-		if (this.containsWorldState(State.createState("Discovered"))) {
+		if (this.containsWorldState(DISCOVERED_STATE)) {
 			System.out.println("Welt schon erkundet!");
 			return null;
 		}
@@ -862,6 +870,18 @@ public class World {
 	}
 	
 	//worldstate methods
+	/**
+	 * Get the WorldStates of the World.
+	 * @return
+	 */
+	public Set<State> getWorldStates () {
+		return worldStates;
+	}
+	
+	public Collection<Field> getFields () {
+		return map.values();
+	}
+	
 	/**
 	 * Look if the world contains this State as worldstate.
 	 * @param state

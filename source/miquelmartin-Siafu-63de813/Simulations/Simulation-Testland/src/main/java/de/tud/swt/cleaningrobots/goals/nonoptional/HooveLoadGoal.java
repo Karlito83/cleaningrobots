@@ -11,12 +11,15 @@ import de.tud.swt.cleaningrobots.model.State;
 public class HooveLoadGoal extends NonOptionalGoal {
 
 	private HooveBehaviour d;
-	private final State STATE_HOOVE = State.createState("Hoove");
 	
-	private final State WORLDSTATE_DISCOVERED = State.createState("Discovered");
+	private State STATE_HOOVE;	
+	private State WORLDSTATE_DISCOVERED;
 	
 	public HooveLoadGoal(RobotCore robot, boolean relative) {
 		super(robot);
+		
+		this.STATE_HOOVE = ((State)robot.configuration.as).createState("Hoove");
+		this.WORLDSTATE_DISCOVERED = ((State)robot.configuration.as).createState("Discovered");
 		
 		HooveAroundAtDestinationBehaviour s = new HooveAroundAtDestinationBehaviour(robot);
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());

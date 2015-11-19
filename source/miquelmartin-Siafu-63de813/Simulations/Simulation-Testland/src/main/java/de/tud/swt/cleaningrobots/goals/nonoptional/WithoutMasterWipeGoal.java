@@ -2,7 +2,7 @@ package de.tud.swt.cleaningrobots.goals.nonoptional;
 
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.behaviours.LoadIfAtLoadStationBehaviour;
-import de.tud.swt.cleaningrobots.behaviours.MergeAllOfNearBehaviour;
+import de.tud.swt.cleaningrobots.behaviours.MergeAllOfNearWithoutModel;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.WipeAroundAtDestinationBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.WipeBehaviour;
@@ -12,10 +12,12 @@ import de.tud.swt.cleaningrobots.model.State;
 public class WithoutMasterWipeGoal extends NonOptionalGoal {
 
 	private WipeBehaviour d;
-	private final State WORLDSTATE_WIPED = State.createState("Wiped");
+	private State WORLDSTATE_WIPED;
 	
 	public WithoutMasterWipeGoal(RobotCore robot) {
 		super(robot);
+		
+		this.WORLDSTATE_WIPED = ((State)robot.configuration.as).createState("Wiped");
 		
 		WipeAroundAtDestinationBehaviour s = new WipeAroundAtDestinationBehaviour(robot);
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
@@ -44,7 +46,7 @@ public class WithoutMasterWipeGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MergeAllOfNearBehaviour mar = new MergeAllOfNearBehaviour(robot);
+		MergeAllOfNearWithoutModel mar = new MergeAllOfNearWithoutModel(robot);
 		System.out.println("Correct MergeRonny: " + mar.isHardwarecorrect());
 		if (mar.isHardwarecorrect()) {
 			behaviours.add(mar);

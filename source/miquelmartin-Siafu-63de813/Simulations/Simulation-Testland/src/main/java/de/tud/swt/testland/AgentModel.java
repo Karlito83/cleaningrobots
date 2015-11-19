@@ -21,7 +21,6 @@ package de.tud.swt.testland;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import de.nec.nle.siafu.behaviormodels.BaseAgentModel;
 import de.nec.nle.siafu.model.Agent;
@@ -29,7 +28,7 @@ import de.nec.nle.siafu.model.World;
 import de.tud.evaluation.WorkingConfiguration;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.measure.ExportFiles;
-import de.tud.swt.cleaningrobots.measure.FileWorker;
+import de.tud.swt.cleaningrobots.model.State;
 
 /**
  * This Agent Model defines the behavior of users in this test simulation.
@@ -52,8 +51,9 @@ public class AgentModel extends BaseAgentModel {
 	 * @param world
 	 *            the simulation's world
 	 */
-	public AgentModel(final World world, WorkingConfiguration configuration) {
+	public AgentModel(World world, WorkingConfiguration configuration) {
 		super(world, configuration);
+		this.configuration.as = new State("Start");
 		this.completeFinish = false;
 		this.roboterFinish = false;
 	}
@@ -72,8 +72,6 @@ public class AgentModel extends BaseAgentModel {
 		ArrayList<Agent> agents = new ArrayList<Agent>();
 
 		try {
-			//Variables.iteration = 0;
-			//Variables.exchange.clear();
 			switch (configuration.config) {
 				case 0:  agents = new MasterExploreFactory(configuration).createRobots(world);
 						 break;
@@ -103,7 +101,7 @@ public class AgentModel extends BaseAgentModel {
 	 *            the list of agents
 	 */
 	@Override
-	public void doIteration(final Collection<Agent> agents) {
+	public void doIteration(Collection<Agent> agents) {
 		configuration.iteration = configuration.iteration + 1;
 		
 		if (!completeFinish) {
@@ -140,10 +138,7 @@ public class AgentModel extends BaseAgentModel {
 					ef.addLineToFile(measu, path);
 					/*FileWorker fw = new FileWorker("M" + configuration.map + "_V" + configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
 							"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + rc.getName()+ ".txt");				
-					fw.addLineToFile(measu);*/
-					//Roboter time in csv speichern
-					//outputCsv(rc.getMeasurement().timeProTick, rc.getName() + "Time");
-					
+					fw.addLineToFile(measu);*/					
 				}
 				ExportFiles ef = new ExportFiles();
 				String path = "M" + configuration.map + "_V" +configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
@@ -166,21 +161,5 @@ public class AgentModel extends BaseAgentModel {
 		} else {
 			this.runFinish = true;
 		}
-	}
-	
-	public void outputCsv (List<Double> liste, String name) {
-		FileWorker fw = new FileWorker(name + ".csv");
-		String svalue = "";
-		String skey = "";
-		if (!liste.isEmpty()) {
-			svalue = "" + liste.get(0);
-			skey = "" + 0;
-		}
-		for (int i = 1; i < liste.size(); i++) {
-			svalue = svalue + ";" + liste.get(i);
-			skey = skey + ";" + i;
-		}
-		fw.addLineToFile(skey);
-		fw.addLineToFile(svalue);
 	}
 }

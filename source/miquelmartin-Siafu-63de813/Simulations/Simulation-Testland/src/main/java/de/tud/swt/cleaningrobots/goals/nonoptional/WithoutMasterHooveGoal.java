@@ -4,7 +4,7 @@ import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.behaviours.HooveAroundAtDestinationBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.HooveBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.LoadIfAtLoadStationBehaviour;
-import de.tud.swt.cleaningrobots.behaviours.MergeAllOfNearBehaviour;
+import de.tud.swt.cleaningrobots.behaviours.MergeAllOfNearWithoutModel;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
 import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
 import de.tud.swt.cleaningrobots.model.State;
@@ -12,10 +12,12 @@ import de.tud.swt.cleaningrobots.model.State;
 public class WithoutMasterHooveGoal extends NonOptionalGoal {
 
 	private HooveBehaviour d;
-	private final State WORLDSTATE_HOOVED = State.createState("Hooved");
+	private State WORLDSTATE_HOOVED;
 	
 	public WithoutMasterHooveGoal(RobotCore robot) {
 		super(robot);
+		
+		this.WORLDSTATE_HOOVED = ((State)robot.configuration.as).createState("Hooved");
 		
 		HooveAroundAtDestinationBehaviour s = new HooveAroundAtDestinationBehaviour(robot);
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
@@ -44,7 +46,7 @@ public class WithoutMasterHooveGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MergeAllOfNearBehaviour mar = new MergeAllOfNearBehaviour(robot);
+		MergeAllOfNearWithoutModel mar = new MergeAllOfNearWithoutModel(robot);
 		System.out.println("Correct MergeRonny: " + mar.isHardwarecorrect());
 		if (mar.isHardwarecorrect()) {
 			behaviours.add(mar);

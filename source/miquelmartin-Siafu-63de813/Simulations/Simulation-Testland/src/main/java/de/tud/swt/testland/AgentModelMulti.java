@@ -21,12 +21,14 @@ package de.tud.swt.testland;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import de.nec.nle.siafu.behaviormodels.BaseAgentModelMulti;
 import de.nec.nle.siafu.model.MultiAgent;
 import de.nec.nle.siafu.model.MultiWorld;
 import de.tud.evaluation.WorkingConfiguration;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.measure.ExportFiles;
+import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.multithreaded.ExploreMergeMasterCalculateFactoryMulti;
 import de.tud.swt.cleaningrobots.multithreaded.ExploreMergeMasterCalculateRelativeFactoryMulti;
 import de.tud.swt.cleaningrobots.multithreaded.ExploreMergeMasterFactoryMulti;
@@ -57,6 +59,7 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 	 */
 	public AgentModelMulti(MultiWorld world, WorkingConfiguration configuration) {
 		super(world, configuration);
+		this.configuration.as = new State("Start");
 		this.completeFinish = false;
 		this.roboterFinish = false;
 	}

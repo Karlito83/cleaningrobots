@@ -51,6 +51,62 @@ public class Field {
 	public String toString() {
 		return "Field: " + pos.toString() + "[" + states + "]";
 	}
+	
+	public Field exportWithoutModel (ImportExportConfiguration config, int iteration) {
+		Field modelField = new Field(pos.getX(), pos.getY(), isPassable, iteration);
+		
+		if (config.iteration == -1) 
+		{
+			if (config.knownStates.isEmpty())
+			{
+				//Field mit allen States soll zurück gegeben werden
+				for (State state : states.keySet()){
+					modelField.addState(state, iteration);
+				}
+			} else {
+				boolean proof = false;
+				//nur wenn State auch bei knownstates dann hinzufügen
+				for (State state : states.keySet()){
+					if (config.knownStates.contains(state))
+					{
+						proof = true;
+						modelField.addState(state, iteration);
+					}				
+				}
+				if (!proof) {
+					return null;
+				}
+			}
+		} else {
+			if (this.changedIteration <= config.iteration)
+				return null;
+			boolean proof = false;
+			if (config.knownStates.isEmpty())
+			{
+				//Field mit allen States soll zurück gegeben werden
+				for (State state : states.keySet()){
+					//nur hinzufügen wenn später erstellt wurde als iteration ist
+					if (states.get(state) > config.iteration) {
+						proof = true;
+						modelField.addState(state, iteration);
+					}
+				}
+			} else {
+				//nur wenn State auch bei knownstates dann hinzufügen
+				for (State state : states.keySet()) {
+					if (config.knownStates.contains(state) && states.get(state) > config.iteration)
+					{
+						proof = true;
+						modelField.addState(state, iteration);
+					}				
+				}
+			}
+			if (!proof) {
+				return null;
+			}
+		}
+		return modelField;
+	}
 
 	public cleaningrobots.Field exportModel(ImportExportConfiguration config) {
 		cleaningrobots.Field modelField = null;

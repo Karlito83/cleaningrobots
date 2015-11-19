@@ -9,10 +9,12 @@ import de.tud.swt.cleaningrobots.model.State;
 
 public class MasterExploreRobotGoal extends NonOptionalGoal {
 
-	private final State WORLDSTATE_DISCOVERED = State.createState("Discovered");
+	private State WORLDSTATE_DISCOVERED;
 	
 	public MasterExploreRobotGoal(RobotCore robot) {
 		super(robot);
+		
+		this.WORLDSTATE_DISCOVERED = ((State)robot.configuration.as).createState("Discovered");
 		
 		WlanOnBehaviour w = new WlanOnBehaviour(robot);
 		System.out.println("Correct SeeAround: " + w.isHardwarecorrect());

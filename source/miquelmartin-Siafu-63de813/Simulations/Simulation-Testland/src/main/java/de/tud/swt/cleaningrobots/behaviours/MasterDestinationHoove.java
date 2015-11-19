@@ -21,7 +21,7 @@ public class MasterDestinationHoove extends Behaviour {
 
 	private MasterRole mr;
 	
-	private final State STATE_HOOVE = State.createState("Hoove");
+	private State STATE_HOOVE;
 	
 	private Wlan wlan;
 	private boolean firstStart;
@@ -32,6 +32,8 @@ public class MasterDestinationHoove extends Behaviour {
 	
 	public MasterDestinationHoove(RobotCore robot, MasterRole mr) {
 		super(robot);
+		
+		this.STATE_HOOVE = ((State)robot.configuration.as).createState("Hoove");
 		
 		this.mr = mr;
 		this.mfm = new MasterFieldMerge(this.robot.configuration);

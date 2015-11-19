@@ -25,13 +25,16 @@ public class MasterWipeAroundBehaviour extends Behaviour {
 	private Wiper wipe;
 	private MasterFieldMerge mfm;
 	
-	private final State STATE_HOOVE = State.createState("Hoove");
-	private final State STATE_WIPE = State.createState("Wipe");
+	private State STATE_HOOVE;
+	private State STATE_WIPE;
 	
 	private boolean firststart;
 	
 	public MasterWipeAroundBehaviour(RobotCore robot) {
 		super(robot);
+		
+		this.STATE_HOOVE = ((State)robot.configuration.as).createState("Hoove");
+		this.STATE_WIPE = ((State)robot.configuration.as).createState("Wipe");
 		
 		this.mfm = new MasterFieldMerge(this.robot.configuration);
 		this.firststart = true;

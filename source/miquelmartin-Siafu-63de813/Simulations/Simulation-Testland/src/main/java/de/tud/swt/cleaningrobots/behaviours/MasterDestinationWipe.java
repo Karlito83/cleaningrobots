@@ -21,8 +21,8 @@ public class MasterDestinationWipe extends Behaviour {
 
 	private MasterRole mr;
 
-	private final State STATE_HOOVE = State.createState("Hoove");
-	private final State STATE_WIPE = State.createState("Wipe");
+	private State STATE_HOOVE;
+	private State STATE_WIPE;
 	
 	private Wlan wlan;
 	private boolean firstStart;
@@ -33,6 +33,9 @@ public class MasterDestinationWipe extends Behaviour {
 	
 	public MasterDestinationWipe(RobotCore robot, MasterRole mr) {
 		super(robot);
+		
+		this.STATE_HOOVE = ((State)robot.configuration.as).createState("Hoove");
+		this.STATE_WIPE = ((State)robot.configuration.as).createState("Wipe");
 		
 		this.mr = mr;
 		this.mfm = new MasterFieldMerge(this.robot.configuration);

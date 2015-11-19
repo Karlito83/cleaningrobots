@@ -18,8 +18,8 @@ public abstract class HardwareComponent {
 	
 	public HardwareComponent ()
 	{
-		active = false;
-		actualEnergie = 0.0;
+		this.active = false;
+		this.actualEnergie = 0.0;
 	}
 	
 	protected double caluculateEnergie (double value) {
@@ -33,7 +33,7 @@ public abstract class HardwareComponent {
 	
 	public double getActualEnergie ()
 	{
-		double out = actualEnergie;
+		double out = actualEnergie;		
 		if (active)
 			actualEnergie = workEnergie;
 		else
@@ -55,26 +55,14 @@ public abstract class HardwareComponent {
 		active = !active;
 	}
 	
-	public double getMinEnergie () {
-		if (workEnergie < offEnergie && workEnergie < onEnergie && workEnergie < outEnergie)
-			return workEnergie;
-		if (offEnergie < onEnergie && offEnergie < outEnergie)
-			return offEnergie;
-		if (onEnergie < outEnergie)
-			return onEnergie;
-		else
-			return outEnergie;
+	public double getMinEnergie () 
+	{
+		return Math.min(Math.min(workEnergie, offEnergie), Math.min(onEnergie, outEnergie));
 	}
 	
-	public double getMaxEnergie () {
-		if (workEnergie > offEnergie && workEnergie > onEnergie && workEnergie > outEnergie)
-			return workEnergie;
-		if (offEnergie > onEnergie && offEnergie > outEnergie)
-			return offEnergie;
-		if (onEnergie > outEnergie)
-			return onEnergie;
-		else
-			return outEnergie;		
+	public double getMaxEnergie () 
+	{
+		return Math.max(Math.max(workEnergie, offEnergie), Math.max(onEnergie, outEnergie));	
 	}
 	
 	public abstract Components getComponents ();

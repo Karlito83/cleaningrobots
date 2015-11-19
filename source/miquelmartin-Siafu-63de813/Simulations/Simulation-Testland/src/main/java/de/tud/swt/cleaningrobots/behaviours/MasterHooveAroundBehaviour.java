@@ -25,13 +25,16 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 	private Hoover hoove;
 	private MasterFieldMerge mfm;
 	
-	private final State STATE_HOOVE = State.createState("Hoove");
-	private final State STATE_FREE = State.createState("Free");
+	private State STATE_HOOVE;
+	private State STATE_FREE;
 	
 	private boolean firststart;
 	
 	public MasterHooveAroundBehaviour(RobotCore robot) {
 		super(robot);
+		
+		this.STATE_HOOVE = ((State)robot.configuration.as).createState("Hoove");
+		this.STATE_FREE = ((State)robot.configuration.as).createState("Free");
 		
 		this.mfm = new MasterFieldMerge(this.robot.configuration);
 		this.firststart = true;

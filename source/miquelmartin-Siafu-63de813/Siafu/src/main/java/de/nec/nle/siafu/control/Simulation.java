@@ -251,10 +251,10 @@ public class Simulation implements Runnable {
 	public void run() {
 		if (EvaluationConstants.USE_GUI) {
 			
-			configuration.config = 0;
+			configuration.config = 1;
 			configuration.run = 1;
 			configuration.new_field_count = 0;
-			configuration.number_explore_agents = 1;
+			configuration.number_explore_agents = 5;
 			configuration.number_hoove_agents = 0;
 			configuration.number_wipe_agents = 0;
 			configuration.map = 0;			

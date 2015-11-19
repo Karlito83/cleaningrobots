@@ -3,7 +3,7 @@ package de.tud.swt.cleaningrobots.goals.nonoptional;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.behaviours.DiscoverBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.LoadIfAtLoadStationBehaviour;
-import de.tud.swt.cleaningrobots.behaviours.MergeAllOfNearBehaviour;
+import de.tud.swt.cleaningrobots.behaviours.MergeAllOfNearWithoutModel;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.SeeAroundAtDestinationBehaviour;
 import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
@@ -42,7 +42,7 @@ public class WithoutMasterExploreGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MergeAllOfNearBehaviour mar = new MergeAllOfNearBehaviour(robot);
+		MergeAllOfNearWithoutModel mar = new MergeAllOfNearWithoutModel(robot);
 		System.out.println("Correct MergeRonny: " + mar.isHardwarecorrect());
 		if (mar.isHardwarecorrect()) {
 			behaviours.add(mar);

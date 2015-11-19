@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 
 public class EvaluationConstants {
 	
-	public static final boolean USE_GUI = false;
+	public static final boolean USE_GUI = true;
 	public static final Gson gson = new Gson();
 
 	/*public static int NUMBER_EXPLORE_AGENTS = 1;

@@ -20,11 +20,14 @@ public class WipeAroundAtDestinationBehaviour extends Behaviour {
 	
 	private int visionRadius = 0;
 	
-	private final State STATE_WIPE = State.createState("Wipe");
-	private final State STATE_HOOVE = State.createState("Hoove");
+	private State STATE_WIPE;
+	private State STATE_HOOVE;
 		
 	public WipeAroundAtDestinationBehaviour(RobotCore robot) {
 		super(robot);
+		
+		this.STATE_WIPE = ((State)robot.configuration.as).createState("Wipe");
+		this.STATE_HOOVE = ((State)robot.configuration.as).createState("Hoove");
 				
 		supportedStates.add(STATE_WIPE);
 		supportedStates.add(STATE_HOOVE);

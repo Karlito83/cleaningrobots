@@ -5,6 +5,7 @@ import java.util.List;
 
 public class WorkingConfiguration {
 
+	public AbstractState as;
 	public int number_explore_agents;
 	public int number_wipe_agents;
 	public int number_hoove_agents;

@@ -19,16 +19,19 @@ import de.tud.swt.cleaningrobots.model.State;
  */
 public class DiscoverBehaviour extends Behaviour {
 	
-	private final State STATE_BLOCKED = State.createState("Blocked");
-	private final State STATE_FREE = State.createState("Free");
-	
-	private final State WORLDSTATE_DISCOVERED = State.createState("Discovered");
+	private State STATE_BLOCKED;
+	private State STATE_FREE;	
+	private State WORLDSTATE_DISCOVERED;
 
 	private boolean noMoreDiscovering;	
 	private boolean relative;
 	
 	public DiscoverBehaviour(RobotCore robot, boolean relative) {
 		super(robot);
+		
+		this.STATE_BLOCKED = ((State)robot.configuration.as).createState("Blocked");
+		this.STATE_FREE = ((State)robot.configuration.as).createState("Free");		
+		this.WORLDSTATE_DISCOVERED = ((State)robot.configuration.as).createState("Discovered");
 		
 		this.relative = relative;
 		this.noMoreDiscovering = false;

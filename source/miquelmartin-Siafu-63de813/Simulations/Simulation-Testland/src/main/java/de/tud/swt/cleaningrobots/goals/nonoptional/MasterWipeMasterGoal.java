@@ -9,10 +9,12 @@ import de.tud.swt.cleaningrobots.model.State;
 public class MasterWipeMasterGoal extends NonOptionalGoal {
 
 	private MasterCalculateWipeBehaviour mceb;
-	private final State WORLDSTATE_WIPED = State.createState("Wiped");
+	private State WORLDSTATE_WIPED;
 
 	public MasterWipeMasterGoal(RobotCore robot, MasterRole mr, boolean relative) {
 		super(robot);
+		
+		this.WORLDSTATE_WIPED = ((State)robot.configuration.as).createState("Wiped");
 		
 		mceb = new MasterCalculateWipeBehaviour(robot, mr, relative);
 		System.out.println("Correct SeeAround: " +mceb.isHardwarecorrect());

@@ -5,7 +5,10 @@ import java.util.List;
 
 import cleaningrobots.CleaningrobotsFactory;
 import de.tud.evaluation.ExchangeMeasurement;
+import de.tud.swt.cleaningrobots.model.FollowerRoleModel;
+import de.tud.swt.cleaningrobots.model.MasterRoleModel;
 import de.tud.swt.cleaningrobots.model.Position;
+import de.tud.swt.cleaningrobots.model.RoleModel;
 import de.tud.swt.cleaningrobots.model.State;
 
 public class RobotKnowledge {
@@ -14,13 +17,13 @@ public class RobotKnowledge {
 	private int lastArrange;
 	private Position lastDestination;
 	private List<String> components;
-	private List<cleaningrobots.Role> roles;
+	private List<RoleModel> roles;
 	private List<State> knownStates;	
 	
 	public RobotKnowledge (String name) {
 		this.name = name;
 		components = new LinkedList<String>();
-		roles = new LinkedList<cleaningrobots.Role>();
+		roles = new LinkedList<RoleModel>();
 		knownStates = new LinkedList<State>();
 	}
 	
@@ -60,11 +63,11 @@ public class RobotKnowledge {
 		this.knownStates = knownStates;
 	}
 
-	public List<cleaningrobots.Role> getRoles() {
+	public List<RoleModel> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<cleaningrobots.Role> roles) {
+	public void setRoles(List<RoleModel> roles) {
 		this.roles = roles;
 	}
 	
@@ -84,16 +87,16 @@ public class RobotKnowledge {
 			em.addKnowledgeStringByteNumber(s.getBytes().length);
 		}
 		//roles
-		for (cleaningrobots.Role r : roles) {
-			if (r instanceof cleaningrobots.MasterRole) {
-				cleaningrobots.MasterRole m = (cleaningrobots.MasterRole)r;
-				em.addKnowledgeStringNumber( m.getFollowerNames().size());
-				for (String s : m.getFollowerNames()) {
+		for (RoleModel r : roles) {
+			if (r instanceof MasterRoleModel) {
+				MasterRoleModel m = (MasterRoleModel)r;
+				em.addKnowledgeStringNumber( m.followers.size());
+				for (String s : m.followers) {
 					em.addKnowledgeStringByteNumber(s.getBytes().length);
 				}
 			} else {
-				cleaningrobots.FollowerRole f = (cleaningrobots.FollowerRole)r;
-				em.addKnowledgeStringByteNumber(f.getMasterName().getBytes().length);
+				FollowerRoleModel f = (FollowerRoleModel)r;
+				em.addKnowledgeStringByteNumber(f.master.getBytes().length);
 				em.addKnowledgeStringNumber(1);
 			}
 		}
@@ -119,9 +122,18 @@ public class RobotKnowledge {
 			for (State state : getKnownStates()) {
 				robotknowledge.getKnowStates().add(state.exportModel());
 			}
-			//roles noch hinzufügen
-			robotknowledge.getRoles().addAll(roles);
-					
+			//roles
+			for (RoleModel r : roles) {
+				if (r instanceof MasterRoleModel) {
+					cleaningrobots.MasterRole m = CleaningrobotsFactory.eINSTANCE.createMasterRole();
+					m.getFollowerNames().addAll(((MasterRoleModel)r).followers);
+					robotknowledge.getRoles().add(m);
+				} else {
+					cleaningrobots.FollowerRole f = CleaningrobotsFactory.eINSTANCE.createFollowerRole();
+					f.setMasterName(((FollowerRoleModel)r).master);
+					robotknowledge.getRoles().add(f);
+				}
+			}					
 			result = robotknowledge;
 		} catch (Exception e) {
 		}

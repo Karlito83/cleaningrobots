@@ -9,10 +9,12 @@ import de.tud.swt.cleaningrobots.model.State;
 public class MasterHooveMasterGoal extends NonOptionalGoal {
 
 	private MasterCalculateHooveBehaviour mceb;
-	private final State WORLDSTATE_HOOVED = State.createState("Hooved");
+	private State WORLDSTATE_HOOVED;
 
 	public MasterHooveMasterGoal(RobotCore robot, MasterRole mr, boolean relative) {
 		super(robot);
+		
+		this.WORLDSTATE_HOOVED = ((State)robot.configuration.as).createState("Hooved");
 		
 		mceb = new MasterCalculateHooveBehaviour(robot, mr, relative);
 		System.out.println("Correct SeeAround: " +mceb.isHardwarecorrect());

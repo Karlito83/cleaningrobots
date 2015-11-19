@@ -1,5 +1,6 @@
 package de.tud.swt.cleaningrobots.merge;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,7 +13,10 @@ import de.tud.evaluation.WorkingConfiguration;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotKnowledge;
 import de.tud.swt.cleaningrobots.model.Field;
+import de.tud.swt.cleaningrobots.model.FollowerRoleModel;
+import de.tud.swt.cleaningrobots.model.MasterRoleModel;
 import de.tud.swt.cleaningrobots.model.Position;
+import de.tud.swt.cleaningrobots.model.RoleModel;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.util.EMFUtils;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
@@ -52,26 +56,26 @@ public class MergeAll {
 					for (RobotKnowledge importRk : importcore.getKnowledge()) {
 						if (exportRk.getName().equals(importRk.getName())) {
 							isIn = true;
-							importRobotKnowledge(importRk, exportRk);							
+							importRobotKnowledge(importRk, exportRk, importcore);							
 						}
 					}
 					if (!isIn) {
 						RobotKnowledge rk = new RobotKnowledge(exportRk.getName());
 						importcore.getKnowledge().add(rk);
-						importRobotKnowledge(rk, exportRk);
+						importRobotKnowledge(rk, exportRk, importcore);
 					}
 				}
 				boolean isIn = false;
 				for (RobotKnowledge importRk : importcore.getKnowledge()) {
 					if (importRk.getName().equals(robot.getName())) {
 						isIn = true;			
-						importRobotKnowledge(importRk, robot);
+						importRobotKnowledge(importRk, robot, importcore);
 					}
 				}
 				if (!isIn) {
 					RobotKnowledge rk = new RobotKnowledge(robot.getName());
 					importcore.getKnowledge().add(rk);
-					importRobotKnowledge(rk, robot);
+					importRobotKnowledge(rk, robot, importcore);
 				}
 			}
 			if (config.knownstates && !config.knowledge)
@@ -83,7 +87,7 @@ public class MergeAll {
 						//Füge die neuen Information vom Robot ein
 						List<State> knowns = new LinkedList<State>();
 						for (cleaningrobots.State s : robot.getKnownStates()) {
-							State st = State.createState(s.getName());
+							State st = ((State)importcore.configuration.as).createState(s.getName());
 							knowns.add(st);
 							em.addStatesStringByteNumber(s.getName().getBytes().length);
 							em.addStatesStringNumber(1);
@@ -95,7 +99,7 @@ public class MergeAll {
 					RobotKnowledge rk = new RobotKnowledge(robot.getName());
 					List<State> knowns = new LinkedList<State>();
 					for (cleaningrobots.State s : robot.getKnownStates()) {
-						State st = State.createState(s.getName());
+						State st = ((State)importcore.configuration.as).createState(s.getName());
 						knowns.add(st);
 						em.addStatesStringByteNumber(s.getName().getBytes().length);
 						em.addStatesStringNumber(1);
@@ -114,7 +118,7 @@ public class MergeAll {
 		}
 	}
 	
-	private void importRobotKnowledge (RobotKnowledge importRk, cleaningrobots.Robot exportR) {
+	private void importRobotKnowledge (RobotKnowledge importRk, cleaningrobots.Robot exportR, RobotCore robot) {
 		//Füge die neuen Information vom Robot ein
 		importRk.setLastArrange(configuration.iteration);
 		em.addKnowledgeIntegerNumber(1);
@@ -128,22 +132,33 @@ public class MergeAll {
 			em.addKnowledgeStringByteNumber(s.getBytes().length);
 		}
 		em.addKnowledgeStringNumber(exportR.getComponents().size());
-		importRk.setRoles(exportR.getRoles());
+		//add Roles to RobotKnowledge
+		List<RoleModel> newOnes = new ArrayList<RoleModel>();
 		for (cleaningrobots.Role r : exportR.getRoles()) {
 			if (r instanceof cleaningrobots.MasterRole) {
 				cleaningrobots.MasterRole m = (cleaningrobots.MasterRole) r;
 				for (String s : m.getFollowerNames())
 					em.addKnowledgeStringByteNumber(s.getBytes().length);
 				em.addKnowledgeStringNumber(m.getFollowerNames().size());
+				//add role to importKnowledge
+				MasterRoleModel mrm = new MasterRoleModel();
+				mrm.followers.addAll(m.getFollowerNames());
+				newOnes.add(mrm);				
 			} else {
 				cleaningrobots.FollowerRole f = (cleaningrobots.FollowerRole) r;
 				em.addKnowledgeStringNumber(1);
 				em.addKnowledgeStringByteNumber(f.getMasterName().getBytes().length);
+				//add role to importKnowledge
+				FollowerRoleModel frm = new FollowerRoleModel();
+				frm.master = f.getMasterName();
+				newOnes.add(frm);
 			}
 		}
+		importRk.setRoles(newOnes);
+		//add states to RobotKnowledge
 		List<State> knowns = new LinkedList<State>();
 		for (cleaningrobots.State s : exportR.getKnownStates()) {
-			State st = State.createState(s.getName());
+			State st = ((State)robot.configuration.as).createState(s.getName());
 			knowns.add(st);
 			em.addStatesStringByteNumber(s.getName().getBytes().length);
 			em.addStatesStringNumber(1);
@@ -151,7 +166,7 @@ public class MergeAll {
 		importRk.setKnownStates(knowns);	
 	}
 	
-	private void importRobotKnowledge (RobotKnowledge importRk, cleaningrobots.RobotKnowledge exportRk) {		
+	private void importRobotKnowledge (RobotKnowledge importRk, cleaningrobots.RobotKnowledge exportRk, RobotCore robot) {		
 		if (importRk.getLastArrange() < exportRk.getLastArrange()) {
 			em.addKnowledgeStringByteNumber(exportRk.getName().getBytes().length);
 			em.addKnowledgeStringNumber(1);
@@ -169,22 +184,33 @@ public class MergeAll {
 				em.addKnowledgeStringByteNumber(s.getBytes().length);
 			}
 			em.addKnowledgeStringNumber(exportRk.getComponents().size());
-			importRk.setRoles(exportRk.getRoles());
+			//add Roles To RobotKnowledge
+			List<RoleModel> newOnes = new ArrayList<RoleModel>();
 			for (cleaningrobots.Role r : exportRk.getRoles()) {
 				if (r instanceof cleaningrobots.MasterRole) {
 					cleaningrobots.MasterRole m = (cleaningrobots.MasterRole) r;
 					for (String s : m.getFollowerNames())
 						em.addKnowledgeStringByteNumber(s.getBytes().length);
 					em.addKnowledgeStringNumber(m.getFollowerNames().size());
+					//add role to importKnowledge
+					MasterRoleModel mrm = new MasterRoleModel();
+					mrm.followers.addAll(m.getFollowerNames());
+					newOnes.add(mrm);
 				} else {
 					cleaningrobots.FollowerRole f = (cleaningrobots.FollowerRole) r;
 					em.addKnowledgeStringNumber(1);
 					em.addKnowledgeStringByteNumber(f.getMasterName().getBytes().length);
+					//add role to importKnowledge
+					FollowerRoleModel frm = new FollowerRoleModel();
+					frm.master = f.getMasterName();
+					newOnes.add(frm);
 				}
 			}
+			importRk.setRoles(newOnes);
+			//add States to RobotKnowledge
 			List<State> knowns = new LinkedList<State>();
 			for (cleaningrobots.State s : exportRk.getKnowStates()) {
-				State st = State.createState(s.getName());
+				State st = ((State)robot.configuration.as).createState(s.getName());
 				knowns.add(st);
 				em.addKnowledgeStringByteNumber(s.getName().getBytes().length);
 				em.addKnowledgeStringNumber(1);
@@ -203,7 +229,7 @@ public class MergeAll {
 			blockedState.setName("Blocked");
 			
 			for (cleaningrobots.State worldState : worldPart.getWorldStates()) {
-				State state = State.createState(worldState.getName());
+				State state = ((State)importcore.configuration.as).createState(worldState.getName());
 				importcore.getWorld().addWorldState(state);
 				em.addWorldStatesStringByteNumber(worldState.getName().getBytes().length);
 				em.addWorldStatesStringNumber(1);
@@ -217,7 +243,7 @@ public class MergeAll {
 				//core is the new robot
 				Field f = new Field(modelField.getPos().getXpos(), modelField.getPos().getYpos(), !isBlocked, configuration.iteration);
 				for (cleaningrobots.State modelState : modelField.getStates()) {
-					State state = State.createState(modelState.getName());
+					State state = ((State)importcore.configuration.as).createState(modelState.getName());
 					f.addState(state, configuration.iteration);
 					em.addWorldStringByteNumber(modelState.getName().getBytes().length);
 					em.addWorldStringNumber(1);
@@ -233,8 +259,5 @@ public class MergeAll {
 				importFieldsFromWorldModel(innerWorldPart, importcore);
 			}
 		}
-	}
-
-	
-	
+	}	
 }

@@ -21,11 +21,10 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 
 	private MasterRole mr;
 	
-	private final State STATE_HOOVE = State.createState("Hoove");
-	private final State STATE_WIPE = State.createState("Wipe");
-	
-	private final State WORLDSTATE_WIPED = State.createState("Wiped");	
-	private final State WORLDSTATE_HOOVED = State.createState("Hooved");
+	private State STATE_HOOVE;
+	private State STATE_WIPE;	
+	private State WORLDSTATE_WIPED;	
+	private State WORLDSTATE_HOOVED;
 		
 	private boolean firstStart;
 	private int calculationAway;
@@ -37,6 +36,11 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 	
 	public MasterCalculateWipeBehaviour(RobotCore robot, MasterRole mr, boolean relative) {
 		super(robot);
+		
+		this.STATE_HOOVE = ((State)robot.configuration.as).createState("Hoove");
+		this.STATE_WIPE = ((State)robot.configuration.as).createState("Wipe");		
+		this.WORLDSTATE_WIPED = ((State)robot.configuration.as).createState("Wiped");	
+		this.WORLDSTATE_HOOVED = ((State)robot.configuration.as).createState("Hooved");
 
 		this.mr = mr;
 		this.firstStart = true;

@@ -12,17 +12,21 @@ import de.tud.swt.cleaningrobots.model.State;
 
 public class HooveBehaviour extends Behaviour {
 	
-	private final State STATE_HOOVE = State.createState("Hoove");
-	private final State STATE_FREE = State.createState("Free");
-	
-	private final State WORLDSTATE_DISCOVERED = State.createState("Discovered");
-	private final State WORLDSTATE_HOOVED = State.createState("Hooved");
+	private State STATE_HOOVE;
+	private State STATE_FREE;	
+	private State WORLDSTATE_DISCOVERED;
+	private State WORLDSTATE_HOOVED;
 	
 	private boolean finishHooving;
 	private boolean relative;
 
 	public HooveBehaviour(RobotCore robot, boolean relative) {
 		super(robot);
+		
+		this.STATE_HOOVE = ((State)robot.configuration.as).createState("Hoove");
+		this.STATE_FREE = ((State)robot.configuration.as).createState("Free");		
+		this.WORLDSTATE_DISCOVERED = ((State)robot.configuration.as).createState("Discovered");
+		this.WORLDSTATE_HOOVED = ((State)robot.configuration.as).createState("Hooved");
 		
 		this.relative = relative;
 		this.finishHooving = false;
