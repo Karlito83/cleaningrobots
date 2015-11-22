@@ -15,14 +15,14 @@ import de.tud.swt.cleaningrobots.hardware.LookAroundSensor;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.State;
 
-public class SeeAroundAtDestinationBehaviour extends Behaviour {
+public class DiscoverAroundAtDestinationBehaviour extends Behaviour {
 
 	private int visionRadius = 0;
 	
 	private State STATE_BLOCKED;
 	private State STATE_FREE;
 	
-	public SeeAroundAtDestinationBehaviour(RobotCore robot) {
+	public DiscoverAroundAtDestinationBehaviour(RobotCore robot) {
 		super(robot);
 		
 		this.STATE_BLOCKED = ((State)robot.configuration.as).createState("Blocked");
@@ -50,7 +50,8 @@ public class SeeAroundAtDestinationBehaviour extends Behaviour {
 	public boolean action() throws Exception {
 		
 		//Wenn Roboter an Ziel dann machen ann Scanne umgebung und machen wieder aus
-		if (robot.getDestinationContainer().isAtDestination() && !robot.getDestinationContainer().isAtLoadDestination()) {
+		if (robot.getDestinationContainer().isAtDestination() && robot.getDestinationContainer().isDestinationSet()
+				&& !robot.getDestinationContainer().isAtLoadDestination()) {
 			//Schalte alle Hardwarecomponenten an wenn sie nicht schon laufen
 			for (HardwareComponent hard : d.getHcs())
 			{

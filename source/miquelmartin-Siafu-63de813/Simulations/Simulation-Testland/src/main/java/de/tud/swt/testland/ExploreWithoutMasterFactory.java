@@ -30,21 +30,41 @@ public class ExploreWithoutMasterFactory extends RobotFactory {
 		lsa.addLoadIfRobotWantGoal();
 		population.add(lsa);
 		
+		boolean proof;
+		
 		if (configuration.number_explore_agents > 0) {
+			
+			proof = false;
+			if (configuration.number_hoove_agents > 0) {
+				proof = true;
+			}
 			
 			//explore agents
 			for (int i = 0; i < configuration.number_explore_agents; i++) {
 				ExploreRobotAgent era = createExploreAgent(world);
 				era.addWithoutMasterConfiguration();
+				if (proof) {
+					era.addWlanOnGoal();
+					proof = false;
+				}
 				population.add(era);
 			}
 			
 			if (configuration.number_hoove_agents > 0) {
 				
+				proof = false;
+				if (configuration.number_wipe_agents > 0) {
+					proof = true;
+				}
+				
 				//hoove agents
 				for (int i = 0; i < configuration.number_hoove_agents; i++) {
 					HooveRobotAgent hra = createHooveAgent(world);
 					hra.addWithoutMasterConfiguration();
+					if (proof) {
+						hra.addWlanOnGoal();
+						proof = false;
+					}
 					population.add(hra);
 				}
 				

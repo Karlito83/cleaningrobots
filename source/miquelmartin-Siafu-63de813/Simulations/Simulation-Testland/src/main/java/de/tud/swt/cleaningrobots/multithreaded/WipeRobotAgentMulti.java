@@ -9,6 +9,7 @@ import de.tud.swt.cleaningrobots.goals.nonoptional.WipeLoadGoal;
 import de.tud.swt.cleaningrobots.goals.nonoptional.WithoutMasterWipeGoal;
 import de.tud.swt.cleaningrobots.goals.optional.ExploreDumpGoal;
 import de.tud.swt.cleaningrobots.goals.optional.WlanLoadIfRobotWantMergeGoal;
+import de.tud.swt.cleaningrobots.goals.optional.WlanOnGoal;
 import de.tud.swt.cleaningrobots.hardware.Accu;
 import de.tud.swt.cleaningrobots.hardware.Motor;
 import de.tud.swt.cleaningrobots.hardware.Rechner;
@@ -77,5 +78,9 @@ public class WipeRobotAgentMulti extends RobotAgentMulti {
 	
 	public void addExploreDumpGoal () {
 		cleaningRobot.addGoal(new ExploreDumpGoal(cleaningRobot));
+	}
+	
+	public void addWlanOnGoal () {
+		cleaningRobot.addGoal(new WlanOnGoal(cleaningRobot));
 	}
 }

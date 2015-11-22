@@ -24,11 +24,11 @@ public class DestinationContainer {
 		this.destination = null;
 		this.lastLoadDestination = null;
 		
-		loadStationPosition = robot.getPosition();
+		this.loadStationPosition = robot.getPosition();
 		
 		//setze Destination informationen
-		loadDestination = false;
-		destinationSet = false;
+		this.loadDestination = false;
+		this.destinationSet = false;
 	}
 	
 	public Position getLastLoadDestination () {
@@ -62,7 +62,8 @@ public class DestinationContainer {
 		} else {
 			this.path = null;
 		}
-		loadDestination = true;
+		this.destinationSet = false;
+		this.loadDestination = true;
 	}
 
 	/***
@@ -75,6 +76,7 @@ public class DestinationContainer {
 	public void setDestination (Position destination) {		
 		if (destination == null) {
 			this.path = null;
+			this.destinationSet = false;
 		} else if (destination.equals(robot.getPosition())) {
 			this.destinationSet = true;
 			this.loadDestination = false;
@@ -82,10 +84,10 @@ public class DestinationContainer {
 		} else {
 			//speichere die erste Destination nachdem er laden war
 			if (loadDestination) {
-				lastLoadDestination = destination;
+				this.lastLoadDestination = destination;
 			}
-			this.destinationSet = true;
 			this.destination = destination;
+			this.destinationSet = true;
 			this.loadDestination = false;
 			refreshPath();	
 		}	
@@ -94,16 +96,17 @@ public class DestinationContainer {
 	public void setMasterDestination (Position destination) {
 		if (destination == null) {
 			this.path = null;
+			this.destinationSet = false;
 		} else if (destination.equals(robot.getPosition())) {
 			this.destinationSet = true;
 			this.loadDestination = false;
 			this.path = null;
 		} else {
-			lastLoadDestination = destination;
+			this.lastLoadDestination = destination;
 			this.destination = destination;
 			this.destinationSet = true;
+			this.loadDestination = false;
 			refreshPath();
-			loadDestination = false;
 		}
 	}
 
@@ -124,9 +127,7 @@ public class DestinationContainer {
 			if (robot.getWorld().isPassable(nextPosition)) {
 				path.remove(nextPosition);
 				if (nextPosition.equals(destination)) {
-					//an destination angekommen
-					this.destinationSet = false;
-					//destination = null;
+					//dont set destination to null because it is not needed
 					path = null;
 				}
 				this.robot.setPosition(nextPosition);
@@ -166,9 +167,7 @@ public class DestinationContainer {
 			Position nextPosition = this.path.get(0);
 			path.remove(nextPosition);
 			if (nextPosition.equals(this.destination)) {
-				//an destination angekommen
-				this.destinationSet = false;
-				//destination = null;
+				//dont set destination to null because it is not needed
 				path = null;
 			}
 			this.robot.setPosition(nextPosition);

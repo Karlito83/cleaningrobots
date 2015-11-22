@@ -5,7 +5,7 @@ import de.tud.swt.cleaningrobots.behaviours.DiscoverBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.LoadIfAtLoadStationBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.MergeAllOfNearWithoutModel;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
-import de.tud.swt.cleaningrobots.behaviours.SeeAroundAtDestinationBehaviour;
+import de.tud.swt.cleaningrobots.behaviours.DiscoverAroundAtDestinationBehaviour;
 import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
 
 public class WithoutMasterExploreGoal extends NonOptionalGoal {
@@ -15,7 +15,7 @@ public class WithoutMasterExploreGoal extends NonOptionalGoal {
 	public WithoutMasterExploreGoal(RobotCore robot) {
 		super(robot);
 		
-		SeeAroundAtDestinationBehaviour s = new SeeAroundAtDestinationBehaviour(robot);
+		DiscoverAroundAtDestinationBehaviour s = new DiscoverAroundAtDestinationBehaviour(robot);
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
 		if (s.isHardwarecorrect()) {
 			//robot.addBehaviour(s);
