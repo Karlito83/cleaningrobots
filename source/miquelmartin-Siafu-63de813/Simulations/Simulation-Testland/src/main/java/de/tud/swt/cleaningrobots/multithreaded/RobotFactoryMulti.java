@@ -49,6 +49,22 @@ public abstract class RobotFactoryMulti {
 	}
 	
 	/**
+	 * Create a Loadstation without PC.
+	 * 
+	 * @param world
+	 *            the world to create it in
+	 * @return the new agent
+	 */
+	protected LoadStationMulti createLoadStation(MultiWorld world) {
+		LoadStationMulti agent = new LoadStationMulti(position, world, configuration);
+
+		counter++;
+		agent.setName("Robbi_" + counter);
+		
+		return agent;
+	}
+	
+	/**
 	 * Create a explore agent.
 	 * 
 	 * @param world

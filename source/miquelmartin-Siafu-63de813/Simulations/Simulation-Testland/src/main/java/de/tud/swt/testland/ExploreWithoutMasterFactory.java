@@ -26,7 +26,7 @@ public class ExploreWithoutMasterFactory extends RobotFactory {
 		ArrayList<Agent> population = new ArrayList<Agent>();	
 		
 		//loadstation agent
-		LoadStationAgent lsa = createLoadStationAgent(world);
+		OnlyLoadStationAgent lsa = createLoadStation(world);
 		lsa.addLoadIfRobotWantGoal();
 		population.add(lsa);
 		

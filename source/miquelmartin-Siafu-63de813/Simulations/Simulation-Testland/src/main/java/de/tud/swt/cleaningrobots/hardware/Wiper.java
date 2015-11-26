@@ -15,7 +15,7 @@ public class Wiper extends HardwareComponent {
 		//19Wh
 		workEnergie = caluculateEnergie(19.0);
 		//19Wh
-		outEnergie = caluculateEnergie(19.0);
+		outEnergie = 0.0;
 		
 		radius = 2;
 	}

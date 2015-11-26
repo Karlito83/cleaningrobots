@@ -7,13 +7,13 @@ public class Rechner extends HardwareComponent {
 		super();
 		name = "Rechner";
 		//0,5Wh
-		offEnergie = caluculateEnergie(0.5);
+		offEnergie = caluculateEnergie(5.0);
 		//5Wh
 		onEnergie = caluculateEnergie(5.0);
 		//5Wh
 		workEnergie = caluculateEnergie(5.0);
 		//5Wh
-		outEnergie = caluculateEnergie(5.0);
+		outEnergie = caluculateEnergie(0.5);
 	}
 	
 	@Override

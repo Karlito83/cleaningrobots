@@ -18,6 +18,30 @@ public abstract class RobotFactory {
 	}
 	
 	/**
+	 * Create only a loadstation without pc.
+	 * 
+	 * @param world
+	 *            the world to create it in
+	 * @return the new agent
+	 */
+	protected OnlyLoadStationAgent createLoadStation(final World world) {
+		try {
+
+			OnlyLoadStationAgent agent = new OnlyLoadStationAgent(world
+					.getRandomPlaceOfType("Center").getPos(), "Master",
+					world, configuration);
+
+			counter++;
+			agent.setName("Robbi_" + counter);
+			
+			return agent;
+		} catch (PlaceNotFoundException e) {
+			throw new RuntimeException(
+					"You didn't define the \"Nowhere\" type of places", e);
+		}
+	}
+	
+	/**
 	 * Create a loadstation agent.
 	 * 
 	 * @param world
