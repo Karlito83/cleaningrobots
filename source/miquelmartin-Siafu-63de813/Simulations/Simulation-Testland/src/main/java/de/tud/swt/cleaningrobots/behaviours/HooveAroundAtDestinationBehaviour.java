@@ -16,6 +16,12 @@ import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
 
+/**
+ * Behavior that activate the hoover if the robot is at the destination and hoove the place.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class HooveAroundAtDestinationBehaviour extends Behaviour {
 	
 	private int visionRadius = 0;
@@ -26,12 +32,14 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 	public HooveAroundAtDestinationBehaviour(RobotCore robot) {
 		super(robot);
 		
-		this.STATE_HOOVE = ((State)robot.configuration.as).createState("Hoove");
-		this.STATE_FREE = ((State)robot.configuration.as).createState("Free");
+		//create and add the states
+		this.STATE_HOOVE = robot.configuration.createState("Hoove");
+		this.STATE_FREE = robot.configuration.createState("Free");
 				
 		supportedStates.add(STATE_HOOVE);
 		supportedStates.add(STATE_FREE);
 		
+		//add the hardware components and proof there correctness
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.HOOVER, 1);
 		
@@ -50,25 +58,21 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 	@Override
 	public boolean action() throws Exception {
 		
-		//Wenn Roboter an Ziel dann machen ann Scanne umgebung und machen wieder aus
 		if (robot.getDestinationContainer().isAtDestination() && robot.getDestinationContainer().isDestinationSet() 
 				&& !robot.getDestinationContainer().isAtLoadDestination()) {
-			//Schalte alle Hardwarecomponenten an wenn sie nicht schon laufen
+			//start all hardware components
 			for (HardwareComponent hard : d.getHcs())
 			{
-				if (!hard.isActive())
-				{
-					hard.changeActive();
-				}
+				hard.switchOn();
 			}
 			
-			//Activate Flage that he has new information
+			//Activate flag that he has new information
 			for (RobotRole rr : robot.getRoles()) {
 				rr.setNewInformation(true);
 			}
 					
-			//scanne umgebung
-			//der Welt des Roboters die neuen Felder hinzufügen
+			//hoove area
+			//add the new field to the world of the robot
 			try {
 				this.robot.getWorld().addFields(getData());
 			} catch (Exception e) {
@@ -76,14 +80,10 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 			}
 				
 		} else {
-			//kommt erst im nächsten Schritt damit die Energie beachtet wird
-			//Schalte alle Hardwarecomponenten aus
+			//switch off the hardware components if not needed
 			for (HardwareComponent hard : d.getHcs())
 			{
-				if (hard.isActive())
-				{
-					hard.changeActive();
-				}
+				hard.switchOff();
 			}
 		}
 		return false;
@@ -109,16 +109,16 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 	{		
 		Field result = null;
 		
-		//Offset mit Agenten position vereinigen
+		//set together the Offset with the Agent position
 		int y =  robot.getPosition().getY() + yOffset;
 		int x =  robot.getPosition().getX() + xOffset;
 		
 		Position p = new Position(x, y);
-		//could only hoove position he knows about
+		//could only hoove positions he knows about
 		if (robot.getWorld().hasState(p, STATE_FREE))
 		{
 			result = robot.getWorld().getField(p);
-			result.addState(STATE_HOOVE, this.robot.configuration.iteration);
+			result.addState(STATE_HOOVE, this.robot.configuration.wc.iteration);
 		}	
 		return result;
 	}

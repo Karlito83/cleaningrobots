@@ -4,6 +4,12 @@ import java.util.List;
 
 import de.tud.swt.cleaningrobots.model.Position;
 
+/**
+ * Handle all destinations and positions of important areas of the robot.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class DestinationContainer {
 	
 	private Position loadStationPosition;
@@ -26,31 +32,55 @@ public class DestinationContainer {
 		
 		this.loadStationPosition = robot.getPosition();
 		
-		//setze Destination informationen
+		//set Destination information
 		this.loadDestination = false;
 		this.destinationSet = false;
 	}
 	
+	/**
+	 * Get the destination after the last loading.
+	 * @return
+	 */
 	public Position getLastLoadDestination () {
 		return this.lastLoadDestination;
 	}
 	
+	/**
+	 * Get the position of the load station. 
+	 * @return
+	 */
 	public Position getLoadStationPosition () {
 		return this.loadStationPosition;
 	}
 	
+	/**
+	 * Get the actual destination.
+	 * @return
+	 */
 	public Position getDestination () {
 		return this.destination;
 	}
 	
+	/**
+	 * Is a destination set.
+	 * @return
+	 */
 	public boolean isDestinationSet () {
 		return destinationSet;
 	}
 	
+	/**
+	 * Is arrived at load station.
+	 * @return
+	 */
 	public boolean isAtLoadDestination () {
 		return path == null && loadDestination;
 	}
 
+	/**
+	 * Is arrived at destination.
+	 * @return
+	 */
 	public boolean isAtDestination() {
 		return path == null;
 	}
@@ -82,7 +112,7 @@ public class DestinationContainer {
 			this.loadDestination = false;
 			this.path = null;
 		} else {
-			//speichere die erste Destination nachdem er laden war
+			//save the first Destination after loading
 			if (loadDestination) {
 				this.lastLoadDestination = destination;
 			}
@@ -120,25 +150,25 @@ public class DestinationContainer {
 	
 	public void moveTowardsDestination () {		
 		if (this.path != null) {
-			//sollte nicht auftreten
+			//should not be
 			if (this.path.isEmpty())
 				return;
 			Position nextPosition = this.path.get(0);
 			if (robot.getWorld().isPassable(nextPosition)) {
 				path.remove(nextPosition);
 				if (nextPosition.equals(destination)) {
-					//dont set destination to null because it is not needed
+					//do not set destination to null because it is not needed
 					path = null;
 				}
-				this.robot.setPosition(nextPosition);
+				this.robot.getICommunicationAdapter().setPosition(nextPosition);
 			} else {
-				//da sich welt nicht verändert sollte das nicht vorkommen
+				//should not be, because the world do not changes
 				refreshPath();
 			}
 		}
 	}
 	
-	//Master Do all Szenario
+	//functions for the test case where the Master do all
 	public boolean setDestinationAndPath (List<Position> path, Position dest) {
 		if (dest == null || path == null || path.isEmpty())
 			return false;
@@ -167,10 +197,10 @@ public class DestinationContainer {
 			Position nextPosition = this.path.get(0);
 			path.remove(nextPosition);
 			if (nextPosition.equals(this.destination)) {
-				//dont set destination to null because it is not needed
+				//do not set destination to null because it is not needed
 				path = null;
 			}
-			this.robot.setPosition(nextPosition);
+			this.robot.getICommunicationAdapter().setPosition(nextPosition);
 		}
 	}
 	

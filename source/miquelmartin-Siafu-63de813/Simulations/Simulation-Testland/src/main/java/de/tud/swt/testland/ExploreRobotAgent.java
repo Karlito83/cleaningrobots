@@ -2,7 +2,7 @@ package de.tud.swt.testland;
 
 import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
-import de.tud.evaluation.WorkingConfiguration;
+import de.tud.swt.cleaningrobots.Configuration;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.goals.MasterGoal;
 import de.tud.swt.cleaningrobots.goals.nonoptional.ExploreLoadGoal;
@@ -17,9 +17,16 @@ import de.tud.swt.cleaningrobots.hardware.Motor;
 import de.tud.swt.cleaningrobots.hardware.Rechner;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
 
+/**
+ * Used with user interface in Siafu.
+ * Create a explore agent with its hardware components and can add specific goals to him.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class ExploreRobotAgent extends RobotAgent {
 
-	public ExploreRobotAgent(Position start, String image, World world, WorkingConfiguration configuration) {
+	public ExploreRobotAgent(Position start, String image, World world, Configuration configuration) {
 		super(start, image, world);
 
 		siafuWorld = world;
@@ -31,6 +38,9 @@ public class ExploreRobotAgent extends RobotAgent {
 		cleaningRobot.addHardwareComponent(new LookAroundSensor());				
 	}
 	
+	/**
+	 * Add the goals for search a new relative destination.
+	 */
 	public void addRelativeStandardGoals () {		
 		ExploreLoadGoal elg = new ExploreLoadGoal(cleaningRobot, true);	
 		WlanLoadIfRobotWantMergeGoal wlirwmg = new WlanLoadIfRobotWantMergeGoal(cleaningRobot);
@@ -45,6 +55,9 @@ public class ExploreRobotAgent extends RobotAgent {
 		}
 	} 
 	
+	/**
+	 * Add the goals for search a new random destination.
+	 */
 	public void addRandomStandardGoals () {		
 		ExploreLoadGoal elg = new ExploreLoadGoal(cleaningRobot, false);
 		WlanLoadIfRobotWantMergeGoal wlirwmg = new WlanLoadIfRobotWantMergeGoal(cleaningRobot);
@@ -59,7 +72,9 @@ public class ExploreRobotAgent extends RobotAgent {
 		}
 	}
 	
-	//Goals for the MasterExploreFactory
+	/**
+	 * Add the goals where is a complete communication with the master.
+	 */
 	public void addMasterExploreGoals () {
 		MasterExploreRobotGoal merg = new MasterExploreRobotGoal(cleaningRobot);		
 		if (merg.isHardwareCorrect()) 
@@ -68,7 +83,9 @@ public class ExploreRobotAgent extends RobotAgent {
 		}
 	}
 	
-	//without Master Configuration
+	/**
+	 * Add the goals where no master is needed.
+	 */
 	public void addWithoutMasterConfiguration () {		
 		WithoutMasterExploreGoal wmg = new WithoutMasterExploreGoal(cleaningRobot);
 		if (wmg.isHardwareCorrect())
@@ -77,10 +94,16 @@ public class ExploreRobotAgent extends RobotAgent {
 		}
 	}
 	
+	/**
+	 * Add the goal for an xml and png output of the current map.
+	 */
 	public void addExploreDumpGoal () {
 		cleaningRobot.addGoal(new ExploreDumpGoal(cleaningRobot));
 	}
 	
+	/**
+	 * Add the goal for always active WLAN.
+	 */
 	public void addWlanOnGoal () {
 		cleaningRobot.addGoal(new WlanOnGoal(cleaningRobot));
 	}

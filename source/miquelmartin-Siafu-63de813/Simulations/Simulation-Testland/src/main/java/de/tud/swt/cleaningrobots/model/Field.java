@@ -7,6 +7,12 @@ import java.util.Set;
 import cleaningrobots.CleaningrobotsFactory;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
+/**
+ * Represent a Position and a list of states for the world representation.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class Field {
 	
 	private Position pos;
@@ -59,13 +65,13 @@ public class Field {
 		{
 			if (config.knownStates.isEmpty())
 			{
-				//Field mit allen States soll zurück gegeben werden
+				//return Field with all States
 				for (State state : states.keySet()){
 					modelField.addState(state, iteration);
 				}
 			} else {
 				boolean proof = false;
-				//nur wenn State auch bei knownstates dann hinzufügen
+				//add if state is also in known states
 				for (State state : states.keySet()){
 					if (config.knownStates.contains(state))
 					{
@@ -83,16 +89,16 @@ public class Field {
 			boolean proof = false;
 			if (config.knownStates.isEmpty())
 			{
-				//Field mit allen States soll zurück gegeben werden
+				//return Field with all States
 				for (State state : states.keySet()){
-					//nur hinzufügen wenn später erstellt wurde als iteration ist
+					//add if it is later created than this one
 					if (states.get(state) > config.iteration) {
 						proof = true;
 						modelField.addState(state, iteration);
 					}
 				}
 			} else {
-				//nur wenn State auch bei knownstates dann hinzufügen
+				//add if state is also in known states
 				for (State state : states.keySet()) {
 					if (config.knownStates.contains(state) && states.get(state) > config.iteration)
 					{
@@ -118,13 +124,13 @@ public class Field {
 		{
 			if (config.knownStates.isEmpty())
 			{
-				//Field mit allen States soll zurück gegeben werden
+				//return Field with all States
 				for (State state : states.keySet()){
 					modelField.getStates().add(state.exportModel());
 				}
 			} else {
 				boolean proof = false;
-				//nur wenn State auch bei knownstates dann hinzufügen
+				//add if state is also in known states
 				for (State state : states.keySet()){
 					if (config.knownStates.contains(state))
 					{
@@ -142,16 +148,16 @@ public class Field {
 			boolean proof = false;
 			if (config.knownStates.isEmpty())
 			{
-				//Field mit allen States soll zurück gegeben werden
+				//return Field with all States
 				for (State state : states.keySet()){
-					//nur hinzufügen wenn später erstellt wurde als iteration ist
+					//add if it is later created than this one
 					if (states.get(state) > config.iteration) {
 						proof = true;
 						modelField.getStates().add(state.exportModel());
 					}
 				}
 			} else {
-				//nur wenn State auch bei knownstates dann hinzufügen
+				//add if state is also in known states
 				for (State state : states.keySet()) {
 					if (config.knownStates.contains(state) && states.get(state) > config.iteration)
 					{

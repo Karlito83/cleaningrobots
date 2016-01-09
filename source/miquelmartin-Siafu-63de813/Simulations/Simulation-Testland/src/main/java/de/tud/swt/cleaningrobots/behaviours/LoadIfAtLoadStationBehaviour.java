@@ -8,6 +8,12 @@ import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.hardware.Components;
 
+/**
+ * Set loading if the robot arrived at load station.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class LoadIfAtLoadStationBehaviour extends Behaviour {
 	
 	public LoadIfAtLoadStationBehaviour(RobotCore robot) {
@@ -16,8 +22,7 @@ public class LoadIfAtLoadStationBehaviour extends Behaviour {
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		
 		d = new Demand(hardware, robot);
-		hardwarecorrect = d.isCorrect();
-		
+		hardwarecorrect = d.isCorrect();		
 	}
 
 	@Override

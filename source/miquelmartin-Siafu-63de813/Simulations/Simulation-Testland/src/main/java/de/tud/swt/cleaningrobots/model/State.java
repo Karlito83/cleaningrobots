@@ -1,32 +1,23 @@
 package de.tud.swt.cleaningrobots.model;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import cleaningrobots.CleaningrobotsFactory;
-import de.tud.evaluation.AbstractState;
 
-public class State extends AbstractState {
-	
-	private Map<String, State> states = new HashMap<String, State>();
+/**
+ * State of a field or of the world.
+ * 
+ * @author ChristopherMobil
+ *
+ */
+public class State {
+		
+	private String name;
 	
 	public State(String name) {
-		super(name);
+		this.name = name;
 	}
 	
-	public State createState(String name)
-	{
-		State result = null;
-		if(states.containsKey(name))
-		{
-			result = states.get(name);
-		}
-		else
-		{
-			result = new State(name);
-			states.put(name, result);
-		}
-		return result;
+	public String getName() {
+		return name;		
 	}
 
 	public cleaningrobots.State exportModel() {

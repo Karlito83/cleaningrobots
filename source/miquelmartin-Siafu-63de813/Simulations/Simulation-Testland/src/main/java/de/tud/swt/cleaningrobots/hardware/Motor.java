@@ -1,5 +1,11 @@
 package de.tud.swt.cleaningrobots.hardware;
 
+/**
+ * The Motor component of a robot.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class Motor extends HardwareComponent {
 
 	public Motor ()

@@ -9,7 +9,7 @@ import org.eclipse.emf.ecore.EObject;
 import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.WorldPart;
 import de.tud.evaluation.ExchangeMeasurement;
-import de.tud.evaluation.WorkingConfiguration;
+import de.tud.swt.cleaningrobots.Configuration;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotKnowledge;
 import de.tud.swt.cleaningrobots.model.Field;
@@ -21,36 +21,51 @@ import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.util.EMFUtils;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
+/**
+ * Merge of models between two robots with the EMF Model.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class MergeAll {
 	
 	private ExchangeMeasurement em; 
-	private WorkingConfiguration configuration;
+	private Configuration configuration;
 	
-	public MergeAll (WorkingConfiguration configuration) {
+	public MergeAll (Configuration configuration) {
 		this.configuration = configuration;
 	}
 	
-	
+	/**
+	 * Measurement if robot comes with new information.
+	 * @param name
+	 */
 	public void newInformationMeasure (String name) {
-		em = new ExchangeMeasurement(name, "New Info", configuration.iteration);
+		em = new ExchangeMeasurement(name, "New Info", configuration.wc.iteration);
 		em.addKnowledgeIntegerNumber(1);
 		em.addKnowledgeStringNumber(1);
 		em.addKnowledgeStringByteNumber(name.getBytes().length);
-		configuration.exchange.add(em);
+		configuration.wc.exchange.add(em);
 	}
 	
+	/**
+	 * Import the model to the robot.
+	 * @param model
+	 * @param importcore
+	 * @param config
+	 */
 	public void importAllModel(EObject model, RobotCore importcore, ImportExportConfiguration config) {
 		if (model instanceof cleaningrobots.Robot) {
 			cleaningrobots.Robot robot = (cleaningrobots.Robot) model;
 			
-			//Namen Information die immer mitgesendet wird
-			em = new ExchangeMeasurement(robot.getName(), importcore.getName(), configuration.iteration);
+			//name information which always send
+			em = new ExchangeMeasurement(robot.getName(), importcore.getName(), configuration.wc.iteration);
 			em.addKnowledgeStringNumber(1);
 			em.addKnowledgeStringByteNumber(robot.getName().getBytes().length);
-			//für alle noch measurement erweitern
+			//add robot knowledge
 			if (config.knowledge)
 			{
-				//alls robotknowledges und eigene Daten durchlaufen und einfügen
+				//run over all robot knowledge and own knowledge and insert information
 				for (cleaningrobots.RobotKnowledge exportRk : robot.getRobotKnowledge()) {
 					boolean isIn = false;
 					for (RobotKnowledge importRk : importcore.getKnowledge()) {
@@ -84,10 +99,10 @@ public class MergeAll {
 				for (RobotKnowledge hisRk : importcore.getKnowledge()) {					
 					if (hisRk.getName().equals(robot.getName())) {
 						isIn = true;
-						//Füge die neuen Information vom Robot ein
+						//insert the new information from the robot
 						List<State> knowns = new LinkedList<State>();
 						for (cleaningrobots.State s : robot.getKnownStates()) {
-							State st = ((State)importcore.configuration.as).createState(s.getName());
+							State st = importcore.configuration.createState(s.getName());
 							knowns.add(st);
 							em.addStatesStringByteNumber(s.getName().getBytes().length);
 							em.addStatesStringNumber(1);
@@ -99,7 +114,7 @@ public class MergeAll {
 					RobotKnowledge rk = new RobotKnowledge(robot.getName());
 					List<State> knowns = new LinkedList<State>();
 					for (cleaningrobots.State s : robot.getKnownStates()) {
-						State st = ((State)importcore.configuration.as).createState(s.getName());
+						State st = importcore.configuration.createState(s.getName());
 						knowns.add(st);
 						em.addStatesStringByteNumber(s.getName().getBytes().length);
 						em.addStatesStringNumber(1);
@@ -110,17 +125,17 @@ public class MergeAll {
 			}
 			if (config.world)
 			{
-				//World und Fields import
+				//World and Field import
 				cleaningrobots.WorldPart rootWorldPart = robot.getWorld();
 				importFieldsFromWorldModel(rootWorldPart, importcore);
 			}
-			configuration.exchange.add(em);
+			configuration.wc.exchange.add(em);
 		}
 	}
 	
 	private void importRobotKnowledge (RobotKnowledge importRk, cleaningrobots.Robot exportR, RobotCore robot) {
-		//Füge die neuen Information vom Robot ein
-		importRk.setLastArrange(configuration.iteration);
+		//insert the new information from the robot
+		importRk.setLastArrange(configuration.wc.iteration);
 		em.addKnowledgeIntegerNumber(1);
 		if (exportR.getDestination() != null) {
 			Position dest = new Position(exportR.getDestination().getXpos(), exportR.getDestination().getYpos());
@@ -158,7 +173,7 @@ public class MergeAll {
 		//add states to RobotKnowledge
 		List<State> knowns = new LinkedList<State>();
 		for (cleaningrobots.State s : exportR.getKnownStates()) {
-			State st = ((State)robot.configuration.as).createState(s.getName());
+			State st = robot.configuration.createState(s.getName());
 			knowns.add(st);
 			em.addStatesStringByteNumber(s.getName().getBytes().length);
 			em.addStatesStringNumber(1);
@@ -170,7 +185,7 @@ public class MergeAll {
 		if (importRk.getLastArrange() < exportRk.getLastArrange()) {
 			em.addKnowledgeStringByteNumber(exportRk.getName().getBytes().length);
 			em.addKnowledgeStringNumber(1);
-			//anderer Robot hat ihn als letztes gesehen also aktualisiere deine Daten
+			//other robot has seen him last so actuate the knowledge
 			//TODO: proof if this must in or not
 			//importRk.setLastArrange(exportRk.getLastArrange());
 			em.addKnowledgeIntegerNumber(1);
@@ -184,7 +199,7 @@ public class MergeAll {
 				em.addKnowledgeStringByteNumber(s.getBytes().length);
 			}
 			em.addKnowledgeStringNumber(exportRk.getComponents().size());
-			//add Roles To RobotKnowledge
+			//add Roles to RobotKnowledge
 			List<RoleModel> newOnes = new ArrayList<RoleModel>();
 			for (cleaningrobots.Role r : exportRk.getRoles()) {
 				if (r instanceof cleaningrobots.MasterRole) {
@@ -210,7 +225,7 @@ public class MergeAll {
 			//add States to RobotKnowledge
 			List<State> knowns = new LinkedList<State>();
 			for (cleaningrobots.State s : exportRk.getKnowStates()) {
-				State st = ((State)robot.configuration.as).createState(s.getName());
+				State st = robot.configuration.createState(s.getName());
 				knowns.add(st);
 				em.addKnowledgeStringByteNumber(s.getName().getBytes().length);
 				em.addKnowledgeStringNumber(1);
@@ -222,14 +237,14 @@ public class MergeAll {
 	private void importFieldsFromWorldModel(cleaningrobots.WorldPart worldPart, RobotCore importcore) {
 		// Maybe an arrayList is better here?
 		if (worldPart instanceof cleaningrobots.Map) {
-			//x und yDim
+			//x and yDim
 			em.addWorldIntegerNumber(2);
 			cleaningrobots.State blockedState = CleaningrobotsFactory.eINSTANCE.createState();
 			//Search blockstate for isPassable value of field 
 			blockedState.setName("Blocked");
 			
 			for (cleaningrobots.State worldState : worldPart.getWorldStates()) {
-				State state = ((State)importcore.configuration.as).createState(worldState.getName());
+				State state = importcore.configuration.createState(worldState.getName());
 				importcore.getWorld().addWorldState(state);
 				em.addWorldStatesStringByteNumber(worldState.getName().getBytes().length);
 				em.addWorldStatesStringNumber(1);
@@ -241,10 +256,10 @@ public class MergeAll {
 				boolean isBlocked = EMFUtils.listContains(modelField.getStates(), blockedState);
 				//test about the supported states of the new robot
 				//core is the new robot
-				Field f = new Field(modelField.getPos().getXpos(), modelField.getPos().getYpos(), !isBlocked, configuration.iteration);
+				Field f = new Field(modelField.getPos().getXpos(), modelField.getPos().getYpos(), !isBlocked, configuration.wc.iteration);
 				for (cleaningrobots.State modelState : modelField.getStates()) {
-					State state = ((State)importcore.configuration.as).createState(modelState.getName());
-					f.addState(state, configuration.iteration);
+					State state = importcore.configuration.createState(modelState.getName());
+					f.addState(state, configuration.wc.iteration);
 					em.addWorldStringByteNumber(modelState.getName().getBytes().length);
 					em.addWorldStringNumber(1);
 				}

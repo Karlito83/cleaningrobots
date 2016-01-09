@@ -8,6 +8,12 @@ import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.DiscoverAroundAtDestinationBehaviour;
 import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
 
+/**
+ * Non optional goal to discover the world without any control of a master. 
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class WithoutMasterExploreGoal extends NonOptionalGoal {
 
 	private DiscoverBehaviour d;
@@ -18,7 +24,6 @@ public class WithoutMasterExploreGoal extends NonOptionalGoal {
 		DiscoverAroundAtDestinationBehaviour s = new DiscoverAroundAtDestinationBehaviour(robot);
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
 		if (s.isHardwarecorrect()) {
-			//robot.addBehaviour(s);
 			behaviours.add(s);
 		} else {
 			correct = false;
@@ -27,7 +32,6 @@ public class WithoutMasterExploreGoal extends NonOptionalGoal {
 		d = new DiscoverBehaviour(robot, false);
 		System.out.println("Correct Discover: " + d.isHardwarecorrect());
 		if (d.isHardwarecorrect()) {
-			//robot.addBehaviour(d);
 			behaviours.add(d);
 		} else {
 			correct = false;
@@ -36,7 +40,6 @@ public class WithoutMasterExploreGoal extends NonOptionalGoal {
 		MoveBehaviour m = new MoveBehaviour(robot);
 		System.out.println("Correct Move: " + m.isHardwarecorrect());
 		if (m.isHardwarecorrect()) {
-			//robot.addBehaviour(m);
 			behaviours.add(m);
 		} else {
 			correct = false;
@@ -53,7 +56,6 @@ public class WithoutMasterExploreGoal extends NonOptionalGoal {
 		LoadIfAtLoadStationBehaviour lialsb = new LoadIfAtLoadStationBehaviour(robot);
 		System.out.println("Correct LoadIfAtLoadStation: " + lialsb.isHardwarecorrect());
 		if (lialsb.isHardwarecorrect()) {
-			//robot.addBehaviour(b);
 			behaviours.add(lialsb);
 		} else {
 			correct = false;
@@ -69,7 +71,7 @@ public class WithoutMasterExploreGoal extends NonOptionalGoal {
 
 	@Override
 	public boolean postCondition() {
-		//muss nur schauen ob discover behaviour fertig ist
+		//must look if the discover behavior is finish
 		return d.isFinishDiscovering();
 	}
 }

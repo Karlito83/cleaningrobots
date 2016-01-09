@@ -6,6 +6,12 @@ import de.tud.swt.cleaningrobots.behaviours.MasterCalculateHooveBehaviour;
 import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
 import de.tud.swt.cleaningrobots.model.State;
 
+/**
+ * Non optional goal for a master to coordinate the followers to hoove the world. 
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class MasterHooveMasterGoal extends NonOptionalGoal {
 
 	private MasterCalculateHooveBehaviour mceb;
@@ -14,12 +20,11 @@ public class MasterHooveMasterGoal extends NonOptionalGoal {
 	public MasterHooveMasterGoal(RobotCore robot, MasterRole mr, boolean relative) {
 		super(robot);
 		
-		this.WORLDSTATE_HOOVED = ((State)robot.configuration.as).createState("Hooved");
+		this.WORLDSTATE_HOOVED = robot.configuration.createState("Hooved");
 		
 		mceb = new MasterCalculateHooveBehaviour(robot, mr, relative);
 		System.out.println("Correct SeeAround: " +mceb.isHardwarecorrect());
 		if (mceb.isHardwarecorrect()) {
-			//robot.addBehaviour(s);
 			behaviours.add(mceb);
 		} else {
 			correct = false;

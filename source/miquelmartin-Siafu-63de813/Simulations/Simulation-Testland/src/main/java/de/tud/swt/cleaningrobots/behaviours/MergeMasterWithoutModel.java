@@ -18,6 +18,14 @@ import de.tud.swt.cleaningrobots.hardware.Wlan;
 import de.tud.swt.cleaningrobots.merge.MergeAllWithoutModel;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
+/**
+ * Behavior which realize the data exchange and integration
+ * between a master and his followers.
+ * Without the EMF model.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class MergeMasterWithoutModel extends Behaviour {
 	
 	private MasterRole mr;
@@ -39,7 +47,7 @@ public class MergeMasterWithoutModel extends Behaviour {
 		d = new Demand(hardware, robot);
 		hardwarecorrect = d.isCorrect();
 		
-		//Vision Radius aus Wlan Hardwarecomponente ziehen
+		//get vision Radius from the WLAN component
 		for (HardwareComponent hard : d.getHcs())
 		{
 			if (hard.getComponents() == Components.WLAN)
@@ -52,13 +60,10 @@ public class MergeMasterWithoutModel extends Behaviour {
 	@Override
 	public boolean action() {
 		
-		//Schalte alle Hardwarecomponenten an wenn sie nicht schon laufen
+		//start all hardware components
 		for (HardwareComponent hard : d.getHcs())
 		{
-			if (!hard.isActive())
-			{
-				hard.changeActive();
-			}
+			hard.switchOn();
 		}
 		
 		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(wlan.getVisionRadius());
@@ -72,11 +77,10 @@ public class MergeMasterWithoutModel extends Behaviour {
 		Map<RobotRole, ImportExportConfiguration> nearsNewInformation = new HashMap<RobotRole, ImportExportConfiguration>();
 		Map<RobotRole, ImportExportConfiguration> nearsNoNewInformation = new HashMap<RobotRole, ImportExportConfiguration>();
 		for (RobotCore nearRobot : nearRobots) {
-			//darf nur mi Robotern in der nähe Kommunizieren wenn diese Wirklich die gleiche HardwareComponente habe und diese aktiv ist
+			//could only communicate with near robots if they have active WLAN
 			if (nearRobot.hasActiveHardwareComponent(wlan.getComponents())) {
-				//darf auch nur das modell von Robotern einfügen die follower dieses Knotens sind
+				//near robot must be a follower
 				List<RobotRole> frr = mr.getFollowers();
-				//gehe alle Follower dieses Robots durch und prüfe ob einer der hier ist
 				for (RobotRole rr : frr)
 				{
 					if (rr.getRobotCore().equals(nearRobot))
@@ -88,7 +92,7 @@ public class MergeMasterWithoutModel extends Behaviour {
 							
 							ma.newInformationMeasure(rr.getRobotCore().getName());
 							//Robot say that he has new Information
-							//make the config file for export and import
+							//make the configuration file for export and import
 							ImportExportConfiguration config = new ImportExportConfiguration();
 							config.world = true;
 							config.knownstates = true;
@@ -134,27 +138,26 @@ public class MergeMasterWithoutModel extends Behaviour {
 		
 		boolean newInfoForFollower = false;
 		
-		//schaue ob der selbe Roboter auch ein Follower ist und neue Informationen hat
-		//wenn ja leere lastChange um anderen Robotern neue Daten zu geben
+		//look if the same robot is also a follower and has new information
+		//if true clean last change to give all new information
 		for (RobotRole rr : mr.getFollowers()) {
 			if (rr.getRobotCore().equals(mr.getRobotCore()) && rr.hasNewInformation()) {
-				//System.out.println("Master hat neue informationen " + nearRobots.size() + " " + nearsNoNewInformation.size());
 				rr.setNewInformation(false);
 				newInfoForFollower = true;
 				lastChange.clear();
 			}
 		}
 		
-		//füge gesammeltes Model den nahen Robotern hinzu
+		//add the model to all near robots
 		if (!nearsNewInformation.isEmpty())
 		{
 			mr.setNewInformation(true);
 			//System.out.println("LastChange: " + lastChange + " NewInfo: " + nearsNewInformation + " NoNewInfo: " + nearsNoNewInformation);
 			if (nearsNewInformation.size() == 1)
 			{
-				//muss model nur importieren wenn noch nicht in lastchange liste war oder er nicht der einzige mit neuen informationen ist
+				//only import if not in last change and he is not the only one
 				for (RobotRole rr : nearsNewInformation.keySet()) {
-					//fr schon vorher enthalten
+					//last change contains the follower
 					if(!lastChange.contains(rr))
 					{
 						ma.importAllWithoutModel(this.robot, rr.getRobotCore(), nearsNewInformation.get(rr));
@@ -162,30 +165,29 @@ public class MergeMasterWithoutModel extends Behaviour {
 				}
 			} else {
 				for (RobotRole rr : nearsNewInformation.keySet()) {
-					//importiere allen nahen Robotern das neue Modell
+					//import the model to all near robots
 					ma.importAllWithoutModel(this.robot, rr.getRobotCore(), nearsNewInformation.get(rr));
 				}
 			}
 			for (RobotRole rr : nearsNoNewInformation.keySet()) {
-				//importiere allen nahen Robotern das neue Modell
+				//import the model to all near robots
 				ma.importAllWithoutModel(this.robot, rr.getRobotCore(), nearsNoNewInformation.get(rr));
 			}	
 			lastChange.clear();
 			lastChange.addAll(nearsNewInformation.keySet());
 			lastChange.addAll(nearsNoNewInformation.keySet());
 		} else {
-			//nearsNoNew kann hier nicht leer sein
+			//nearsNoNew could not be null
 			if (newInfoForFollower)
 			{
 				for (RobotRole rr : nearsNoNewInformation.keySet()) {
-					//importiere allen nahen Robotern das neue Modell
+					//import the model to all near robots
 					ma.importAllWithoutModel(this.robot, rr.getRobotCore(), nearsNoNewInformation.get(rr));
 					lastChange.clear();
 					lastChange.addAll(nearsNoNewInformation.keySet());
 				}
 			}
-			//TODO:
-			//fall wen roboter ankommt keine neue information hat aber für ihn neue informationen da sind
+			//TODO: case when the robots comes without new information
 		}		
 		return false;
 	}	

@@ -10,6 +10,13 @@ import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
 
+/**
+ * Activate the WLAN component if the robot is loading.
+ * Switch off the WLAN component if it is not loading.
+ *   
+ * @author Christopher Werner
+ *
+ */
 public class LoadWlanActivateBehaviour extends Behaviour {
 
 	private Wlan wlan;
@@ -17,13 +24,14 @@ public class LoadWlanActivateBehaviour extends Behaviour {
 	public LoadWlanActivateBehaviour(RobotCore robot) {
 		super(robot);
 
+		//add hardware components
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.WLAN, 1);
 		
 		d = new Demand(hardware, robot);
 		hardwarecorrect = d.isCorrect();
 		
-		//Vision Radius aus Wlan Hardwarecomponente ziehen
+		//get vision Radius from WLAN hardware component
 		for (HardwareComponent hard : d.getHcs())
 		{
 			if (hard.getComponents() == Components.WLAN)
@@ -37,19 +45,13 @@ public class LoadWlanActivateBehaviour extends Behaviour {
 	@Override
 	public boolean action() throws Exception {
 
-		//if isLoading mache Wlan an
+		//if isLoading switch on WLAN
 		if (robot.isLoading)
 		{
-			if (!wlan.isActive())
-			{
-				wlan.changeActive();
-			}
+			wlan.switchOn();
 		} else {
-			//if nicht mehr isLoading mache Wlan aus
-			if (wlan.isActive())
-			{
-				wlan.changeActive();
-			}
+			//if not isLoading switch off WLAN
+			wlan.switchOff();
 		}
 		
 		return false;

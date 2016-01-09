@@ -1,7 +1,5 @@
 package de.nec.nle.siafu.model;
 
-//import java.io.IOException;
-//import java.io.InputStream;
 import java.util.List;
 
 //import org.eclipse.swt.graphics.ImageData;
@@ -10,9 +8,6 @@ import de.nec.nle.siafu.behaviormodels.BaseAgentModelMulti;
 import de.tud.evaluation.WorkingConfiguration;
 
 public class MultiWorld {
-	
-	/** The white color. Used to identify walls. */
-	//private int COLOR_WHITE = 0xFFFFFF;
 	
 	private SimulationData simData;
 	
@@ -88,39 +83,6 @@ public class MultiWorld {
 	        default: walls = simData.getWallsR();
 	                 break;
 		}
-		/*
-		InputStream wallsIS;
-		switch (configuration.map) {
-			case 0:  wallsIS = simData.getWallsFile();
-					 break;
-	        case 1:  wallsIS = simData.getWallsLabFile();
-	                 break;	            
-	        case 2:  wallsIS = simData.getWallsFakKFile();
-	                 break;
-	        case 3:  wallsIS = simData.getWallsFakFile();
-	                 break;
-	        default: wallsIS = simData.getWallsFile();
-	                 break;
-		}
-		ImageData img = new ImageData(wallsIS);
-		try {
-			wallsIS.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		int height = img.height;
-		int width = img.width;
-
-		walls = new boolean[height][width];
-
-		for (int i = 0; i < height; i++) {
-			int[] colors = new int[width];
-			img.getPixels(0, i, width, colors, 0);
-
-			for (int j = 0; j < width; j++) {
-				walls[i][j] = (colors[j] == COLOR_WHITE);
-			}
-		}*/
 	}
 	
 	/**

@@ -6,6 +6,12 @@ import de.tud.swt.cleaningrobots.behaviours.MasterCalculateExploreBehaviour;
 import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
 import de.tud.swt.cleaningrobots.model.State;
 
+/**
+ * Non optional goal for a master to coordinate the followers to discover the world. 
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class MasterExploreMasterGoal extends NonOptionalGoal {
 	
 	private MasterCalculateExploreBehaviour mceb;
@@ -14,12 +20,11 @@ public class MasterExploreMasterGoal extends NonOptionalGoal {
 	public MasterExploreMasterGoal(RobotCore robot, MasterRole mr, boolean relative) {
 		super(robot);
 		
-		this.WORLDSTATE_DISCOVERED = ((State)robot.configuration.as).createState("Discovered");
+		this.WORLDSTATE_DISCOVERED = robot.configuration.createState("Discovered");
 		
 		mceb = new MasterCalculateExploreBehaviour(robot, mr, relative);
 		System.out.println("Correct SeeAround: " +mceb.isHardwarecorrect());
 		if (mceb.isHardwarecorrect()) {
-			//robot.addBehaviour(s);
 			behaviours.add(mceb);
 		} else {
 			correct = false;

@@ -8,6 +8,12 @@ import java.io.IOException;
 import de.tud.evaluation.ExchangeMeasurement;
 import de.tud.evaluation.WorkingConfiguration;
 
+/**
+ * Creating of the exported JSON files from the measurement information of a test case.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class ExportFiles {
 
 	public boolean addLineToFile(String s, String path)

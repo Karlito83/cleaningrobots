@@ -2,6 +2,12 @@ package de.tud.swt.cleaningrobots.util;
 
 import de.tud.swt.cleaningrobots.model.Position;
 
+/**
+ * Saves information about new and old destinations of a robot.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class RobotDestinationCalculation {
 	
 	public Position actualPosition;

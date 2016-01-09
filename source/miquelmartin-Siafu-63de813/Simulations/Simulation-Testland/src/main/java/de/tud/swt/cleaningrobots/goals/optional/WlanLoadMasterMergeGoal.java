@@ -4,6 +4,12 @@ import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.behaviours.LoadWlanActivateBehaviour;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
+/**
+ * Optional goal which start the WLAN on the robot, when he is loading. 
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class WlanLoadMasterMergeGoal extends OptionalGoal {
 
 	public WlanLoadMasterMergeGoal(RobotCore robot) {
@@ -12,7 +18,6 @@ public class WlanLoadMasterMergeGoal extends OptionalGoal {
 		LoadWlanActivateBehaviour lab = new LoadWlanActivateBehaviour(robot);
 		System.out.println("Correct WlanActive: " + lab.isHardwarecorrect());
 		if (lab.isHardwarecorrect()) {
-			//robot.addBehaviour(b);
 			behaviours.add(lab);
 		} else {
 			correct = false;

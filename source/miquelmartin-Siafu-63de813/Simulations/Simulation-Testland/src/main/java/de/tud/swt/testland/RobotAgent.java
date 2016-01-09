@@ -9,10 +9,16 @@ import de.nec.nle.siafu.model.World;
 import de.tud.swt.cleaningrobots.ICommunicationAdapter;
 import de.tud.swt.cleaningrobots.RobotCore;
 
+/**
+ * With user interface in Siafu.
+ * The Robotagent can work with the objects in Siafu and represents the Position in the map.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class RobotAgent extends Agent implements ICommunicationAdapter {
 
-	private boolean finish;
-	
+	private boolean finish;	
 	protected RobotCore cleaningRobot;
 	protected World siafuWorld;
 	
@@ -21,12 +27,16 @@ public class RobotAgent extends Agent implements ICommunicationAdapter {
 				
 		this.setSpeed(1);
 	}	
-	
+		
 	@Override
 	public void wander() {
 		this.finish = this.cleaningRobot.action();
 	}
 	
+	/**
+	 * Return if it is finished.
+	 * @return
+	 */
 	public boolean isFinish () {
 		return this.finish;
 	}

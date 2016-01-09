@@ -2,6 +2,12 @@ package de.tud.swt.cleaningrobots.goals;
 
 import de.tud.swt.cleaningrobots.RobotCore;
 
+/**
+ * Is a specific sub goal which is optional and abstract and must be implemented.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public abstract class OptionalGoal extends SubGoal{
 
 	public OptionalGoal(RobotCore robot) {
@@ -10,13 +16,13 @@ public abstract class OptionalGoal extends SubGoal{
 
 	@Override
 	public boolean preCondition() {
-		//immer true zurück geben
+		//always return true
 		return true;
 	}
 
 	@Override
 	public boolean postCondition() {
-		//immer false zurück geben da ergebnis eigentlich nie erreicht
+		//always return false because it should not be finished
 		return false;
 	}
 

@@ -9,6 +9,13 @@ import de.tud.swt.cleaningrobots.ICommunicationAdapter;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.model.Position;
 
+/**
+ * Without user interface in Siafu.
+ * The Robotagent can work with the objects in Siafu and represents the Position in the map.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class RobotAgentMulti extends MultiAgent implements ICommunicationAdapter {
 
 	private boolean finish;
@@ -23,6 +30,10 @@ public class RobotAgentMulti extends MultiAgent implements ICommunicationAdapter
 		this.finish = this.cleaningRobot.action();
 	}
 	
+	/**
+	 * Return if it is finished.
+	 * @return
+	 */
 	public boolean isFinish () {
 		return this.finish;
 	}

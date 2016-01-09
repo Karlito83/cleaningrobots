@@ -8,6 +8,12 @@ import de.tud.swt.cleaningrobots.behaviours.WipeBehaviour;
 import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
 import de.tud.swt.cleaningrobots.model.State;
 
+/**
+ * Non optional goal to wipe the world without any merge functions. 
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class WipeLoadGoal extends NonOptionalGoal {
 
 	private WipeBehaviour d;
@@ -18,13 +24,12 @@ public class WipeLoadGoal extends NonOptionalGoal {
 	public WipeLoadGoal(RobotCore robot, boolean relative) {
 		super(robot);
 		
-		this.STATE_WIPE = ((State)robot.configuration.as).createState("Wipe");	
-		this.WORLDSTATE_DISCOVERED = ((State)robot.configuration.as).createState("Discovered");
+		this.STATE_WIPE = robot.configuration.createState("Wipe");	
+		this.WORLDSTATE_DISCOVERED = robot.configuration.createState("Discovered");
 		
 		WipeAroundAtDestinationBehaviour s = new WipeAroundAtDestinationBehaviour(robot);
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
 		if (s.isHardwarecorrect()) {
-			//robot.addBehaviour(s);
 			behaviours.add(s);
 		} else {
 			correct = false;
@@ -33,7 +38,6 @@ public class WipeLoadGoal extends NonOptionalGoal {
 		d = new WipeBehaviour(robot, relative);
 		System.out.println("Correct Discover: " + d.isHardwarecorrect());
 		if (d.isHardwarecorrect()) {
-			//robot.addBehaviour(d);
 			behaviours.add(d);
 		} else {
 			correct = false;
@@ -42,7 +46,6 @@ public class WipeLoadGoal extends NonOptionalGoal {
 		MoveBehaviour m = new MoveBehaviour(robot);
 		System.out.println("Correct Move: " + m.isHardwarecorrect());
 		if (m.isHardwarecorrect()) {
-			//robot.addBehaviour(m);
 			behaviours.add(m);
 		} else {
 			correct = false;

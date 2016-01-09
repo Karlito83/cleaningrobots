@@ -1,5 +1,11 @@
 package de.tud.swt.cleaningrobots.util;
 
+/**
+ * Implements a counter for near robots.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class NearRobotInformation {
 
 	private int counter;

@@ -1,5 +1,11 @@
 package de.tud.swt.cleaningrobots.hardware;
 
+/**
+ * The load station component of a robot.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class LoadStation extends HardwareComponent{
 
 	private double loadValue;

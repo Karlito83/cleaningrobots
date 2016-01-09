@@ -10,6 +10,12 @@ import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.model.State;
 
+/**
+ * A abstract goal which should not be implemented and do some specific work.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public abstract class SubGoal extends Goal {
 
 	protected boolean correct;
@@ -33,7 +39,7 @@ public abstract class SubGoal extends Goal {
 			try {
 				behaviour.action();
 			} catch (Exception e) {
-				//Lauf alle Actions der Behaviours durch
+				//run all actions of all behaviors
 				e.printStackTrace();
 			}
 		}		

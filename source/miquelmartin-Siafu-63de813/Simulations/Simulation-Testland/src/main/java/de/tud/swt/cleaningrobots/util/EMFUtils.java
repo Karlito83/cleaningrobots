@@ -5,6 +5,12 @@ import org.eclipse.emf.ecore.EObject;
 
 public class EMFUtils {
 
+	/**
+	 * Proofs if a list contains an object.
+	 * @param list
+	 * @param compareToElement
+	 * @return
+	 */
 	public static boolean listContains(EList<?> list, EObject compareToElement) {
 		boolean result = false;
 		if (list != null) {

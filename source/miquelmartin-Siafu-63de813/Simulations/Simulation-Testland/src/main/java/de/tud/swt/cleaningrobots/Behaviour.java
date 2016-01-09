@@ -5,6 +5,12 @@ import java.util.Set;
 
 import de.tud.swt.cleaningrobots.model.State;
 
+/**
+ * The abstract behavior class to create a behavior. 
+ * 
+ * @author Christopher Werner
+ *
+ */
 public abstract class Behaviour {
 	
 	protected RobotCore robot;	

@@ -1,8 +1,15 @@
 package de.tud.swt.cleaningrobots.measure;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Minimal, Maximal and Averages vales of a list with Integer values.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class MinMaxAveInt {
 
 	public int numberRobots;
@@ -30,10 +37,12 @@ public class MinMaxAveInt {
 	}
 
 	public int getAveValue () {
-		int value = 0;
+		Collections.sort(values);
+		return values.get(values.size()/2);
+		/*int value = 0;
 		for (int v : values) {
 			value += v;
 		}
-		return value/values.size();
+		return value/values.size();*/
 	}
 }

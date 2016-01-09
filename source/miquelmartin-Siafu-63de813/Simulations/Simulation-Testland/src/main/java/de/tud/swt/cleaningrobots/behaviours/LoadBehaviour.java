@@ -11,6 +11,13 @@ import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.hardware.LoadStation;
 
+/**
+ * Old behavior.
+ * Load the near robots if there Accu is to low and stop if it is full.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class LoadBehaviour extends Behaviour {
 
 	private LoadStation loadStation;
@@ -24,7 +31,7 @@ public class LoadBehaviour extends Behaviour {
 		d = new Demand(hardware, robot);
 		hardwarecorrect = d.isCorrect();
 		
-		//Vision Radius aus Wlan Hardwarecomponente ziehen
+		//get vision Radius from load station component
 		for (HardwareComponent hard : d.getHcs())
 		{
 			if (hard.getComponents() == Components.LOADSTATION)
@@ -44,10 +51,10 @@ public class LoadBehaviour extends Behaviour {
 			{
 				if (nearRobot.isLoading)
 					nearRobot.getAccu().load(loadStation.getLoadValue());
-				//wenn der akku weniger als halbleer ist soll er laden
+				//if the Accu is less than half -> load
 				if (!nearRobot.isLoading && nearRobot.getAccu().getActualKWh() < nearRobot.getAccu().getMaxKWh()/2)
 					nearRobot.isLoading = true;
-				//wenn der akku voll ist soll er nicht mehr laden
+				//if the Accu is full -> stop loading
 				if (nearRobot.getAccu().isFull()) {
 					System.out.println("Accu Full");
 					nearRobot.isLoading = false;

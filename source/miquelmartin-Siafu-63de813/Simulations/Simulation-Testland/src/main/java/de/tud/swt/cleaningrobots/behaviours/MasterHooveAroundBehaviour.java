@@ -18,6 +18,13 @@ import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
 
+/**
+ * Behavior that activate the hoover if the robot is at the destination and hoove the place.
+ * Send the data directly to the master.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class MasterHooveAroundBehaviour extends Behaviour {
 	
 	private RobotCore master;
@@ -33,8 +40,9 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 	public MasterHooveAroundBehaviour(RobotCore robot) {
 		super(robot);
 		
-		this.STATE_HOOVE = ((State)robot.configuration.as).createState("Hoove");
-		this.STATE_FREE = ((State)robot.configuration.as).createState("Free");
+		//create and add the states
+		this.STATE_HOOVE = robot.configuration.createState("Hoove");
+		this.STATE_FREE = robot.configuration.createState("Free");
 		
 		this.mfm = new MasterFieldMerge(this.robot.configuration);
 		this.firststart = true;
@@ -42,6 +50,7 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 		supportedStates.add(STATE_HOOVE);
 		supportedStates.add(STATE_FREE);
 		
+		//add the hardware components and proof there correctness
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.HOOVER, 1);
 		
@@ -60,7 +69,7 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 	public boolean action() throws Exception {
 		
 		if (firststart) {
-			//gehe davon aus das Master im Wlan sichtbereich ist
+			//get the master object
 			for (RobotRole rr : robot.getRoles()) {
 				if (rr instanceof FollowerRole) {
 					master = ((FollowerRole) rr).master.getRobotCore();
@@ -69,36 +78,28 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 			firststart = false;
 		}
 		
-		//Wenn Roboter an Ziel dann machen ann Scanne umgebung und machen wieder aus
 		if (robot.getDestinationContainer().isAtDestination() && !robot.getDestinationContainer().isAtLoadDestination()) {
-			//Schalte alle Hardwarecomponenten an wenn sie nicht schon laufen
+			//start all hardware components
 			for (HardwareComponent hard : d.getHcs())
 			{
-				if (!hard.isActive())
-				{
-					hard.changeActive();
-				}
+				hard.switchOn();
 			}
 			
-			//scanne umgebung
-			//der Welt des Roboters die neuen Felder hinzufügen
+			//hoove area
+			//add the new field to the world of the master
 			try {
 				List<Field> fields = getData();
-				//send Field to Robot and ask für new destination and Path
+				//send Field to Robot and ask for new destination and Path
 				mfm.sendFieldsAndMerge(robot.getName(), fields, master, "Hoove");
 			} catch (Exception e) {
 				throw e;
 			}
 			
 		} else {
-			//kommt erst im nächsten Schritt damit die Energie beachtet wird
-			//Schalte alle Hardwarecomponenten aus
+			//switch off the hardware components if not needed
 			for (HardwareComponent hard : d.getHcs())
 			{
-				if (hard.isActive())
-				{
-					hard.changeActive();
-				}
+				hard.switchOff();
 			}
 		}
 		if (robot.getDestinationContainer().isAtDestination())
@@ -136,8 +137,8 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 		//could only hoove position he knows about
 		if (master.getWorld().isPassable(p))
 		{
-			result = new Field(x, y, true, this.robot.configuration.iteration);
-			result.addState(STATE_HOOVE, this.robot.configuration.iteration);
+			result = new Field(x, y, true, this.robot.configuration.wc.iteration);
+			result.addState(STATE_HOOVE, this.robot.configuration.wc.iteration);
 		}	
 		return result;		
 	}

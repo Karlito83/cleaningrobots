@@ -1,5 +1,11 @@
 package de.tud.swt.cleaningrobots.hardware;
 
+/**
+ * The Accu information and management of the robot.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class Accu {
 	
 	//48 Wh

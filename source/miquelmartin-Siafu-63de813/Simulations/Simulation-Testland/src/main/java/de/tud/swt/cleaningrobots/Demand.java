@@ -7,6 +7,12 @@ import java.util.Map;
 import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 
+/**
+ * Contains the hardware components a behavior need to run.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class Demand {
 
 	private List<HardwareComponent> hcs;

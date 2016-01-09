@@ -1,5 +1,11 @@
 package de.tud.swt.cleaningrobots.hardware;
 
+/**
+ * The Hoover component of a robot.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class Hoover extends HardwareComponent {
 
 	private int radius;
@@ -20,8 +26,7 @@ public class Hoover extends HardwareComponent {
 		radius = 2;
 	}
 	
-	public int getRadius ()
-	{
+	public int getRadius ()	{
 		return radius;
 	}
 

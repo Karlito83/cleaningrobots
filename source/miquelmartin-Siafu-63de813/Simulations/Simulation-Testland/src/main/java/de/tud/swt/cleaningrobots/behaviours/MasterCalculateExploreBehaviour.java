@@ -17,6 +17,13 @@ import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.util.RobotDestinationCalculation;
 
+/**
+ * Behavior for master which search new destinations for explorer.
+ * Always in contact to follower and send the data directly.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class MasterCalculateExploreBehaviour extends Behaviour{
 
 	private MasterRole mr;
@@ -36,9 +43,13 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 	public MasterCalculateExploreBehaviour(RobotCore robot, MasterRole mr, boolean relative) {
 		super(robot);
 		
-		this.STATE_BLOCKED = ((State)robot.configuration.as).createState("Blocked");
-		this.STATE_FREE = ((State)robot.configuration.as).createState("Free");
-		this.WORLDSTATE_DISCOVERED = ((State)robot.configuration.as).createState("Discovered");
+		//create and add the states
+		this.STATE_BLOCKED = robot.configuration.createState("Blocked");
+		this.STATE_FREE = robot.configuration.createState("Free");
+		this.WORLDSTATE_DISCOVERED = robot.configuration.createState("Discovered");
+
+		supportedStates.add(STATE_BLOCKED);
+		supportedStates.add(STATE_FREE);
 		
 		this.mr = mr;
 		this.firstStart = true;
@@ -46,12 +57,10 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 		this.mfm = new MasterFieldMerge(this.robot.configuration);
 		this.information = new HashMap<String, RobotDestinationCalculation>();
 		
+		//add the hardware components and proof there correctness
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.WLAN, 1);
-		
-		supportedStates.add(STATE_BLOCKED);
-		supportedStates.add(STATE_FREE);
-		
+				
 		d = new Demand(hardware, robot);
 		hardwarecorrect = d.isCorrect();
 	}
@@ -59,19 +68,16 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 	@Override
 	public boolean action() {
 		
-		//Schalte alle Hardwarecomponenten an wenn sie nicht schon laufen
+		//start all hardware components
 		for (HardwareComponent hard : d.getHcs())
 		{
-			if (!hard.isActive())
-			{
-				hard.changeActive();
-			}
+			hard.switchOn();
 		}
 		
 		if (firstStart)
 		{
 			double maxAway = 0;
-			//Suche Explore Robots in der nähe einmal ausführen
+			//search near Explore Robots
 			List<RobotRole> follower = this.mr.getFollowers();
 				
 			for (RobotRole rr : follower) {
@@ -90,33 +96,31 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 				}
 			}
 			
-			calculationAway = (int) maxAway;
-			//System.out.println("Information: " + information.keySet() + " Away: " + calculationAway + " maxAway: " + maxAway);
-			
+			calculationAway = (int) maxAway;			
 			firstStart = false;
 		}
 		
-		//Suche Explore Robots in der nähe einmal ausführen
+		//search all explore robots
 		List<RobotCore> allRobots = this.robot.getICommunicationAdapter().getAllRobots();
 		allRobots.remove(this.robot);
 						
 		for (RobotDestinationCalculation rdc : information.values()) {
-			//alle NeedNew auf false setzen
+			//set all NeedNew to false
 			rdc.needNew = false;
-			//new und old dest tauschen
+			//change new and old destination
 			if (rdc.newDest != null)
 			{
-				//setze newDest zurück auf null und erneuere oldDest
+				//set newDest to null and set oldDest
 				rdc.oldDest = rdc.newDest;
 				rdc.newDest = null;
 			}
 		}
 				
-		//suche Roboter beim laden die noch keine neueDest haben und setze Variable				
+		//search robots which are loading and not have a newDest and set Variable				
 		boolean newOneFind = false;
 				
 		for (RobotCore oneRobot : allRobots) {
-			//laufe Values durch und suche gleichen Roboter
+			//run Values and search the same robot
 			for (RobotDestinationCalculation rdc : information.values()) {
 				if (oneRobot.getName().equals(rdc.getName())) 
 				{
@@ -130,14 +134,14 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 			}			
 		}
 		
-		//wenn neue gefunden dann bestimmt neue destination und setze diese
+		//if new one find then calculate new destination and set it
 		if (newOneFind) {
 			Map<String, RobotDestinationCalculation> result = this.robot.getWorld().getNextUnknownFields(information, calculationAway);
 			
 			if (result != null) {			
 				information = result; 
 				
-				//neue Informationen noch raussenden
+				//send new information
 				for (RobotCore oneRobot : allRobots) {
 					for (RobotDestinationCalculation rdc : information.values()) {
 						if (rdc.getName().equals(oneRobot.getName()) && rdc.needNew)
@@ -156,7 +160,7 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 		}
 		
 		for (RobotCore oneRobot : allRobots) {
-			//laufe Values durch und suche gleichen Roboter
+			//search the same robot
 			for (RobotDestinationCalculation rdc : information.values()) {
 				if (oneRobot.getName().equals(rdc.getName())) 
 				{
@@ -171,20 +175,19 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 							nextUnknownPosition = this.robot.getWorld().getNextUnknownFieldPosition(rdc.actualPosition);
 						
 						if(nextUnknownPosition != null){								
-							//wenn accu vorhanden dann muss ladestatus geprüft werden Prüfe,
-							//ob ziel vorher erreicht wird oder ob accu beim fahren leer wird
+							//if the robot has a Accu proof the destination
 							if (oneRobot.getAccu() != null)
 							{
-								//Entfernung Robot bis Ziel
+								//distance robot to destination
 								int sizeOne = robot.getWorld().getPathFromTo(rdc.actualPosition, nextUnknownPosition).size();
-								//Entfernung Ziel bis Ladestation
+								//distance destination to load station
 								int sizeThree = robot.getWorld().getPathFromTo(nextUnknownPosition, robot.getPosition()).size();
 								int size = sizeOne + sizeThree;
 								size +=2;
-								//Wenn akku bis zu Ziel nicht mehr 
+								//if Accu is to low
 								if (size * oneRobot.getActualEnergie() > oneRobot.getAccu().getRestKWh())
 								{
-									//Robot schafft Weg nicht also Fahre zurück zu Ladestation
+									//Robot must load before drive to the destination
 									if (rdc.actualPosition.equals(robot.getPosition()))
 									{
 										System.out.println("Robot erreicht keine Unknownposition mehr obwohl diese noch existiert!");
@@ -194,7 +197,7 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 										rdc.actualPosition = robot.getPosition();
 									}
 								} else {
-									//Robot schafft weg also fahre hin
+									//robot has enough Accu he can drive to destination
 									mfm.sendDestPath(robot.getName(), oneRobot, robot.getWorld().getPathFromTo(rdc.actualPosition, nextUnknownPosition), nextUnknownPosition);
 									rdc.actualPosition = nextUnknownPosition;
 								}
@@ -208,14 +211,14 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 							this.robot.getWorld().addWorldState(WORLDSTATE_DISCOVERED);
 							if(!rdc.actualPosition.equals(robot.getPosition()))
 							{
-								//Ist an Ladestation angekommen muss geladen werden
+								//arrived at load station
 								mfm.sendDestPath(robot.getName(), oneRobot, robot.getWorld().getPathFromTo(rdc.actualPosition, robot.getPosition()), robot.getPosition());
 								rdc.actualPosition = robot.getPosition();
 							} else {
 								rdc.finish = true;
 							}
 						}						
-						//calculiere die Position neu für den neuen
+						//calculate a new position for the robot
 						oneRobot.setNewInformation(false);
 					}
 				}
@@ -236,12 +239,11 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 			return true;
 		} else {
 			System.out.println("Roboter brauchen größeren Accu können Welt nicht mehr erkunden!");
-			try {
+			/*try {
 				Thread.sleep(40000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 		}
 		return false;
 	}

@@ -6,6 +6,12 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
+/**
+ * Helper functions for the world.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class WorldHelper {
 
 	private class Node implements Comparable<Node> {
@@ -27,12 +33,8 @@ public class WorldHelper {
 		}
 
 		public int getDistanceToGo() {
-			int xDiff, yDiff;
-			xDiff = currentPosition.getX() - destination.getX();
-			xDiff = xDiff > 0 ? xDiff : -xDiff;
-			yDiff = currentPosition.getY() - destination.getY();
-			yDiff = yDiff > 0 ? yDiff : -yDiff;
-			return xDiff > yDiff ? xDiff : yDiff;
+			return Math.max(Math.abs(currentPosition.getX() - destination.getX()), 
+					Math.abs(currentPosition.getY() - destination.getY()));
 		}
 
 		public int getWeight() {
@@ -71,7 +73,6 @@ public class WorldHelper {
 	public List<Position> findPath(Position startPosition, Position destination) {
 		
 		List<Position> result = new LinkedList<Position>();
-
 		Set<Position> expanded = new HashSet<Position>();
 
 		PriorityQueue<Node> queue = new PriorityQueue<Node>();
@@ -107,7 +108,6 @@ public class WorldHelper {
 	 */
 	private List<Position> getPassableNeighborPositions(Position currentPosition) {
 		List<Position> result = new LinkedList<Position>();
-
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				if (i == 0 && j == 0) {
@@ -119,8 +119,7 @@ public class WorldHelper {
 					result.add(newPosition);
 				}
 			}
-		}
-		
+		}		
 		return result;
 	}
 
@@ -131,7 +130,6 @@ public class WorldHelper {
 	 */
 	public List<Position> getNeighbourPositions(Position currentPosition) {
 		List<Position> result = new LinkedList<Position>();
-
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				if (i == 0 && j == 0) {
@@ -140,8 +138,7 @@ public class WorldHelper {
 				result.add(new Position(currentPosition.getX() + i,
 						currentPosition.getY() + j));
 			}
-		}
-		
+		}		
 		return result;
 	}
 }

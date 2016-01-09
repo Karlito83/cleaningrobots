@@ -2,6 +2,12 @@ package de.tud.swt.cleaningrobots.model;
 
 import cleaningrobots.CleaningrobotsFactory;
 
+/**
+ * Position for the representation of a point in the world.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class Position {
 	private int x;
 	private int y;

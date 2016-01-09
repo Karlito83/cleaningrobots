@@ -26,9 +26,9 @@ import de.nec.nle.siafu.behaviormodels.BaseAgentModelMulti;
 import de.nec.nle.siafu.model.MultiAgent;
 import de.nec.nle.siafu.model.MultiWorld;
 import de.tud.evaluation.WorkingConfiguration;
+import de.tud.swt.cleaningrobots.Configuration;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.measure.ExportFiles;
-import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.multithreaded.ExploreMergeMasterCalculateFactoryMulti;
 import de.tud.swt.cleaningrobots.multithreaded.ExploreMergeMasterCalculateRelativeFactoryMulti;
 import de.tud.swt.cleaningrobots.multithreaded.ExploreMergeMasterFactoryMulti;
@@ -50,6 +50,7 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 	private long startTime;
 	private boolean roboterFinish;
 	private boolean completeFinish;
+	private Configuration config;
 	
 	/**
 	 * Constructor for the agent model.
@@ -59,7 +60,7 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 	 */
 	public AgentModelMulti(MultiWorld world, WorkingConfiguration configuration) {
 		super(world, configuration);
-		this.configuration.as = new State("Start");
+		this.config = new Configuration(configuration);
 		this.completeFinish = false;
 		this.roboterFinish = false;
 	}
@@ -79,17 +80,17 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 
 		try {
 			switch (configuration.config) {
-				case 0:  agents = new MasterExploreFactoryMulti(configuration).createRobots(world);
+				case 0:  agents = new MasterExploreFactoryMulti(config).createRobots(world);
 						 break;
-	            case 1:  agents = new ExploreWithoutMasterFactoryMulti(configuration).createRobots(world);
+	            case 1:  agents = new ExploreWithoutMasterFactoryMulti(config).createRobots(world);
 	                     break;	            
-	            case 2:  agents = new ExploreMergeMasterFactoryMulti(configuration).createRobots(world);
+	            case 2:  agents = new ExploreMergeMasterFactoryMulti(config).createRobots(world);
 	                     break;
-	            case 3:  agents = new ExploreMergeMasterCalculateFactoryMulti(configuration).createRobots(world);
+	            case 3:  agents = new ExploreMergeMasterCalculateFactoryMulti(config).createRobots(world);
 	                     break;
-	            case 4:  agents = new ExploreMergeMasterCalculateRelativeFactoryMulti(configuration).createRobots(world);
+	            case 4:  agents = new ExploreMergeMasterCalculateRelativeFactoryMulti(config).createRobots(world);
 	                     break;
-	            default: agents = new MasterExploreFactoryMulti(configuration).createRobots(world);
+	            default: agents = new MasterExploreFactoryMulti(config).createRobots(world);
 	                     break;
 	        }
 		} catch (Exception ex) {
@@ -113,9 +114,9 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 		if (!completeFinish) {
 			if (!roboterFinish) {			
 				roboterFinish = true;
-				//wemm noch nicht finsh dann mache das hier
+				//if not finished than do that
 				for (MultiAgent a : agents) {
-					//nur wenn Robot noch nicht aus ist
+					//only if robot is on
 					if (!((RobotAgentMulti)a).getRobot().isShutDown()) {
 						((RobotAgentMulti)a).wander();
 						if (!((RobotAgentMulti)a).isFinish())
@@ -126,15 +127,14 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 				long endTime = System.nanoTime();
 				
 				for (MultiAgent a : agents) {
-					//nur wenn Robot noch nicht aus ist
 					((RobotAgentMulti)a).getRobot().addLastMeasurement();				
 				}
 				
-				//Programm ist fertig Lese Measurement aller Roboter und gebe in Datei aus
+				//make data output for all measurements
 				for (MultiAgent a : agents) {
 					RobotCore rc = ((RobotAgentMulti)a).getRobot();
 					
-					//Json Datein in .txt speicher
+					//save JSON document in .txt
 					rc.getMeasurement().benchmarkTime = (endTime - startTime);
 					String measu = rc.getMeasurement().toJson();
 					
@@ -144,10 +144,7 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 					ef.addLineToFile(measu, path);
 					/*FileWorker fw = new FileWorker("M" + configuration.map + "_V" + configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
 							"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + rc.getName()+ ".txt");				
-					fw.addLineToFile(measu);*/
-					
-					//Roboter time in csv speichern
-					//outputCsv(rc.getMeasurement().timeProTick, rc.getName() + "Time");
+					fw.addLineToFile(measu);*/					
 					
 				}
 				ExportFiles ef = new ExportFiles();

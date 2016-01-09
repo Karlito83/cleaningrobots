@@ -1,5 +1,11 @@
 package de.tud.swt.cleaningrobots.hardware;
 
+/**
+ * The WLAN component of a robot.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class Wlan extends HardwareComponent {
 
 	private int visionRadius;

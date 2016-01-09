@@ -5,12 +5,16 @@ import java.util.List;
 
 import de.tud.evaluation.EvaluationConstants;
 
+/**
+ * Measurement information about an robot for one complete test case.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class RobotMeasurement {
 	
-	public int memory;
-	
-	public String name;
-	
+	public int memory;	
+	public String name;	
 	public long benchmarkTime;
 	
 	public double completeEnergie;

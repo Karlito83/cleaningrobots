@@ -20,6 +20,15 @@ import de.tud.swt.cleaningrobots.hardware.Wlan;
 import de.tud.swt.cleaningrobots.merge.MergeAll;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
+/**
+ * Old Behavior.
+ * Behavior which realize the data exchange and integration
+ * between all master and his followers.
+ * With the EMF model.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class MergeMasterFollower extends Behaviour {
 	
 	private MergeAll ma;
@@ -39,7 +48,7 @@ public class MergeMasterFollower extends Behaviour {
 		d = new Demand(hardware, robot);
 		hardwarecorrect = d.isCorrect();
 		
-		//Vision Radius aus Wlan Hardwarecomponente ziehen
+		//get vision Radius from the WLAN component
 		for (HardwareComponent hard : d.getHcs())
 		{
 			if (hard.getComponents() == Components.WLAN)
@@ -52,13 +61,10 @@ public class MergeMasterFollower extends Behaviour {
 	@Override
 	public boolean action() {
 		
-		//Schalte alle Hardwarecomponenten an wenn sie nicht schon laufen
+		//start all hardware components
 		for (HardwareComponent hard : d.getHcs())
 		{
-			if (!hard.isActive())
-			{
-				hard.changeActive();
-			}
+			hard.switchOn();
 		}
 				
 		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(wlan.getVisionRadius());
@@ -71,16 +77,15 @@ public class MergeMasterFollower extends Behaviour {
 		Map<RobotRole, ImportExportConfiguration> nearsNewInformation = new HashMap<RobotRole, ImportExportConfiguration>();
 		Map<RobotRole, ImportExportConfiguration> nearsNoNewInformation = new HashMap<RobotRole, ImportExportConfiguration>();
 		for (RobotCore nearRobot : nearRobots) {
-			//darf nur mi Robotern in der nähe Kommunizieren wenn diese Wirklich die gleiche HardwareComponente habe und diese aktiv ist
+			//could only communicate with near robots if they have active WLAN
 			if (nearRobot.hasActiveHardwareComponent(wlan.getComponents())) {
-				//darf auch nur das modell von Robotern einfügen die follower dieses Knotens sind
+				//near robot must be a follower
 				List<RobotRole> lrr = robot.getRoles();
 				for (RobotRole rr : lrr)
 				{
 					if (rr instanceof MasterRole)
 					{
 						List<RobotRole> frr = ((MasterRole)rr).getFollowers();
-						//gehe alle Follower dieses Robots durch und prüfe ob einer der hier ist
 						for (RobotRole fr : frr)
 						{
 							if (fr.getRobotCore().equals(nearRobot))
@@ -92,7 +97,7 @@ public class MergeMasterFollower extends Behaviour {
 									
 									ma.newInformationMeasure(fr.getRobotCore().getName());
 									//Robot say that he has new Information
-									//make the config file for export and import
+									//make the configuration file for export and import
 									ImportExportConfiguration config = new ImportExportConfiguration();
 									config.world = true;
 									config.knownstates = true;
@@ -108,7 +113,7 @@ public class MergeMasterFollower extends Behaviour {
 									EObject model = nearRobot.exportModel(config);
 									ma.importAllModel(model, this.robot, config);
 									
-									//change the config for later export and import
+									//change the configuration for later export and import
 									for (RobotKnowledge rk : robot.getKnowledge()) {
 										if (rk.getName().equals(nearRobot.getName())) {
 											System.out.println(rk.getName() + " RK KnownStates: " + rk.getKnownStates());
@@ -138,15 +143,14 @@ public class MergeMasterFollower extends Behaviour {
 			}
 		}
 		
-		//füge gesammeltes Model den nahen Robotern hinzu
+		//add the model to the near robots
 		if (nearsNewInformation.size() >= 1)
 		{
 			//System.out.println("LastChange: " + lastChange + " NewInfo: " + nearsNewInformation + " NoNewInfo: " + nearsNoNewInformation);
 			if (nearsNewInformation.size() == 1)
 			{
-				//muss model nur importieren wenn noch nicht in lastchange liste war oder er nicht der einzige mit neuen informationen ist
+				//only import if not in last change list
 				for (RobotRole fr : nearsNewInformation.keySet()) {
-					//fr schon vorher enthalten
 					if(!lastChange.contains(fr))
 					{
 						EObject model = this.robot.exportModel(nearsNewInformation.get(fr));
@@ -155,13 +159,13 @@ public class MergeMasterFollower extends Behaviour {
 				}
 			} else {
 				for (RobotRole fr : nearsNewInformation.keySet()) {
-					//importiere allen nahen Robotern das neue Modell
+					//import all near robots the new model
 					EObject model = this.robot.exportModel(nearsNewInformation.get(fr));
 					ma.importAllModel(model, fr.getRobotCore(), nearsNewInformation.get(fr));
 				}
 			}
 			for (RobotRole fr : nearsNoNewInformation.keySet()) {
-				//importiere allen nahen Robotern das neue Modell
+				//import all near robots the new model
 				EObject model = this.robot.exportModel(nearsNoNewInformation.get(fr));
 				ma.importAllModel(model, fr.getRobotCore(), nearsNoNewInformation.get(fr));
 			}	

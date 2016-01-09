@@ -1,13 +1,23 @@
 package de.tud.swt.cleaningrobots;
 
+/**
+ * Abstract robot role for role-based pattern.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public abstract class RobotRole extends Robot {
 	
-	protected RobotCore core;
+	private RobotCore core;
 	
 	public RobotRole (RobotCore robotCore) {
 		core = robotCore;
 	}
 	
+	/**
+	 * Get the RobotCore object of this role.
+	 * @return
+	 */
 	public RobotCore getRobotCore () {
 		return core;
 	}	

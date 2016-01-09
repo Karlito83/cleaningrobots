@@ -17,6 +17,13 @@ import de.tud.swt.cleaningrobots.merge.MasterFieldMerge;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.State;
 
+/**
+ * Behavior that activate the laser scanner if the robot is at the destination and scan the place.
+ * Send the data directly to the master.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class MasterSeeAroundBehaviour extends Behaviour {
 
 	private RobotCore master;
@@ -32,8 +39,9 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 	public MasterSeeAroundBehaviour(RobotCore robot) {
 		super(robot);
 		
-		this.STATE_BLOCKED = ((State)robot.configuration.as).createState("Blocked");
-		this.STATE_FREE = ((State)robot.configuration.as).createState("Free");
+		//create and add the states
+		this.STATE_BLOCKED = robot.configuration.createState("Blocked");
+		this.STATE_FREE = robot.configuration.createState("Free");
 		
 		this.mfm = new MasterFieldMerge(this.robot.configuration);
 		this.firststart = true;
@@ -41,6 +49,7 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 		supportedStates.add(STATE_BLOCKED);
 		supportedStates.add(STATE_FREE);
 		
+		//add the hardware components and proof there correctness
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.LOOKAROUNDSENSOR, 1);
 		
@@ -59,7 +68,7 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 	public boolean action() throws Exception {
 		
 		if (firststart) {
-			//gehe davon aus das Master im Wlan sichtbereich ist
+			//get the master object
 			for (RobotRole rr : robot.getRoles()) {
 				if (rr instanceof FollowerRole) {
 					master = ((FollowerRole) rr).master.getRobotCore();
@@ -68,36 +77,28 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 			firststart = false;
 		}
 		
-		//Wenn Roboter an Ziel dann machen ann Scanne umgebung und machen wieder aus
 		if (robot.getDestinationContainer().isAtDestination() && !robot.getDestinationContainer().isAtLoadDestination()) {
-			//Schalte alle Hardwarecomponenten an wenn sie nicht schon laufen
+			//start all hardware components
 			for (HardwareComponent hard : d.getHcs())
 			{
-				if (!hard.isActive())
-				{
-					hard.changeActive();
-				}
+				hard.switchOn();
 			}
 			
-			//scanne umgebung
-			//der Welt des Roboters die neuen Felder hinzufügen
+			//scan area
+			//add the new field to the world of the master
 			try {
 				List<Field> fields = getData();
-				//send Field to Robot and ask für new destination and Path
+				//send Field to Robot and ask for new destination and Path
 				mfm.sendFieldsAndMerge(robot.getName(), fields, master, "Explore");
 			} catch (Exception e) {
 				throw e;
 			}
 			
 		} else {
-			//kommt erst im nächsten Schritt damit die Energie beachtet wird
-			//Schalte alle Hardwarecomponenten aus
+			//switch off the hardware components if not needed
 			for (HardwareComponent hard : d.getHcs())
 			{
-				if (hard.isActive())
-				{
-					hard.changeActive();
-				}
+				hard.switchOff();
 			}
 		}
 		if (robot.getDestinationContainer().isAtDestination())
@@ -125,23 +126,22 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 	{
 		Field result = null;
 		
-		//Offset mit Agenten position vereinigen
+		//add offset to agent position
 		int row =  robot.getPosition().getY() + yOffset;
 		int col =  robot.getPosition().getX() + xOffset;
 		
-		//prüfe ob es eine Wand ist
+		//proof if it is a wall
 		boolean positionIsAtWall = robot.getICommunicationAdapter().isWall(row, col);
 		
-		//neues Feld anlegen
-		result = new Field(col, row, !positionIsAtWall, this.robot.configuration.iteration);
-		//wenn Wand ist dann status dazu anlegen ansonsten freien Status geben
+		//create new field
+		result = new Field(col, row, !positionIsAtWall, this.robot.configuration.wc.iteration);
 		if(positionIsAtWall)
 		{
-			result.addState(STATE_BLOCKED, this.robot.configuration.iteration);
+			result.addState(STATE_BLOCKED, this.robot.configuration.wc.iteration);
 		}
 		else
 		{
-			result.addState(STATE_FREE, this.robot.configuration.iteration);
+			result.addState(STATE_FREE, this.robot.configuration.wc.iteration);
 		}
 		
 		

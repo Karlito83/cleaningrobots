@@ -1,5 +1,11 @@
 package de.tud.swt.cleaningrobots.hardware;
 
+/**
+ * The Computer component of a robot.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class Rechner extends HardwareComponent {
 
 	public Rechner ()

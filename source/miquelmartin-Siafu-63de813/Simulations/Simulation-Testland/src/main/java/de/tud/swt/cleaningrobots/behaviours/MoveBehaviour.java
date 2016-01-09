@@ -9,11 +9,19 @@ import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 
+/**
+ * Behavior that realize the move of an robot to a destination. 
+ * Every time it drives one step to the new destination. 
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class MoveBehaviour extends Behaviour {
 		
 	public MoveBehaviour(RobotCore robot) {
 		super(robot);
 		
+		//add hardware components
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.MOTOR, 1);
 		
@@ -24,27 +32,21 @@ public class MoveBehaviour extends Behaviour {
 	@Override
 	public boolean action() throws Exception {
 		
-		//wenn er nicht am Ziel ist und nicht am Laden ist soll er laufen
+		//if he is not at the destination and not loading he should move
 		if (!robot.getDestinationContainer().isAtDestination() && !robot.isLoading){
-			//start all hardwarecomponents if not active
+			//start all hardware components
 			for (HardwareComponent hard : d.getHcs())
 			{
-				if (!hard.isActive())
-				{
-					hard.changeActive();
-				}
+				hard.switchOn();
 			}
 			
 			//make the move
 			robot.getDestinationContainer().moveTowardsDestination();
 		} else {
-			//Schalte alle Hardwarecomponenten aus
+			//switch off all hardware components
 			for (HardwareComponent hard : d.getHcs())
 			{
-				if (hard.isActive())
-				{
-					hard.changeActive();
-				}
+				hard.switchOff();
 			}
 		}
 		

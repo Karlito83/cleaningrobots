@@ -11,6 +11,12 @@ import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.RoleModel;
 import de.tud.swt.cleaningrobots.model.State;
 
+/**
+ * Robot knowledge which has information about other robots. 
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class RobotKnowledge {
 	
 	private String name;
@@ -27,10 +33,18 @@ public class RobotKnowledge {
 		knownStates = new LinkedList<State>();
 	}
 	
+	/**
+	 * Get the name of the robot.
+	 * @return
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * Get the information about the last arrange.
+	 * @return
+	 */
 	public int getLastArrange() {
 		return lastArrange;
 	}
@@ -39,6 +53,10 @@ public class RobotKnowledge {
 		this.lastArrange = lastArrange;
 	}
 	
+	/**
+	 * Get the last destination of the other robot.
+	 * @return
+	 */
 	public Position getLastDestination() {
 		return lastDestination;
 	}
@@ -47,6 +65,10 @@ public class RobotKnowledge {
 		this.lastDestination = lastDestination;
 	}
 
+	/**
+	 * Get the names of the hardware components the other robot has.
+	 * @return
+	 */
 	public List<String> getComponents() {
 		return components;
 	}
@@ -55,6 +77,10 @@ public class RobotKnowledge {
 		this.components = components;
 	}
 
+	/**
+	 * Get the supported states of the other robot.
+	 * @return
+	 */
 	public List<State> getKnownStates() {
 		return knownStates;
 	}
@@ -63,6 +89,10 @@ public class RobotKnowledge {
 		this.knownStates = knownStates;
 	}
 
+	/**
+	 * Get the roles from the other robot.
+	 * @return
+	 */
 	public List<RoleModel> getRoles() {
 		return roles;
 	}
@@ -71,6 +101,10 @@ public class RobotKnowledge {
 		this.roles = roles;
 	}
 	
+	/**
+	 * Get the evaluation information for data measurement.
+	 * @return
+	 */
 	public ExchangeMeasurement getMeasurement () {
 		ExchangeMeasurement em = new ExchangeMeasurement("", "", 0);		
 		//name

@@ -14,6 +14,13 @@ import de.tud.swt.cleaningrobots.hardware.LookAroundSensor;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.State;
 
+/**
+ * Old one.
+ * Behavior that activate the laser scanner if the robot is at the destination and scan the place.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class SeeAroundBehaviour extends Behaviour {
 
 	private int visionRadius = 0;
@@ -24,12 +31,14 @@ public class SeeAroundBehaviour extends Behaviour {
 	public SeeAroundBehaviour(RobotCore robot) {
 		super(robot);
 		
-		this.STATE_BLOCKED = ((State)robot.configuration.as).createState("Blocked");
-		this.STATE_FREE = ((State)robot.configuration.as).createState("Free");
+		//create and add the states
+		this.STATE_BLOCKED = robot.configuration.createState("Blocked");
+		this.STATE_FREE = robot.configuration.createState("Free");
 				
 		supportedStates.add(STATE_BLOCKED);
 		supportedStates.add(STATE_FREE);
 		
+		//add the hardware components and proof there correctness
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.LOOKAROUNDSENSOR, 1);
 		
@@ -48,16 +57,13 @@ public class SeeAroundBehaviour extends Behaviour {
 	@Override
 	public boolean action() throws Exception {
 		
-		//Schalte alle Hardwarecomponenten an wenn sie nicht schon laufen
+		//start all hardware components
 		for (HardwareComponent hard : d.getHcs())
 		{
-			if (!hard.isActive())
-			{
-				hard.changeActive();
-			}
+			hard.switchOn();
 		}
 		
-		//der Welt des Roboters die neuen Felder hinzufügen
+		//add the new field to the world of the robot
 		try {
 			this.robot.getWorld().addFields(getData());
 		} catch (Exception e) {
@@ -84,27 +90,24 @@ public class SeeAroundBehaviour extends Behaviour {
 	{
 		Field result = null;
 		
-		//Offset mit Agenten position vereinigen
+		//set together the Offset with the Agent position
 		int row =  robot.getPosition().getY() + yOffset;
 		int col =  robot.getPosition().getX() + xOffset;
 		
-		//prüfe ob es eine Wand ist
+		//proof if it is a wall
 		boolean positionIsAtWall = robot.getICommunicationAdapter().isWall(row, col);
 		
-		//neues Feld anlegen
-		result = new Field(col, row, !positionIsAtWall, this.robot.configuration.iteration);
-		//wenn Wand ist dann status dazu anlegen ansonsten freien Status geben
+		//add new field
+		result = new Field(col, row, !positionIsAtWall, this.robot.configuration.wc.iteration);
 		if(positionIsAtWall)
 		{
-			result.addState(STATE_BLOCKED, this.robot.configuration.iteration);
+			result.addState(STATE_BLOCKED, this.robot.configuration.wc.iteration);
 		}
 		else
 		{
-			result.addState(STATE_FREE, this.robot.configuration.iteration);
-		}
-		
+			result.addState(STATE_FREE, this.robot.configuration.wc.iteration);
+		}		
 		
 		return result;
 	}
-
 }

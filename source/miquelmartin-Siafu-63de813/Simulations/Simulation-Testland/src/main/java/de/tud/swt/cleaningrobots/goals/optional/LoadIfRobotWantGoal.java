@@ -4,6 +4,12 @@ import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.behaviours.LoadIfRobotWantBehaviour;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
+/**
+ * Optional goal which load robots around if they want. 
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class LoadIfRobotWantGoal extends OptionalGoal {
 
 	public LoadIfRobotWantGoal(RobotCore robot) {
@@ -13,7 +19,6 @@ public class LoadIfRobotWantGoal extends OptionalGoal {
 		System.out.println("Correct Load: " + l.isHardwarecorrect());
 		if (l.isHardwarecorrect()) {
 			behaviours.add(l);
-			//robot.addBehaviour(l);
 		} else {
 			correct = false;
 		}

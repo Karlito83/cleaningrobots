@@ -7,6 +7,13 @@ import de.tud.swt.cleaningrobots.behaviours.WlanOnBehaviour;
 import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
 import de.tud.swt.cleaningrobots.model.State;
 
+/**
+ * Non optional goal for a follower which get information from a master.
+ * Drive to a place discover it and give the information back to the master. 
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class MasterExploreRobotGoal extends NonOptionalGoal {
 
 	private State WORLDSTATE_DISCOVERED;
@@ -14,22 +21,12 @@ public class MasterExploreRobotGoal extends NonOptionalGoal {
 	public MasterExploreRobotGoal(RobotCore robot) {
 		super(robot);
 		
-		this.WORLDSTATE_DISCOVERED = ((State)robot.configuration.as).createState("Discovered");
+		this.WORLDSTATE_DISCOVERED = robot.configuration.createState("Discovered");
 		
 		WlanOnBehaviour w = new WlanOnBehaviour(robot);
 		System.out.println("Correct SeeAround: " + w.isHardwarecorrect());
 		if (w.isHardwarecorrect()) {
-			//robot.addBehaviour(s);
 			behaviours.add(w);
-		} else {
-			correct = false;
-		}
-		
-		MasterSeeAroundBehaviour s = new MasterSeeAroundBehaviour(robot);
-		System.out.println("Correct Discover: " + s.isHardwarecorrect());
-		if (s.isHardwarecorrect()) {
-			//robot.addBehaviour(d);
-			behaviours.add(s);
 		} else {
 			correct = false;
 		}
@@ -37,8 +34,15 @@ public class MasterExploreRobotGoal extends NonOptionalGoal {
 		MasterMoveBehaviour m = new MasterMoveBehaviour(robot);
 		System.out.println("Correct Move: " + m.isHardwarecorrect());
 		if (m.isHardwarecorrect()) {
-			//robot.addBehaviour(m);
 			behaviours.add(m);
+		} else {
+			correct = false;
+		}
+		
+		MasterSeeAroundBehaviour s = new MasterSeeAroundBehaviour(robot);
+		System.out.println("Correct Discover: " + s.isHardwarecorrect());
+		if (s.isHardwarecorrect()) {
+			behaviours.add(s);
 		} else {
 			correct = false;
 		}

@@ -7,7 +7,7 @@ import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 /**
  * Optional Goal which load all robots around it
  * 
- * @author ChrissiMobil
+ * @author Christopher Werner
  *
  */
 public class LoadRobotGoal extends OptionalGoal {

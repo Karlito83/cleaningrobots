@@ -9,6 +9,12 @@ import java.util.Set;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.model.State;
 
+/**
+ * Master goal contains a list of goals.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class MasterGoal extends Goal {
 
 	public List<Goal> subGoals;
@@ -57,10 +63,10 @@ public class MasterGoal extends Goal {
 
 	@Override
 	public boolean postCondition() {
-		//wenn alle unter Ziele optional sind dann ist Postcondition immer false
+		//if goal is optional then return false
 		if (isOptional())
 			return false;
-		//falls eine Post beim teilziel nicht true ist und das ziel nicht optional ist, ist post false
+		//if sub goal post condition is false and it is not optional then return false
 		for (Goal goal : subGoals) {
 			if (!goal.postCondition() && !goal.isOptional())
 				return false;

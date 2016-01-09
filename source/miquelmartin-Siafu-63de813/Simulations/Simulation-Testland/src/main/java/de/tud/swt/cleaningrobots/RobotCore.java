@@ -9,7 +9,6 @@ import java.util.Set;
 
 import cleaningrobots.CleaningrobotsFactory;
 import de.tud.evaluation.ExchangeMeasurement;
-import de.tud.evaluation.WorkingConfiguration;
 import de.tud.swt.cleaningrobots.goals.Goal;
 import de.tud.swt.cleaningrobots.hardware.Accu;
 import de.tud.swt.cleaningrobots.hardware.Components;
@@ -20,43 +19,45 @@ import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.model.World;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
+/**
+ * The core class of the robot which has all hardware components roles and the world he knows about.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class RobotCore extends Robot {
 	
-	public WorkingConfiguration configuration;
+	public Configuration configuration;
 	private RobotMeasurement measure;
-	
-	private List<RobotRole> roles;
-	private List<RobotKnowledge> knowledge;
 
 	private String name;
 	private World world;
+	private boolean shutDown;
 	
-	private Accu accu;
-		
-	private double maxEnergieNeed;
-	private double minEnergieNeed;
-	private double actualEnergieNeed;
-	
+	private List<RobotRole> roles;
+	private List<RobotKnowledge> knowledge;
 	private List<Goal> goals;
 	private List<HardwareComponent> hardwarecomponents;
 	private Set<State> supportedStates;
 	
-	private ICommunicationAdapter communicationAdapter;
+	private Accu accu;		
+	private double maxEnergieNeed;
+	private double minEnergieNeed;
+	private double actualEnergieNeed;	
 	
+	private ICommunicationAdapter communicationAdapter;	
 	private DestinationContainer destinationContainer;
-	
-	//ob es Ladestation ist
+		
+	//say if it is a load station
 	private boolean loadStation;
-	//sagt ob er gerade lädt
+	//is the robot loading
 	public boolean isLoading;
 	
-	private boolean shutDown;
-
-	public RobotCore(ICommunicationAdapter communicationAdapter, Accu accu, WorkingConfiguration configuration) {
+	public RobotCore(ICommunicationAdapter communicationAdapter, Accu accu, Configuration configuration) {
 		this("Robby_0", communicationAdapter, accu, configuration);
 	}
 
-	public RobotCore(String name, ICommunicationAdapter communicationAdapter, Accu accu, WorkingConfiguration configuration) {
+	public RobotCore(String name, ICommunicationAdapter communicationAdapter, Accu accu, Configuration configuration) {
 
 		this.configuration = configuration;
 		this.name = name;
@@ -77,10 +78,13 @@ public class RobotCore extends Robot {
 		this.knowledge = new LinkedList<RobotKnowledge>();
 		
 		this.communicationAdapter = communicationAdapter;
-		this.destinationContainer = new DestinationContainer(this);
-		
+		this.destinationContainer = new DestinationContainer(this);		
 	}
 	
+	/**
+	 * Is the robot on or off.
+	 * @return
+	 */
 	public boolean isShutDown () {
 		return this.shutDown;
 	}
@@ -97,7 +101,9 @@ public class RobotCore extends Robot {
 		return this.measure;
 	}
 	
-	//action operactions
+	/**
+	 * Makes the action of each robot in every iteration.
+	 */
 	public boolean action() {
 				
 		long startTime = System.nanoTime();
@@ -115,7 +121,7 @@ public class RobotCore extends Robot {
 		measure.timeProTick.add((double) time);
 		
 		for (Goal goal : goals) {
-			//wenn nicht nur noch optionale Goals da sind ist er nicht fertig
+			//if there are non optional goals he is not finished
 			if (!goal.isOptional())
 				return false;
 		}
@@ -136,13 +142,13 @@ public class RobotCore extends Robot {
 					goals.remove(goal);
 				}
 			}
-			//wenn keine Ziele mehr mache alle Hardwarecomponenten aus
+			//if all goals finished then switch off hardware components
 			if (goals.isEmpty())
 			{
 				System.out.println("Alle HardwareComponenten ausgeschaltet von " + this.getName());
 				for (HardwareComponent hc : hardwarecomponents) {
 					if (hc.isActive())
-						hc.changeActive();
+						hc.switchOff();
 				}
 				shutDown = true;
 			}
@@ -150,15 +156,26 @@ public class RobotCore extends Robot {
 		}
 	}
 	
-	//Get Energie values of the robot
+	/**
+	 * Get the minimal energy need of the robot.
+	 * @return
+	 */
 	public double getMinEnergie() {
 		return this.minEnergieNeed;
 	}
 	
+	/**
+	 * Get the maximal energy need of the robot.
+	 * @return
+	 */
 	public double getMaxEnergie() {
 		return this.maxEnergieNeed;
 	}
 	
+	/**
+	 * Get the actual energy need of the robot.
+	 * @return
+	 */
 	public double getActualEnergie() {
 		return this.actualEnergieNeed;
 	}
@@ -166,17 +183,15 @@ public class RobotCore extends Robot {
 	private void getEnergieConsumption() {
 		actualEnergieNeed = 0.0;
 		for (HardwareComponent hard : hardwarecomponents) {
-			actualEnergieNeed += hard.getActualEnergie();
+			actualEnergieNeed += hard.getActualEnergy();
 		}
 		if (accu != null) {
 			accu.use(actualEnergieNeed);
-			//System.out.println("AktuelleKWh: " + accu.getActualKWh());
 		}
-		//Make Measurement hier
+		//do measurement
 		this.measure.completeEnergie += actualEnergieNeed;
 		this.measure.energieProTick.add(actualEnergieNeed);
 		this.measure.completeTicks += 1;
-		//energieTest += actualEnergieNeed;
 	}
 	
 	private void calculateMaxMinEnergieConsumption () {
@@ -192,7 +207,6 @@ public class RobotCore extends Robot {
 		return accu;
 	}
 	
-	//Get Methods for all Objects
 	public ICommunicationAdapter getICommunicationAdapter () {
 		return this.communicationAdapter;
 	}
@@ -201,6 +215,11 @@ public class RobotCore extends Robot {
 		return this.hardwarecomponents;
 	}
 	
+	/**
+	 * Proofs if he has a component c and if it is active.
+	 * @param c
+	 * @return
+	 */
 	public boolean hasActiveHardwareComponent (Components c) {
 		for (HardwareComponent hard : hardwarecomponents) {
 			if (hard.getComponents() == c && hard.isActive())
@@ -209,6 +228,11 @@ public class RobotCore extends Robot {
 		return false;
 	}
 	
+	/**
+	 * Proofs if he has a component c.
+	 * @param c
+	 * @return
+	 */
 	public boolean hasHardwareComponent (Components c) {
 		for (HardwareComponent hard : hardwarecomponents) {
 			if (hard.getComponents() == c)
@@ -240,7 +264,7 @@ public class RobotCore extends Robot {
 		hardwarecomponents.add(component);
 		if (component.getComponents() == Components.LOADSTATION)
 			this.loadStation = true;
-		//Min und Max Engergie aufgrund von neuer Hardwarecomponente bestimmen
+		//recreate minimal and maximal energy because of new hardware component
 		calculateMaxMinEnergieConsumption();
 	}
 
@@ -253,8 +277,6 @@ public class RobotCore extends Robot {
 		for (Goal goal : goals) {
 			for (State state : goal.getSupportedStates()) {
 				supportedStates.add(state);
-				//if (!supportedStates.contains(state))
-				//	supportedStates.add(state);
 			}
 		}
 	}	
@@ -265,14 +287,6 @@ public class RobotCore extends Robot {
 
 	public World getWorld() {
 		return this.world;
-	}	
-
-	/**
-	 * Set the Position of the robot
-	 * @param position
-	 */
-	public void setPosition(Position position) {
-		this.communicationAdapter.setPosition(position);
 	}
 
 	public void setName(String name) {
@@ -297,7 +311,7 @@ public class RobotCore extends Robot {
 		return this.knowledge;
 	}
 	
-	//Funktionalität von Robot
+	//functions of abstract class robot
 	@Override
 	public boolean hasRole(RobotRole role) {
 		return roles.contains(role);
@@ -329,16 +343,16 @@ public class RobotCore extends Robot {
 		//name not use because he is in
 		//accu
 		em.addAccuDoubleNumber(3);
-		//energie
+		//energy
 		em.addAccuDoubleNumber(3);
 		//knownstates
 		em.addStatesStringNumber(supportedStates.size());
 		for (State s : this.supportedStates) {
 			em.addStatesStringByteNumber(s.getName().getBytes().length);
 		}
-		//destcontainer
+		//destination container
 		em.addKnowledgeIntegerNumber(6);
-		//3 Positions + liste Positions
+		//3 Positions + list Positions
 		//knowledge
 		for (RobotKnowledge rk : this.knowledge) {
 			em.addMeasurement(rk.getMeasurement());
@@ -357,8 +371,7 @@ public class RobotCore extends Robot {
 				em.addKnowledgeStringNumber(1);
 			}
 		}
-		configuration.exchange.add(em);
-		//Variables.exchange.add(em);
+		configuration.wc.exchange.add(em);
 	}
 
 	public cleaningrobots.Robot exportModel(ImportExportConfiguration config) {
@@ -384,7 +397,7 @@ public class RobotCore extends Robot {
 				for (RobotKnowledge rk : knowledge) {
 					robot.getRobotKnowledge().add(rk.exportModel());
 				}
-				//roles noch hinzufügen
+				// add roles
 				for (RobotRole rr : getRoles()) {
 					if (rr instanceof MasterRole) {
 						cleaningrobots.MasterRole master = CleaningrobotsFactory.eINSTANCE.createMasterRole();

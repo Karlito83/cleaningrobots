@@ -5,20 +5,27 @@ import java.util.ArrayList;
 import de.nec.nle.siafu.exceptions.PlaceNotFoundException;
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.World;
-import de.tud.evaluation.WorkingConfiguration;
+import de.tud.swt.cleaningrobots.Configuration;
 
+/**
+ * With user interface in Siafu.
+ * Create the different robot type and create the different test case only abstract class.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public abstract class RobotFactory {
 	
 	private int counter;
-	protected WorkingConfiguration configuration;
+	protected Configuration configuration;
 	
-	public RobotFactory (WorkingConfiguration configuration) {
+	public RobotFactory (Configuration configuration) {
 		this.configuration = configuration;
 		counter = 0;
 	}
 	
 	/**
-	 * Create only a loadstation without pc.
+	 * Create only a loadstation without rechner.
 	 * 
 	 * @param world
 	 *            the world to create it in

@@ -6,6 +6,12 @@ import de.tud.swt.cleaningrobots.behaviours.MasterCalculateWipeBehaviour;
 import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
 import de.tud.swt.cleaningrobots.model.State;
 
+/**
+ * Non optional goal for a master to coordinate the followers to wipe the world. 
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class MasterWipeMasterGoal extends NonOptionalGoal {
 
 	private MasterCalculateWipeBehaviour mceb;
@@ -14,12 +20,11 @@ public class MasterWipeMasterGoal extends NonOptionalGoal {
 	public MasterWipeMasterGoal(RobotCore robot, MasterRole mr, boolean relative) {
 		super(robot);
 		
-		this.WORLDSTATE_WIPED = ((State)robot.configuration.as).createState("Wiped");
+		this.WORLDSTATE_WIPED = robot.configuration.createState("Wiped");
 		
 		mceb = new MasterCalculateWipeBehaviour(robot, mr, relative);
 		System.out.println("Correct SeeAround: " +mceb.isHardwarecorrect());
 		if (mceb.isHardwarecorrect()) {
-			//robot.addBehaviour(s);
 			behaviours.add(mceb);
 		} else {
 			correct = false;

@@ -28,6 +28,7 @@ import java.util.Collection;
 
 /**
  * The world model for the simulation. In this case, nothing is done.
+ * 
  * @author Miquel Martin
  */
 public class WorldModel extends BaseWorldModel {

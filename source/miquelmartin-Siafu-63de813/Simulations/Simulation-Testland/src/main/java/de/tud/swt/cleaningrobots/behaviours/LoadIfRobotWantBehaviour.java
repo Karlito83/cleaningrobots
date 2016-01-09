@@ -11,6 +11,12 @@ import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.hardware.LoadStation;
 
+/**
+ * Load the near robots if they set loading.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class LoadIfRobotWantBehaviour extends Behaviour {
 
 	private LoadStation loadStation;
@@ -18,13 +24,14 @@ public class LoadIfRobotWantBehaviour extends Behaviour {
 	public LoadIfRobotWantBehaviour(RobotCore robot) {
 		super(robot);
 
+		//add components
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.LOADSTATION, 1);
 		
 		d = new Demand(hardware, robot);
 		hardwarecorrect = d.isCorrect();
 		
-		//Vision Radius aus Wlan Hardwarecomponente ziehen
+		//get vision Radius from load station component
 		for (HardwareComponent hard : d.getHcs())
 		{
 			if (hard.getComponents() == Components.LOADSTATION)
@@ -45,9 +52,8 @@ public class LoadIfRobotWantBehaviour extends Behaviour {
 				if (nearRobot.isLoading) {
 					nearRobot.getAccu().load(loadStation.getLoadValue());
 				}
-				//wenn der akku voll ist soll er nicht mehr laden
+				//when the Accu is full do not load anymore
 				if (nearRobot.getAccu().isFull()) {
-					//System.out.println("Accu Full");
 					nearRobot.isLoading = false;
 				}
 			}

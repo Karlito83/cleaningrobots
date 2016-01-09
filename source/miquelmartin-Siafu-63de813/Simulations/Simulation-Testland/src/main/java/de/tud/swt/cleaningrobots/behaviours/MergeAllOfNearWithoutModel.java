@@ -15,6 +15,13 @@ import de.tud.swt.cleaningrobots.merge.MergeAllWithoutModel;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 import de.tud.swt.cleaningrobots.util.NearRobotInformation;
 
+/**
+ * Behavior which realize the data exchange and integration between two robots.
+ * Without any roles and without the EMF model.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class MergeAllOfNearWithoutModel extends Behaviour {
 	
 	private Wlan wlan;	
@@ -38,7 +45,7 @@ public class MergeAllOfNearWithoutModel extends Behaviour {
 		d = new Demand(hardware, robot);
 		hardwarecorrect = d.isCorrect();
 		
-		//Vision Radius aus Wlan Hardwarecomponente ziehen
+		//get vision Radius from the WLAN component
 		for (HardwareComponent hard : d.getHcs())
 		{
 			if (hard.getComponents() == Components.WLAN)
@@ -51,13 +58,10 @@ public class MergeAllOfNearWithoutModel extends Behaviour {
 	@Override
 	public boolean action() {
 		
-		//Schalte alle Hardwarecomponenten an wenn sie nicht schon laufen
+		//start all hardware components
 		for (HardwareComponent hard : d.getHcs())
 		{
-			if (!hard.isActive())
-			{
-				hard.changeActive();
-			}
+			hard.switchOn();
 		}
 		
 		if (this.firstStart) {
@@ -71,6 +75,7 @@ public class MergeAllOfNearWithoutModel extends Behaviour {
 			this.firstStart = false;
 		}
 		
+		//increment all counters or reset them
 		for (NearRobotInformation i: robotInformation) {
 			if (i.getCounter() > -1) {
 				i.addCounterOne();
@@ -85,7 +90,7 @@ public class MergeAllOfNearWithoutModel extends Behaviour {
 		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(20);//wlan.getVisionRadius());
 		nearRobots.remove(this.robot);
 		for (RobotCore nearRobot : nearRobots) {
-			//darf nur mi Robotern in der nähe Kommunizieren wenn diese Wirklich die gleiche HardwareComponente habe und diese aktiv ist
+			//could only communicate with near robots if they have active WLAN
 			if (nearRobot.hasActiveHardwareComponent(wlan.getComponents())) {
 				for (NearRobotInformation i: robotInformation) {
 					if (i.getName().equals(nearRobot.getName())) {

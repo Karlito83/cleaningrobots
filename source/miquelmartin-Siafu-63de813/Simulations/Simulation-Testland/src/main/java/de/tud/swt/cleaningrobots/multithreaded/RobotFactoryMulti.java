@@ -4,20 +4,27 @@ import java.util.ArrayList;
 
 import de.nec.nle.siafu.model.MultiAgent;
 import de.nec.nle.siafu.model.MultiWorld;
-import de.tud.evaluation.WorkingConfiguration;
+import de.tud.swt.cleaningrobots.Configuration;
 import de.tud.swt.cleaningrobots.model.Position;
 
+/**
+ * Without user interface in Siafu.
+ * Create the different robot type and create the different test case only abstract class.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public abstract class RobotFactoryMulti {
 	
 	private int counter;
-	protected WorkingConfiguration configuration;
+	protected Configuration configuration;
 	private Position position;
 	
-	public RobotFactoryMulti (WorkingConfiguration configuration) {
+	public RobotFactoryMulti (Configuration configuration) {
 		this.configuration = configuration;
 		//X: 139 Y: 133 Rechteckig
 		//X: 199 Y: 206 Fakultät
-		switch (configuration.map) {
+		switch (configuration.wc.map) {
 			case 0:  this.position = new Position(139, 133);
 					 break;
 	        case 1:  this.position = new Position(139, 133);

@@ -5,6 +5,12 @@ import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.behaviours.MergeMasterWithoutModel;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
+/**
+ * Optional goal which make the merge between a master and his followers without using the EMF model. 
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class MergeMasterGoal extends OptionalGoal {
 
 	public MergeMasterGoal(RobotCore robot, MasterRole mr) {

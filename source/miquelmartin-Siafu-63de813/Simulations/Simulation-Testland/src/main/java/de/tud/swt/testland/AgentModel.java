@@ -26,9 +26,9 @@ import de.nec.nle.siafu.behaviormodels.BaseAgentModel;
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.World;
 import de.tud.evaluation.WorkingConfiguration;
+import de.tud.swt.cleaningrobots.Configuration;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.measure.ExportFiles;
-import de.tud.swt.cleaningrobots.model.State;
 
 /**
  * This Agent Model defines the behavior of users in this test simulation.
@@ -44,6 +44,7 @@ public class AgentModel extends BaseAgentModel {
 	private long startTime;
 	private boolean roboterFinish;
 	private boolean completeFinish;
+	private Configuration config;
 	
 	/**
 	 * Constructor for the agent model.
@@ -53,7 +54,7 @@ public class AgentModel extends BaseAgentModel {
 	 */
 	public AgentModel(World world, WorkingConfiguration configuration) {
 		super(world, configuration);
-		this.configuration.as = new State("Start");
+		this.config = new Configuration(configuration);
 		this.completeFinish = false;
 		this.roboterFinish = false;
 	}
@@ -73,17 +74,17 @@ public class AgentModel extends BaseAgentModel {
 
 		try {
 			switch (configuration.config) {
-				case 0:  agents = new MasterExploreFactory(configuration).createRobots(world);
+				case 0:  agents = new MasterExploreFactory(config).createRobots(world);
 						 break;
-	            case 1:  agents = new ExploreWithoutMasterFactory(configuration).createRobots(world);
+	            case 1:  agents = new ExploreWithoutMasterFactory(config).createRobots(world);
 	                     break;	            
-	            case 2:  agents = new ExploreMergeMasterFactory(configuration).createRobots(world);
+	            case 2:  agents = new ExploreMergeMasterFactory(config).createRobots(world);
 	                     break;
-	            case 3:  agents = new ExploreMergeMasterCalculateFactory(configuration).createRobots(world);
+	            case 3:  agents = new ExploreMergeMasterCalculateFactory(config).createRobots(world);
 	                     break;
-	            case 4:  agents = new ExploreMergeMasterCalculateRelativeFactory(configuration).createRobots(world);
+	            case 4:  agents = new ExploreMergeMasterCalculateRelativeFactory(config).createRobots(world);
 	                     break;
-	            default: agents = new MasterExploreFactory(configuration).createRobots(world);
+	            default: agents = new MasterExploreFactory(config).createRobots(world);
 	                     break;
 	        }
 		} catch (Exception ex) {
@@ -107,9 +108,9 @@ public class AgentModel extends BaseAgentModel {
 		if (!completeFinish) {
 			if (!roboterFinish) {			
 				roboterFinish = true;
-				//wemm noch nicht finsh dann mache das hier
+				//if not finished than do that
 				for (Agent a : agents) {
-					//nur wenn Robot noch nicht aus ist
+					//only if robot is on
 					if (!((RobotAgent)a).getRobot().isShutDown()) {
 						a.wander();
 						if (!((RobotAgent)a).isFinish())
@@ -120,15 +121,14 @@ public class AgentModel extends BaseAgentModel {
 				long endTime = System.nanoTime();
 				
 				for (Agent a : agents) {
-					//nur wenn Robot noch nicht aus ist
 					((RobotAgent)a).getRobot().addLastMeasurement();				
 				}
 				
-				//Programm ist fertig Lese Measurement aller Roboter und gebe in Datei aus
+				//make data output for all measurements
 				for (Agent a : agents) {
 					RobotCore rc = ((RobotAgent)a).getRobot();
 					
-					//Json Datein in .txt speicher
+					//save JSON document in .txt
 					rc.getMeasurement().benchmarkTime = (endTime - startTime);
 					String measu = rc.getMeasurement().toJson();
 					

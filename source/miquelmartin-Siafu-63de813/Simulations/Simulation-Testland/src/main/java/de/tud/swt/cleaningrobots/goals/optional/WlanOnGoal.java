@@ -4,6 +4,12 @@ import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.behaviours.WlanOnBehaviour;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
+/**
+ * Optional goal which start the WLAN on the robot. 
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class WlanOnGoal extends OptionalGoal {
 
 	public WlanOnGoal(RobotCore robot) {

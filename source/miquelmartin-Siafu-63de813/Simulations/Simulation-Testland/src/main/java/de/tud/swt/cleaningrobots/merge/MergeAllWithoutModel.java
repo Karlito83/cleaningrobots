@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.tud.evaluation.ExchangeMeasurement;
-import de.tud.evaluation.WorkingConfiguration;
+import de.tud.swt.cleaningrobots.Configuration;
 import de.tud.swt.cleaningrobots.FollowerRole;
 import de.tud.swt.cleaningrobots.MasterRole;
 import de.tud.swt.cleaningrobots.RobotCore;
@@ -19,21 +19,31 @@ import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.model.World;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
+/**
+ * Merge of models between two robots with the direct world information.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class MergeAllWithoutModel {
 
 	private ExchangeMeasurement em; 
-	private WorkingConfiguration configuration;
+	private Configuration configuration;
 	
-	public MergeAllWithoutModel (WorkingConfiguration configuration) {
+	public MergeAllWithoutModel (Configuration configuration) {
 		this.configuration = configuration;
 	}
 		
+	/**
+	 * Measurement if robot comes with new information.
+	 * @param name
+	 */
 	public void newInformationMeasure (String name) {
-		em = new ExchangeMeasurement(name, "New Info", configuration.iteration);
+		em = new ExchangeMeasurement(name, "New Info", configuration.wc.iteration);
 		em.addKnowledgeIntegerNumber(1);
 		em.addKnowledgeStringNumber(1);
 		em.addKnowledgeStringByteNumber(name.getBytes().length);
-		configuration.exchange.add(em);
+		configuration.wc.exchange.add(em);
 	}
 	
 	/**
@@ -43,14 +53,14 @@ public class MergeAllWithoutModel {
 	 * @param config
 	 */
 	public void importAllWithoutModel (RobotCore exportcore, RobotCore importcore, ImportExportConfiguration config) {
-		//Namen Information die immer mitgesendet wird
-		em = new ExchangeMeasurement(exportcore.getName(), importcore.getName(), configuration.iteration);
+		//name information which always send
+		em = new ExchangeMeasurement(exportcore.getName(), importcore.getName(), configuration.wc.iteration);
 		em.addKnowledgeStringNumber(1);
 		em.addKnowledgeStringByteNumber(exportcore.getName().getBytes().length);
-		//für alle noch measurement erweitern
+		//add robot knowledge
 		if (config.knowledge)
 		{
-			//alls robotknowledges und eigene Daten durchlaufen und einfügen
+			//run over all robot knowledge and own knowledge and insert information
 			for (RobotKnowledge exportRk : exportcore.getKnowledge()) {
 				boolean isIn = false;
 				for (RobotKnowledge importRk : importcore.getKnowledge()) {
@@ -84,7 +94,7 @@ public class MergeAllWithoutModel {
 			for (RobotKnowledge hisRk : importcore.getKnowledge()) {					
 				if (hisRk.getName().equals(exportcore.getName())) {
 					isIn = true;
-					//Füge die neuen Information vom Robot ein
+					//insert the new information from the robot
 					List<State> knowns = new LinkedList<State>();
 					for (State s : exportcore.getSupportedStates()) {
 						knowns.add(s);
@@ -108,16 +118,16 @@ public class MergeAllWithoutModel {
 		}
 		if (config.world)
 		{
-			//World und Fields import
+			//World and Field import
 			importFieldsFromWorld(exportcore, importcore, config);
 		}
-		configuration.exchange.add(em);
+		configuration.wc.exchange.add(em);
 	}
 	
 	private void importRobotKnowledgeWithoutModel (RobotKnowledge importRk, RobotCore exportR) {
-		//Füge die neuen Information vom Robot ein
+		//insert the new information from the robot
 		//add lastArrange
-		importRk.setLastArrange(configuration.iteration);
+		importRk.setLastArrange(configuration.wc.iteration);
 		em.addKnowledgeIntegerNumber(1);
 		//add destination
 		if (exportR.getDestinationContainer().getDestination() != null) {
@@ -170,7 +180,7 @@ public class MergeAllWithoutModel {
 		if (importRk.getLastArrange() < exportRk.getLastArrange()) {
 			em.addKnowledgeStringByteNumber(exportRk.getName().getBytes().length);
 			em.addKnowledgeStringNumber(1);
-			//anderer Robot hat ihn als letztes gesehen also aktualisiere deine Daten
+			//other robot has seen him last so actuate the knowledge
 			//TODO: proof if this must in or not
 			//importRk.setLastArrange(exportRk.getLastArrange());
 			em.addKnowledgeIntegerNumber(1);
@@ -241,7 +251,7 @@ public class MergeAllWithoutModel {
 	
 	private void importFieldsFromWorld(RobotCore exportcore, RobotCore importcore, ImportExportConfiguration config) {
 		World world = exportcore.getWorld();
-		//x und yDim
+		//x and yDim
 		em.addWorldIntegerNumber(2);
 		
 		//add worldstates
@@ -250,10 +260,35 @@ public class MergeAllWithoutModel {
 			em.addWorldStatesStringByteNumber(worldState.getName().getBytes().length);
 			em.addWorldStatesStringNumber(1);
 		}
+		
+		//measurement
+		//ExchangeMeasurement em2 = new ExchangeMeasurement(em.getName1(), (em.getName2() + "K"), em.getIteration());
+		//ExchangeMeasurement em3 = new ExchangeMeasurement(em.getName1(), (em.getName2() + "S"), em.getIteration());
+		//em2.addMeasurement(em);
+		//em3.addMeasurement(em);		
+		//ImportExportConfiguration config3 = config.getStateConfiguration();
+		//ImportExportConfiguration config2 = new ImportExportConfiguration();
 			
 		//add fields
 		for (Field modelField : world.getFields()) {
-			Field newField = modelField.exportWithoutModel(config, configuration.iteration);
+			//measurement
+			/*Field newField = modelField.exportWithoutModel(config2, configuration.iteration);
+			for (State modelState : modelField.getStates()) {
+				em.addWorldStringByteNumber(modelState.getName().getBytes().length);
+				em.addWorldStringNumber(1);
+			}
+			em.addWorldPositionCount(1);
+			
+			Field testField = modelField.exportWithoutModel(config3, configuration.iteration);
+			if (testField != null) {
+				for (State modelState : testField.getStates()) {
+					em3.addWorldStringByteNumber(modelState.getName().getBytes().length);
+					em3.addWorldStringNumber(1);
+				}
+				em3.addWorldPositionCount(1);
+			}*/
+			//real code
+			Field newField = modelField.exportWithoutModel(config, configuration.wc.iteration);
 			if (newField == null)
 				continue;
 			
@@ -265,5 +300,9 @@ public class MergeAllWithoutModel {
 			importcore.getWorld().addField(newField);
 		}
 		importcore.getWorld().resetNewInformationCounter();
+		
+		//measurement
+		//configuration.exchange.add(em2);
+		//configuration.exchange.add(em3);
 	}
 }

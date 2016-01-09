@@ -10,8 +10,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * <span class="de">Iterator über die Zeilen eines Doukuments.</span>
- * <span class="en">Iterator over the rows in a doukument.</span>
+ * Iterator over the rows in a document.
+ * 
  * @author Christopher Werner
  *
  * @param <T>

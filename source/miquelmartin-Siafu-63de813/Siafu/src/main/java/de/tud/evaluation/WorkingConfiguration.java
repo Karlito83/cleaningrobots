@@ -3,9 +3,14 @@ package de.tud.evaluation;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Configuration values to create a specific test case.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class WorkingConfiguration {
 
-	public AbstractState as;
 	public int number_explore_agents;
 	public int number_wipe_agents;
 	public int number_hoove_agents;

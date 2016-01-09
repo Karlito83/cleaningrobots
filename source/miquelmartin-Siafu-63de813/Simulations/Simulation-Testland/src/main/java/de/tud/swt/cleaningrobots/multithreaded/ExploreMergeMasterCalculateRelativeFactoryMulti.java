@@ -4,22 +4,30 @@ import java.util.ArrayList;
 
 import de.nec.nle.siafu.model.MultiAgent;
 import de.nec.nle.siafu.model.MultiWorld;
-import de.tud.evaluation.WorkingConfiguration;
+import de.tud.swt.cleaningrobots.Configuration;
 import de.tud.swt.cleaningrobots.FollowerRole;
 import de.tud.swt.cleaningrobots.MasterRole;
 
+/**
+ * Without user interface from Siafu. 
+ * Create the robots with the specific goals for the test case where the master has followers 
+ * and calculate new destination and merge data between them. With a relative destination calculation.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class ExploreMergeMasterCalculateRelativeFactoryMulti extends RobotFactoryMulti {
 
-	public ExploreMergeMasterCalculateRelativeFactoryMulti (WorkingConfiguration configuration)
+	public ExploreMergeMasterCalculateRelativeFactoryMulti (Configuration configuration)
 	{
 		super(configuration);
 	}
 	
 	/**
-	 * Create a number of random agents.
+	 * Create the number of agents from the working configuration.
 	 * 
 	 * @param world
-	 *            the world where the agents will dwell
+	 *            the world where the agents will work
 	 * @return an ArrayList with the created agents
 	 */
 	@Override
@@ -31,7 +39,7 @@ public class ExploreMergeMasterCalculateRelativeFactoryMulti extends RobotFactor
 		LoadstationAgentMulti lsa = createLoadStationAgent(world);
 		population.add(lsa);
 		
-		if (configuration.number_explore_agents > 0) {
+		if (configuration.wc.number_explore_agents > 0) {
 			MasterRole mre = new MasterRole(lsa.getRobot());
 			mre.addRole(mre);			
 			
@@ -39,7 +47,7 @@ public class ExploreMergeMasterCalculateRelativeFactoryMulti extends RobotFactor
 			lsa.addCalculateExploreRobotPositionGoal(mre);
 			
 			//explore agents
-			for (int i = 0; i < configuration.number_explore_agents; i++) {
+			for (int i = 0; i < configuration.wc.number_explore_agents; i++) {
 				ExploreRobotAgentMulti era = createExploreAgent(world);
 				era.addRelativeStandardGoals();
 				population.add(era);		
@@ -50,7 +58,7 @@ public class ExploreMergeMasterCalculateRelativeFactoryMulti extends RobotFactor
 				mre.getFollowers().add(fre);
 			}
 		
-			if (configuration.number_hoove_agents > 0) {
+			if (configuration.wc.number_hoove_agents > 0) {
 				MasterRole mrh = new MasterRole(lsa.getRobot());
 				mrh.addRole(mrh);
 				
@@ -58,7 +66,7 @@ public class ExploreMergeMasterCalculateRelativeFactoryMulti extends RobotFactor
 				lsa.addCalculateHooveRobotPositionGoal(mrh);
 
 				//hoove agents
-				for (int i = 0; i < configuration.number_hoove_agents; i++) {
+				for (int i = 0; i < configuration.wc.number_hoove_agents; i++) {
 					HooveRobotAgentMulti hra = createHooveAgent(world);
 					hra.addRelativeStandardGoals();
 					population.add(hra);
@@ -70,7 +78,7 @@ public class ExploreMergeMasterCalculateRelativeFactoryMulti extends RobotFactor
 				}
 				mrh.getFollowers().add(mre);
 							
-				if (configuration.number_wipe_agents > 0) {
+				if (configuration.wc.number_wipe_agents > 0) {
 					MasterRole mrw = new MasterRole(lsa.getRobot());
 					mrw.addRole(mrw);
 					
@@ -78,7 +86,7 @@ public class ExploreMergeMasterCalculateRelativeFactoryMulti extends RobotFactor
 					lsa.addCalculateWipeRobotPositionGoal(mrw);
 					
 					//wipe agents
-					for (int i = 0; i < configuration.number_wipe_agents; i++) {
+					for (int i = 0; i < configuration.wc.number_wipe_agents; i++) {
 						WipeRobotAgentMulti wra = createWipeAgent(world);
 						wra.addRelativeStandardGoals();
 						population.add(wra);

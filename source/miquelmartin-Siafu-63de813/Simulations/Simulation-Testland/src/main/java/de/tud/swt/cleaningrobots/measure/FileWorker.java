@@ -14,13 +14,12 @@ import de.tud.evaluation.ExchangeMeasurement;
 import de.tud.evaluation.WorkingConfiguration;
 
 /**
- * <span class="de">Erfasst das Dokument zum durchlaufen.</span>
- * <span class="en">Gets the file to work.</span>
+ * Gets the file to work.
+ * 
  * @author Christopher Werner
  *
  */
-public class FileWorker 
-{
+public class FileWorker {
 	
 	private File file;
 	

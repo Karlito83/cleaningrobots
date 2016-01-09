@@ -1,5 +1,11 @@
 package de.tud.swt.cleaningrobots.hardware;
 
+/**
+ * The Wiper component of a robot.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class Wiper extends HardwareComponent {
 
 	private int radius;

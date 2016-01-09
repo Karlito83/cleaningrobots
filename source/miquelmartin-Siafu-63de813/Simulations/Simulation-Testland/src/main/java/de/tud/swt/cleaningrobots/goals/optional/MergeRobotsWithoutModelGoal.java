@@ -4,6 +4,12 @@ import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.behaviours.MergeAllOfNearWithoutModel;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
+/**
+ * Optional goal which make the merge between robots without using the EMF model. 
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class MergeRobotsWithoutModelGoal extends OptionalGoal {
 
 	public MergeRobotsWithoutModelGoal(RobotCore robot) {
@@ -13,7 +19,6 @@ public class MergeRobotsWithoutModelGoal extends OptionalGoal {
 		System.out.println("Correct Merge: " + a.isHardwarecorrect());
 		if (a.isHardwarecorrect()) {
 			behaviours.add(a);
-			//robot.addBehaviour(a);
 		} else {
 			correct = false;
 		}

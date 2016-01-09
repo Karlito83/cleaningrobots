@@ -32,6 +32,12 @@ import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.util.EMFUtils;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
+/**
+ * Behavior that creates a png and xml output of the actual world of the robot and use the EMF Model.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class DumpModelBehaviour extends Behaviour {
 
 	private static final int CONST_FILENAME_NUMBERPREFIX = 1000000000;
@@ -46,8 +52,7 @@ public class DumpModelBehaviour extends Behaviour {
 		super(robot);
 		counter = 0;
 		
-		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
-		
+		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);		
 		d = new Demand(hardware, robot);
 		hardwarecorrect = d.isCorrect();
 	}

@@ -1,50 +1,50 @@
 package de.tud.evaluation;
 
 /**
- * Information about one data exchange between two robots.
+ * Modification of the exchange measurement to reduce mistakes.
  * 
  * @author Christopher Werner
  *
  */
-public class ExchangeMeasurement {
-	
-	private int number;
-	private String robotName1;
-	private String robotName2;
-	private int iteration;
-	
+public class EvaluationMeasurement {
+
+	public double number;	
+	public String robotName1;
+	public String robotName2;
+	public double iteration;
+		
 	//knowledge Information
-	private int knowledgeIntegerNumber;
-	private int knowledgeStringNumber;
-	private int knowledgeStringByteNumber;
-	
+	public double knowledgeIntegerNumber;
+	public double knowledgeStringNumber;
+	public double knowledgeStringByteNumber;
+		
 	//states
-	private int statesStringNumber;
-	private int statesStringByteNumber;
-	
+	public double statesStringNumber;
+	public double statesStringByteNumber;
+		
 	//world
-	private int worldPositionCount;
-	private int worldIntegerNumber;
-	private int worldStringNumber;
-	private int worldStringByteNumber;
-	
-	private int worldStatesStringNumber;
-	private int worldStatesStringByteNumber;
-	
+	public double worldPositionCount;
+	public double worldIntegerNumber;
+	public double worldStringNumber;
+	public double worldStringByteNumber;
+		
+	public double worldStatesStringNumber;
+	public double worldStatesStringByteNumber;
+		
 	//Accu values
-	private int accuDoubleNumber;
-	
-	public ExchangeMeasurement (String name1, String name2, int iteration) {
+	public double accuDoubleNumber;
+		
+	public EvaluationMeasurement (String name1, String name2, double iteration) {
 		this.robotName1 = name1;
 		this.robotName2 = name2;
 		this.iteration = iteration;
 		this.number = 0;
-		
+			
 		//knowledge
 		this.knowledgeIntegerNumber = 0;
 		this.knowledgeStringNumber = 0;
 		this.knowledgeStringByteNumber = 0;
-		
+			
 		//states
 		this.statesStringNumber = 0;
 		this.statesStringByteNumber = 0;
@@ -61,126 +61,127 @@ public class ExchangeMeasurement {
 		//Accu
 		this.accuDoubleNumber = 0;
 	}
-	
+		
 	//basic information
-	public void setNumber (int value) {
+	public void setNumber (double value) {
 		this.number = value;
 	}
-	
-	public int getNumber () {
+		
+	public double getNumber () {
 		return this.number;
 	}
-	
+		
 	public String getName1 () {
 		return this.robotName1;
 	}
-	
+		
 	public String getName2 () {
 		return this.robotName2;
 	}
-	
-	public int getIteration () {
+		
+	public double getIteration () {
 		return this.iteration;
 	}
-	
+		
 	//knowledge Information
-	public int getKnowledgeIntegerNumber () {
+	public double getKnowledgeIntegerNumber () {
 		return this.knowledgeIntegerNumber;
 	}
-	
-	public int getKnowledgeStringNumber () {
+		
+	public double getKnowledgeStringNumber () {
 		return this.knowledgeStringNumber;
 	}
-	
-	public int getKnowledgeStringByteNumber () {
+		
+	public double getKnowledgeStringByteNumber () {
 		return this.knowledgeStringByteNumber;
 	}
-	
+		
 	//knowledge add methods
-	public void addKnowledgeIntegerNumber (int value) {
+	public void addKnowledgeIntegerNumber (double value) {
 		knowledgeIntegerNumber += value;
 	}
-	
-	public void addKnowledgeStringNumber (int value) {
+		
+	public void addKnowledgeStringNumber (double value) {
 		knowledgeStringNumber += value;
 	}
-	
-	public void addKnowledgeStringByteNumber (int value) {
+		
+	public void addKnowledgeStringByteNumber (double value) {
 		knowledgeStringByteNumber += value;
 	}
-	
+		
 	//knownState information	
-	public int getStatesStringNumber () {
+	public double getStatesStringNumber () {
 		return this.statesStringNumber;
 	}
-	
-	public int getStatesStringByteNumber () {
+		
+	public double getStatesStringByteNumber () {
 		return this.statesStringByteNumber;
 	}
-	
+		
 	//knownState add methods
-	public void addStatesStringNumber (int value) {
+	public void addStatesStringNumber (double value) {
 		statesStringNumber += value;
 	}
-	
-	public void addStatesStringByteNumber (int value) {
+		
+	public void addStatesStringByteNumber (double value) {
 		statesStringByteNumber += value;
 	}
-	
+		
 	//world information
-	public int getWorldPositionCount () {
+	public double getWorldPositionCount () {
 		return this.worldPositionCount;
 	}
-	
-	public int getWorldIntegerNumber () {
+		
+	public double getWorldIntegerNumber () {
 		return this.worldIntegerNumber;
 	}
-	public int getWorldStringNumber () {
+	
+	public double getWorldStringNumber () {
 		return this.worldStringNumber;
 	}
 	
-	public int getWorldStringByteNumber () {
+	public double getWorldStringByteNumber () {
 		return this.worldStringByteNumber;
 	}
 	
-	public int getWorldStatesStringNumber () {
+	public double getWorldStatesStringNumber () {
 		return this.worldStatesStringNumber;
 	}
 	
-	public int getWorldStatesStringByteNumber () {
+	public double getWorldStatesStringByteNumber () {
 		return this.worldStatesStringByteNumber;
 	}
 	
 	//world add methods
-	public void addWorldPositionCount (int value) {
+	public void addWorldPositionCount (double value) {
 		this.worldPositionCount += value;
 	}
 	
-	public void addWorldIntegerNumber (int value) {
+	public void addWorldIntegerNumber (double value) {
 		this.worldIntegerNumber += value;
 	}
-	public void addWorldStringNumber (int value) {
+	public void addWorldStringNumber (double value) {
 		this.worldStringNumber += value;
 	}
 	
-	public void addWorldStringByteNumber (int value) {
+	public void addWorldStringByteNumber (double value) {
 		this.worldStringByteNumber += value;
 	}
 	
-	public void addWorldStatesStringNumber (int value) {
+	public void addWorldStatesStringNumber (double value) {
 		this.worldStatesStringNumber += value;
 	}
 	
-	public void addWorldStatesStringByteNumber (int value) {
+	public void addWorldStatesStringByteNumber (double value) {
 		this.worldStatesStringByteNumber += value;
 	}
 	
 	//Accu get and add methods
-	public int getAccuDoubleNumber () {
+	public double getAccuDoubleNumber () {
 		return this.accuDoubleNumber;
 	}
 	
-	public void addAccuDoubleNumber (int value) {
+	public void addAccuDoubleNumber (double value) {
 		this.accuDoubleNumber += value;
 	}
 	
@@ -199,42 +200,34 @@ public class ExchangeMeasurement {
 		this.addWorldStringNumber(em.getWorldStringNumber());
 	}
 	
-	public int getCompleteByteNumber () {
-		int result = knowledgeStringByteNumber + statesStringByteNumber + worldStringByteNumber + worldStatesStringByteNumber;
+	public double getCompleteByteNumber () {
+		double result = knowledgeStringByteNumber + statesStringByteNumber + worldStringByteNumber + worldStatesStringByteNumber;
 		result += (knowledgeIntegerNumber + worldIntegerNumber + worldPositionCount*2) * 4;
 		result += accuDoubleNumber * 8;
 		return result;
 	}
 	
-	public int getWorldNumberExchange () {
+	public double getWorldNumberExchange () {
 		return worldPositionCount*2 + worldIntegerNumber + worldStringNumber + worldStatesStringNumber;
 	}
 	
-	public int getKnowledgeNumberExchange () {
+	public double getKnowledgeNumberExchange () {
 		return knowledgeStringNumber + knowledgeIntegerNumber + accuDoubleNumber + statesStringNumber;
 	}
-	
-	public int getTimeStampCompleteNumberExchange () {
-		int result = worldPositionCount/2 * 3 + worldIntegerNumber + worldStringNumber*2 + worldStatesStringNumber;
+		
+	public double getTimeStampCompleteNumberExchange () {
+		double result = worldPositionCount*3 + worldIntegerNumber + worldStringNumber*2 + worldStatesStringNumber;
 		result += knowledgeStringNumber + knowledgeIntegerNumber;
 		result += statesStringNumber;
 		result += accuDoubleNumber;
 		return result;
 	}
-	
-	public int getCompleteNumberExchange () {
-		int result = worldPositionCount*2 + worldIntegerNumber + worldStringNumber + worldStatesStringNumber;
+		
+	public double getCompleteNumberExchange () {
+		double result = worldPositionCount*2 + worldIntegerNumber + worldStringNumber + worldStatesStringNumber;
 		result += knowledgeStringNumber + knowledgeIntegerNumber;
 		result += statesStringNumber;
 		result += accuDoubleNumber;
 		return result;
 	}
-	
-	public ExchangeMeasurement fromJson(String json) {
-        return EvaluationConstants.gson.fromJson(json, ExchangeMeasurement.class);
-    }
-
-	public String toJson() {
-        return EvaluationConstants.gson.toJson(this);
-    }	
 }

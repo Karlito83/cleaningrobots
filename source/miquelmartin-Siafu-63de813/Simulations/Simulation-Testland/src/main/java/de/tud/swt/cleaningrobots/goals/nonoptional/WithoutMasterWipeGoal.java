@@ -9,6 +9,12 @@ import de.tud.swt.cleaningrobots.behaviours.WipeBehaviour;
 import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
 import de.tud.swt.cleaningrobots.model.State;
 
+/**
+ * Non optional goal to wipe the world without any control of a master. 
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class WithoutMasterWipeGoal extends NonOptionalGoal {
 
 	private WipeBehaviour d;
@@ -17,12 +23,11 @@ public class WithoutMasterWipeGoal extends NonOptionalGoal {
 	public WithoutMasterWipeGoal(RobotCore robot) {
 		super(robot);
 		
-		this.WORLDSTATE_WIPED = ((State)robot.configuration.as).createState("Wiped");
+		this.WORLDSTATE_WIPED = robot.configuration.createState("Wiped");
 		
 		WipeAroundAtDestinationBehaviour s = new WipeAroundAtDestinationBehaviour(robot);
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
 		if (s.isHardwarecorrect()) {
-			//robot.addBehaviour(s);
 			behaviours.add(s);
 		} else {
 			correct = false;
@@ -31,7 +36,6 @@ public class WithoutMasterWipeGoal extends NonOptionalGoal {
 		d = new WipeBehaviour(robot, false);
 		System.out.println("Correct Discover: " + d.isHardwarecorrect());
 		if (d.isHardwarecorrect()) {
-			//robot.addBehaviour(d);
 			behaviours.add(d);
 		} else {
 			correct = false;
@@ -40,7 +44,6 @@ public class WithoutMasterWipeGoal extends NonOptionalGoal {
 		MoveBehaviour m = new MoveBehaviour(robot);
 		System.out.println("Correct Move: " + m.isHardwarecorrect());
 		if (m.isHardwarecorrect()) {
-			//robot.addBehaviour(m);
 			behaviours.add(m);
 		} else {
 			correct = false;
@@ -57,7 +60,6 @@ public class WithoutMasterWipeGoal extends NonOptionalGoal {
 		LoadIfAtLoadStationBehaviour lialsb = new LoadIfAtLoadStationBehaviour(robot);
 		System.out.println("Correct LoadIfAtLoadStation: " + lialsb.isHardwarecorrect());
 		if (lialsb.isHardwarecorrect()) {
-			//robot.addBehaviour(b);
 			behaviours.add(lialsb);
 		} else {
 			correct = false;
@@ -73,7 +75,7 @@ public class WithoutMasterWipeGoal extends NonOptionalGoal {
 
 	@Override
 	public boolean postCondition() {
-		//muss nur schauen ob discover behaviour fertig ist
+		//must look if the wipe behavior is finish
 		return d.isFinishWipe();
 	}
 }

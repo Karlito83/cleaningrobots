@@ -4,20 +4,28 @@ import java.util.ArrayList;
 
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.World;
-import de.tud.evaluation.WorkingConfiguration;
+import de.tud.swt.cleaningrobots.Configuration;
 
+/**
+ * With user interface from Siafu. 
+ * Create the robots with the specific goals for the test case without a master robot 
+ * and merge data between them.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class ExploreWithoutMasterFactory extends RobotFactory {
 	
-	public ExploreWithoutMasterFactory (WorkingConfiguration configuration)
+	public ExploreWithoutMasterFactory (Configuration configuration)
 	{
 		super(configuration);
 	}
 	
 	/**
-	 * Create a number of random agents.
+	 * Create the number of agents from the working configuration.
 	 * 
 	 * @param world
-	 *            the world where the agents will dwell
+	 *            the world where the agents will work
 	 * @return an ArrayList with the created agents
 	 */
 	@Override
@@ -25,22 +33,22 @@ public class ExploreWithoutMasterFactory extends RobotFactory {
 		
 		ArrayList<Agent> population = new ArrayList<Agent>();	
 		
-		//loadstation agent
+		//load station agent
 		OnlyLoadStationAgent lsa = createLoadStation(world);
 		lsa.addLoadIfRobotWantGoal();
 		population.add(lsa);
 		
 		boolean proof;
 		
-		if (configuration.number_explore_agents > 0) {
+		if (configuration.wc.number_explore_agents > 0) {
 			
 			proof = false;
-			if (configuration.number_hoove_agents > 0) {
+			if (configuration.wc.number_hoove_agents > 0) {
 				proof = true;
 			}
 			
 			//explore agents
-			for (int i = 0; i < configuration.number_explore_agents; i++) {
+			for (int i = 0; i < configuration.wc.number_explore_agents; i++) {
 				ExploreRobotAgent era = createExploreAgent(world);
 				era.addWithoutMasterConfiguration();
 				if (proof) {
@@ -50,15 +58,15 @@ public class ExploreWithoutMasterFactory extends RobotFactory {
 				population.add(era);
 			}
 			
-			if (configuration.number_hoove_agents > 0) {
+			if (configuration.wc.number_hoove_agents > 0) {
 				
 				proof = false;
-				if (configuration.number_wipe_agents > 0) {
+				if (configuration.wc.number_wipe_agents > 0) {
 					proof = true;
 				}
 				
 				//hoove agents
-				for (int i = 0; i < configuration.number_hoove_agents; i++) {
+				for (int i = 0; i < configuration.wc.number_hoove_agents; i++) {
 					HooveRobotAgent hra = createHooveAgent(world);
 					hra.addWithoutMasterConfiguration();
 					if (proof) {
@@ -68,10 +76,10 @@ public class ExploreWithoutMasterFactory extends RobotFactory {
 					population.add(hra);
 				}
 				
-				if (configuration.number_wipe_agents > 0) {
+				if (configuration.wc.number_wipe_agents > 0) {
 					
 					//wipe agents
-					for (int i = 0; i < configuration.number_wipe_agents; i++) {
+					for (int i = 0; i < configuration.wc.number_wipe_agents; i++) {
 						WipeRobotAgent wra = createWipeAgent(world);
 						wra.addWithoutMasterConfiguration();
 						population.add(wra);

@@ -5,9 +5,9 @@ import de.tud.swt.cleaningrobots.behaviours.DumpModelBehaviour;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
 /**
- * Could always run and always be finished and save the images vor reconstruction
+ * Could always run and always be finished and save the images for reconstruction
  * 
- * @author ChrissiMobil
+ * @author Christopher Werner
  *
  */
 public class ExploreDumpGoal extends OptionalGoal {
@@ -18,7 +18,6 @@ public class ExploreDumpGoal extends OptionalGoal {
 		DumpModelBehaviour b = new DumpModelBehaviour(robot);
 		System.out.println("Correct Dump: " + b.isHardwarecorrect());
 		if (b.isHardwarecorrect()) {
-			//robot.addBehaviour(b);
 			behaviours.add(b);
 		} else {
 			correct = false;

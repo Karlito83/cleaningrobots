@@ -96,7 +96,7 @@ public final class Siafu {
 			int maxThreadCounter = 1;
 			Queue<WorkingConfiguration> configurations = new LinkedList<WorkingConfiguration>();
 			boolean running = true;
-			int NUMBER_EXPLORE_AGENTS = 2;
+			int NUMBER_EXPLORE_AGENTS = 1;
 			int NUMBER_WIPE_AGENTS = 0;
 			int NUMBER_HOOVE_AGENTS = 0;
 			int NEW_FIELD_COUNT = 0;
@@ -105,19 +105,19 @@ public final class Siafu {
 			int map = 0;
 			
 			while (running) {
-				if (run == 10) {
-					run = 5;
+				if (run == 5) {
+					run = 1;
 					if (NEW_FIELD_COUNT == 5000 || configuration < 2) {
 						NEW_FIELD_COUNT = 0;
-						if (NUMBER_WIPE_AGENTS == 0 || NUMBER_HOOVE_AGENTS == 0 || NUMBER_WIPE_AGENTS > NUMBER_HOOVE_AGENTS - 2) {
+						if (NUMBER_WIPE_AGENTS == 10 || NUMBER_HOOVE_AGENTS < 10 || NUMBER_EXPLORE_AGENTS < 10){// || NUMBER_HOOVE_AGENTS == 0 || NUMBER_WIPE_AGENTS > NUMBER_HOOVE_AGENTS - 2) {
 							NUMBER_WIPE_AGENTS = 0;
-							if (NUMBER_HOOVE_AGENTS == 0 || NUMBER_HOOVE_AGENTS > NUMBER_EXPLORE_AGENTS - 2) {
+							if (NUMBER_HOOVE_AGENTS == 10 || NUMBER_EXPLORE_AGENTS < 10){//  || NUMBER_HOOVE_AGENTS > NUMBER_EXPLORE_AGENTS - 2) {
 								NUMBER_HOOVE_AGENTS = 0;
 								if (NUMBER_EXPLORE_AGENTS == 10) {
 									NUMBER_EXPLORE_AGENTS = 1;
-									if (configuration == 4) {
+									if (configuration == 0) {
 										configuration = 0;
-										if (map == 3) {
+										if (map == 0) {
 											running = false;
 											break;
 										} else {
@@ -125,8 +125,6 @@ public final class Siafu {
 										}											
 									} else {
 										configuration +=1;
-										if (configuration == 1)
-											configuration +=1;
 									}
 								} else {
 									NUMBER_EXPLORE_AGENTS +=1;
@@ -148,8 +146,9 @@ public final class Siafu {
 			}
 			
 			System.out.println("Configurationen erstellt: " + configurations.size());
-			
-			String simulationPathpfad = "C:\\Users\\ChrissiMobil\\git\\cleaningrobots\\source\\miquelmartin-Siafu-63de813\\Simulations\\Simulation-Testland\\target\\classes";
+			String simulationPathpfad = "C:\\Users\\Christopher\\Documents\\Workspace\\cleaningrobots-master\\source\\miquelmartin-Siafu-63de813\\Simulations\\Simulation-Testland\\target\\classes";
+			//String simulationPathpfad = "E:\\Masterarbeit\\cleaningrobots-master\\source\\miquelmartin-Siafu-63de813\\Simulations\\Simulation-Testland\\target\\classes";
+			//String simulationPathpfad = "C:\\Users\\ChrissiMobil\\git\\cleaningrobots\\source\\miquelmartin-Siafu-63de813\\Simulations\\Simulation-Testland\\target\\classes";
 			SimulationData simData = SimulationData.getInstance(simulationPathpfad);
 			simData.getConfigFile();
 			simData.createWallFiles();

@@ -1,8 +1,15 @@
 package de.tud.swt.cleaningrobots.measure;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Minimal, Maximal and Averages vales of a list with Double values.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class MinMaxAveDouble {
 	
 	public int numberRobots;
@@ -31,10 +38,12 @@ public class MinMaxAveDouble {
 	}
 
 	public double getAveValue () {
-		double value = 0;
+		Collections.sort(values);
+		return values.get(values.size()/2);
+		/*double value = 0;
 		for (double v : values) {
 			value += v;
 		}
-		return value/values.size();
+		return value/values.size();*/
 	}
 }

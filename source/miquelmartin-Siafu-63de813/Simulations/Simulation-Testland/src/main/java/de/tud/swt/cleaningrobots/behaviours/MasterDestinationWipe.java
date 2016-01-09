@@ -17,12 +17,19 @@ import de.tud.swt.cleaningrobots.merge.MasterFieldMerge;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.util.RobotDestinationCalculation;
 
+/**
+ * Behavior that calculate new destinations for the wiper and has contact if the followers are loading.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class MasterDestinationWipe extends Behaviour {
 
 	private MasterRole mr;
 
 	private State STATE_HOOVE;
 	private State STATE_WIPE;
+	private State WORLDSTATE_WIPED;
 	
 	private Wlan wlan;
 	private boolean firstStart;
@@ -34,20 +41,23 @@ public class MasterDestinationWipe extends Behaviour {
 	public MasterDestinationWipe(RobotCore robot, MasterRole mr) {
 		super(robot);
 		
-		this.STATE_HOOVE = ((State)robot.configuration.as).createState("Hoove");
-		this.STATE_WIPE = ((State)robot.configuration.as).createState("Wipe");
+		//create and add the states
+		this.STATE_HOOVE = robot.configuration.createState("Hoove");
+		this.STATE_WIPE = robot.configuration.createState("Wipe");
+		this.WORLDSTATE_WIPED = robot.configuration.createState("Wiped");
 		
 		this.mr = mr;
 		this.mfm = new MasterFieldMerge(this.robot.configuration);
 		this.information = new HashMap<String, RobotDestinationCalculation>();
 		
+		//add the hardware components and proof there correctness
 		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
 		hardware.put(Components.WLAN, 1);		
 		
 		d = new Demand(hardware, robot);
 		hardwarecorrect = d.isCorrect();
 		
-		//Vision Radius aus Wlan Hardwarecomponente ziehen
+		//get vision Radius from the WLAN component
 		for (HardwareComponent hard : d.getHcs())
 		{
 			if (hard.getComponents() == Components.WLAN)
@@ -60,13 +70,10 @@ public class MasterDestinationWipe extends Behaviour {
 
 	@Override
 	public boolean action() throws Exception {
-		//Schalte alle Hardwarecomponenten an wenn sie nicht schon laufen
+		//start all hardware components
 		for (HardwareComponent hard : d.getHcs())
 		{
-			if (!hard.isActive())
-			{
-				hard.changeActive();
-			}
+			hard.switchOn();
 		}
 		
 		if (firstStart)
@@ -88,34 +95,33 @@ public class MasterDestinationWipe extends Behaviour {
 				}
 			}			
 			
-			this.calculationAway = (int) maxAway;
-			System.out.println("Information: " + information.keySet() + " Away: " + calculationAway + " maxAway: " + maxAway);			
+			this.calculationAway = (int) maxAway;			
 			this.firstStart = false;
 		}
 				
-		//search near Explore Robots
+		//search near wipe Robots
 		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(wlan.getVisionRadius());
 		nearRobots.remove(this.robot);
 				
 		for (RobotDestinationCalculation rdc : information.values()) {
-			//alle NeedNew auf false setzen
+			//set all NeedNew to false
 			rdc.needNew = false;
-			//new und old dest tauschen wenn nicht mehr in Reichweite
+			//change new and old destination if not near
 			if (rdc.newDest != null)
 			{
 				boolean change = true;
-				//schaue ob noch in nearRobots
+				//look if in nearRobots
 				for (RobotCore nearRobot : nearRobots) 
 				{
 					if (nearRobot.getName().equals(rdc.getName()))
 					{
-						//Roboter noch in Reichweite also nicht umsetzen
+						//robot in near robots, not change
 						change = false;						
 					}
 				}
 				if (change)
 				{
-					//setze newDest zurück auf null und erneuere oldDest
+					//set newDest to null and change to oldDest
 					rdc.oldDest = rdc.newDest;
 					rdc.newDest = null;
 				}
@@ -130,7 +136,7 @@ public class MasterDestinationWipe extends Behaviour {
 		boolean newOneFind = false;
 		
 		for (RobotCore nearRobot : nearRobots) {
-			//look if near robot has active Wlan and is in information and need new destination
+			//look if near robot has active WLAN and is in information and need new destination
 			if (nearRobot.hasActiveHardwareComponent(wlan.getComponents()))// && nearRobot.hasHardwareComponent(Components.LOOKAROUNDSENSOR)) 
 			{
 				//search same Robot
@@ -147,11 +153,14 @@ public class MasterDestinationWipe extends Behaviour {
 			}
 		}
 		
-		//end if no one need new dest		
+		//end if no one need new destination		
 		if (!newOneFind)
 			return false;
 		
 		Map<String, RobotDestinationCalculation> result = this.robot.getWorld().getNextPassablePositionsByStateWithoutState(information, calculationAway, STATE_HOOVE, STATE_WIPE); 
+		
+		if (result == null && !this.robot.getWorld().containsWorldState(WORLDSTATE_WIPED))
+			return false;
 		
 		if (result == null) {
 			//set all destination to null that the robot could shut down

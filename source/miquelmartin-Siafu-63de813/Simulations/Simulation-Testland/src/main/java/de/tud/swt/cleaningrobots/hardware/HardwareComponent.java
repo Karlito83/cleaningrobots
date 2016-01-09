@@ -1,68 +1,86 @@
 package de.tud.swt.cleaningrobots.hardware;
 
+/**
+ * The abstract class of a hardware component with the energy values.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public abstract class HardwareComponent {
 
 	protected String name;
 	
-	private boolean active;
+	private EnergyState state;
 	private double actualEnergie;
 	
-	//Energieverbrauch wenn Komponente läuft
+	//Energy consumption when the component runs
 	protected double workEnergie;
-	//Energieverbrauch wenn Komponente aus
+	//Energy consumption when the component is out
 	protected double outEnergie;
-	//Energieverbrauch wenn Komponente eingeschaltet wird
+	//Energy consumption when the component turns on
 	protected double onEnergie;
-	//Energieverbrauch wenn Komponente ausgeschaltet wird
+	//Energy consumption when the component turns off
 	protected double offEnergie;
-	
-	public HardwareComponent ()
-	{
-		this.active = false;
+		
+	public HardwareComponent ()	{
+		setState(new EnergyOff());
 		this.actualEnergie = 0.0;
+	}
+	
+	public double getActualEnergy () {
+		return this.actualEnergie;
+	}
+	
+	public void setActualEnergy (double energy) {
+		this.actualEnergie = energy;
+	}
+	
+	public String getName () {
+		return this.name;
+	}
+	
+	public double getWorkEnergy () {
+		return this.workEnergie;
+	}
+	
+	public double getOutEnergy () {
+		return this.outEnergie;
+	}
+	
+	public double getOnEnergy () {
+		return this.onEnergie;
+	}
+	
+	public double getOffEnergy () {
+		return this.offEnergie;
+	}
+	
+	public void setState (EnergyState state) {
+		this.state = state;
+	}
+	
+	public void switchOn() {
+		state.switchOn(this);
+	}
+	
+	public void switchOff() {
+		state.switchOff(this);
+	}
+	
+	public boolean isActive () {
+		return state.isActive();
+	}
+	
+	public double getMinEnergie () {
+		return Math.min(Math.min(workEnergie, offEnergie), Math.min(onEnergie, outEnergie));
+	}
+	
+	public double getMaxEnergie () {
+		return Math.max(Math.max(workEnergie, offEnergie), Math.max(onEnergie, outEnergie));	
 	}
 	
 	protected double caluculateEnergie (double value) {
 		return (value / 3600);
-	}
-	
-	public String getName ()
-	{
-		return name;
-	}
-	
-	public double getActualEnergie ()
-	{
-		double out = actualEnergie;		
-		if (active)
-			actualEnergie = workEnergie;
-		else
-			actualEnergie = outEnergie;
-		return out;
-	}
-	
-	public boolean isActive ()
-	{
-		return active;
-	}
-	
-	public void changeActive ()
-	{
-		if (active)
-			actualEnergie = offEnergie;
-		else
-			actualEnergie = onEnergie;
-		active = !active;
-	}
-	
-	public double getMinEnergie () 
-	{
-		return Math.min(Math.min(workEnergie, offEnergie), Math.min(onEnergie, outEnergie));
-	}
-	
-	public double getMaxEnergie () 
-	{
-		return Math.max(Math.max(workEnergie, offEnergie), Math.max(onEnergie, outEnergie));	
 	}
 	
 	public abstract Components getComponents ();
