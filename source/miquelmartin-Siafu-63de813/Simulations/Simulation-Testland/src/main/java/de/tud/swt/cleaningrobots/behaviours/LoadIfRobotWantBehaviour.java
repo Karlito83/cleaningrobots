@@ -1,14 +1,9 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
-
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.hardware.Components;
-import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.hardware.LoadStation;
 
 /**
@@ -24,21 +19,17 @@ public class LoadIfRobotWantBehaviour extends Behaviour {
 	public LoadIfRobotWantBehaviour(RobotCore robot) {
 		super(robot);
 
-		//add components
-		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
-		hardware.put(Components.LOADSTATION, 1);
-		
-		d = new Demand(hardware, robot);
-		hardwarecorrect = d.isCorrect();
-		
-		//get vision Radius from load station component
-		for (HardwareComponent hard : d.getHcs())
-		{
-			if (hard.getComponents() == Components.LOADSTATION)
-			{
-				loadStation = (LoadStation)hard;
-			}
-		}
+		this.loadStation = (LoadStation) this.d.getHardwareComponent(Components.LOADSTATION);
+	}
+	
+	@Override
+	protected void addSupportedStates() {
+		//no states needed...		
+	}
+
+	@Override
+	protected void addHardwareComponents() {
+		this.d.addDemandPair(Components.LOADSTATION, 1);		
 	}
 
 	@Override

@@ -2,15 +2,10 @@ package de.tud.swt.cleaningrobots.behaviours;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.EnumMap;
-import java.util.Map;
-
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.Components;
-import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.hardware.Wiper;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.Position;
@@ -24,7 +19,7 @@ import de.tud.swt.cleaningrobots.model.State;
  */
 public class WipeAroundAtDestinationBehaviour extends Behaviour {
 	
-	private int visionRadius = 0;
+	private int visionRadius;
 	
 	private State STATE_WIPE;
 	private State STATE_HOOVE;
@@ -32,27 +27,23 @@ public class WipeAroundAtDestinationBehaviour extends Behaviour {
 	public WipeAroundAtDestinationBehaviour(RobotCore robot) {
 		super(robot);
 		
+		Wiper las = (Wiper) this.d.getHardwareComponent(Components.WIPER);
+		this.visionRadius = las.getRadius();
+	}
+	
+	@Override
+	protected void addSupportedStates() {
 		//create and add the states
 		this.STATE_WIPE = robot.configuration.createState("Wipe");
 		this.STATE_HOOVE = robot.configuration.createState("Hoove");
-				
-		supportedStates.add(STATE_WIPE);
-		supportedStates.add(STATE_HOOVE);
-		
-		//add the hardware components and proof there correctness
-		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
-		hardware.put(Components.WIPER, 1);
-		
-		d = new Demand(hardware, robot);
-		hardwarecorrect = d.isCorrect();
-				
-		for (HardwareComponent robothc : d.getHcs()) {
-			if (robothc.getComponents() == Components.WIPER)
-			{
-				Wiper las = (Wiper) robothc;
-				visionRadius = las.getRadius();
-			}
-		}
+						
+		this.supportedStates.add(this.STATE_WIPE);
+		this.supportedStates.add(this.STATE_HOOVE);		
+	}
+
+	@Override
+	protected void addHardwareComponents() {
+		this.d.addDemandPair(Components.WIPER, 1);
 	}
 
 	@Override
@@ -61,10 +52,7 @@ public class WipeAroundAtDestinationBehaviour extends Behaviour {
 		if (robot.getDestinationContainer().isAtDestination() && robot.getDestinationContainer().isDestinationSet() 
 				&& !robot.getDestinationContainer().isAtLoadDestination()) {
 			//start all hardware components
-			for (HardwareComponent hard : d.getHcs())
-			{
-				hard.switchOn();
-			}
+			this.d.switchAllOn();
 					
 			//Activate flag that he has new information
 			for (RobotRole rr : robot.getRoles()) {
@@ -81,10 +69,7 @@ public class WipeAroundAtDestinationBehaviour extends Behaviour {
 					
 		} else {
 			//switch off the hardware components if not needed
-			for (HardwareComponent hard : d.getHcs())
-			{
-				hard.switchOff();
-			}
+			this.d.switchAllOff();
 		}
 		return false;
 	}

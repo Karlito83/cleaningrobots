@@ -3,7 +3,6 @@ package de.tud.swt.cleaningrobots.merge;
 import java.util.LinkedList;
 import java.util.List;
 
-import de.tud.evaluation.ExchangeMeasurement;
 import de.tud.swt.cleaningrobots.Configuration;
 import de.tud.swt.cleaningrobots.FollowerRole;
 import de.tud.swt.cleaningrobots.MasterRole;
@@ -19,51 +18,31 @@ import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.model.World;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
-/**
- * Merge of models between two robots with the direct world information.
- * 
- * @author Christopher Werner
- *
- */
-public class MergeAllWithoutModel {
+public class WorldMerge extends AgentMerge {
 
-	private ExchangeMeasurement em; 
-	private Configuration configuration;
-	
-	public MergeAllWithoutModel (Configuration configuration) {
-		this.configuration = configuration;
-	}
-		
-	/**
-	 * Measurement if robot comes with new information.
-	 * @param name
-	 */
-	public void newInformationMeasure (String name) {
-		em = new ExchangeMeasurement(name, "New Info", configuration.wc.iteration);
-		em.addKnowledgeIntegerNumber(1);
-		em.addKnowledgeStringNumber(1);
-		em.addKnowledgeStringByteNumber(name.getBytes().length);
-		configuration.wc.exchange.add(em);
+	public WorldMerge(Configuration configuration) {
+		super(configuration);
 	}
 	
 	/**
 	 * Import and Export the Model without using the EMF Model. It only need the RobotCore of each Robot and its World.
-	 * @param exportcore RobotCore for export
-	 * @param importcore RobotCore for import
+	 * @param from RobotCore for export
+	 * @param to RobotCore for import
 	 * @param config
 	 */
-	public void importAllWithoutModel (RobotCore exportcore, RobotCore importcore, ImportExportConfiguration config) {
+	@Override
+	protected void action(RobotCore from, RobotCore to,
+			ImportExportConfiguration config) {
 		//name information which always send
-		em = new ExchangeMeasurement(exportcore.getName(), importcore.getName(), configuration.wc.iteration);
 		em.addKnowledgeStringNumber(1);
-		em.addKnowledgeStringByteNumber(exportcore.getName().getBytes().length);
+		em.addKnowledgeStringByteNumber(from.getName().getBytes().length);
 		//add robot knowledge
 		if (config.knowledge)
 		{
 			//run over all robot knowledge and own knowledge and insert information
-			for (RobotKnowledge exportRk : exportcore.getKnowledge()) {
+			for (RobotKnowledge exportRk : from.getKnowledge()) {
 				boolean isIn = false;
-				for (RobotKnowledge importRk : importcore.getKnowledge()) {
+				for (RobotKnowledge importRk : to.getKnowledge()) {
 					if (exportRk.getName().equals(importRk.getName())) {
 						isIn = true;
 						importRobotKnowledgeWithoutModel(importRk, exportRk);							
@@ -71,32 +50,32 @@ public class MergeAllWithoutModel {
 				}
 				if (!isIn) {
 					RobotKnowledge importRk = new RobotKnowledge(exportRk.getName());
-					importcore.getKnowledge().add(importRk);
+					to.getKnowledge().add(importRk);
 					importRobotKnowledgeWithoutModel(importRk, exportRk);
 				}
 			}
 			boolean isIn = false;
-			for (RobotKnowledge importRk : importcore.getKnowledge()) {
-				if (importRk.getName().equals(exportcore.getName())) {
+			for (RobotKnowledge importRk : to.getKnowledge()) {
+				if (importRk.getName().equals(from.getName())) {
 					isIn = true;			
-					importRobotKnowledgeWithoutModel(importRk, exportcore);
+					importRobotKnowledgeWithoutModel(importRk, from);
 				}
 			}
 			if (!isIn) {
-				RobotKnowledge importRk = new RobotKnowledge(exportcore.getName());
-				importcore.getKnowledge().add(importRk);
-				importRobotKnowledgeWithoutModel(importRk, exportcore);
+				RobotKnowledge importRk = new RobotKnowledge(from.getName());
+				to.getKnowledge().add(importRk);
+				importRobotKnowledgeWithoutModel(importRk, from);
 			}
 		}
 		if (config.knownstates && !config.knowledge)
 		{
 			boolean isIn = false;
-			for (RobotKnowledge hisRk : importcore.getKnowledge()) {					
-				if (hisRk.getName().equals(exportcore.getName())) {
+			for (RobotKnowledge hisRk : to.getKnowledge()) {					
+				if (hisRk.getName().equals(from.getName())) {
 					isIn = true;
 					//insert the new information from the robot
 					List<State> knowns = new LinkedList<State>();
-					for (State s : exportcore.getSupportedStates()) {
+					for (State s : from.getSupportedStates()) {
 						knowns.add(s);
 						em.addStatesStringByteNumber(s.getName().getBytes().length);
 						em.addStatesStringNumber(1);
@@ -105,23 +84,22 @@ public class MergeAllWithoutModel {
 				}
 			}
 			if (!isIn) {
-				RobotKnowledge rk = new RobotKnowledge(exportcore.getName());
+				RobotKnowledge rk = new RobotKnowledge(from.getName());
 				List<State> knowns = new LinkedList<State>();
-				for (State s : exportcore.getSupportedStates()) {
+				for (State s : from.getSupportedStates()) {
 					knowns.add(s);
 					em.addStatesStringByteNumber(s.getName().getBytes().length);
 					em.addStatesStringNumber(1);
 				}
 				rk.setKnownStates(knowns);
-				importcore.getKnowledge().add(rk);
+				to.getKnowledge().add(rk);
 			}
 		}
 		if (config.world)
 		{
 			//World and Field import
-			importFieldsFromWorld(exportcore, importcore, config);
+			importFieldsFromWorld(from, to, config);
 		}
-		configuration.wc.exchange.add(em);
 	}
 	
 	private void importRobotKnowledgeWithoutModel (RobotKnowledge importRk, RobotCore exportR) {
@@ -249,14 +227,14 @@ public class MergeAllWithoutModel {
 		}
 	}
 	
-	private void importFieldsFromWorld(RobotCore exportcore, RobotCore importcore, ImportExportConfiguration config) {
-		World world = exportcore.getWorld();
+	private void importFieldsFromWorld(RobotCore from, RobotCore to, ImportExportConfiguration config) {
+		World world = from.getWorld();
 		//x and yDim
 		em.addWorldIntegerNumber(2);
 		
 		//add worldstates
 		for (State worldState : world.getWorldStates()) {
-			importcore.getWorld().addWorldState(worldState);
+			to.getWorld().addWorldState(worldState);
 			em.addWorldStatesStringByteNumber(worldState.getName().getBytes().length);
 			em.addWorldStatesStringNumber(1);
 		}
@@ -297,12 +275,13 @@ public class MergeAllWithoutModel {
 				em.addWorldStringNumber(1);
 			}
 			em.addWorldPositionCount(1);
-			importcore.getWorld().addField(newField);
+			to.getWorld().addField(newField);
 		}
-		importcore.getWorld().resetNewInformationCounter();
+		to.getWorld().resetNewInformationCounter();
 		
 		//measurement
 		//configuration.exchange.add(em2);
 		//configuration.exchange.add(em3);
 	}
+
 }

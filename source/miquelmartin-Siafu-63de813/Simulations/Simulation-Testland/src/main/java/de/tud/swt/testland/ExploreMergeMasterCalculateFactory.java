@@ -52,9 +52,8 @@ public class ExploreMergeMasterCalculateFactory extends RobotFactory {
 				era.addRandomStandardGoals();
 				population.add(era);		
 				
-				FollowerRole fre = new FollowerRole(era.getRobot());
+				FollowerRole fre = new FollowerRole(era.getRobot(), mre);
 				fre.addRole(fre);
-				fre.master = mre;
 				mre.getFollowers().add(fre);
 			}
 		
@@ -71,9 +70,8 @@ public class ExploreMergeMasterCalculateFactory extends RobotFactory {
 					hra.addRandomStandardGoals();
 					population.add(hra);
 					
-					FollowerRole frh = new FollowerRole(hra.getRobot());
+					FollowerRole frh = new FollowerRole(hra.getRobot(), mrh);
 					frh.addRole(frh);
-					frh.master = mrh;
 					mrh.getFollowers().add(frh);
 				}
 				mrh.getFollowers().add(mre);
@@ -91,9 +89,8 @@ public class ExploreMergeMasterCalculateFactory extends RobotFactory {
 						wra.addRandomStandardGoals();
 						population.add(wra);
 						
-						FollowerRole frw = new FollowerRole(wra.getRobot());
+						FollowerRole frw = new FollowerRole(wra.getRobot(), mrw);
 						frw.addRole(frw);
-						frw.master = mrw;
 						mrw.getFollowers().add(frw);
 					}
 					mrw.getFollowers().add(mrh);

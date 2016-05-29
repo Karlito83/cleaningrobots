@@ -1,13 +1,8 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
-import java.util.EnumMap;
-import java.util.Map;
-
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
-import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
 
@@ -30,25 +25,27 @@ public class WipeBehaviour extends Behaviour{
 
 	public WipeBehaviour(RobotCore robot, boolean relative) {
 		super(robot);
-		
+				
+		this.relative = relative;
+		this.finishWiping = false;	
+	}	
+	
+	@Override
+	protected void addSupportedStates() {
 		//create and add the states
 		this.STATE_HOOVE = robot.configuration.createState("Hoove");
 		this.STATE_WIPE = robot.configuration.createState("Wipe");		
 		this.WORLDSTATE_WIPED = robot.configuration.createState("Wiped");
 		this.WORLDSTATE_HOOVED = robot.configuration.createState("Hooved");
-		
-		supportedStates.add(STATE_HOOVE);
-		supportedStates.add(STATE_WIPE);
-		
-		this.relative = relative;
-		this.finishWiping = false;
-		
-		//add the hardware components and proof there correctness
-		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
-		//same as in DiscoverBehaviour
-		d = new Demand(hardware, robot);
-		hardwarecorrect = d.isCorrect();		
-	}	
+				
+		this.supportedStates.add(this.STATE_HOOVE);
+		this.supportedStates.add(this.STATE_WIPE);		
+	}
+
+	@Override
+	protected void addHardwareComponents() {
+		//no hardware components needed...
+	}
 	
 	public boolean isFinishWipe () {
 		return finishWiping;
@@ -74,7 +71,7 @@ public class WipeBehaviour extends Behaviour{
 				nextNotWipePosition = this.robot.getWorld().getNextPassablePositionByStateWithoutState(STATE_HOOVE, STATE_WIPE);
 						
 			if(nextNotWipePosition != null){
-				robot.getDestinationContainer().setDestination(nextNotWipePosition);
+				robot.getDestinationContainer().setDestination(nextNotWipePosition, false);
 				
 				//if there is a Accu proof if you can come to the next destination if not drive to load station
 				if (robot.getAccu() != null)

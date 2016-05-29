@@ -20,12 +20,11 @@ public class RobotAgent extends Agent implements ICommunicationAdapter {
 
 	private boolean finish;	
 	protected RobotCore cleaningRobot;
-	protected World siafuWorld;
+	private World siafuWorld;
 	
-	public RobotAgent(Position start, String image, World world) {		
-		super(start, image, world);
-				
-		this.setSpeed(1);
+	public RobotAgent(String name, Position start, String image, World world) {		
+		super(name, start, image, world);
+		this.siafuWorld = world;
 	}	
 		
 	@Override

@@ -8,9 +8,16 @@ package de.tud.swt.cleaningrobots;
  */
 public class FollowerRole extends RobotRole {
 	
-	public MasterRole master;
+	private MasterRole master;
 
-	public FollowerRole(RobotCore robotCore) {
+	public FollowerRole(RobotCore robotCore, MasterRole master) {
 		super(robotCore);
+		this.master = master;
 	}
+	
+	public MasterRole getMaster () {
+		return master;
+	}
+	
+	
 }

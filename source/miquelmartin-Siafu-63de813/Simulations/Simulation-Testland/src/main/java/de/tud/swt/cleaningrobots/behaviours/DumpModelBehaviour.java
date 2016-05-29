@@ -6,12 +6,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
 import javax.imageio.ImageIO;
 
 import org.eclipse.emf.common.util.URI;
@@ -26,9 +23,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.WorldPart;
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.hardware.Components;
 import de.tud.swt.cleaningrobots.util.EMFUtils;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
@@ -50,11 +45,18 @@ public class DumpModelBehaviour extends Behaviour {
 
 	public DumpModelBehaviour(RobotCore robot) {
 		super(robot);
-		counter = 0;
 		
-		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);		
-		d = new Demand(hardware, robot);
-		hardwarecorrect = d.isCorrect();
+		this.counter = 0;
+	}
+	
+	@Override
+	protected void addSupportedStates() {
+		//no states needed...		
+	}
+
+	@Override
+	protected void addHardwareComponents() {
+		//no hardware components needed...
 	}
 
 	@Override

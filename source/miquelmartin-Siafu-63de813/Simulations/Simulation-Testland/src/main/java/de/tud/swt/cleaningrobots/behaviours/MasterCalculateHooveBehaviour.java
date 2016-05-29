@@ -1,17 +1,14 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.MasterRole;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.Components;
-import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.merge.MasterFieldMerge;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
@@ -43,37 +40,35 @@ public class MasterCalculateHooveBehaviour extends Behaviour {
 	
 	public MasterCalculateHooveBehaviour(RobotCore robot, MasterRole mr, boolean relative) {
 		super(robot);
-		
+				
+		this.mr = mr;
+		this.firstStart = true;
+		this.relative = relative;
+		this.mfm = new MasterFieldMerge(this.robot.configuration);
+		this.information = new HashMap<String, RobotDestinationCalculation>();		
+	}
+	
+	@Override
+	protected void addSupportedStates() {
 		//create and add the states
 		this.STATE_HOOVE = robot.configuration.createState("Hoove");
 		this.STATE_FREE = robot.configuration.createState("Free");		
 		this.WORLDSTATE_DISCOVERED = robot.configuration.createState("Discovered");
 		this.WORLDSTATE_HOOVED = robot.configuration.createState("Hooved");
 
-		supportedStates.add(STATE_HOOVE);
-		supportedStates.add(STATE_FREE);
-		
-		this.mr = mr;
-		this.firstStart = true;
-		this.relative = relative;
-		this.mfm = new MasterFieldMerge(this.robot.configuration);
-		this.information = new HashMap<String, RobotDestinationCalculation>();
-		
-		//add the hardware components and proof there correctness
-		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
-		hardware.put(Components.WLAN, 1);
-				
-		d = new Demand(hardware, robot);
-		hardwarecorrect = d.isCorrect();
+		this.supportedStates.add(this.STATE_HOOVE);
+		this.supportedStates.add(this.STATE_FREE);		
+	}
+
+	@Override
+	protected void addHardwareComponents() {
+		this.d.addDemandPair(Components.WLAN, 1);
 	}
 
 	@Override
 	public boolean action() throws Exception {
 		//start all hardware components
-		for (HardwareComponent hard : d.getHcs())
-		{
-			hard.switchOn();
-		}
+		this.d.switchAllOn();
 				
 		if (firstStart)
 		{

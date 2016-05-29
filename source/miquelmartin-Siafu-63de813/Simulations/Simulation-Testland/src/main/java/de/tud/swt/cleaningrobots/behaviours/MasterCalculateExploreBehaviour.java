@@ -1,17 +1,14 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.MasterRole;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.Components;
-import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.merge.MasterFieldMerge;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
@@ -42,37 +39,35 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 	
 	public MasterCalculateExploreBehaviour(RobotCore robot, MasterRole mr, boolean relative) {
 		super(robot);
-		
+				
+		this.mr = mr;
+		this.firstStart = true;
+		this.relative = relative;
+		this.mfm = new MasterFieldMerge(this.robot.configuration);
+		this.information = new HashMap<String, RobotDestinationCalculation>();		
+	}
+	
+	@Override
+	protected void addSupportedStates() {
 		//create and add the states
 		this.STATE_BLOCKED = robot.configuration.createState("Blocked");
 		this.STATE_FREE = robot.configuration.createState("Free");
 		this.WORLDSTATE_DISCOVERED = robot.configuration.createState("Discovered");
 
 		supportedStates.add(STATE_BLOCKED);
-		supportedStates.add(STATE_FREE);
-		
-		this.mr = mr;
-		this.firstStart = true;
-		this.relative = relative;
-		this.mfm = new MasterFieldMerge(this.robot.configuration);
-		this.information = new HashMap<String, RobotDestinationCalculation>();
-		
-		//add the hardware components and proof there correctness
-		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
-		hardware.put(Components.WLAN, 1);
-				
-		d = new Demand(hardware, robot);
-		hardwarecorrect = d.isCorrect();
+		supportedStates.add(STATE_FREE);		
+	}
+
+	@Override
+	protected void addHardwareComponents() {
+		this.d.addDemandPair(Components.WLAN, 1);
 	}
 
 	@Override
 	public boolean action() {
 		
 		//start all hardware components
-		for (HardwareComponent hard : d.getHcs())
-		{
-			hard.switchOn();
-		}
+		this.d.switchAllOn();
 		
 		if (firstStart)
 		{

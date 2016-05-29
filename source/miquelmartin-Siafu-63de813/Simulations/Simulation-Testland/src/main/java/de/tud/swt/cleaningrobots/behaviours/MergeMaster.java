@@ -1,7 +1,6 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,13 +8,11 @@ import java.util.Map;
 import org.eclipse.emf.ecore.EObject;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.MasterRole;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotKnowledge;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.Components;
-import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
 import de.tud.swt.cleaningrobots.merge.MergeAll;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
@@ -32,8 +29,7 @@ public class MergeMaster extends Behaviour {
 	
 	private MasterRole mr;
 	private MergeAll ma;
-	private Wlan wlan;	
-	
+	private int visionRadius;	
 	private List<RobotRole> lastChange;
 	
 	public MergeMaster(RobotCore robot, MasterRole mr) {
@@ -43,32 +39,27 @@ public class MergeMaster extends Behaviour {
 		this.lastChange = new ArrayList<RobotRole>();
 		this.ma = new MergeAll(this.robot.configuration);
 		
-		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
-		hardware.put(Components.WLAN, 1);
-		
-		d = new Demand(hardware, robot);
-		hardwarecorrect = d.isCorrect();
-		
-		//get vision Radius from the WLAN component
-		for (HardwareComponent hard : d.getHcs())
-		{
-			if (hard.getComponents() == Components.WLAN)
-			{
-				wlan = (Wlan)hard;
-			}
-		}
+		Wlan wlan = (Wlan) this.d.getHardwareComponent(Components.WLAN);
+		this.visionRadius = wlan.getVisionRadius();			
+	}
+	
+	@Override
+	protected void addSupportedStates() {
+		//no states needed...		
+	}
+
+	@Override
+	protected void addHardwareComponents() {
+		this.d.addDemandPair(Components.WLAN, 1);
 	}
 
 	@Override
 	public boolean action() {
 		
 		//start all hardware components
-		for (HardwareComponent hard : d.getHcs())
-		{
-			hard.switchOn();
-		}
+		this.d.switchAllOn();
 		
-		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(wlan.getVisionRadius());
+		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(this.visionRadius);
 		nearRobots.remove(this.robot);
 		
 		//if no nearRobots end this behavior
@@ -80,7 +71,7 @@ public class MergeMaster extends Behaviour {
 		Map<RobotRole, ImportExportConfiguration> nearsNoNewInformation = new HashMap<RobotRole, ImportExportConfiguration>();
 		for (RobotCore nearRobot : nearRobots) {
 			//could only communicate with near robots if they have active WLAN
-			if (nearRobot.hasActiveHardwareComponent(wlan.getComponents())) {
+			if (nearRobot.hasActiveHardwareComponent(Components.WLAN)) {
 				//near robot must be a follower
 				List<RobotRole> frr = mr.getFollowers();				
 				for (RobotRole rr : frr)

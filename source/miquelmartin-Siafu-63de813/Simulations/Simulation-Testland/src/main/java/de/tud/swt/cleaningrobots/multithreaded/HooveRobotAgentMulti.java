@@ -26,10 +26,10 @@ import de.tud.swt.cleaningrobots.model.Position;
  */
 public class HooveRobotAgentMulti extends RobotAgentMulti {
 	
-	public HooveRobotAgentMulti(Position start, MultiWorld world, Configuration configuration) {
-		super(start, world);
+	public HooveRobotAgentMulti(String name, Position start, MultiWorld world, Configuration configuration) {
+		super(name, start, world);
 
-		cleaningRobot = new RobotCore(this, new Accu(48.0), configuration); //new Accu(0, 1000)
+		cleaningRobot = new RobotCore(name, this, new Accu(48.0), configuration); //new Accu(0, 1000)
 		
 		cleaningRobot.addHardwareComponent(new Rechner());
 		cleaningRobot.addHardwareComponent(new Wlan());

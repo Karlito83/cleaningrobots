@@ -1,17 +1,14 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.MasterRole;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.Components;
-import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
 import de.tud.swt.cleaningrobots.merge.MasterFieldMerge;
 import de.tud.swt.cleaningrobots.util.RobotDestinationCalculation;
@@ -26,7 +23,7 @@ public class MasterDestinationExplore extends Behaviour {
 
 	private MasterRole mr;
 	
-	private Wlan wlan;
+	private int visionRadius;
 	private boolean firstStart;
 	private int calculationAway;
 	private MasterFieldMerge mfm;	
@@ -42,30 +39,24 @@ public class MasterDestinationExplore extends Behaviour {
 		this.information = new HashMap<String, RobotDestinationCalculation>();
 		this.firstStart = true;
 		
-		//add the hardware components and proof there correctness
-		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
-		hardware.put(Components.WLAN, 1);		
-		
-		d = new Demand(hardware, robot);
-		hardwarecorrect = d.isCorrect();
-		
-		//get vision Radius from the WLAN component
-		for (HardwareComponent hard : d.getHcs())
-		{
-			if (hard.getComponents() == Components.WLAN)
-			{
-				wlan = (Wlan)hard;
-			}
-		}		
+		Wlan wlan = (Wlan) this.d.getHardwareComponent(Components.WLAN);
+		this.visionRadius = wlan.getVisionRadius();
+	}
+	
+	@Override
+	protected void addSupportedStates() {
+		//no states needed...		
+	}
+
+	@Override
+	protected void addHardwareComponents() {
+		this.d.addDemandPair(Components.WLAN, 1);
 	}
 
 	@Override
 	public boolean action() throws Exception {
 		//start all hardware components
-		for (HardwareComponent hard : d.getHcs())
-		{
-			hard.switchOn();
-		}
+		this.d.switchAllOn();
 		
 		if (this.firstStart)
 		{
@@ -91,7 +82,7 @@ public class MasterDestinationExplore extends Behaviour {
 		}
 				
 		//search near Explore Robots
-		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(wlan.getVisionRadius());
+		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(this.visionRadius);
 		nearRobots.remove(this.robot);
 				
 		for (RobotDestinationCalculation rdc : information.values()) {
@@ -128,7 +119,7 @@ public class MasterDestinationExplore extends Behaviour {
 		
 		for (RobotCore nearRobot : nearRobots) {
 			//look if near robot has active WLAN and is in information and need new destination
-			if (nearRobot.hasActiveHardwareComponent(wlan.getComponents()))// && nearRobot.hasHardwareComponent(Components.LOOKAROUNDSENSOR)) 
+			if (nearRobot.hasActiveHardwareComponent(Components.WLAN))// && nearRobot.hasHardwareComponent(Components.LOOKAROUNDSENSOR)) 
 			{
 				//search same Robot
 				for (RobotDestinationCalculation rdc : information.values()) {
@@ -157,7 +148,7 @@ public class MasterDestinationExplore extends Behaviour {
 					if (rdc.getName().equals(nearRobot.getName()))
 					{
 						mfm.sendNullDestination(nearRobot.getName());
-						nearRobot.getDestinationContainer().setMasterDestination(null);
+						nearRobot.getDestinationContainer().setDestination(null, true);
 					}
 				}
 			}
@@ -172,7 +163,7 @@ public class MasterDestinationExplore extends Behaviour {
 				if (rdc.getName().equals(nearRobot.getName()) && rdc.needNew)
 				{
 					mfm.sendDestination(nearRobot.getName());
-					nearRobot.getDestinationContainer().setMasterDestination(rdc.newDest);
+					nearRobot.getDestinationContainer().setDestination(rdc.newDest, true);
 				}
 			}
 		}

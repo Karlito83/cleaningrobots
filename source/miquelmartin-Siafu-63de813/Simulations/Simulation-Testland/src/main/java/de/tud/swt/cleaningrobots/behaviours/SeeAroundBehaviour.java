@@ -2,14 +2,9 @@ package de.tud.swt.cleaningrobots.behaviours;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.EnumMap;
-import java.util.Map;
-
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.hardware.Components;
-import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.hardware.LookAroundSensor;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.State;
@@ -23,7 +18,7 @@ import de.tud.swt.cleaningrobots.model.State;
  */
 public class SeeAroundBehaviour extends Behaviour {
 
-	private int visionRadius = 0;
+	private int visionRadius;
 	
 	private State STATE_BLOCKED;
 	private State STATE_FREE;
@@ -31,37 +26,30 @@ public class SeeAroundBehaviour extends Behaviour {
 	public SeeAroundBehaviour(RobotCore robot) {
 		super(robot);
 		
+		LookAroundSensor las = (LookAroundSensor) this.d.getHardwareComponent(Components.LOOKAROUNDSENSOR);
+		this.visionRadius = las.getRadius();
+	}
+	
+	@Override
+	protected void addSupportedStates() {
 		//create and add the states
 		this.STATE_BLOCKED = robot.configuration.createState("Blocked");
 		this.STATE_FREE = robot.configuration.createState("Free");
-				
-		supportedStates.add(STATE_BLOCKED);
-		supportedStates.add(STATE_FREE);
-		
-		//add the hardware components and proof there correctness
-		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
-		hardware.put(Components.LOOKAROUNDSENSOR, 1);
-		
-		d = new Demand(hardware, robot);
-		hardwarecorrect = d.isCorrect();
-				
-		for (HardwareComponent robothc : d.getHcs()) {
-			if (robothc.getComponents() == Components.LOOKAROUNDSENSOR)
-			{
-				LookAroundSensor las = (LookAroundSensor) robothc;
-				visionRadius = las.getRadius();
-			}
-		}
+						
+		this.supportedStates.add(this.STATE_BLOCKED);
+		this.supportedStates.add(this.STATE_FREE);		
+	}
+
+	@Override
+	protected void addHardwareComponents() {
+		this.d.addDemandPair(Components.LOOKAROUNDSENSOR, 1);
 	}
 
 	@Override
 	public boolean action() throws Exception {
 		
 		//start all hardware components
-		for (HardwareComponent hard : d.getHcs())
-		{
-			hard.switchOn();
-		}
+		this.d.switchAllOn();
 		
 		//add the new field to the world of the robot
 		try {

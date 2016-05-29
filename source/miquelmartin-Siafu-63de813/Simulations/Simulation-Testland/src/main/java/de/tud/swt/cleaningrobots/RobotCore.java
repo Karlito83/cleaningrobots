@@ -54,7 +54,7 @@ public class RobotCore extends Robot {
 	public boolean isLoading;
 	
 	public RobotCore(ICommunicationAdapter communicationAdapter, Accu accu, Configuration configuration) {
-		this("Robby_0", communicationAdapter, accu, configuration);
+		this("Empty", communicationAdapter, accu, configuration);
 	}
 
 	public RobotCore(String name, ICommunicationAdapter communicationAdapter, Accu accu, Configuration configuration) {
@@ -367,7 +367,7 @@ public class RobotCore extends Robot {
 				}
 			} else {
 				FollowerRole f = (FollowerRole)r;
-				em.addKnowledgeStringByteNumber(f.master.getRobotCore().getName().getBytes().length);
+				em.addKnowledgeStringByteNumber(f.getMaster().getRobotCore().getName().getBytes().length);
 				em.addKnowledgeStringNumber(1);
 			}
 		}
@@ -407,7 +407,7 @@ public class RobotCore extends Robot {
 						robot.getRoles().add(master);
 					} else {
 						cleaningrobots.FollowerRole follower = CleaningrobotsFactory.eINSTANCE.createFollowerRole();
-						follower.setMasterName(((FollowerRole)rr).master.getRobotCore().getName());
+						follower.setMasterName(((FollowerRole)rr).getMaster().getRobotCore().getName());
 						robot.getRoles().add(follower);
 					}
 				}

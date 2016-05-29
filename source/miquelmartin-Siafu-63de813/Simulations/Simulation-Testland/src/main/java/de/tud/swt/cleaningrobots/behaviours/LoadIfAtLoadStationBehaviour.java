@@ -1,12 +1,7 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
-import java.util.EnumMap;
-import java.util.Map;
-
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.hardware.Components;
 
 /**
  * Set loading if the robot arrived at load station.
@@ -17,12 +12,17 @@ import de.tud.swt.cleaningrobots.hardware.Components;
 public class LoadIfAtLoadStationBehaviour extends Behaviour {
 	
 	public LoadIfAtLoadStationBehaviour(RobotCore robot) {
-		super(robot);
+		super(robot);		
+	}
+	
+	@Override
+	protected void addSupportedStates() {
+		//no states needed...		
+	}
 
-		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
-		
-		d = new Demand(hardware, robot);
-		hardwarecorrect = d.isCorrect();		
+	@Override
+	protected void addHardwareComponents() {
+		//no hardware components needed...		
 	}
 
 	@Override

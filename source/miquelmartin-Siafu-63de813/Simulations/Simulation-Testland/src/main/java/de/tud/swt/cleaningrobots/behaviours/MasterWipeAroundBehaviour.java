@@ -1,17 +1,12 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
-
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.FollowerRole;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.Components;
-import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.hardware.Wiper;
 import de.tud.swt.cleaningrobots.merge.MasterFieldMerge;
 import de.tud.swt.cleaningrobots.model.Field;
@@ -29,7 +24,7 @@ public class MasterWipeAroundBehaviour extends Behaviour {
 
 	private RobotCore master;
 	
-	private Wiper wipe;
+	private int visionRadius;
 	private MasterFieldMerge mfm;
 	
 	private State STATE_HOOVE;
@@ -40,29 +35,26 @@ public class MasterWipeAroundBehaviour extends Behaviour {
 	public MasterWipeAroundBehaviour(RobotCore robot) {
 		super(robot);
 		
+		this.mfm = new MasterFieldMerge(this.robot.configuration);
+		this.firststart = true;
+						
+		Wiper las = (Wiper) this.d.getHardwareComponent(Components.WIPER);
+		this.visionRadius = las.getRadius();		
+	}
+	
+	@Override
+	protected void addSupportedStates() {
 		//create and add the states
 		this.STATE_HOOVE = robot.configuration.createState("Hoove");
 		this.STATE_WIPE = robot.configuration.createState("Wipe");
-		
-		this.mfm = new MasterFieldMerge(this.robot.configuration);
-		this.firststart = true;
-				
-		supportedStates.add(STATE_HOOVE);
-		supportedStates.add(STATE_WIPE);
-		
-		//add the hardware components and proof there correctness
-		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
-		hardware.put(Components.WIPER, 1);
-		
-		d = new Demand(hardware, robot);
-		hardwarecorrect = d.isCorrect();
-				
-		for (HardwareComponent robothc : d.getHcs()) {
-			if (robothc.getComponents() == Components.WIPER)
-			{
-				wipe = (Wiper) robothc;
-			}
-		}		
+								
+		this.supportedStates.add(this.STATE_HOOVE);
+		this.supportedStates.add(this.STATE_WIPE);		
+	}
+
+	@Override
+	protected void addHardwareComponents() {
+		this.d.addDemandPair(Components.WIPER, 1);
 	}
 
 	@Override
@@ -72,7 +64,7 @@ public class MasterWipeAroundBehaviour extends Behaviour {
 			//get the master object
 			for (RobotRole rr : robot.getRoles()) {
 				if (rr instanceof FollowerRole) {
-					master = ((FollowerRole) rr).master.getRobotCore();
+					master = ((FollowerRole) rr).getMaster().getRobotCore();
 				}
 			}
 			firststart = false;
@@ -80,10 +72,7 @@ public class MasterWipeAroundBehaviour extends Behaviour {
 		
 		if (robot.getDestinationContainer().isAtDestination() && !robot.getDestinationContainer().isAtLoadDestination()) {
 			//start all hardware components
-			for (HardwareComponent hard : d.getHcs())
-			{
-				hard.switchOn();
-			}
+			this.d.switchAllOn();
 			
 			//wipe area
 			//add the new field to the world of the master
@@ -97,10 +86,7 @@ public class MasterWipeAroundBehaviour extends Behaviour {
 			
 		} else {
 			//switch off the hardware components if not needed
-			for (HardwareComponent hard : d.getHcs())
-			{
-				hard.switchOff();
-			}
+			this.d.switchAllOff();
 		}
 		if (robot.getDestinationContainer().isAtDestination())
 		{
@@ -112,7 +98,6 @@ public class MasterWipeAroundBehaviour extends Behaviour {
 	private List<Field> getData() {
 		
 		List<Field> data = new ArrayList<Field>();
-		int visionRadius = wipe.getRadius();
 		for (int xOffset=-visionRadius; xOffset<=visionRadius; xOffset++){
 			for (int yOffset = -visionRadius; yOffset<=visionRadius; yOffset++ )
 			{

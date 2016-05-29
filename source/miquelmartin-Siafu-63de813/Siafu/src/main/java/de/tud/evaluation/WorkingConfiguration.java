@@ -38,4 +38,14 @@ public class WorkingConfiguration {
 		return map + "_V" + config + "_CE" + number_explore_agents + "_CH" + number_hoove_agents +
 				"_CW" + number_wipe_agents + "_B" + new_field_count + "_D" + run;		
 	}
+	
+	public void setConfig () {
+		this.config = 1;
+		this.run = 1;
+		this.new_field_count = 0;
+		this.number_explore_agents = 5;
+		this.number_hoove_agents = 3;
+		this.number_wipe_agents = 0;
+		this.map = 0;	
+	}
 }

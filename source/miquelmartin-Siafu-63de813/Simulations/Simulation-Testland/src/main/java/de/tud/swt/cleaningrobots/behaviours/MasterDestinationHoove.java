@@ -1,17 +1,14 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.MasterRole;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.Components;
-import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
 import de.tud.swt.cleaningrobots.merge.MasterFieldMerge;
 import de.tud.swt.cleaningrobots.model.State;
@@ -30,7 +27,7 @@ public class MasterDestinationHoove extends Behaviour {
 	private State STATE_HOOVE;
 	private State WORLDSTATE_HOOVED;
 	
-	private Wlan wlan;
+	private int visionRadius;
 	private boolean firstStart;
 	private int calculationAway;
 	private MasterFieldMerge mfm;	
@@ -39,40 +36,32 @@ public class MasterDestinationHoove extends Behaviour {
 	
 	public MasterDestinationHoove(RobotCore robot, MasterRole mr) {
 		super(robot);
-		
-		//create and add the states
-		this.STATE_HOOVE = robot.configuration.createState("Hoove");
-		this.WORLDSTATE_HOOVED = robot.configuration.createState("Hooved");
-		
+			
 		this.mr = mr;
 		this.mfm = new MasterFieldMerge(this.robot.configuration);
-		this.information = new HashMap<String, RobotDestinationCalculation>();
+		this.information = new HashMap<String, RobotDestinationCalculation>();		
+		this.firstStart = true;
 		
-		//add the hardware components and proof there correctness
-		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
-		hardware.put(Components.WLAN, 1);		
-		
-		d = new Demand(hardware, robot);
-		hardwarecorrect = d.isCorrect();
-		
-		//get vision Radius from the WLAN component
-		for (HardwareComponent hard : d.getHcs())
-		{
-			if (hard.getComponents() == Components.WLAN)
-			{
-				wlan = (Wlan)hard;
-			}
-		}		
-		firstStart = true;
+		Wlan wlan = (Wlan) this.d.getHardwareComponent(Components.WLAN);
+		this.visionRadius = wlan.getVisionRadius();
+	}
+	
+	@Override
+	protected void addSupportedStates() {
+		//create and add the states
+		this.STATE_HOOVE = robot.configuration.createState("Hoove");
+		this.WORLDSTATE_HOOVED = robot.configuration.createState("Hooved");		
+	}
+
+	@Override
+	protected void addHardwareComponents() {
+		this.d.addDemandPair(Components.WLAN, 1);
 	}
 
 	@Override
 	public boolean action() throws Exception {
 		//start all hardware components
-		for (HardwareComponent hard : d.getHcs())
-		{
-			hard.switchOn();
-		}
+		this.d.switchAllOn();
 		
 		if (firstStart)
 		{
@@ -98,7 +87,7 @@ public class MasterDestinationHoove extends Behaviour {
 		}
 				
 		//search near hoove Robots
-		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(wlan.getVisionRadius());
+		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(this.visionRadius);
 		nearRobots.remove(this.robot);
 				
 		for (RobotDestinationCalculation rdc : information.values()) {
@@ -135,7 +124,7 @@ public class MasterDestinationHoove extends Behaviour {
 		
 		for (RobotCore nearRobot : nearRobots) {
 			//look if near robot has active WLAN and is in information and need new destination
-			if (nearRobot.hasActiveHardwareComponent(wlan.getComponents()))// && nearRobot.hasHardwareComponent(Components.LOOKAROUNDSENSOR)) 
+			if (nearRobot.hasActiveHardwareComponent(Components.WLAN))// && nearRobot.hasHardwareComponent(Components.LOOKAROUNDSENSOR)) 
 			{
 				//search same Robot
 				for (RobotDestinationCalculation rdc : information.values()) {
@@ -167,7 +156,7 @@ public class MasterDestinationHoove extends Behaviour {
 					if (rdc.getName().equals(nearRobot.getName()))
 					{
 						mfm.sendNullDestination(nearRobot.getName());
-						nearRobot.getDestinationContainer().setMasterDestination(null);
+						nearRobot.getDestinationContainer().setDestination(null, true);
 					}
 				}
 			}
@@ -182,7 +171,7 @@ public class MasterDestinationHoove extends Behaviour {
 				if (rdc.getName().equals(nearRobot.getName()) && rdc.needNew)
 				{
 					mfm.sendDestination(nearRobot.getName());
-					nearRobot.getDestinationContainer().setMasterDestination(rdc.newDest);
+					nearRobot.getDestinationContainer().setDestination(rdc.newDest, true);
 				}
 			}
 		}

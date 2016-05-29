@@ -48,8 +48,6 @@ import de.tud.swt.cleaningrobots.multithreaded.RobotAgentMulti;
 public class AgentModelMulti extends BaseAgentModelMulti {
 	
 	private long startTime;
-	private boolean roboterFinish;
-	private boolean completeFinish;
 	private Configuration config;
 	
 	/**
@@ -61,8 +59,6 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 	public AgentModelMulti(MultiWorld world, WorkingConfiguration configuration) {
 		super(world, configuration);
 		this.config = new Configuration(configuration);
-		this.completeFinish = false;
-		this.roboterFinish = false;
 	}
 
 	/**
@@ -99,6 +95,20 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 		return agents;
 	}
 	
+	private boolean runAction (Collection<MultiAgent> agents) {
+		boolean finish = true;
+		//do that for each robot
+		for (MultiAgent a : agents) {
+			//only if robot is on
+			if (!((RobotAgentMulti)a).getRobot().isShutDown()) {
+				((RobotAgentMulti)a).wander();
+				if (!((RobotAgentMulti)a).isFinish())
+					finish = false;
+			}
+		}
+		return finish;
+	}
+	
 	/**
 	 * Make all the normal agents wander around, and the postman, run errands
 	 * from one place to another. His speed depends on the time, slowing down at
@@ -111,62 +121,49 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 	public void doIteration(Collection<MultiAgent> agents) {
 		configuration.iteration = configuration.iteration + 1;
 		
-		if (!completeFinish) {
-			if (!roboterFinish) {			
-				roboterFinish = true;
-				//if not finished than do that
-				for (MultiAgent a : agents) {
-					//only if robot is on
-					if (!((RobotAgentMulti)a).getRobot().isShutDown()) {
-						((RobotAgentMulti)a).wander();
-						if (!((RobotAgentMulti)a).isFinish())
-							roboterFinish = false;
-					}
-				}
-			} else {
-				long endTime = System.nanoTime();
-				
-				for (MultiAgent a : agents) {
-					((RobotAgentMulti)a).getRobot().addLastMeasurement();				
-				}
-				
-				//make data output for all measurements
-				for (MultiAgent a : agents) {
-					RobotCore rc = ((RobotAgentMulti)a).getRobot();
-					
-					//save JSON document in .txt
-					rc.getMeasurement().benchmarkTime = (endTime - startTime);
-					String measu = rc.getMeasurement().toJson();
-					
-					ExportFiles ef = new ExportFiles();
-					String path = "M" + configuration.map + "_V" + configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
-							"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + rc.getName()+ ".txt";
-					ef.addLineToFile(measu, path);
-					/*FileWorker fw = new FileWorker("M" + configuration.map + "_V" + configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
-							"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + rc.getName()+ ".txt");				
-					fw.addLineToFile(measu);*/					
-					
-				}
-				ExportFiles ef = new ExportFiles();
-				String path = "M" + configuration.map + "_V" +configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
-						"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + "exchange.txt";
-				ef.addConfigurationToFile(configuration, path);
-				
-				
-				/*FileWorker fw = new FileWorker("M" + configuration.map + "_V" +configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
-						"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + "exchange.txt");
-				int tester = 0;
-				for (ExchangeMeasurement em : configuration.exchange) {
-					tester++;
-					em.setNumber(tester);
-					String result = em.toJson();
-					fw.addLineToFile(result);
-				}*/
-				System.out.println("Programm Finish!");
-				System.out.println("Iterations: " + configuration.iteration);
-				this.completeFinish = true;
+		if (runAction(agents))
+		{
+			//create Measurement output
+			long endTime = System.nanoTime();
+			
+			for (MultiAgent a : agents) {
+				((RobotAgentMulti)a).getRobot().addLastMeasurement();				
 			}
-		} else {
+			
+			//make data output for all measurements
+			for (MultiAgent a : agents) {
+				RobotCore rc = ((RobotAgentMulti)a).getRobot();
+				
+				//save JSON document in .txt
+				rc.getMeasurement().benchmarkTime = (endTime - startTime);
+				String measu = rc.getMeasurement().toJson();
+				
+				ExportFiles ef = new ExportFiles();
+				String path = "M" + configuration.map + "_V" + configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
+						"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + rc.getName()+ ".txt";
+				ef.addLineToFile(measu, path);
+				/*FileWorker fw = new FileWorker("M" + configuration.map + "_V" + configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
+						"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + rc.getName()+ ".txt");				
+				fw.addLineToFile(measu);*/					
+				
+			}
+			ExportFiles ef = new ExportFiles();
+			String path = "M" + configuration.map + "_V" +configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
+					"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + "exchange.txt";
+			ef.addConfigurationToFile(configuration, path);
+			
+			
+			/*FileWorker fw = new FileWorker("M" + configuration.map + "_V" +configuration.config + "_CE" + configuration.number_explore_agents + "_CH" + configuration.number_hoove_agents +
+					"_CW" + configuration.number_wipe_agents + "_B" + configuration.new_field_count + "_D" + configuration.run + "_" + "exchange.txt");
+			int tester = 0;
+			for (ExchangeMeasurement em : configuration.exchange) {
+				tester++;
+				em.setNumber(tester);
+				String result = em.toJson();
+				fw.addLineToFile(result);
+			}*/
+			System.out.println("Programm Finish!");
+			System.out.println("Iterations: " + configuration.iteration);
 			this.runFinish = true;
 		}
 	}

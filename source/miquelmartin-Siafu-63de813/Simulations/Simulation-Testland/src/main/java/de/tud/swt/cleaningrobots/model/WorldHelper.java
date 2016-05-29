@@ -64,7 +64,7 @@ public class WorldHelper {
 	/***
 	 * Determines the shortest path between two Positions according to the known
 	 * world data (A*-Algorithm)
-	 * 
+	 * Return empty list if start equals destination.
 	 * @param startPosition
 	 * @param destination
 	 * @return Shortest path beginning with the first neighbor of the start

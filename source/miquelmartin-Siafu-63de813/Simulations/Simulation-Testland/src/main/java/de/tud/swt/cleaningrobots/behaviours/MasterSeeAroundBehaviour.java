@@ -1,17 +1,12 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
-
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.FollowerRole;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.Components;
-import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.hardware.LookAroundSensor;
 import de.tud.swt.cleaningrobots.merge.MasterFieldMerge;
 import de.tud.swt.cleaningrobots.model.Field;
@@ -28,7 +23,7 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 
 	private RobotCore master;
 	
-	private LookAroundSensor las;
+	private int visionRadius;
 	private MasterFieldMerge mfm;
 	
 	private State STATE_BLOCKED;
@@ -39,29 +34,26 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 	public MasterSeeAroundBehaviour(RobotCore robot) {
 		super(robot);
 		
-		//create and add the states
-		this.STATE_BLOCKED = robot.configuration.createState("Blocked");
-		this.STATE_FREE = robot.configuration.createState("Free");
-		
 		this.mfm = new MasterFieldMerge(this.robot.configuration);
 		this.firststart = true;
-		
-		supportedStates.add(STATE_BLOCKED);
-		supportedStates.add(STATE_FREE);
-		
-		//add the hardware components and proof there correctness
-		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
-		hardware.put(Components.LOOKAROUNDSENSOR, 1);
-		
-		d = new Demand(hardware, robot);
-		hardwarecorrect = d.isCorrect();
+						
+		LookAroundSensor las = (LookAroundSensor) this.d.getHardwareComponent(Components.LOOKAROUNDSENSOR);
+		this.visionRadius = las.getRadius();		
+	}
+	
+	@Override
+	protected void addSupportedStates() {
+		//create and add the states
+		this.STATE_BLOCKED = robot.configuration.createState("Blocked");
+		this.STATE_FREE = robot.configuration.createState("Free");	
 				
-		for (HardwareComponent robothc : d.getHcs()) {
-			if (robothc.getComponents() == Components.LOOKAROUNDSENSOR)
-			{
-				las = (LookAroundSensor) robothc;
-			}
-		}		
+		this.supportedStates.add(this.STATE_BLOCKED);
+		this.supportedStates.add(this.STATE_FREE);		
+	}
+
+	@Override
+	protected void addHardwareComponents() {
+		this.d.addDemandPair(Components.LOOKAROUNDSENSOR, 1);
 	}
 
 	@Override
@@ -71,7 +63,7 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 			//get the master object
 			for (RobotRole rr : robot.getRoles()) {
 				if (rr instanceof FollowerRole) {
-					master = ((FollowerRole) rr).master.getRobotCore();
+					master = ((FollowerRole) rr).getMaster().getRobotCore();
 				}
 			}
 			firststart = false;
@@ -79,10 +71,7 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 		
 		if (robot.getDestinationContainer().isAtDestination() && !robot.getDestinationContainer().isAtLoadDestination()) {
 			//start all hardware components
-			for (HardwareComponent hard : d.getHcs())
-			{
-				hard.switchOn();
-			}
+			this.d.switchAllOn();
 			
 			//scan area
 			//add the new field to the world of the master
@@ -96,10 +85,7 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 			
 		} else {
 			//switch off the hardware components if not needed
-			for (HardwareComponent hard : d.getHcs())
-			{
-				hard.switchOff();
-			}
+			this.d.switchAllOff();
 		}
 		if (robot.getDestinationContainer().isAtDestination())
 		{
@@ -111,7 +97,6 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 	private List<Field> getData() {
 		
 		List<Field> data = new ArrayList<Field>();
-		int visionRadius = las.getRadius();
 		for (int xOffset=-visionRadius; xOffset<=visionRadius; xOffset++){
 			for (int yOffset = -visionRadius; yOffset<=visionRadius; yOffset++ )
 			{

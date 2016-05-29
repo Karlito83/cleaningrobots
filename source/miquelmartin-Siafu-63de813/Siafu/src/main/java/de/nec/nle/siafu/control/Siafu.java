@@ -93,7 +93,7 @@ public final class Siafu {
 		
 		//Simulation Run Multithreaded
 		if (!EvaluationConstants.USE_GUI) {
-			int maxThreadCounter = 1;
+			int maxThreadCounter = EvaluationConstants.maxThreadCount;
 			Queue<WorkingConfiguration> configurations = new LinkedList<WorkingConfiguration>();
 			boolean running = true;
 			int NUMBER_EXPLORE_AGENTS = 1;
@@ -146,10 +146,9 @@ public final class Siafu {
 			}
 			
 			System.out.println("Configurationen erstellt: " + configurations.size());
-			String simulationPathpfad = "C:\\Users\\Christopher\\Documents\\Workspace\\cleaningrobots-master\\source\\miquelmartin-Siafu-63de813\\Simulations\\Simulation-Testland\\target\\classes";
-			//String simulationPathpfad = "E:\\Masterarbeit\\cleaningrobots-master\\source\\miquelmartin-Siafu-63de813\\Simulations\\Simulation-Testland\\target\\classes";
-			//String simulationPathpfad = "C:\\Users\\ChrissiMobil\\git\\cleaningrobots\\source\\miquelmartin-Siafu-63de813\\Simulations\\Simulation-Testland\\target\\classes";
-			SimulationData simData = SimulationData.getInstance(simulationPathpfad);
+			
+			//Create Simulation Data
+			SimulationData simData = SimulationData.getInstance(EvaluationConstants.simulationPathpfad);
 			simData.getConfigFile();
 			simData.createWallFiles();
 			

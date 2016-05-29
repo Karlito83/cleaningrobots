@@ -27,11 +27,10 @@ import de.tud.swt.cleaningrobots.hardware.Wlan;
  */
 public class LoadStationAgent extends RobotAgent {
 
-	public LoadStationAgent(Position start, String image, World world, Configuration configuration) {
-		super(start, image, world);
+	public LoadStationAgent(String name, Position start, String image, World world, Configuration configuration) {
+		super(name, start, image, world);
 		
-		siafuWorld = world;
-		cleaningRobot = new RobotCore(this, null, configuration);
+		cleaningRobot = new RobotCore(name, this, null, configuration);
 		
 		cleaningRobot.addHardwareComponent(new Rechner());
 		cleaningRobot.addHardwareComponent(new LoadStation());

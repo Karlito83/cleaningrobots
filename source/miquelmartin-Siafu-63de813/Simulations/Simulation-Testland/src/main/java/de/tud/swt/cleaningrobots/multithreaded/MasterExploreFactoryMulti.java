@@ -53,9 +53,8 @@ public class MasterExploreFactoryMulti extends RobotFactoryMulti {
 				era.addMasterExploreGoals();
 				population.add(era);		
 				
-				FollowerRole fre = new FollowerRole(era.getRobot());
+				FollowerRole fre = new FollowerRole(era.getRobot(), mre);
 				fre.addRole(fre);
-				fre.master = mre;
 				mre.getFollowers().add(fre);
 			}
 			
@@ -70,9 +69,8 @@ public class MasterExploreFactoryMulti extends RobotFactoryMulti {
 					hra.addMasterHooveGoals();
 					population.add(hra);
 					
-					FollowerRole frh = new FollowerRole(hra.getRobot());
+					FollowerRole frh = new FollowerRole(hra.getRobot(), mrh);
 					frh.addRole(frh);
-					frh.master = mrh;
 					mrh.getFollowers().add(frh);
 				}
 								
@@ -87,9 +85,8 @@ public class MasterExploreFactoryMulti extends RobotFactoryMulti {
 						wra.addMasterWipeGoals();
 						population.add(wra);
 						
-						FollowerRole frw = new FollowerRole(wra.getRobot());
+						FollowerRole frw = new FollowerRole(wra.getRobot(), mrw);
 						frw.addRole(frw);
-						frw.master = mrw;
 						mrw.getFollowers().add(frw);
 					}
 				}

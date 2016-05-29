@@ -22,8 +22,8 @@ public abstract class RobotFactoryMulti {
 	
 	public RobotFactoryMulti (Configuration configuration) {
 		this.configuration = configuration;
-		//X: 139 Y: 133 Rechteckig
-		//X: 199 Y: 206 Fakultät
+		//X: 139 Y: 133 hall / labyrinth
+		//X: 199 Y: 206 faculty
 		switch (configuration.wc.map) {
 			case 0:  this.position = new Position(139, 133);
 					 break;
@@ -47,11 +47,8 @@ public abstract class RobotFactoryMulti {
 	 * @return the new agent
 	 */
 	protected LoadstationAgentMulti createLoadStationAgent(MultiWorld world) {
-		LoadstationAgentMulti agent = new LoadstationAgentMulti(position, world, configuration);
-
 		counter++;
-		agent.setName("Robbi_" + counter);
-		
+		LoadstationAgentMulti agent = new LoadstationAgentMulti("Robbi_" + counter, position, world, configuration);
 		return agent;
 	}
 	
@@ -63,11 +60,8 @@ public abstract class RobotFactoryMulti {
 	 * @return the new agent
 	 */
 	protected LoadStationMulti createLoadStation(MultiWorld world) {
-		LoadStationMulti agent = new LoadStationMulti(position, world, configuration);
-
 		counter++;
-		agent.setName("Robbi_" + counter);
-		
+		LoadStationMulti agent = new LoadStationMulti("Robbi_" + counter, position, world, configuration);
 		return agent;
 	}
 	
@@ -79,11 +73,8 @@ public abstract class RobotFactoryMulti {
 	 * @return the new agent
 	 */
 	protected ExploreRobotAgentMulti createExploreAgent(MultiWorld world) {
-		ExploreRobotAgentMulti agent = new ExploreRobotAgentMulti(position, world, configuration);
-
 		counter++;
-		agent.setName("Robbi_" + counter);
-
+		ExploreRobotAgentMulti agent = new ExploreRobotAgentMulti("Robbi_" + counter, position, world, configuration);
 		return agent;
 	}	
 	
@@ -95,11 +86,8 @@ public abstract class RobotFactoryMulti {
 	 * @return the new agent
 	 */
 	protected WipeRobotAgentMulti createWipeAgent(MultiWorld world) {
-		WipeRobotAgentMulti agent = new WipeRobotAgentMulti(position, world, configuration);
-
 		counter++;
-		agent.setName("Robbi_" + counter);
-
+		WipeRobotAgentMulti agent = new WipeRobotAgentMulti("Robbi_" + counter, position, world, configuration);
 		return agent;
 	}
 	
@@ -111,11 +99,8 @@ public abstract class RobotFactoryMulti {
 	 * @return the new agent
 	 */
 	protected HooveRobotAgentMulti createHooveAgent(MultiWorld world) {
-		HooveRobotAgentMulti agent = new HooveRobotAgentMulti(position, world, configuration);
-
 		counter++;
-		agent.setName("Robbi_" + counter);
-
+		HooveRobotAgentMulti agent = new HooveRobotAgentMulti("Robbi_" + counter, position, world, configuration);
 		return agent;
 	}
 		

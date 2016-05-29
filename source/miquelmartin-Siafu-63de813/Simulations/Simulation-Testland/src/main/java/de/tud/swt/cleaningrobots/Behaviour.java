@@ -21,8 +21,24 @@ public abstract class Behaviour {
 	public Behaviour(RobotCore robot){
 		this.robot = robot;
 		this.supportedStates = new HashSet<State>();
-		this.hardwarecorrect = false;
+		this.d = new Demand(robot);
+		this.addSupportedStates();
+		this.addHardwareComponents();
+		this.hardwarecorrect = d.isCorrect();
+		
 	}
+	
+	/**
+	 * Add the supported states for each behavior.
+	 * Run in the constructor.
+	 */
+	protected abstract void addSupportedStates ();
+	
+	/**
+	 * Add the hardware components for each behavior.
+	 * Run in the constructor.
+	 */
+	protected abstract void addHardwareComponents ();
 	
 	/**
 	 * Does the actions implemented by the behaviour
@@ -31,7 +47,7 @@ public abstract class Behaviour {
 	 * @throws Exception
 	 */
 	public abstract boolean action() throws Exception;
-	
+		
 	/**
 	 * Gives back true if the robot has the needed Hardware.
 	 * @return

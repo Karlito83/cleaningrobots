@@ -1,6 +1,7 @@
 package de.tud.swt.cleaningrobots;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,42 +16,71 @@ import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
  */
 public class Demand {
 
-	private List<HardwareComponent> hcs;
 	private Map<Components, Integer> hardware;
-	private boolean correct;
+	private RobotCore robot;
+	private List<HardwareComponent> hcList;
 	
-	public Demand (Map<Components, Integer> enumMap, RobotCore r) 
+	public Demand (RobotCore robotCore)
 	{
-		//TODO: Anzahl der Hardwarecomponenten prüfen
-		
-		correct = false;
-		
-		hardware = enumMap;
-		hcs = new ArrayList<HardwareComponent>();
-		
-		for (HardwareComponent robothc : r.getHardwarecomponents()) {
-			if (hardware.containsKey(robothc.getComponents()))
+		this.robot = robotCore;	
+		this.hardware = new EnumMap<Components, Integer> (Components.class);
+		this.hcList = new ArrayList<HardwareComponent>();
+	}
+	
+	public void addDemandPair (Components comp, int value)
+	{
+		hardware.put(comp, value);
+		for (HardwareComponent hc : robot.getHardwarecomponents()) {
+			//add if it isn't in
+			if (comp == hc.getComponents() && !hcList.contains(hc))
 			{
-				hcs.add(robothc);
+				hcList.add(hc);
 			}
 		}
-		
-		if (hcs.size() == hardware.size())
-			correct = true;
-		else
-			correct = false;		
 	}
-
-	public Map<Components, Integer> getHardware() {
-		return hardware;
+	
+	public HardwareComponent getHardwareComponent (Components comp)
+	{
+		for (HardwareComponent hc : this.hcList) {
+			if (hc.getComponents() == comp)
+			{
+				return hc;
+			}
+		}
+		return null;
 	}
-
-	public List<HardwareComponent> getHcs() {
-		return hcs;
+	
+	public void switchAllOn ()
+	{
+		for (HardwareComponent hc : this.hcList)
+		{
+			hc.switchOn();
+		}
+	}
+	
+	public void switchAllOff ()
+	{
+		for (HardwareComponent hc : this.hcList)
+		{
+			hc.switchOff();
+		}
 	}
 
 	public boolean isCorrect() {
-		return correct;
+		//TODO: Anzahl der Hardwarecomponenten prüfen
+		/*List<HardwareComponent> hcList = new ArrayList<HardwareComponent>();
+		for (HardwareComponent hc : robot.getHardwarecomponents()) {
+			if (hardware.containsKey(hc.getComponents()))
+			{
+				hcList.add(hc);
+			}
+		}
+		Map<Components, Integer> hardwareCopy = new EnumMap<Components, Integer> (Components.class);
+		hardwareCopy.putAll(hardware);*/
+		if (hcList.size() == hardware.size())
+			return true;
+		else
+			return false;
 	}
 	
 	

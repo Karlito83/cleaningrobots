@@ -2,15 +2,11 @@ package de.tud.swt.cleaningrobots.behaviours;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.EnumMap;
-import java.util.Map;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.Components;
-import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.hardware.Hoover;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.Position;
@@ -24,7 +20,7 @@ import de.tud.swt.cleaningrobots.model.State;
  */
 public class HooveAroundAtDestinationBehaviour extends Behaviour {
 	
-	private int visionRadius = 0;
+	private int visionRadius;
 	
 	private State STATE_HOOVE;
 	private State STATE_FREE;
@@ -32,27 +28,25 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 	public HooveAroundAtDestinationBehaviour(RobotCore robot) {
 		super(robot);
 		
+		Hoover las = (Hoover) d.getHardwareComponent(Components.HOOVER);
+		this.visionRadius = las.getRadius();
+	}
+	
+	@Override
+	protected void addSupportedStates ()
+	{
 		//create and add the states
 		this.STATE_HOOVE = robot.configuration.createState("Hoove");
 		this.STATE_FREE = robot.configuration.createState("Free");
-				
-		supportedStates.add(STATE_HOOVE);
-		supportedStates.add(STATE_FREE);
-		
-		//add the hardware components and proof there correctness
-		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
-		hardware.put(Components.HOOVER, 1);
-		
-		d = new Demand(hardware, robot);
-		hardwarecorrect = d.isCorrect();
-				
-		for (HardwareComponent robothc : d.getHcs()) {
-			if (robothc.getComponents() == Components.HOOVER)
-			{
-				Hoover las = (Hoover) robothc;
-				visionRadius = las.getRadius();
-			}
-		}
+						
+		this.supportedStates.add(this.STATE_HOOVE);
+		this.supportedStates.add(this.STATE_FREE);
+	}
+	
+	@Override
+	protected void addHardwareComponents ()
+	{
+		this.d.addDemandPair(Components.HOOVER, 1);
 	}
 
 	@Override
@@ -61,10 +55,7 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 		if (robot.getDestinationContainer().isAtDestination() && robot.getDestinationContainer().isDestinationSet() 
 				&& !robot.getDestinationContainer().isAtLoadDestination()) {
 			//start all hardware components
-			for (HardwareComponent hard : d.getHcs())
-			{
-				hard.switchOn();
-			}
+			this.d.switchAllOn();
 			
 			//Activate flag that he has new information
 			for (RobotRole rr : robot.getRoles()) {
@@ -81,10 +72,7 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 				
 		} else {
 			//switch off the hardware components if not needed
-			for (HardwareComponent hard : d.getHcs())
-			{
-				hard.switchOff();
-			}
+			this.d.switchAllOff();
 		}
 		return false;
 	}

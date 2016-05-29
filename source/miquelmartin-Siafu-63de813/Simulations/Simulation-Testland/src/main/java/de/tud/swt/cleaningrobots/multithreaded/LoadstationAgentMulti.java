@@ -27,10 +27,10 @@ import de.tud.swt.cleaningrobots.model.Position;
  */
 public class LoadstationAgentMulti extends RobotAgentMulti {
 
-	public LoadstationAgentMulti (Position start, MultiWorld world, Configuration configuration) {
-		super(start, world);
+	public LoadstationAgentMulti (String name, Position start, MultiWorld world, Configuration configuration) {
+		super(name, start, world);
 
-		cleaningRobot = new RobotCore(this, null, configuration);
+		cleaningRobot = new RobotCore(name, this, null, configuration);
 		
 		cleaningRobot.addHardwareComponent(new Rechner());
 		cleaningRobot.addHardwareComponent(new LoadStation());

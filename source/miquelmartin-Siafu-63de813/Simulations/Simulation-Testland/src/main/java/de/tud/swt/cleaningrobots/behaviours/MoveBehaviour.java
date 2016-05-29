@@ -1,13 +1,8 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
-import java.util.EnumMap;
-import java.util.Map;
-
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.Demand;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.hardware.Components;
-import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 
 /**
  * Behavior that realize the move of an robot to a destination. 
@@ -20,13 +15,16 @@ public class MoveBehaviour extends Behaviour {
 		
 	public MoveBehaviour(RobotCore robot) {
 		super(robot);
-		
-		//add hardware components
-		Map<Components, Integer> hardware = new EnumMap<Components, Integer> (Components.class);
-		hardware.put(Components.MOTOR, 1);
-		
-		d = new Demand(hardware, robot);
-		hardwarecorrect = d.isCorrect();
+	}
+	
+	@Override
+	protected void addSupportedStates() {
+		//no states needed...		
+	}
+
+	@Override
+	protected void addHardwareComponents() {
+		this.d.addDemandPair(Components.MOTOR, 1);
 	}
 
 	@Override
@@ -35,22 +33,14 @@ public class MoveBehaviour extends Behaviour {
 		//if he is not at the destination and not loading he should move
 		if (!robot.getDestinationContainer().isAtDestination() && !robot.isLoading){
 			//start all hardware components
-			for (HardwareComponent hard : d.getHcs())
-			{
-				hard.switchOn();
-			}
+			this.d.switchAllOn();
 			
 			//make the move
-			robot.getDestinationContainer().moveTowardsDestination();
+			robot.getDestinationContainer().moveTowardsDestination(false);
 		} else {
 			//switch off all hardware components
-			for (HardwareComponent hard : d.getHcs())
-			{
-				hard.switchOff();
-			}
-		}
-		
+			this.d.switchAllOff();
+		}		
 		return false;
 	}
-
 }

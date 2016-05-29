@@ -26,11 +26,10 @@ import de.tud.swt.cleaningrobots.hardware.Wlan;
  */
 public class WipeRobotAgent extends RobotAgent {
 
-	public WipeRobotAgent(Position start, String image, World world, Configuration configuration) {
-		super(start, image, world);
+	public WipeRobotAgent(String name, Position start, String image, World world, Configuration configuration) {
+		super(name, start, image, world);
 
-		siafuWorld = world;
-		cleaningRobot = new RobotCore(this, new Accu(48.0), configuration); //new Accu(0, 1000)
+		cleaningRobot = new RobotCore(name, this, new Accu(48.0), configuration); //new Accu(0, 1000)
 		
 		cleaningRobot.addHardwareComponent(new Rechner());
 		cleaningRobot.addHardwareComponent(new Wlan());

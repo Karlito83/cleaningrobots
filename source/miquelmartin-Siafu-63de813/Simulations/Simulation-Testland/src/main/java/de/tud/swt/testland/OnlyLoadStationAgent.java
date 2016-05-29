@@ -16,11 +16,10 @@ import de.tud.swt.cleaningrobots.hardware.LoadStation;
  */
 public class OnlyLoadStationAgent extends RobotAgent {
 
-	public OnlyLoadStationAgent(Position start, String image, World world, Configuration configuration) {
-		super(start, image, world);
+	public OnlyLoadStationAgent(String name, Position start, String image, World world, Configuration configuration) {
+		super(name, start, image, world);
 		
-		siafuWorld = world;
-		cleaningRobot = new RobotCore(this, null, configuration);
+		cleaningRobot = new RobotCore(name, this, null, configuration);
 		
 		cleaningRobot.addHardwareComponent(new LoadStation());
 	}

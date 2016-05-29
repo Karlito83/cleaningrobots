@@ -14,8 +14,7 @@ public class MasterRole extends RobotRole {
 	private List<RobotRole> followers;
 
 	public MasterRole(RobotCore robotCore) {
-		super(robotCore);
-		
+		super(robotCore);		
 		this.followers = new ArrayList<RobotRole>();
 	}
 	

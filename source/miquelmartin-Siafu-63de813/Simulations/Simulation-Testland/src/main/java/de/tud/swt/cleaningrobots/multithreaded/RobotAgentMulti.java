@@ -22,8 +22,8 @@ public class RobotAgentMulti extends MultiAgent implements ICommunicationAdapter
 	
 	protected RobotCore cleaningRobot;	
 	
-	public RobotAgentMulti (Position start, MultiWorld world) {
-		super(start.getX(), start.getY(), world);
+	public RobotAgentMulti (String name, Position start, MultiWorld world) {
+		super(name, start.getX(), start.getY(), world);
 	}
 	
 	public void wander() {
@@ -41,9 +41,10 @@ public class RobotAgentMulti extends MultiAgent implements ICommunicationAdapter
 	public RobotCore getRobot() {
 		return this.cleaningRobot;
 	}
-
+	
+	@Override
 	public void setName(String name) {
-		this.name = name;
+		super.setName(name);
 		this.cleaningRobot.setName(name);
 	}
 	

@@ -33,18 +33,16 @@ public abstract class RobotFactory {
 	 */
 	protected OnlyLoadStationAgent createLoadStation(final World world) {
 		try {
-
-			OnlyLoadStationAgent agent = new OnlyLoadStationAgent(world
+			counter++;
+			
+			OnlyLoadStationAgent agent = new OnlyLoadStationAgent("Robbi_" + counter, world
 					.getRandomPlaceOfType("Center").getPos(), "Master",
 					world, configuration);
 
-			counter++;
-			agent.setName("Robbi_" + counter);
-			
 			return agent;
 		} catch (PlaceNotFoundException e) {
 			throw new RuntimeException(
-					"You didn't define the \"Nowhere\" type of places", e);
+					"You didn't define the right type of places", e);
 		}
 	}
 	
@@ -57,18 +55,16 @@ public abstract class RobotFactory {
 	 */
 	protected LoadStationAgent createLoadStationAgent(final World world) {
 		try {
-
-			LoadStationAgent agent = new LoadStationAgent(world
+			counter++;
+			
+			LoadStationAgent agent = new LoadStationAgent("Robbi_" + counter, world
 					.getRandomPlaceOfType("Center").getPos(), "Master",
 					world, configuration);
-
-			counter++;
-			agent.setName("Robbi_" + counter);
 			
 			return agent;
 		} catch (PlaceNotFoundException e) {
 			throw new RuntimeException(
-					"You didn't define the \"Nowhere\" type of places", e);
+					"You didn't define the right type of places", e);
 		}
 	}
 	
@@ -81,18 +77,16 @@ public abstract class RobotFactory {
 	 */
 	protected ExploreRobotAgent createExploreAgent(final World world) {
 		try {
-
-			ExploreRobotAgent agent = new ExploreRobotAgent(world
+			counter++;
+			
+			ExploreRobotAgent agent = new ExploreRobotAgent("Robbi_" + counter, world
 					.getRandomPlaceOfType("Center").getPos(), "HumanMagenta",
 					world, configuration);
-
-			counter++;
-			agent.setName("Robbi_" + counter);
 
 			return agent;
 		} catch (PlaceNotFoundException e) {
 			throw new RuntimeException(
-					"You didn't define the \"Center\" type of places", e);
+					"You didn't define the right type of places", e);
 		}
 	}	
 	
@@ -105,18 +99,16 @@ public abstract class RobotFactory {
 	 */
 	protected WipeRobotAgent createWipeAgent(final World world) {
 		try {
-
-			WipeRobotAgent agent = new WipeRobotAgent(world
+			counter++;
+			
+			WipeRobotAgent agent = new WipeRobotAgent("Robbi_" + counter, world
 					.getRandomPlaceOfType("Center").getPos(), "HumanYellow",
 					world, configuration);
-
-			counter++;
-			agent.setName("Robbi_" + counter);
 
 			return agent;
 		} catch (PlaceNotFoundException e) {
 			throw new RuntimeException(
-					"You didn't define the \"Center\" type of places", e);
+					"You didn't define the right type of places", e);
 		}
 	}
 	
@@ -129,18 +121,16 @@ public abstract class RobotFactory {
 	 */
 	protected HooveRobotAgent createHooveAgent(final World world) {
 		try {
-
-			HooveRobotAgent agent = new HooveRobotAgent(world
+			counter++;
+			
+			HooveRobotAgent agent = new HooveRobotAgent("Robbi_" + counter, world
 					.getRandomPlaceOfType("Center").getPos(), "HumanGreen",
 					world, configuration);
-
-			counter++;
-			agent.setName("Robbi_" + counter);
 
 			return agent;
 		} catch (PlaceNotFoundException e) {
 			throw new RuntimeException(
-					"You didn't define the \"Center\" type of places", e);
+					"You didn't define the right type of places", e);
 		}
 	}
 		
