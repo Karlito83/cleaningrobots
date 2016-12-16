@@ -157,7 +157,7 @@ public class MergeAll {
 				em.addKnowledgeStringNumber(m.getFollowerNames().size());
 				//add role to importKnowledge
 				MasterRoleModel mrm = new MasterRoleModel();
-				mrm.followers.addAll(m.getFollowerNames());
+				mrm.getFollowers().addAll(m.getFollowerNames());
 				newOnes.add(mrm);				
 			} else {
 				cleaningrobots.FollowerRole f = (cleaningrobots.FollowerRole) r;
@@ -165,7 +165,7 @@ public class MergeAll {
 				em.addKnowledgeStringByteNumber(f.getMasterName().getBytes().length);
 				//add role to importKnowledge
 				FollowerRoleModel frm = new FollowerRoleModel();
-				frm.master = f.getMasterName();
+				frm.setMaster(f.getMasterName());
 				newOnes.add(frm);
 			}
 		}
@@ -209,7 +209,7 @@ public class MergeAll {
 					em.addKnowledgeStringNumber(m.getFollowerNames().size());
 					//add role to importKnowledge
 					MasterRoleModel mrm = new MasterRoleModel();
-					mrm.followers.addAll(m.getFollowerNames());
+					mrm.getFollowers().addAll(m.getFollowerNames());
 					newOnes.add(mrm);
 				} else {
 					cleaningrobots.FollowerRole f = (cleaningrobots.FollowerRole) r;
@@ -217,7 +217,7 @@ public class MergeAll {
 					em.addKnowledgeStringByteNumber(f.getMasterName().getBytes().length);
 					//add role to importKnowledge
 					FollowerRoleModel frm = new FollowerRoleModel();
-					frm.master = f.getMasterName();
+					frm.setMaster(f.getMasterName());
 					newOnes.add(frm);
 				}
 			}

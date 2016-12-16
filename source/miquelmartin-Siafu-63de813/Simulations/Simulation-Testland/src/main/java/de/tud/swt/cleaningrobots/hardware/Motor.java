@@ -10,8 +10,7 @@ public class Motor extends HardwareComponent {
 
 	public Motor ()
 	{
-		super();
-		name = "Motor";
+		super("MOTOR");
 		//0
 		offEnergie = 0.0;
 		//19Wh
@@ -23,7 +22,7 @@ public class Motor extends HardwareComponent {
 	}
 
 	@Override
-	public Components getComponents() {
-		return Components.MOTOR;
+	public ComponentTypes getComponentType() {
+		return ComponentTypes.ACTUATOR;
 	}
 }

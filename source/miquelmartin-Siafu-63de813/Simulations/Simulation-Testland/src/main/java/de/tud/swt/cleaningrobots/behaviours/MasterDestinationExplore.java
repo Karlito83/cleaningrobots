@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.MasterRole;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
-import de.tud.swt.cleaningrobots.hardware.Components;
+import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
 import de.tud.swt.cleaningrobots.merge.MasterFieldMerge;
+import de.tud.swt.cleaningrobots.roles.MasterRole;
 import de.tud.swt.cleaningrobots.util.RobotDestinationCalculation;
 
 /**
@@ -39,7 +39,7 @@ public class MasterDestinationExplore extends Behaviour {
 		this.information = new HashMap<String, RobotDestinationCalculation>();
 		this.firstStart = true;
 		
-		Wlan wlan = (Wlan) this.d.getHardwareComponent(Components.WLAN);
+		Wlan wlan = (Wlan) this.d.getHardwareComponent(ComponentTypes.WLAN);
 		this.visionRadius = wlan.getVisionRadius();
 	}
 	
@@ -50,7 +50,7 @@ public class MasterDestinationExplore extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(Components.WLAN, 1);
+		this.d.addDemandPair(ComponentTypes.WLAN, 1);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class MasterDestinationExplore extends Behaviour {
 				
 			for (RobotRole rr : follower) {
 				RobotCore core = rr.getRobotCore();
-				if (core.hasHardwareComponent(Components.WLAN) && core.hasHardwareComponent(Components.LOOKAROUNDSENSOR))
+				if (core.hasHardwareComponent(ComponentTypes.WLAN) && core.hasHardwareComponent(ComponentTypes.LOOKAROUNDSENSOR))
 				{
 					//add Robot to Map
 					information.put(core.getName(), new RobotDestinationCalculation(core.getName()));
@@ -119,7 +119,7 @@ public class MasterDestinationExplore extends Behaviour {
 		
 		for (RobotCore nearRobot : nearRobots) {
 			//look if near robot has active WLAN and is in information and need new destination
-			if (nearRobot.hasActiveHardwareComponent(Components.WLAN))// && nearRobot.hasHardwareComponent(Components.LOOKAROUNDSENSOR)) 
+			if (nearRobot.hasActiveHardwareComponent(ComponentTypes.WLAN))// && nearRobot.hasHardwareComponent(Components.LOOKAROUNDSENSOR)) 
 			{
 				//search same Robot
 				for (RobotDestinationCalculation rdc : information.values()) {

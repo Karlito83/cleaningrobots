@@ -1,10 +1,10 @@
 package de.tud.swt.cleaningrobots.goals.nonoptional;
 
-import de.tud.swt.cleaningrobots.MasterRole;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.behaviours.MasterCalculateExploreBehaviour;
 import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
 import de.tud.swt.cleaningrobots.model.State;
+import de.tud.swt.cleaningrobots.roles.MasterRole;
 
 /**
  * Non optional goal for a master to coordinate the followers to discover the world. 

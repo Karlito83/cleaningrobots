@@ -10,8 +10,7 @@ public class Rechner extends HardwareComponent {
 
 	public Rechner ()
 	{
-		super();
-		name = "Rechner";
+		super("RECHNER");
 		//0,5Wh
 		offEnergie = caluculateEnergie(5.0);
 		//5Wh
@@ -23,8 +22,8 @@ public class Rechner extends HardwareComponent {
 	}
 	
 	@Override
-	public Components getComponents() {
-		return Components.RECHNER;
+	public ComponentTypes getComponentType() {
+		return ComponentTypes.COMPUTER;
 	}
 
 }

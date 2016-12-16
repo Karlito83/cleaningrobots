@@ -3,7 +3,7 @@ package de.tud.swt.cleaningrobots.behaviours;
 import java.util.List;
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.hardware.Components;
+import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.LoadStation;
 
 /**
@@ -20,7 +20,7 @@ public class LoadBehaviour extends Behaviour {
 	public LoadBehaviour(RobotCore robot) {
 		super(robot);
 
-		this.loadStation = (LoadStation) this.d.getHardwareComponent(Components.LOADSTATION);
+		this.loadStation = (LoadStation) this.d.getHardwareComponent(ComponentTypes.LOADSTATION);
 	}
 	
 	@Override
@@ -30,7 +30,7 @@ public class LoadBehaviour extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(Components.LOADSTATION, 1);		
+		this.d.addDemandPair(ComponentTypes.LOADSTATION, 1);		
 	}
 
 	@Override

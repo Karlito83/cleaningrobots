@@ -22,9 +22,10 @@ public abstract class HardwareComponent {
 	//Energy consumption when the component turns off
 	protected double offEnergie;
 		
-	public HardwareComponent ()	{
-		setState(new EnergyOff());
+	public HardwareComponent (String name)	{
 		this.actualEnergie = 0.0;
+		this.name = name;		
+		setState(new EnergyOff());
 	}
 	
 	public double getActualEnergy () {
@@ -79,10 +80,10 @@ public abstract class HardwareComponent {
 		return Math.max(Math.max(workEnergie, offEnergie), Math.max(onEnergie, outEnergie));	
 	}
 	
-	protected double caluculateEnergie (double value) {
+	public static double caluculateEnergie (double value) {
 		return (value / 3600);
 	}
 	
-	public abstract Components getComponents ();
+	public abstract ComponentTypes getComponentType ();
 	
 }

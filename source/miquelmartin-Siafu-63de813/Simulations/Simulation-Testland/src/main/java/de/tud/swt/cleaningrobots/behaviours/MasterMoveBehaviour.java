@@ -2,7 +2,7 @@ package de.tud.swt.cleaningrobots.behaviours;
 
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.hardware.Components;
+import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 
 /**
  * Behavior that realize the move of an robot to a destination only with the master information. 
@@ -24,7 +24,7 @@ public class MasterMoveBehaviour extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(Components.MOTOR, 1);
+		this.d.addDemandPair(ComponentTypes.ACTUATOR, 1);
 	}
 
 	@Override

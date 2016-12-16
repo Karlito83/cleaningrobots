@@ -2,15 +2,16 @@ package de.tud.swt.cleaningrobots.behaviours;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.FollowerRole;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
-import de.tud.swt.cleaningrobots.hardware.Components;
+import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.LookAroundSensor;
 import de.tud.swt.cleaningrobots.merge.MasterFieldMerge;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.State;
+import de.tud.swt.cleaningrobots.roles.FollowerRole;
 
 /**
  * Behavior that activate the laser scanner if the robot is at the destination and scan the place.
@@ -37,7 +38,7 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 		this.mfm = new MasterFieldMerge(this.robot.configuration);
 		this.firststart = true;
 						
-		LookAroundSensor las = (LookAroundSensor) this.d.getHardwareComponent(Components.LOOKAROUNDSENSOR);
+		LookAroundSensor las = (LookAroundSensor) this.d.getHardwareComponent(ComponentTypes.LOOKAROUNDSENSOR);
 		this.visionRadius = las.getRadius();		
 	}
 	
@@ -53,7 +54,7 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(Components.LOOKAROUNDSENSOR, 1);
+		this.d.addDemandPair(ComponentTypes.LOOKAROUNDSENSOR, 1);
 	}
 
 	@Override

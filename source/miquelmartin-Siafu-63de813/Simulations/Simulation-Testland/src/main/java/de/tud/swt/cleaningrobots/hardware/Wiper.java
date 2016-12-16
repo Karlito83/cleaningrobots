@@ -12,8 +12,7 @@ public class Wiper extends HardwareComponent {
 	
 	public Wiper ()
 	{
-		super();
-		name = "Wiper";
+		super("WIPER");
 		//0
 		offEnergie = 0.0;
 		//19Wh
@@ -32,7 +31,7 @@ public class Wiper extends HardwareComponent {
 	}
 
 	@Override
-	public Components getComponents() {
-		return Components.WIPER;
+	public ComponentTypes getComponentType() {
+		return ComponentTypes.WIPER;
 	}
 }

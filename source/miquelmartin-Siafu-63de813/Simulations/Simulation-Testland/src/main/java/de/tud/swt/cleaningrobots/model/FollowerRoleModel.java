@@ -8,6 +8,13 @@ package de.tud.swt.cleaningrobots.model;
  */
 public class FollowerRoleModel extends RoleModel{
 	
-	public String master;
+	private String master;
+	
+	public String getMaster () {
+		return master;
+	}
 
+	public void setMaster (String master) {
+		this.master = master;
+	}
 }

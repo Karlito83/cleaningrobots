@@ -9,12 +9,12 @@ import org.eclipse.emf.ecore.EObject;
 
 import de.tud.swt.cleaningrobots.RobotKnowledge;
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.MasterRole;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
-import de.tud.swt.cleaningrobots.hardware.Components;
+import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
 import de.tud.swt.cleaningrobots.merge.MergeAll;
+import de.tud.swt.cleaningrobots.roles.MasterRole;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
 /**
@@ -38,7 +38,7 @@ public class MergeMasterFollower extends Behaviour {
 		this.lastChange = new ArrayList<RobotRole>();
 		this.ma = new MergeAll(this.robot.configuration);
 		
-		Wlan wlan = (Wlan) this.d.getHardwareComponent(Components.WLAN);
+		Wlan wlan = (Wlan) this.d.getHardwareComponent(ComponentTypes.WLAN);
 		this.visionRadius = wlan.getVisionRadius();			
 	}
 	
@@ -49,7 +49,7 @@ public class MergeMasterFollower extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(Components.WLAN, 1);
+		this.d.addDemandPair(ComponentTypes.WLAN, 1);
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class MergeMasterFollower extends Behaviour {
 		Map<RobotRole, ImportExportConfiguration> nearsNoNewInformation = new HashMap<RobotRole, ImportExportConfiguration>();
 		for (RobotCore nearRobot : nearRobots) {
 			//could only communicate with near robots if they have active WLAN
-			if (nearRobot.hasActiveHardwareComponent(Components.WLAN)) {
+			if (nearRobot.hasActiveHardwareComponent(ComponentTypes.WLAN)) {
 				//near robot must be a follower
 				List<RobotRole> lrr = robot.getRoles();
 				for (RobotRole rr : lrr)

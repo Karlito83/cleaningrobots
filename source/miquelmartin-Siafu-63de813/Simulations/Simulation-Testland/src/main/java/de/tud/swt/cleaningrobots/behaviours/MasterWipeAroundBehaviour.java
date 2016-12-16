@@ -2,16 +2,17 @@ package de.tud.swt.cleaningrobots.behaviours;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.FollowerRole;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
-import de.tud.swt.cleaningrobots.hardware.Components;
+import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.Wiper;
 import de.tud.swt.cleaningrobots.merge.MasterFieldMerge;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
+import de.tud.swt.cleaningrobots.roles.FollowerRole;
 
 /**
  * Behavior that activate the wiper if the robot is at the destination and wipe the place.
@@ -38,7 +39,7 @@ public class MasterWipeAroundBehaviour extends Behaviour {
 		this.mfm = new MasterFieldMerge(this.robot.configuration);
 		this.firststart = true;
 						
-		Wiper las = (Wiper) this.d.getHardwareComponent(Components.WIPER);
+		Wiper las = (Wiper) this.d.getHardwareComponent(ComponentTypes.WIPER);
 		this.visionRadius = las.getRadius();		
 	}
 	
@@ -54,7 +55,7 @@ public class MasterWipeAroundBehaviour extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(Components.WIPER, 1);
+		this.d.addDemandPair(ComponentTypes.WIPER, 1);
 	}
 
 	@Override

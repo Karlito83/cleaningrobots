@@ -12,8 +12,7 @@ public class Hoover extends HardwareComponent {
 	
 	public Hoover ()
 	{
-		super();
-		name = "Hoover";
+		super("HOOVER");
 		//0
 		offEnergie = 0.0;
 		//13Wh
@@ -31,7 +30,7 @@ public class Hoover extends HardwareComponent {
 	}
 
 	@Override
-	public Components getComponents() {
-		return Components.HOOVER;
+	public ComponentTypes getComponentType() {
+		return ComponentTypes.HOOVER;
 	}
 }

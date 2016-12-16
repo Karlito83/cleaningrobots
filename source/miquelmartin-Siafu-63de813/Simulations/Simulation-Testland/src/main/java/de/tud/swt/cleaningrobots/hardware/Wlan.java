@@ -12,8 +12,7 @@ public class Wlan extends HardwareComponent {
 	
 	public Wlan ()
 	{
-		super();
-		name = "Wlan";
+		super("WLAN");
 		//0
 		offEnergie = 0.0;
 		//1Wh
@@ -31,7 +30,7 @@ public class Wlan extends HardwareComponent {
 	}
 
 	@Override
-	public Components getComponents() {
-		return Components.WLAN;
+	public ComponentTypes getComponentType() {
+		return ComponentTypes.WLAN;
 	}
 }

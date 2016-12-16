@@ -2,7 +2,7 @@ package de.tud.swt.cleaningrobots.behaviours;
 
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.hardware.Components;
+import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 
 /**
  * Activate the WLAN component of the robot.
@@ -23,7 +23,7 @@ public class WlanOnBehaviour extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(Components.WLAN, 1);
+		this.d.addDemandPair(ComponentTypes.WLAN, 1);
 	}
 
 	@Override

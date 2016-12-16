@@ -64,7 +64,7 @@ import de.tud.evaluation.WorkingConfiguration;
  * @author Miquel Martin
  * 
  */
-public class World {
+public class World implements IWorld {
 	/** The white color. Used to identify walls. */
 	private static final int COLOR_WHITE = 0xFFFFFF;
 

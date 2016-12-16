@@ -6,8 +6,10 @@ import java.util.List;
 import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
+import de.tud.swt.cleaningrobots.Configuration;
 import de.tud.swt.cleaningrobots.ICommunicationAdapter;
 import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.hardware.Accu;
 
 /**
  * With user interface in Siafu.
@@ -16,14 +18,16 @@ import de.tud.swt.cleaningrobots.RobotCore;
  * @author Christopher Werner
  *
  */
-public class RobotAgent extends Agent implements ICommunicationAdapter {
+public class RobotAgent extends Agent implements ICommunicationAdapter, IRobotAgent {
 
 	private boolean finish;	
 	protected RobotCore cleaningRobot;
 	private World siafuWorld;
 	
-	public RobotAgent(String name, Position start, String image, World world) {		
+	public RobotAgent(String name, Position start, String image, World world, Configuration configuration) {		
 		super(name, start, image, world);
+		
+		this.cleaningRobot = new RobotCore(name, this, new Accu(48.0), configuration);
 		this.siafuWorld = world;
 	}	
 		

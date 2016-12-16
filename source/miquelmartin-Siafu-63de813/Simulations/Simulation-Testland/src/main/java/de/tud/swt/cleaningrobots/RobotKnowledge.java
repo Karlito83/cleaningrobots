@@ -124,15 +124,17 @@ public class RobotKnowledge {
 		for (RoleModel r : roles) {
 			if (r instanceof MasterRoleModel) {
 				MasterRoleModel m = (MasterRoleModel)r;
-				em.addKnowledgeStringNumber( m.followers.size());
-				for (String s : m.followers) {
+				em.addKnowledgeStringNumber( m.getFollowers().size());
+				for (String s : m.getFollowers()) {
 					em.addKnowledgeStringByteNumber(s.getBytes().length);
 				}
-			} else {
+			} else if (r instanceof FollowerRoleModel) {
 				FollowerRoleModel f = (FollowerRoleModel)r;
-				em.addKnowledgeStringByteNumber(f.master.getBytes().length);
+				em.addKnowledgeStringByteNumber(f.getMaster().getBytes().length);
 				em.addKnowledgeStringNumber(1);
 			}
+			em.addKnowledgeStringByteNumber(r.getRoleName().getBytes().length);
+			em.addKnowledgeStringNumber(1);			
 		}
 		//knownstates
 		em.addKnowledgeStringNumber(knownStates.size());
@@ -160,11 +162,11 @@ public class RobotKnowledge {
 			for (RoleModel r : roles) {
 				if (r instanceof MasterRoleModel) {
 					cleaningrobots.MasterRole m = CleaningrobotsFactory.eINSTANCE.createMasterRole();
-					m.getFollowerNames().addAll(((MasterRoleModel)r).followers);
+					m.getFollowerNames().addAll(((MasterRoleModel)r).getFollowers());
 					robotknowledge.getRoles().add(m);
-				} else {
+				} else if (r instanceof FollowerRoleModel) {
 					cleaningrobots.FollowerRole f = CleaningrobotsFactory.eINSTANCE.createFollowerRole();
-					f.setMasterName(((FollowerRoleModel)r).master);
+					f.setMasterName(((FollowerRoleModel)r).getMaster());
 					robotknowledge.getRoles().add(f);
 				}
 			}					

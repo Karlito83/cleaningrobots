@@ -3,7 +3,9 @@ package de.tud.swt.cleaningrobots;
 import java.util.HashMap;
 import java.util.Map;
 
+import test.ReadXMLInput;
 import de.tud.evaluation.WorkingConfiguration;
+import de.tud.swt.cleaningrobots.hardware.SpecialHardware;
 import de.tud.swt.cleaningrobots.model.State;
 
 /**
@@ -19,8 +21,11 @@ public class Configuration {
 	 */
 	public WorkingConfiguration wc;
 	private Map<String, State> states = new HashMap<String, State>();
+	private Map<String, SpecialHardware> specialHardware;
 	
 	public Configuration (WorkingConfiguration wc) {
+		ReadXMLInput r = new ReadXMLInput();
+		this.specialHardware = r.readHardwareComponents();
 		this.wc = wc;
 	}
 		
@@ -42,5 +47,11 @@ public class Configuration {
 			states.put(name, result);
 		}
 		return result;
+	}
+	
+	public SpecialHardware getHardware (String name)
+	{
+		SpecialHardware s = specialHardware.get(name);
+		return s.copy();
 	}
 }

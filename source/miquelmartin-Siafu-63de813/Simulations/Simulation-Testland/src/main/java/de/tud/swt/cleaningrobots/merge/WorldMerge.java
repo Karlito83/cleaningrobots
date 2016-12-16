@@ -4,8 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.tud.swt.cleaningrobots.Configuration;
-import de.tud.swt.cleaningrobots.FollowerRole;
-import de.tud.swt.cleaningrobots.MasterRole;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotKnowledge;
 import de.tud.swt.cleaningrobots.RobotRole;
@@ -16,6 +14,8 @@ import de.tud.swt.cleaningrobots.model.MasterRoleModel;
 import de.tud.swt.cleaningrobots.model.RoleModel;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.model.World;
+import de.tud.swt.cleaningrobots.roles.FollowerRole;
+import de.tud.swt.cleaningrobots.roles.MasterRole;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
 public class WorldMerge extends AgentMerge {
@@ -126,21 +126,31 @@ public class WorldMerge extends AgentMerge {
 			if (r instanceof MasterRole) {
 				MasterRole m = (MasterRole) r;
 				MasterRoleModel mrm = new MasterRoleModel();
+				mrm.setRoleName(r.getClass().getName());
 				for (RobotRole s : m.getFollowers()) {
 					em.addKnowledgeStringByteNumber(s.getRobotCore().getName().getBytes().length);
-					mrm.followers.add(s.getRobotCore().getName());
+					mrm.getFollowers().add(s.getRobotCore().getName());
 				}
-				em.addKnowledgeStringNumber(m.getFollowers().size());
+				em.addKnowledgeStringNumber(m.getFollowers().size() + 1);
+				em.addKnowledgeStringByteNumber(r.getClass().getName().getBytes().length);
 				//add MasterRoleModel
 				roles.add(mrm);
-			} else {
+			} else if (r instanceof FollowerRole) {
 				FollowerRole f = (FollowerRole) r;
-				em.addKnowledgeStringNumber(1);
+				em.addKnowledgeStringNumber(2);
 				em.addKnowledgeStringByteNumber(f.getMaster().getRobotCore().getName().getBytes().length);
+				em.addKnowledgeStringByteNumber(r.getClass().getName().getBytes().length);
 				//add FollowerRoleModel
 				FollowerRoleModel frm = new FollowerRoleModel();
-				frm.master = f.getMaster().getRobotCore().getName();
+				frm.setMaster(f.getMaster().getRobotCore().getName());
+				frm.setRoleName(r.getClass().getName());
 				roles.add(frm);
+			} else {
+				RoleModel rm = new RoleModel();
+				em.addKnowledgeStringNumber(1);
+				em.addKnowledgeStringByteNumber(r.getClass().getName().getBytes().length);
+				rm.setRoleName(r.getClass().getName());
+				roles.add(rm);
 			}
 		}
 		importRk.setRoles(roles);
@@ -177,14 +187,16 @@ public class WorldMerge extends AgentMerge {
 			for (RoleModel r : exportRk.getRoles()) {
 				if (r instanceof MasterRoleModel) {
 					MasterRoleModel m = (MasterRoleModel) r;
-					for (String s : m.followers)
+					for (String s : m.getFollowers())
 						em.addKnowledgeStringByteNumber(s.getBytes().length);
-					em.addKnowledgeStringNumber(m.followers.size());
-				} else {
+					em.addKnowledgeStringNumber(m.getFollowers().size());
+				} else if (r instanceof FollowerRoleModel) {
 					FollowerRoleModel f = (FollowerRoleModel) r;
 					em.addKnowledgeStringNumber(1);
-					em.addKnowledgeStringByteNumber(f.master.getBytes().length);
+					em.addKnowledgeStringByteNumber(f.getMaster().getBytes().length);
 				}
+				em.addKnowledgeStringNumber(1);
+				em.addKnowledgeStringByteNumber(r.getRoleName().getBytes().length);
 			}
 			importRk.setRoles(exportRk.getRoles());
 			//add states
@@ -211,14 +223,16 @@ public class WorldMerge extends AgentMerge {
 			for (RoleModel r : exportRk.getRoles()) {
 				if (r instanceof MasterRoleModel) {
 					MasterRoleModel m = (MasterRoleModel) r;
-					for (String s : m.followers)
+					for (String s : m.getFollowers())
 						em.addKnowledgeStringByteNumber(s.getBytes().length);
-					em.addKnowledgeStringNumber(m.followers.size());
-				} else {
+					em.addKnowledgeStringNumber(m.getFollowers().size());
+				} else if (r instanceof FollowerRoleModel) {
 					FollowerRoleModel f = (FollowerRoleModel) r;
 					em.addKnowledgeStringNumber(1);
-					em.addKnowledgeStringByteNumber(f.master.getBytes().length);
+					em.addKnowledgeStringByteNumber(f.getMaster().getBytes().length);
 				}
+				em.addKnowledgeStringNumber(1);
+				em.addKnowledgeStringByteNumber(r.getRoleName().getBytes().length);
 			}
 			for (State s : exportRk.getKnownStates()) {
 				em.addKnowledgeStringByteNumber(s.getName().getBytes().length);

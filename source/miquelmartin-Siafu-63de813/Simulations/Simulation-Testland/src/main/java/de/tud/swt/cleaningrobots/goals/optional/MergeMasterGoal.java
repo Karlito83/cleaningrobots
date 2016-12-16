@@ -1,9 +1,9 @@
 package de.tud.swt.cleaningrobots.goals.optional;
 
-import de.tud.swt.cleaningrobots.MasterRole;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.behaviours.MergeMasterWithoutModel;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
+import de.tud.swt.cleaningrobots.roles.MasterRole;
 
 /**
  * Optional goal which make the merge between a master and his followers without using the EMF model. 

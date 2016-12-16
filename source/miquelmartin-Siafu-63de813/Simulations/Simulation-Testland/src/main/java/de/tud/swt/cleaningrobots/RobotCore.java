@@ -11,12 +11,14 @@ import cleaningrobots.CleaningrobotsFactory;
 import de.tud.evaluation.ExchangeMeasurement;
 import de.tud.swt.cleaningrobots.goals.Goal;
 import de.tud.swt.cleaningrobots.hardware.Accu;
-import de.tud.swt.cleaningrobots.hardware.Components;
+import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.measure.RobotMeasurement;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.model.World;
+import de.tud.swt.cleaningrobots.roles.FollowerRole;
+import de.tud.swt.cleaningrobots.roles.MasterRole;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
 /**
@@ -79,6 +81,16 @@ public class RobotCore extends Robot {
 		
 		this.communicationAdapter = communicationAdapter;
 		this.destinationContainer = new DestinationContainer(this);		
+	}
+	
+	public boolean initializeRoles ()
+	{
+		boolean result = true;
+		for (RobotRole rr : roles)
+		{
+			result = result && rr.createGoals();
+		}
+		return result;
 	}
 	
 	/**
@@ -220,9 +232,9 @@ public class RobotCore extends Robot {
 	 * @param c
 	 * @return
 	 */
-	public boolean hasActiveHardwareComponent (Components c) {
+	public boolean hasActiveHardwareComponent (ComponentTypes c) {
 		for (HardwareComponent hard : hardwarecomponents) {
-			if (hard.getComponents() == c && hard.isActive())
+			if (hard.getComponentType() == c && hard.isActive())
 				return true;
 		}
 		return false;
@@ -233,9 +245,9 @@ public class RobotCore extends Robot {
 	 * @param c
 	 * @return
 	 */
-	public boolean hasHardwareComponent (Components c) {
+	public boolean hasHardwareComponent (ComponentTypes c) {
 		for (HardwareComponent hard : hardwarecomponents) {
-			if (hard.getComponents() == c)
+			if (hard.getComponentType() == c)
 				return true;
 		}
 		return false;
@@ -262,7 +274,7 @@ public class RobotCore extends Robot {
 
 	public void addHardwareComponent(HardwareComponent component) {
 		hardwarecomponents.add(component);
-		if (component.getComponents() == Components.LOADSTATION)
+		if (component.getComponentType() == ComponentTypes.LOADSTATION)
 			this.loadStation = true;
 		//recreate minimal and maximal energy because of new hardware component
 		calculateMaxMinEnergieConsumption();
@@ -361,13 +373,18 @@ public class RobotCore extends Robot {
 		for (RobotRole r : roles) {
 			if (r instanceof MasterRole) {
 				MasterRole m = (MasterRole)r;
-				em.addKnowledgeStringNumber(m.getFollowers().size());
+				em.addKnowledgeStringNumber(m.getFollowers().size() + 1);
+				em.addKnowledgeStringByteNumber(r.getClass().getName().getBytes().length);
 				for (RobotRole rr : m.getFollowers()) {
 					em.addKnowledgeStringByteNumber(rr.getRobotCore().getName().getBytes().length);
 				}
-			} else {
+			} else if (r instanceof FollowerRole) {
 				FollowerRole f = (FollowerRole)r;
 				em.addKnowledgeStringByteNumber(f.getMaster().getRobotCore().getName().getBytes().length);
+				em.addKnowledgeStringByteNumber(r.getClass().getName().getBytes().length);
+				em.addKnowledgeStringNumber(2);
+			} else {
+				em.addKnowledgeStringByteNumber(r.getClass().getName().getBytes().length);
 				em.addKnowledgeStringNumber(1);
 			}
 		}

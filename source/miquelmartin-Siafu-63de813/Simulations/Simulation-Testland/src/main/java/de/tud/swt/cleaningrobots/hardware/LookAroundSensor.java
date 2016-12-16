@@ -12,8 +12,7 @@ public class LookAroundSensor extends HardwareComponent {
 	
 	public LookAroundSensor ()
 	{
-		super();
-		name = "LookAroundSensor";
+		super("LOOKAROUNDSENSOR");
 		//0
 		offEnergie = 0.0;
 		//15Wh
@@ -31,7 +30,7 @@ public class LookAroundSensor extends HardwareComponent {
 	}
 
 	@Override
-	public Components getComponents() {
-		return Components.LOOKAROUNDSENSOR;
+	public ComponentTypes getComponentType() {
+		return ComponentTypes.LOOKAROUNDSENSOR;
 	}
 }

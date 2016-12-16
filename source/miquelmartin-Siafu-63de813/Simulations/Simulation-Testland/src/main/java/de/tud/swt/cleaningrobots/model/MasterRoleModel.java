@@ -11,9 +11,13 @@ import java.util.List;
  */
 public class MasterRoleModel extends RoleModel{
 
-	public List<String> followers;
+	private List<String> followers;
 	
 	public MasterRoleModel () {
 		followers = new ArrayList<String>();
+	}
+	
+	public List<String> getFollowers () {
+		return followers;
 	}
 }

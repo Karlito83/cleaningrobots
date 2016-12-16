@@ -5,7 +5,7 @@ import java.util.Collection;
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
-import de.tud.swt.cleaningrobots.hardware.Components;
+import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.Wiper;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.Position;
@@ -27,7 +27,7 @@ public class WipeAroundAtDestinationBehaviour extends Behaviour {
 	public WipeAroundAtDestinationBehaviour(RobotCore robot) {
 		super(robot);
 		
-		Wiper las = (Wiper) this.d.getHardwareComponent(Components.WIPER);
+		Wiper las = (Wiper) this.d.getHardwareComponent(ComponentTypes.WIPER);
 		this.visionRadius = las.getRadius();
 	}
 	
@@ -43,7 +43,7 @@ public class WipeAroundAtDestinationBehaviour extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(Components.WIPER, 1);
+		this.d.addDemandPair(ComponentTypes.WIPER, 1);
 	}
 
 	@Override

@@ -5,7 +5,10 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import de.tud.swt.cleaningrobots.hardware.Components;
+import de.tud.swt.cleaningrobots.exceptions.AgentHasNoSuchComponent;
+import de.tud.swt.cleaningrobots.exceptions.AgentNumberOfComponentsFalse;
+import de.tud.swt.cleaningrobots.exceptions.RuntimeErrorMessage;
+import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 
 /**
@@ -16,33 +19,117 @@ import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
  */
 public class Demand {
 
-	private Map<Components, Integer> hardware;
+	private Map<ComponentTypes, Integer> hardware;
 	private RobotCore robot;
 	private List<HardwareComponent> hcList;
+	private boolean correct;
 	
 	public Demand (RobotCore robotCore)
 	{
 		this.robot = robotCore;	
-		this.hardware = new EnumMap<Components, Integer> (Components.class);
+		this.correct = true;
+		this.hardware = new EnumMap<ComponentTypes, Integer> (ComponentTypes.class);
 		this.hcList = new ArrayList<HardwareComponent>();
 	}
 	
-	public void addDemandPair (Components comp, int value)
+	/**
+	 * Add the Number Component Types.
+	 * @param comp (Component Type which is needed.)
+	 * @param value (Number of Components from this type.)
+	 */
+	public void addDemandPair (ComponentTypes comp, int value)
 	{
-		hardware.put(comp, value);
-		for (HardwareComponent hc : robot.getHardwarecomponents()) {
-			//add if it isn't in
-			if (comp == hc.getComponents() && !hcList.contains(hc))
+		if (value <= 0)
+		{
+			throw new RuntimeErrorMessage("Number of Hardwarecomponent must be bigger than zero!");
+		}
+		else
+		{
+			Integer i = hardware.get(comp);
+			if (i == null)
 			{
-				hcList.add(hc);
+				hardware.put(comp, value);
+				for (HardwareComponent hc : robot.getHardwarecomponents()) {
+					//add if it isn't in
+					if (comp == hc.getComponentType() && !hcList.contains(hc))
+					{
+						hcList.add(hc);
+						value--;
+						if (value == 0)
+							return;
+					}
+				}
 			}
+			else if (i < value) 
+			{
+				hardware.put(comp, value);
+				value -= i;
+				for (HardwareComponent hc : robot.getHardwarecomponents()) {
+					//add if it isn't in
+					if (comp == hc.getComponentType() && !hcList.contains(hc))
+					{
+						hcList.add(hc);
+						value--;
+						if (value == 0)
+							return;
+					}
+				}
+			}
+			else
+			{
+				return;
+			}
+			this.correct = false;
+			throw new AgentNumberOfComponentsFalse();
 		}
 	}
 	
-	public HardwareComponent getHardwareComponent (Components comp)
+	public void addHardwareComponentWithName (String name)
+	{
+		for (HardwareComponent hc : robot.getHardwarecomponents()) {
+			//add if it isn't in
+			if (hc.getName().equals(name) && !hcList.contains(hc))
+			{
+				if (!hcList.contains(hc))
+				{
+					hcList.add(hc);
+					Integer i = hardware.get(hc.getComponentType());
+					if (i == null)
+					{
+						hardware.put(hc.getComponentType(), 1);
+					}
+					else
+					{
+						i++;
+						hardware.put(hc.getComponentType(), i);
+					}
+					return;
+				}
+				else
+				{
+					return;
+				}
+			}
+		}
+		this.correct = false;
+		throw new AgentHasNoSuchComponent(name);
+	}
+	
+	public HardwareComponent getHardwareComponentFromName (String name)
 	{
 		for (HardwareComponent hc : this.hcList) {
-			if (hc.getComponents() == comp)
+			if (hc.getName().equals(name))
+			{
+				return hc;
+			}
+		}
+		return null;
+	}
+	
+	public HardwareComponent getHardwareComponent (ComponentTypes comp)
+	{
+		for (HardwareComponent hc : this.hcList) {
+			if (hc.getComponentType() == comp)
 			{
 				return hc;
 			}
@@ -67,20 +154,7 @@ public class Demand {
 	}
 
 	public boolean isCorrect() {
-		//TODO: Anzahl der Hardwarecomponenten prüfen
-		/*List<HardwareComponent> hcList = new ArrayList<HardwareComponent>();
-		for (HardwareComponent hc : robot.getHardwarecomponents()) {
-			if (hardware.containsKey(hc.getComponents()))
-			{
-				hcList.add(hc);
-			}
-		}
-		Map<Components, Integer> hardwareCopy = new EnumMap<Components, Integer> (Components.class);
-		hardwareCopy.putAll(hardware);*/
-		if (hcList.size() == hardware.size())
-			return true;
-		else
-			return false;
+		return this.correct;
 	}
 	
 	

@@ -32,8 +32,6 @@ public class MultiSimulation implements Runnable {
 	 * @param control the simulation <code>Controller</code>
 	 */
 	public MultiSimulation(WorkingConfiguration configuration, SimulationData simData) {
-		//String simulationPath = "C:\\Users\\ChrissiMobil\\git\\cleaningrobots\\source\\miquelmartin-Siafu-63de813\\Simulations\\Simulation-Testland\\target\\classes";
-		//String simulationPath = "C:\\Users\\cwerner\\Documents\\cleaningrobots-master\\source\\miquelmartin-Siafu-63de813\\Simulations\\Simulation-Testland\\target\\classes";
 		this.simulationRunning = true;
 		
 		this.world = new MultiWorld(simData, configuration);

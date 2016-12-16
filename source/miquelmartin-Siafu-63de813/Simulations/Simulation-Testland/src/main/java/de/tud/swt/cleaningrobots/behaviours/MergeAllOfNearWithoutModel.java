@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.hardware.Components;
+import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
 import de.tud.swt.cleaningrobots.merge.MergeAllWithoutModel;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
@@ -33,7 +33,7 @@ public class MergeAllOfNearWithoutModel extends Behaviour {
 		this.firstStart = true;
 		this.robotInformation = new LinkedList<NearRobotInformation>();
 		
-		Wlan wlan = (Wlan) this.d.getHardwareComponent(Components.WLAN);
+		Wlan wlan = (Wlan) this.d.getHardwareComponent(ComponentTypes.WLAN);
 		this.visionRadius = wlan.getVisionRadius();			
 	}
 	
@@ -44,7 +44,7 @@ public class MergeAllOfNearWithoutModel extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(Components.WLAN, 1);
+		this.d.addDemandPair(ComponentTypes.WLAN, 1);
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class MergeAllOfNearWithoutModel extends Behaviour {
 		nearRobots.remove(this.robot);
 		for (RobotCore nearRobot : nearRobots) {
 			//could only communicate with near robots if they have active WLAN
-			if (nearRobot.hasActiveHardwareComponent(Components.WLAN)) {
+			if (nearRobot.hasActiveHardwareComponent(ComponentTypes.WLAN)) {
 				for (NearRobotInformation i: robotInformation) {
 					if (i.getName().equals(nearRobot.getName())) {
 						if (i.getCounter() == -1) {

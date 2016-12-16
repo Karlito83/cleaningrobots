@@ -1,9 +1,9 @@
 package de.tud.swt.cleaningrobots.goals.optional;
 
-import de.tud.swt.cleaningrobots.MasterRole;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.behaviours.MasterDestinationHoove;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
+import de.tud.swt.cleaningrobots.roles.MasterRole;
 
 /**
  * Optional goal which calculate new hoove destinations for followers which divide the robots in the world. 

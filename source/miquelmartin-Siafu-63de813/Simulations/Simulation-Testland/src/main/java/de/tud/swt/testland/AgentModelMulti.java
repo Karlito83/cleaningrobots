@@ -28,13 +28,12 @@ import de.nec.nle.siafu.model.MultiWorld;
 import de.tud.evaluation.WorkingConfiguration;
 import de.tud.swt.cleaningrobots.Configuration;
 import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.factory.ExploreMergeMasterCalculateFactory;
+import de.tud.swt.cleaningrobots.factory.ExploreMergeMasterCalculateRelativeFactory;
+import de.tud.swt.cleaningrobots.factory.ExploreMergeMasterFactory;
+import de.tud.swt.cleaningrobots.factory.ExploreWithoutMasterFactory;
+import de.tud.swt.cleaningrobots.factory.MasterExploreFactory;
 import de.tud.swt.cleaningrobots.measure.ExportFiles;
-import de.tud.swt.cleaningrobots.multithreaded.ExploreMergeMasterCalculateFactoryMulti;
-import de.tud.swt.cleaningrobots.multithreaded.ExploreMergeMasterCalculateRelativeFactoryMulti;
-import de.tud.swt.cleaningrobots.multithreaded.ExploreMergeMasterFactoryMulti;
-import de.tud.swt.cleaningrobots.multithreaded.ExploreWithoutMasterFactoryMulti;
-import de.tud.swt.cleaningrobots.multithreaded.MasterExploreFactoryMulti;
-import de.tud.swt.cleaningrobots.multithreaded.RobotAgentMulti;
 
 /**
  * This Agent Model defines the behavior of users in this test simulation.
@@ -72,37 +71,46 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 	@Override
 	public ArrayList<MultiAgent> createAgents() {
 
+		ArrayList<IRobotAgent> iAgents = new ArrayList<IRobotAgent>();
 		ArrayList<MultiAgent> agents = new ArrayList<MultiAgent>();
+		RobotFactoryMulti rfm = new RobotFactoryMulti(config, world);
 
 		try {
 			switch (configuration.config) {
-				case 0:  agents = new MasterExploreFactoryMulti(config).createRobots(world);
+				case 0:  iAgents = new MasterExploreFactory(config).createRobots(rfm);
 						 break;
-	            case 1:  agents = new ExploreWithoutMasterFactoryMulti(config).createRobots(world);
+	            case 1:  iAgents = new ExploreWithoutMasterFactory(config).createRobots(rfm);
 	                     break;	            
-	            case 2:  agents = new ExploreMergeMasterFactoryMulti(config).createRobots(world);
+	            case 2:  iAgents = new ExploreMergeMasterFactory(config).createRobots(rfm);
 	                     break;
-	            case 3:  agents = new ExploreMergeMasterCalculateFactoryMulti(config).createRobots(world);
+	            case 3:  iAgents = new ExploreMergeMasterCalculateFactory(config).createRobots(rfm);
 	                     break;
-	            case 4:  agents = new ExploreMergeMasterCalculateRelativeFactoryMulti(config).createRobots(world);
+	            case 4:  iAgents = new ExploreMergeMasterCalculateRelativeFactory(config).createRobots(rfm);
 	                     break;
-	            default: agents = new MasterExploreFactoryMulti(config).createRobots(world);
+	            default: iAgents = new MasterExploreFactory(config).createRobots(rfm);
 	                     break;
 	        }
 		} catch (Exception ex) {
 		}
-		startTime = System.nanoTime();
+		
+		for (IRobotAgent a : iAgents)
+		{
+			agents.add((MultiAgent)a);
+		}
+		
+		startTime = System.nanoTime();		
 		return agents;
 	}
 	
 	private boolean runAction (Collection<MultiAgent> agents) {
 		boolean finish = true;
 		//do that for each robot
-		for (MultiAgent a : agents) {
+		for (MultiAgent agent : agents) {
+			IRobotAgent a = (IRobotAgent) agent;
 			//only if robot is on
-			if (!((RobotAgentMulti)a).getRobot().isShutDown()) {
-				((RobotAgentMulti)a).wander();
-				if (!((RobotAgentMulti)a).isFinish())
+			if (!a.getRobot().isShutDown()) {
+				a.wander();
+				if (!a.isFinish())
 					finish = false;
 			}
 		}
@@ -127,12 +135,12 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 			long endTime = System.nanoTime();
 			
 			for (MultiAgent a : agents) {
-				((RobotAgentMulti)a).getRobot().addLastMeasurement();				
+				((IRobotAgent)a).getRobot().addLastMeasurement();				
 			}
 			
 			//make data output for all measurements
 			for (MultiAgent a : agents) {
-				RobotCore rc = ((RobotAgentMulti)a).getRobot();
+				RobotCore rc = ((IRobotAgent)a).getRobot();
 				
 				//save JSON document in .txt
 				rc.getMeasurement().benchmarkTime = (endTime - startTime);

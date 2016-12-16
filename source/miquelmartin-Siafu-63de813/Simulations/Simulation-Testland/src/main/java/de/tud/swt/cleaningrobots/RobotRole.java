@@ -1,5 +1,10 @@
 package de.tud.swt.cleaningrobots;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import de.tud.swt.cleaningrobots.goals.Goal;
+
 /**
  * Abstract robot role for role-based pattern.
  * 
@@ -8,17 +13,28 @@ package de.tud.swt.cleaningrobots;
  */
 public abstract class RobotRole extends Robot {
 	
-	private RobotCore core;
+	protected RobotCore core;
+	private List<Goal> roleGoals;
 	
 	public RobotRole (RobotCore robotCore) {
-		core = robotCore;
+		this.core = robotCore;
+		this.roleGoals = new ArrayList<Goal>();
+	}
+	
+	public abstract boolean createGoals();
+	
+	//public abstract void initializeGoals();
+	
+	protected boolean addGoals(Goal goal) {
+		this.roleGoals.add(goal);
+		return this.core.addGoal(goal);
 	}
 	
 	/**
 	 * Get the RobotCore object of this role.
 	 * @return
 	 */
-	public RobotCore getRobotCore () {
+	public RobotCore getRobotCore() {
 		return core;
 	}	
 
