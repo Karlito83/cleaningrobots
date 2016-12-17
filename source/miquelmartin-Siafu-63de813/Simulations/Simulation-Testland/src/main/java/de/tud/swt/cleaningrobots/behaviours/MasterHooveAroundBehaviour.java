@@ -8,11 +8,12 @@ import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.Hoover;
-import de.tud.swt.cleaningrobots.merge.MasterFieldMerge;
+import de.tud.swt.cleaningrobots.merge.FieldMerge;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.roles.FollowerRole;
+import de.tud.swt.cleaningrobots.util.FieldMergeInformation;
 
 /**
  * Behavior that activate the hoover if the robot is at the destination and hoove the place.
@@ -26,7 +27,7 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 	private RobotCore master;
 	
 	private int visionRadius;
-	private MasterFieldMerge mfm;
+	private FieldMerge merge;
 	
 	private State STATE_HOOVE;
 	private State STATE_FREE;
@@ -36,11 +37,11 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 	public MasterHooveAroundBehaviour(RobotCore robot) {
 		super(robot);
 
-		this.mfm = new MasterFieldMerge(this.robot.configuration);
+		this.merge = new FieldMerge(this.robot.configuration);
 		this.firststart = true;
 		
 		Hoover las = (Hoover) this.d.getHardwareComponent(ComponentTypes.HOOVER);
-		this.visionRadius = las.getRadius();	
+		this.visionRadius = las.getMeasurementRange();	
 	}
 	
 	@Override
@@ -80,7 +81,8 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 			try {
 				List<Field> fields = getData();
 				//send Field to Robot and ask for new destination and Path
-				mfm.sendFieldsAndMerge(robot.getName(), fields, master, "Hoove");
+				FieldMergeInformation fmi = new FieldMergeInformation(fields);
+				merge.run(robot, master, fmi);
 			} catch (Exception e) {
 				throw e;
 			}

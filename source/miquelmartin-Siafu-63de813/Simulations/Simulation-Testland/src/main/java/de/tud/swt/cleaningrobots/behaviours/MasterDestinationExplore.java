@@ -9,7 +9,7 @@ import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
-import de.tud.swt.cleaningrobots.merge.MasterFieldMerge;
+import de.tud.swt.cleaningrobots.merge.DestinationMerge;
 import de.tud.swt.cleaningrobots.roles.MasterRole;
 import de.tud.swt.cleaningrobots.util.RobotDestinationCalculation;
 
@@ -26,7 +26,7 @@ public class MasterDestinationExplore extends Behaviour {
 	private int visionRadius;
 	private boolean firstStart;
 	private int calculationAway;
-	private MasterFieldMerge mfm;	
+	private DestinationMerge merge;	
 	
 	private Map<String, RobotDestinationCalculation> information;
 	
@@ -35,12 +35,12 @@ public class MasterDestinationExplore extends Behaviour {
 		
 		//create and add the states
 		this.mr = mr;
-		this.mfm = new MasterFieldMerge(this.robot.configuration);
+		this.merge = new DestinationMerge(this.robot.configuration);
 		this.information = new HashMap<String, RobotDestinationCalculation>();
 		this.firstStart = true;
 		
 		Wlan wlan = (Wlan) this.d.getHardwareComponent(ComponentTypes.WLAN);
-		this.visionRadius = wlan.getVisionRadius();
+		this.visionRadius = wlan.getMeasurementRange();
 	}
 	
 	@Override
@@ -147,8 +147,7 @@ public class MasterDestinationExplore extends Behaviour {
 				for (RobotDestinationCalculation rdc : information.values()) {
 					if (rdc.getName().equals(nearRobot.getName()))
 					{
-						mfm.sendNullDestination(nearRobot.getName());
-						nearRobot.getDestinationContainer().setDestination(null, true);
+						merge.run(this.robot, nearRobot, null);
 					}
 				}
 			}
@@ -162,8 +161,7 @@ public class MasterDestinationExplore extends Behaviour {
 			for (RobotDestinationCalculation rdc : information.values()) {
 				if (rdc.getName().equals(nearRobot.getName()) && rdc.needNew)
 				{
-					mfm.sendDestination(nearRobot.getName());
-					nearRobot.getDestinationContainer().setDestination(rdc.newDest, true);
+					merge.run(this.robot, nearRobot, rdc.newDest);
 				}
 			}
 		}

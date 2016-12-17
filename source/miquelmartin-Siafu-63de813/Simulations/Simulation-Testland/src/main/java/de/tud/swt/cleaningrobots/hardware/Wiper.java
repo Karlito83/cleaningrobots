@@ -6,13 +6,11 @@ package de.tud.swt.cleaningrobots.hardware;
  * @author Christopher Werner
  *
  */
-public class Wiper extends HardwareComponent {
+public class Wiper extends MeasurementRangeHardwareComponent {
 
-	private int radius;
-	
 	public Wiper ()
 	{
-		super("WIPER");
+		super("WIPER", 2);
 		//0
 		offEnergie = 0.0;
 		//19Wh
@@ -21,13 +19,6 @@ public class Wiper extends HardwareComponent {
 		workEnergie = caluculateEnergie(19.0);
 		//19Wh
 		outEnergie = 0.0;
-		
-		radius = 2;
-	}
-	
-	public int getRadius ()
-	{
-		return radius;
 	}
 
 	@Override

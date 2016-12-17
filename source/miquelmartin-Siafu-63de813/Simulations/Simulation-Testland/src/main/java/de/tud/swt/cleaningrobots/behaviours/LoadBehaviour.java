@@ -36,7 +36,7 @@ public class LoadBehaviour extends Behaviour {
 	@Override
 	public boolean action() throws Exception {
 
-		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(loadStation.getLoadRadius());
+		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(loadStation.getMeasurementRange());
 		nearRobots.remove(this.robot);
 		for (RobotCore nearRobot : nearRobots) {
 			if (nearRobot.getAccu() != null)

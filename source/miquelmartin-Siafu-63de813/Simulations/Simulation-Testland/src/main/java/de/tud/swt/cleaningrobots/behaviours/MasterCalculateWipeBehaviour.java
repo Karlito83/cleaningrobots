@@ -8,10 +8,11 @@ import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
-import de.tud.swt.cleaningrobots.merge.MasterFieldMerge;
+import de.tud.swt.cleaningrobots.merge.PathDestinationMerge;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.roles.MasterRole;
+import de.tud.swt.cleaningrobots.util.PathWayMergeInformation;
 import de.tud.swt.cleaningrobots.util.RobotDestinationCalculation;
 
 /**
@@ -32,7 +33,7 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 		
 	private boolean firstStart;
 	private int calculationAway;
-	private MasterFieldMerge mfm;
+	private PathDestinationMerge mfm;
 	
 	private Map<String, RobotDestinationCalculation> information;
 	
@@ -44,7 +45,7 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 		this.mr = mr;
 		this.firstStart = true;
 		this.relative = relative;
-		this.mfm = new MasterFieldMerge(this.robot.configuration);
+		this.mfm = new PathDestinationMerge(this.robot.configuration);
 		this.information = new HashMap<String, RobotDestinationCalculation>();		
 	}
 	
@@ -142,7 +143,8 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 					for (RobotDestinationCalculation rdc : information.values()) {
 						if (rdc.getName().equals(oneRobot.getName()) && rdc.needNew)
 						{
-							mfm.sendDestPath(robot.getName(), oneRobot, robot.getWorld().getPath(rdc.newDest), rdc.newDest);
+							PathWayMergeInformation path = new PathWayMergeInformation(rdc.newDest, robot.getWorld().getPath(rdc.newDest));
+							mfm.run(this.robot, oneRobot, path);
 							rdc.actualPosition = rdc.newDest;
 						}
 					}
@@ -188,16 +190,19 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 										System.out.println("Robot erreicht keine Unknownposition mehr obwohl diese noch existiert!");
 										rdc.finish = true;
 									} else {
-										mfm.sendDestPath(robot.getName(), oneRobot, robot.getWorld().getPathFromTo(rdc.actualPosition, robot.getPosition()), robot.getPosition());
+										PathWayMergeInformation path = new PathWayMergeInformation(robot.getPosition(), robot.getWorld().getPathFromTo(rdc.actualPosition, robot.getPosition()));
+										mfm.run(this.robot, oneRobot, path);
 										rdc.actualPosition = robot.getPosition();
 									}
 								} else {
 									//robot has enough Accu he can drive to destination
-									mfm.sendDestPath(robot.getName(), oneRobot, robot.getWorld().getPathFromTo(rdc.actualPosition, nextWipePosition), nextWipePosition);
+									PathWayMergeInformation path = new PathWayMergeInformation(nextWipePosition, robot.getWorld().getPathFromTo(rdc.actualPosition, nextWipePosition));
+									mfm.run(this.robot, oneRobot, path);
 									rdc.actualPosition = nextWipePosition;
 								}
 							} else {
-								mfm.sendDestPath(robot.getName(), oneRobot, robot.getWorld().getPathFromTo(rdc.actualPosition, nextWipePosition), nextWipePosition);
+								PathWayMergeInformation path = new PathWayMergeInformation(nextWipePosition, robot.getWorld().getPathFromTo(rdc.actualPosition, nextWipePosition));
+								mfm.run(this.robot, oneRobot, path);
 								rdc.actualPosition = nextWipePosition;
 							}
 						}
@@ -209,7 +214,8 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 								if(!rdc.actualPosition.equals(robot.getPosition()))
 								{
 									//arrived at load station
-									mfm.sendDestPath(robot.getName(), oneRobot, robot.getWorld().getPathFromTo(rdc.actualPosition, robot.getPosition()), robot.getPosition());
+									PathWayMergeInformation path = new PathWayMergeInformation(robot.getPosition(), robot.getWorld().getPathFromTo(rdc.actualPosition, robot.getPosition()));
+									mfm.run(this.robot, oneRobot, path);
 									rdc.actualPosition = robot.getPosition();
 								} else {
 									rdc.finish = true;

@@ -27,7 +27,7 @@ public class DiscoverAroundAtDestinationBehaviour extends Behaviour {
 		super(robot);
 				
 		LookAroundSensor las = (LookAroundSensor) d.getHardwareComponent(ComponentTypes.LOOKAROUNDSENSOR);
-		this.visionRadius = las.getRadius();
+		this.visionRadius = las.getMeasurementRange();
 	}
 	
 	@Override

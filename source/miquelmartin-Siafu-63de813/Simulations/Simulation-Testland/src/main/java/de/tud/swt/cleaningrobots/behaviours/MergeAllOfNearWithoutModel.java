@@ -2,11 +2,12 @@ package de.tud.swt.cleaningrobots.behaviours;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
-import de.tud.swt.cleaningrobots.merge.MergeAllWithoutModel;
+import de.tud.swt.cleaningrobots.merge.WorldMerge;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 import de.tud.swt.cleaningrobots.util.NearRobotInformation;
 
@@ -20,7 +21,7 @@ import de.tud.swt.cleaningrobots.util.NearRobotInformation;
 public class MergeAllOfNearWithoutModel extends Behaviour {
 	
 	private int visionRadius;
-	private MergeAllWithoutModel ma;	
+	private WorldMerge ma;	
 	private int maxCount;
 	private List<NearRobotInformation> robotInformation;
 	private boolean firstStart;
@@ -28,13 +29,13 @@ public class MergeAllOfNearWithoutModel extends Behaviour {
 	public MergeAllOfNearWithoutModel (RobotCore robot) {
 		super(robot);
 		
-		this.ma = new MergeAllWithoutModel(this.robot.configuration);
+		this.ma = new WorldMerge(this.robot.configuration);
 		this.maxCount = 200;
 		this.firstStart = true;
 		this.robotInformation = new LinkedList<NearRobotInformation>();
 		
 		Wlan wlan = (Wlan) this.d.getHardwareComponent(ComponentTypes.WLAN);
-		this.visionRadius = wlan.getVisionRadius();			
+		this.visionRadius = wlan.getMeasurementRange();			
 	}
 	
 	@Override
@@ -88,7 +89,7 @@ public class MergeAllOfNearWithoutModel extends Behaviour {
 							config.world = true;
 							config.knownstates = true;
 							config.knowledge = true;
-							ma.importAllWithoutModel(nearRobot, this.robot, config);
+							ma.run(nearRobot, this.robot, config);
 							i.addCounterOne();
 						}
 					}

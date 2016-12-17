@@ -5,15 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.ecore.EObject;
-
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotKnowledge;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
-import de.tud.swt.cleaningrobots.merge.MergeAll;
+import de.tud.swt.cleaningrobots.merge.NewInformationFollowerMerge;
+import de.tud.swt.cleaningrobots.merge.WorldEcoreModelMerge;
 import de.tud.swt.cleaningrobots.roles.MasterRole;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
@@ -28,7 +27,8 @@ import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 public class MergeMaster extends Behaviour {
 	
 	private MasterRole mr;
-	private MergeAll ma;
+	private WorldEcoreModelMerge ma;
+	private NewInformationFollowerMerge informationMerge;
 	private int visionRadius;	
 	private List<RobotRole> lastChange;
 	
@@ -37,10 +37,11 @@ public class MergeMaster extends Behaviour {
 		
 		this.mr = mr;
 		this.lastChange = new ArrayList<RobotRole>();
-		this.ma = new MergeAll(this.robot.configuration);
+		this.ma = new WorldEcoreModelMerge(this.robot.configuration);
+		this.informationMerge = new NewInformationFollowerMerge(this.robot.configuration);
 		
 		Wlan wlan = (Wlan) this.d.getHardwareComponent(ComponentTypes.WLAN);
-		this.visionRadius = wlan.getVisionRadius();			
+		this.visionRadius = wlan.getMeasurementRange();			
 	}
 	
 	@Override
@@ -80,10 +81,9 @@ public class MergeMaster extends Behaviour {
 					{
 						if (rr.hasNewInformation())
 						{
-							//set new information to false
-							rr.setNewInformation(false);
+							//reset new information to false
+							this.informationMerge.run(this.robot, nearRobot, rr);
 							
-							ma.newInformationMeasure(rr.getRobotCore().getName());
 							//Robot say that he has new Information
 							//make the configuration file for export and import
 							ImportExportConfiguration config = new ImportExportConfiguration();
@@ -98,8 +98,7 @@ public class MergeMaster extends Behaviour {
 							}
 								
 							//export and Import the Models
-							EObject model = nearRobot.exportModel(config);
-							ma.importAllModel(model, this.robot, config);
+							ma.run(nearRobot, this.robot, config);
 							
 							//change the configuration for later export and import
 							for (RobotKnowledge rk : robot.getKnowledge()) {
@@ -154,21 +153,18 @@ public class MergeMaster extends Behaviour {
 					//last change contains the follower
 					if(!lastChange.contains(rr))
 					{
-						EObject model = this.robot.exportModel(nearsNewInformation.get(rr));
-						ma.importAllModel(model, rr.getRobotCore(), nearsNewInformation.get(rr));
+						ma.run(this.robot, rr.getRobotCore(), nearsNewInformation.get(rr));
 					}
 				}
 			} else {
 				for (RobotRole rr : nearsNewInformation.keySet()) {
 					//import the model to all near robots
-					EObject model = this.robot.exportModel(nearsNewInformation.get(rr));
-					ma.importAllModel(model, rr.getRobotCore(), nearsNewInformation.get(rr));
+					ma.run(this.robot, rr.getRobotCore(), nearsNewInformation.get(rr));
 				}
 			}
 			for (RobotRole rr : nearsNoNewInformation.keySet()) {
 				//import the model to all near robots
-				EObject model = this.robot.exportModel(nearsNoNewInformation.get(rr));
-				ma.importAllModel(model, rr.getRobotCore(), nearsNoNewInformation.get(rr));
+				ma.run(this.robot, rr.getRobotCore(), nearsNoNewInformation.get(rr));
 			}	
 			lastChange.clear();
 			lastChange.addAll(nearsNewInformation.keySet());
@@ -179,8 +175,7 @@ public class MergeMaster extends Behaviour {
 			{
 				for (RobotRole rr : nearsNoNewInformation.keySet()) {
 					//import the model to all near robots
-					EObject model = this.robot.exportModel(nearsNoNewInformation.get(rr));
-					ma.importAllModel(model, rr.getRobotCore(), nearsNoNewInformation.get(rr));
+					ma.run(this.robot, rr.getRobotCore(), nearsNoNewInformation.get(rr));
 					lastChange.clear();
 					lastChange.addAll(nearsNoNewInformation.keySet());
 				}

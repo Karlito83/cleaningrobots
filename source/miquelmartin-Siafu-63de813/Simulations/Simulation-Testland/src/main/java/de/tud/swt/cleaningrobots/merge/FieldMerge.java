@@ -1,11 +1,10 @@
 package de.tud.swt.cleaningrobots.merge;
 
-import java.util.List;
-
 import de.tud.swt.cleaningrobots.Configuration;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.State;
+import de.tud.swt.cleaningrobots.util.FieldMergeInformation;
 
 public class FieldMerge extends Merge {
 
@@ -15,19 +14,16 @@ public class FieldMerge extends Merge {
 
 	/**
 	 * The Follower send the new Field information to the Master and saves the measurement.
-	 * @param name
-	 * @param fields
-	 * @param master
-	 * @param doing
 	 */
-	public void run (String name, List<Field> fields, RobotCore master, String doing) {
-		master.getWorld().addFields(fields);
-		//measurement
-		this.preRun(name, (doing + "InformationNewDest"));
-		em.addWorldPositionCount(fields.size());
+	@Override
+	protected void action(RobotCore from, RobotCore to, Object object) {
+		
+		FieldMergeInformation fieldInformation = (FieldMergeInformation) object;
+		to.getWorld().addFields(fieldInformation.getFields());
+		em.addWorldPositionCount(fieldInformation.getFields().size());
 		em.addKnowledgeStringNumber(1);
-		em.addKnowledgeStringByteNumber(name.getBytes().length);		
-		for (Field field : fields) {
+		em.addKnowledgeStringByteNumber(from.getName().getBytes().length);		
+		for (Field field : fieldInformation.getFields()) {
 			//state informations of the fields
 			for (State state : field.getStates()) {
 				em.addWorldStringByteNumber(state.getName().getBytes().length);
@@ -35,6 +31,5 @@ public class FieldMerge extends Merge {
 			}
 		}
 		em.addAccuDoubleNumber(2);
-		this.postRun();
 	} 
 }

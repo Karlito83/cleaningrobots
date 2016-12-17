@@ -27,7 +27,7 @@ public class SeeAroundBehaviour extends Behaviour {
 		super(robot);
 		
 		LookAroundSensor las = (LookAroundSensor) this.d.getHardwareComponent(ComponentTypes.LOOKAROUNDSENSOR);
-		this.visionRadius = las.getRadius();
+		this.visionRadius = las.getMeasurementRange();
 	}
 	
 	@Override

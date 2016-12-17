@@ -8,10 +8,11 @@ import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.LookAroundSensor;
-import de.tud.swt.cleaningrobots.merge.MasterFieldMerge;
+import de.tud.swt.cleaningrobots.merge.FieldMerge;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.roles.FollowerRole;
+import de.tud.swt.cleaningrobots.util.FieldMergeInformation;
 
 /**
  * Behavior that activate the laser scanner if the robot is at the destination and scan the place.
@@ -25,7 +26,7 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 	private RobotCore master;
 	
 	private int visionRadius;
-	private MasterFieldMerge mfm;
+	private FieldMerge merge;
 	
 	private State STATE_BLOCKED;
 	private State STATE_FREE;
@@ -35,11 +36,11 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 	public MasterSeeAroundBehaviour(RobotCore robot) {
 		super(robot);
 		
-		this.mfm = new MasterFieldMerge(this.robot.configuration);
+		this.merge = new FieldMerge(this.robot.configuration);
 		this.firststart = true;
 						
 		LookAroundSensor las = (LookAroundSensor) this.d.getHardwareComponent(ComponentTypes.LOOKAROUNDSENSOR);
-		this.visionRadius = las.getRadius();		
+		this.visionRadius = las.getMeasurementRange();		
 	}
 	
 	@Override
@@ -79,7 +80,8 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 			try {
 				List<Field> fields = getData();
 				//send Field to Robot and ask for new destination and Path
-				mfm.sendFieldsAndMerge(robot.getName(), fields, master, "Explore");
+				FieldMergeInformation fmi = new FieldMergeInformation(fields);
+				merge.run(robot, master, fmi);
 			} catch (Exception e) {
 				throw e;
 			}

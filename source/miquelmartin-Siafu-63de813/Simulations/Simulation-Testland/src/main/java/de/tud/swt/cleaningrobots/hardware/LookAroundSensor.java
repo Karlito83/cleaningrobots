@@ -6,13 +6,11 @@ package de.tud.swt.cleaningrobots.hardware;
  * @author Christopher Werner
  *
  */
-public class LookAroundSensor extends HardwareComponent {
+public class LookAroundSensor extends MeasurementRangeHardwareComponent {
 
-	private int radius;
-	
 	public LookAroundSensor ()
 	{
-		super("LOOKAROUNDSENSOR");
+		super("LOOKAROUNDSENSOR", 2);
 		//0
 		offEnergie = 0.0;
 		//15Wh
@@ -21,12 +19,6 @@ public class LookAroundSensor extends HardwareComponent {
 		workEnergie = caluculateEnergie(6.0);
 		//0
 		outEnergie = 0.0;
-		
-		radius = 2;
-	}
-	
-	public int getRadius ()	{
-		return radius;
 	}
 
 	@Override

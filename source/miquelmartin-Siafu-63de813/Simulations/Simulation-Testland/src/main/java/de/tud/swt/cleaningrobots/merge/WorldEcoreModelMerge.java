@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.EObject;
 
 import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.WorldPart;
-import de.tud.evaluation.ExchangeMeasurement;
 import de.tud.swt.cleaningrobots.Configuration;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotKnowledge;
@@ -21,45 +20,26 @@ import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.util.EMFUtils;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
-/**
- * Merge of models between two robots with the EMF Model.
- * 
- * @author Christopher Werner
- *
- */
-public class MergeAll {
-	
-	private ExchangeMeasurement em; 
-	private Configuration configuration;
-	
-	public MergeAll (Configuration configuration) {
-		this.configuration = configuration;
+public class WorldEcoreModelMerge extends Merge {
+
+	public WorldEcoreModelMerge(Configuration configuration) {
+		super(configuration);
 	}
 	
 	/**
-	 * Measurement if robot comes with new information.
-	 * @param name
-	 */
-	public void newInformationMeasure (String name) {
-		em = new ExchangeMeasurement(name, "New Info", configuration.wc.iteration);
-		em.addKnowledgeIntegerNumber(1);
-		em.addKnowledgeStringNumber(1);
-		em.addKnowledgeStringByteNumber(name.getBytes().length);
-		configuration.wc.exchange.add(em);
-	}
-	
-	/**
-	 * Import the model to the robot.
-	 * @param model
-	 * @param importcore
+	 * Import and Export the Model without using the EMF Model. It only need the RobotCore of each Robot and its World.
+	 * @param from RobotCore for export
+	 * @param to RobotCore for import
 	 * @param config
 	 */
-	public void importAllModel(EObject model, RobotCore importcore, ImportExportConfiguration config) {
+	@Override
+	protected void action(RobotCore from, RobotCore to, Object object) {
+		ImportExportConfiguration config = (ImportExportConfiguration) object;
+		EObject model = from.exportModel(config);
 		if (model instanceof cleaningrobots.Robot) {
 			cleaningrobots.Robot robot = (cleaningrobots.Robot) model;
 			
 			//name information which always send
-			em = new ExchangeMeasurement(robot.getName(), importcore.getName(), configuration.wc.iteration);
 			em.addKnowledgeStringNumber(1);
 			em.addKnowledgeStringByteNumber(robot.getName().getBytes().length);
 			//add robot knowledge
@@ -68,41 +48,41 @@ public class MergeAll {
 				//run over all robot knowledge and own knowledge and insert information
 				for (cleaningrobots.RobotKnowledge exportRk : robot.getRobotKnowledge()) {
 					boolean isIn = false;
-					for (RobotKnowledge importRk : importcore.getKnowledge()) {
+					for (RobotKnowledge importRk : to.getKnowledge()) {
 						if (exportRk.getName().equals(importRk.getName())) {
 							isIn = true;
-							importRobotKnowledge(importRk, exportRk, importcore);							
+							importRobotKnowledge(importRk, exportRk, to);							
 						}
 					}
 					if (!isIn) {
 						RobotKnowledge rk = new RobotKnowledge(exportRk.getName());
-						importcore.getKnowledge().add(rk);
-						importRobotKnowledge(rk, exportRk, importcore);
+						to.getKnowledge().add(rk);
+						importRobotKnowledge(rk, exportRk, to);
 					}
 				}
 				boolean isIn = false;
-				for (RobotKnowledge importRk : importcore.getKnowledge()) {
+				for (RobotKnowledge importRk : to.getKnowledge()) {
 					if (importRk.getName().equals(robot.getName())) {
 						isIn = true;			
-						importRobotKnowledge(importRk, robot, importcore);
+						importRobotKnowledge(importRk, robot, to);
 					}
 				}
 				if (!isIn) {
 					RobotKnowledge rk = new RobotKnowledge(robot.getName());
-					importcore.getKnowledge().add(rk);
-					importRobotKnowledge(rk, robot, importcore);
+					to.getKnowledge().add(rk);
+					importRobotKnowledge(rk, robot, to);
 				}
 			}
 			if (config.knownstates && !config.knowledge)
 			{
 				boolean isIn = false;
-				for (RobotKnowledge hisRk : importcore.getKnowledge()) {					
+				for (RobotKnowledge hisRk : to.getKnowledge()) {					
 					if (hisRk.getName().equals(robot.getName())) {
 						isIn = true;
 						//insert the new information from the robot
 						List<State> knowns = new LinkedList<State>();
 						for (cleaningrobots.State s : robot.getKnownStates()) {
-							State st = importcore.configuration.createState(s.getName());
+							State st = to.configuration.createState(s.getName());
 							knowns.add(st);
 							em.addStatesStringByteNumber(s.getName().getBytes().length);
 							em.addStatesStringNumber(1);
@@ -114,22 +94,21 @@ public class MergeAll {
 					RobotKnowledge rk = new RobotKnowledge(robot.getName());
 					List<State> knowns = new LinkedList<State>();
 					for (cleaningrobots.State s : robot.getKnownStates()) {
-						State st = importcore.configuration.createState(s.getName());
+						State st = to.configuration.createState(s.getName());
 						knowns.add(st);
 						em.addStatesStringByteNumber(s.getName().getBytes().length);
 						em.addStatesStringNumber(1);
 					}
 					rk.setKnownStates(knowns);
-					importcore.getKnowledge().add(rk);
+					to.getKnowledge().add(rk);
 				}
 			}
 			if (config.world)
 			{
 				//World and Field import
 				cleaningrobots.WorldPart rootWorldPart = robot.getWorld();
-				importFieldsFromWorldModel(rootWorldPart, importcore);
+				importFieldsFromWorldModel(rootWorldPart, to);
 			}
-			configuration.wc.exchange.add(em);
 		}
 	}
 	
@@ -274,5 +253,5 @@ public class MergeAll {
 				importFieldsFromWorldModel(innerWorldPart, importcore);
 			}
 		}
-	}	
+	}
 }

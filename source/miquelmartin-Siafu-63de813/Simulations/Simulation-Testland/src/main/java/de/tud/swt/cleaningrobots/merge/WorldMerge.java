@@ -18,7 +18,7 @@ import de.tud.swt.cleaningrobots.roles.FollowerRole;
 import de.tud.swt.cleaningrobots.roles.MasterRole;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
-public class WorldMerge extends AgentMerge {
+public class WorldMerge extends Merge {
 
 	public WorldMerge(Configuration configuration) {
 		super(configuration);
@@ -31,8 +31,8 @@ public class WorldMerge extends AgentMerge {
 	 * @param config
 	 */
 	@Override
-	protected void action(RobotCore from, RobotCore to,
-			ImportExportConfiguration config) {
+	protected void action(RobotCore from, RobotCore to, Object object) {
+		ImportExportConfiguration config = (ImportExportConfiguration) object;
 		//name information which always send
 		em.addKnowledgeStringNumber(1);
 		em.addKnowledgeStringByteNumber(from.getName().getBytes().length);

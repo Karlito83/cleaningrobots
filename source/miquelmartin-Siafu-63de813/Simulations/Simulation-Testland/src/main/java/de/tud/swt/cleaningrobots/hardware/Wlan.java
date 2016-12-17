@@ -6,13 +6,11 @@ package de.tud.swt.cleaningrobots.hardware;
  * @author Christopher Werner
  *
  */
-public class Wlan extends HardwareComponent {
+public class Wlan extends MeasurementRangeHardwareComponent {
 
-	private int visionRadius;
-	
 	public Wlan ()
 	{
-		super("WLAN");
+		super("WLAN", 1);
 		//0
 		offEnergie = 0.0;
 		//1Wh
@@ -21,12 +19,6 @@ public class Wlan extends HardwareComponent {
 		workEnergie = caluculateEnergie(1.0);
 		//0
 		outEnergie = 0.0;
-		
-		visionRadius = 1;
-	}
-	
-	public int getVisionRadius () {
-		return visionRadius;
 	}
 
 	@Override

@@ -28,7 +28,7 @@ public class WipeAroundAtDestinationBehaviour extends Behaviour {
 		super(robot);
 		
 		Wiper las = (Wiper) this.d.getHardwareComponent(ComponentTypes.WIPER);
-		this.visionRadius = las.getRadius();
+		this.visionRadius = las.getMeasurementRange();
 	}
 	
 	@Override

@@ -2,6 +2,7 @@ package de.tud.swt.cleaningrobots.merge;
 
 import de.tud.evaluation.ExchangeMeasurement;
 import de.tud.swt.cleaningrobots.Configuration;
+import de.tud.swt.cleaningrobots.RobotCore;
 
 public abstract class Merge {
 
@@ -21,4 +22,13 @@ public abstract class Merge {
 	{
 		this.configuration.wc.exchange.add(em);
 	}
+	
+	public void run (RobotCore from, RobotCore to, Object object)
+	{
+		this.preRun(from.getName(), to.getName());
+		this.action(from, to, object);
+		this.postRun();
+	}
+
+	protected abstract void action (RobotCore from, RobotCore to, Object object);
 }

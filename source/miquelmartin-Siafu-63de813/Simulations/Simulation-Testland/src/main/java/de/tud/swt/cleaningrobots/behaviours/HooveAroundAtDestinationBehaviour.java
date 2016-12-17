@@ -29,7 +29,7 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 		super(robot);
 		
 		Hoover las = (Hoover) d.getHardwareComponent(ComponentTypes.HOOVER);
-		this.visionRadius = las.getRadius();
+		this.visionRadius = las.getMeasurementRange();
 	}
 	
 	@Override

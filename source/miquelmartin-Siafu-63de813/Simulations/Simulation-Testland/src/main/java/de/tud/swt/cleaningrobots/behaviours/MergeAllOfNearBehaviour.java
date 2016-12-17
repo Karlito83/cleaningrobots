@@ -2,13 +2,12 @@ package de.tud.swt.cleaningrobots.behaviours;
 
 import java.util.LinkedList;
 import java.util.List;
-import org.eclipse.emf.ecore.EObject;
 
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
-import de.tud.swt.cleaningrobots.merge.MergeAll;
+import de.tud.swt.cleaningrobots.merge.WorldEcoreModelMerge;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 import de.tud.swt.cleaningrobots.util.NearRobotInformation;
 
@@ -22,7 +21,7 @@ import de.tud.swt.cleaningrobots.util.NearRobotInformation;
 public class MergeAllOfNearBehaviour extends Behaviour {
 	
 	private int visionRadius;	
-	private MergeAll ma;	
+	private WorldEcoreModelMerge ma;	
 	private int maxCount;
 	private List<NearRobotInformation> robotInformation;
 	private boolean firstStart;
@@ -30,13 +29,13 @@ public class MergeAllOfNearBehaviour extends Behaviour {
 	public MergeAllOfNearBehaviour(RobotCore robot) {
 		super(robot);
 		
-		this.ma = new MergeAll(this.robot.configuration);
+		this.ma = new WorldEcoreModelMerge(this.robot.configuration);
 		this.maxCount = 200;
 		this.firstStart = true;
 		this.robotInformation = new LinkedList<NearRobotInformation>();
 		
 		Wlan wlan = (Wlan) this.d.getHardwareComponent(ComponentTypes.WLAN);
-		this.visionRadius = wlan.getVisionRadius();		
+		this.visionRadius = wlan.getMeasurementRange();		
 	}
 	
 	@Override
@@ -90,8 +89,7 @@ public class MergeAllOfNearBehaviour extends Behaviour {
 							config.world = true;
 							config.knownstates = true;
 							config.knowledge = true;
-							EObject model = nearRobot.exportModel(config);
-							ma.importAllModel(model, this.robot, config);
+							ma.run(nearRobot, this.robot, config);
 							i.addCounterOne();
 						}
 					}

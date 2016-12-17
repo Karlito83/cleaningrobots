@@ -6,13 +6,11 @@ package de.tud.swt.cleaningrobots.hardware;
  * @author Christopher Werner
  *
  */
-public class Hoover extends HardwareComponent {
+public class Hoover extends MeasurementRangeHardwareComponent {
 
-	private int radius;
-	
 	public Hoover ()
 	{
-		super("HOOVER");
+		super("HOOVER", 2);
 		//0
 		offEnergie = 0.0;
 		//13Wh
@@ -21,12 +19,6 @@ public class Hoover extends HardwareComponent {
 		workEnergie = caluculateEnergie(13.0);
 		//0
 		outEnergie = 0.0;
-		
-		radius = 2;
-	}
-	
-	public int getRadius ()	{
-		return radius;
 	}
 
 	@Override
