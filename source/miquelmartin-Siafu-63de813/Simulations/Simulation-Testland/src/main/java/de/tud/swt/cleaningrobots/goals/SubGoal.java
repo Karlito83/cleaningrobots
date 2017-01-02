@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.model.State;
 
 /**
@@ -20,12 +20,13 @@ public abstract class SubGoal extends Goal {
 
 	protected boolean correct;
 	protected List<Behaviour> behaviours;
+	protected RobotRole robotRole;
 	
-	public SubGoal(RobotCore robot, boolean optional) {
-		super(robot);
+	public SubGoal(RobotRole role, boolean optional) {
+		super(role.getRobotCore());
 		this.optional = optional;
-		correct = true;
-		behaviours = new ArrayList<Behaviour>();
+		this.correct = true;
+		this.behaviours = new ArrayList<Behaviour>();
 	}
 	
 	@Override
@@ -59,4 +60,10 @@ public abstract class SubGoal extends Goal {
 		return supportedStates;
 	}
 
+	public void initialize() {
+		//Initialize all Subbehaviours
+		for (Behaviour b : behaviours) {
+			b.initialiseBehaviour();
+		}
+	}
 }

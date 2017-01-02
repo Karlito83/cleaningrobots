@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.nonoptional;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.behaviours.DiscoverBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.LoadIfAtLoadStationBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.MergeAllOfNearWithoutModel;
@@ -18,10 +18,10 @@ public class WithoutMasterExploreGoal extends NonOptionalGoal {
 
 	private DiscoverBehaviour d;
 	
-	public WithoutMasterExploreGoal(RobotCore robot) {
-		super(robot);
+	public WithoutMasterExploreGoal(RobotRole role) {
+		super(role);
 		
-		DiscoverAroundAtDestinationBehaviour s = new DiscoverAroundAtDestinationBehaviour(robot);
+		DiscoverAroundAtDestinationBehaviour s = new DiscoverAroundAtDestinationBehaviour(getRobotCore());
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
 		if (s.isHardwarecorrect()) {
 			behaviours.add(s);
@@ -29,7 +29,7 @@ public class WithoutMasterExploreGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		d = new DiscoverBehaviour(robot, false);
+		d = new DiscoverBehaviour(getRobotCore(), false);
 		System.out.println("Correct Discover: " + d.isHardwarecorrect());
 		if (d.isHardwarecorrect()) {
 			behaviours.add(d);
@@ -37,7 +37,7 @@ public class WithoutMasterExploreGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MoveBehaviour m = new MoveBehaviour(robot);
+		MoveBehaviour m = new MoveBehaviour(getRobotCore());
 		System.out.println("Correct Move: " + m.isHardwarecorrect());
 		if (m.isHardwarecorrect()) {
 			behaviours.add(m);
@@ -45,7 +45,7 @@ public class WithoutMasterExploreGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MergeAllOfNearWithoutModel mar = new MergeAllOfNearWithoutModel(robot);
+		MergeAllOfNearWithoutModel mar = new MergeAllOfNearWithoutModel(getRobotCore());
 		System.out.println("Correct MergeRonny: " + mar.isHardwarecorrect());
 		if (mar.isHardwarecorrect()) {
 			behaviours.add(mar);
@@ -53,7 +53,7 @@ public class WithoutMasterExploreGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		LoadIfAtLoadStationBehaviour lialsb = new LoadIfAtLoadStationBehaviour(robot);
+		LoadIfAtLoadStationBehaviour lialsb = new LoadIfAtLoadStationBehaviour(getRobotCore());
 		System.out.println("Correct LoadIfAtLoadStation: " + lialsb.isHardwarecorrect());
 		if (lialsb.isHardwarecorrect()) {
 			behaviours.add(lialsb);

@@ -40,16 +40,21 @@ public class LoadIfRobotWantBehaviour extends Behaviour {
 		for (RobotCore nearRobot : nearRobots) {
 			if (nearRobot.getAccu() != null)
 			{
-				if (nearRobot.isLoading) {
+				if (nearRobot.isLoading()) {
 					nearRobot.getAccu().load(loadStation.getLoadValue());
 				}
 				//when the Accu is full do not load anymore
 				if (nearRobot.getAccu().isFull()) {
-					nearRobot.isLoading = false;
+					nearRobot.setLoading(false);
 				}
 			}
 		}
 		
 		return false;
+	}
+
+	@Override
+	public void initialiseBehaviour() {
+		//do nothing before first start		
 	}
 }

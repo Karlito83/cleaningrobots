@@ -31,7 +31,7 @@ public class LoadWlanActivateBehaviour extends Behaviour {
 	public boolean action() throws Exception {
 
 		//isLoading switch on or off
-		if (robot.isLoading)
+		if (robot.isLoading())
 		{
 			//switch on hardware components
 			this.d.switchAllOn();
@@ -43,6 +43,11 @@ public class LoadWlanActivateBehaviour extends Behaviour {
 		}
 		
 		return false;
+	}
+
+	@Override
+	public void initialiseBehaviour() {
+		//do nothing before first start		
 	}
 
 }

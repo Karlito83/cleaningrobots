@@ -15,7 +15,7 @@ public class HooverControlMasterRole extends MasterRole {
 	@Override
 	public boolean createGoals() {
 		// TODO change relative
-		MasterHooveMasterGoal mmg = new MasterHooveMasterGoal(core, this, false);		
+		MasterHooveMasterGoal mmg = new MasterHooveMasterGoal(this, false);		
 		if (mmg.isHardwareCorrect())
 		{
 			this.addGoals(mmg);

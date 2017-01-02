@@ -13,7 +13,8 @@ public class MasterRoleModel extends RoleModel{
 
 	private List<String> followers;
 	
-	public MasterRoleModel () {
+	public MasterRoleModel (String roleName) {
+		super(roleName);
 		followers = new ArrayList<String>();
 	}
 	

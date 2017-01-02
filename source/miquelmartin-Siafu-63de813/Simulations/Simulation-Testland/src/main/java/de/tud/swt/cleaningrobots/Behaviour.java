@@ -18,14 +18,22 @@ public abstract class Behaviour {
 	protected boolean hardwarecorrect;	
 	protected Set<State> supportedStates;
 
+	/*public Behaviour(RobotRole role){
+		this.robot = role.getRobotCore();
+		this.supportedStates = new HashSet<State>();
+		this.d = new Demand(robot);
+		this.addSupportedStates();
+		this.addHardwareComponents();
+		this.hardwarecorrect = d.isCorrect();		
+	}*/
+	
 	public Behaviour(RobotCore robot){
 		this.robot = robot;
 		this.supportedStates = new HashSet<State>();
 		this.d = new Demand(robot);
 		this.addSupportedStates();
 		this.addHardwareComponents();
-		this.hardwarecorrect = d.isCorrect();
-		
+		this.hardwarecorrect = d.isCorrect();		
 	}
 	
 	/**
@@ -47,6 +55,8 @@ public abstract class Behaviour {
 	 * @throws Exception
 	 */
 	public abstract boolean action() throws Exception;
+	
+	public abstract void initialiseBehaviour ();
 		
 	/**
 	 * Gives back true if the robot has the needed Hardware.

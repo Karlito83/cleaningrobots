@@ -20,6 +20,7 @@ public class FieldMerge extends Merge {
 		
 		FieldMergeInformation fieldInformation = (FieldMergeInformation) object;
 		to.getWorld().addFields(fieldInformation.getFields());
+		//measurement
 		em.addWorldPositionCount(fieldInformation.getFields().size());
 		em.addKnowledgeStringNumber(1);
 		em.addKnowledgeStringByteNumber(from.getName().getBytes().length);		

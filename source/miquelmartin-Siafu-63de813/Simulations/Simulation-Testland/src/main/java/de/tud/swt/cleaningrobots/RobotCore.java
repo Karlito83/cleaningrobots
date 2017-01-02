@@ -29,7 +29,7 @@ import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
  */
 public class RobotCore extends Robot {
 	
-	public Configuration configuration;
+	private Configuration configuration;
 	private RobotMeasurement measure;
 
 	private String name;
@@ -53,7 +53,7 @@ public class RobotCore extends Robot {
 	//say if it is a load station
 	private boolean loadStation;
 	//is the robot loading
-	public boolean isLoading;
+	private boolean loading;
 	
 	public RobotCore(ICommunicationAdapter communicationAdapter, Accu accu, Configuration configuration) {
 		this("Empty", communicationAdapter, accu, configuration);
@@ -70,7 +70,7 @@ public class RobotCore extends Robot {
 		this.accu = accu;
 		
 		this.loadStation = false;
-		this.isLoading = false;
+		this.loading = false;
 		this.shutDown = false;
 		
 		this.roles = new ArrayList<RobotRole>();
@@ -83,14 +83,39 @@ public class RobotCore extends Robot {
 		this.destinationContainer = new DestinationContainer(this);		
 	}
 	
-	public boolean initializeRoles ()
+	public Configuration getConfiguration ()
+	{
+		return this.configuration;
+	}
+	
+	public boolean isLoading ()
+	{
+		return this.loading;
+	}
+	
+	public void setLoading (boolean loading)
+	{
+		this.loading = loading;
+	}
+	
+	public boolean createAndInitializeRoleGoals ()
 	{
 		boolean result = true;
+		//create the goals first
 		for (RobotRole rr : roles)
 		{
 			result = result && rr.createGoals();
 		}
-		return result;
+		if (!result)
+			return false;
+
+		//initialize them after
+		for (RobotRole rr : roles)
+		{
+			rr.initializeGoals();
+		}
+		
+		return true;
 	}
 	
 	/**
@@ -388,7 +413,7 @@ public class RobotCore extends Robot {
 				em.addKnowledgeStringNumber(1);
 			}
 		}
-		configuration.wc.exchange.add(em);
+		configuration.getWc().exchange.add(em);
 	}
 
 	public cleaningrobots.Robot exportModel(ImportExportConfiguration config) {

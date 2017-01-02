@@ -17,8 +17,8 @@ public class ExplorerRandomFollowerRole extends FollowerRole {
 	@Override
 	public boolean createGoals() {
 		
-		ExploreLoadGoal elg = new ExploreLoadGoal(core, false);
-		WlanLoadIfRobotWantMergeGoal wlirwmg = new WlanLoadIfRobotWantMergeGoal(core);
+		ExploreLoadGoal elg = new ExploreLoadGoal(this, false);
+		WlanLoadIfRobotWantMergeGoal wlirwmg = new WlanLoadIfRobotWantMergeGoal(this);
 		
 		MasterGoal mg = new MasterGoal(core);
 		mg.subGoals.add(elg);

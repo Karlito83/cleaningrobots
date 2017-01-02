@@ -15,7 +15,7 @@ public class ExplorerControlMasterRole extends MasterRole {
 	@Override
 	public boolean createGoals() {
 		// TODO change relative
-		MasterExploreMasterGoal mmg = new MasterExploreMasterGoal(core, this, false);		
+		MasterExploreMasterGoal mmg = new MasterExploreMasterGoal(this, false);		
 		if (mmg.isHardwareCorrect())
 		{
 			this.addGoals(mmg);

@@ -10,6 +10,9 @@ import de.tud.swt.cleaningrobots.roles.FollowerRole;
 import de.tud.swt.cleaningrobots.roles.HooverControlMasterRole;
 import de.tud.swt.cleaningrobots.roles.HooverControlledFollowerRole;
 import de.tud.swt.cleaningrobots.roles.LoadstationRole;
+import de.tud.swt.cleaningrobots.roles.LoggingCsvRole;
+import de.tud.swt.cleaningrobots.roles.LoggingPictureRole;
+import de.tud.swt.cleaningrobots.roles.LoggingXmlRole;
 import de.tud.swt.cleaningrobots.roles.MasterRole;
 import de.tud.swt.cleaningrobots.roles.WiperControlMasterRole;
 import de.tud.swt.cleaningrobots.roles.WiperControlledFollowerRole;
@@ -47,12 +50,12 @@ public class MasterExploreFactory extends IAgentFactory {
 		IRobotAgent lsa = factory.createLoadStationAgent();
 		population.add(lsa);
 		
-		if (configuration.wc.number_explore_agents > 0) {
+		if (configuration.getWc().number_explore_agents > 0) {
 			MasterRole mre = new ExplorerControlMasterRole(lsa.getRobot());
 			mre.addRole(mre);			
 			
 			//explore agents
-			for (int i = 0; i < configuration.wc.number_explore_agents; i++) {
+			for (int i = 0; i < configuration.getWc().number_explore_agents; i++) {
 				IRobotAgent era = factory.createExploreAgent();
 				population.add(era);		
 				
@@ -61,12 +64,12 @@ public class MasterExploreFactory extends IAgentFactory {
 				mre.getFollowers().add(fre);
 			}
 			
-			if (configuration.wc.number_hoove_agents > 0) {
+			if (configuration.getWc().number_hoove_agents > 0) {
 				MasterRole mrh = new HooverControlMasterRole(lsa.getRobot());
 				mrh.addRole(mrh);
 				
 				//hoove agents
-				for (int i = 0; i < configuration.wc.number_hoove_agents; i++) {
+				for (int i = 0; i < configuration.getWc().number_hoove_agents; i++) {
 					IRobotAgent hra = factory.createHooveAgent();
 					population.add(hra);
 					
@@ -75,12 +78,12 @@ public class MasterExploreFactory extends IAgentFactory {
 					mrh.getFollowers().add(frh);
 				}
 								
-				if (configuration.wc.number_wipe_agents > 0) {
+				if (configuration.getWc().number_wipe_agents > 0) {
 					MasterRole mrw = new WiperControlMasterRole(lsa.getRobot());
 					mrw.addRole(mrw);
 					
 					//wipe agents
-					for (int i = 0; i < configuration.wc.number_wipe_agents; i++) {
+					for (int i = 0; i < configuration.getWc().number_wipe_agents; i++) {
 						IRobotAgent wra = factory.createWipeAgent();
 						population.add(wra);
 						
@@ -93,11 +96,37 @@ public class MasterExploreFactory extends IAgentFactory {
 			}			
 			RobotRole rr = new LoadstationRole(lsa.getRobot());
 			rr.addRole(rr);
-		}		
+		}	
+		
+		//add the logging roles to every agent
+		if (configuration.getWc().csvSave)
+		{
+			for (IRobotAgent a: population)
+			{
+				LoggingCsvRole csvRole = new LoggingCsvRole(a.getRobot());
+				csvRole.addRole(csvRole);
+			}
+		}
+		if (configuration.getWc().pngSave)
+		{
+			for (IRobotAgent a: population)
+			{
+				LoggingPictureRole pngRole = new LoggingPictureRole(a.getRobot());
+				pngRole.addRole(pngRole);
+			}
+		}
+		if (configuration.getWc().xmlSave)
+		{
+			for (IRobotAgent a: population)
+			{
+				LoggingXmlRole xmlRole = new LoggingXmlRole(a.getRobot());
+				xmlRole.addRole(xmlRole);
+			}
+		}
 				
 		for (IRobotAgent a: population)
 		{
-			a.getRobot().initializeRoles();
+			a.getRobot().createAndInitializeRoleGoals();
 			System.out.println("Name: " + a.getRobot().getName() + " Roles: " + a.getRobot().getRoles() + " States: " + a.getRobot().getSupportedStates());
 		}
 		return population;

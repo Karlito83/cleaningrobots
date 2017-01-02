@@ -8,7 +8,6 @@ public class DestinationMerge extends Merge {
 
 	public DestinationMerge(Configuration configuration) {
 		super(configuration);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

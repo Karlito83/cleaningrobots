@@ -16,7 +16,7 @@ public class HooverRole extends RobotRole {
 	@Override
 	public boolean createGoals() {
 		
-		WithoutMasterHooveGoal wmg = new WithoutMasterHooveGoal(core);
+		WithoutMasterHooveGoal wmg = new WithoutMasterHooveGoal(this);
 		if (wmg.isHardwareCorrect())
 		{
 			this.addGoals(wmg);

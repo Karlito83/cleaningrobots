@@ -19,8 +19,8 @@ public class MasterGoal extends Goal {
 
 	public List<Goal> subGoals;
 
-	public MasterGoal(RobotCore robot) {
-		super(robot);
+	public MasterGoal(RobotCore core) {
+		super(core);
 
 		this.subGoals = new ArrayList<Goal>();
 	}
@@ -90,6 +90,14 @@ public class MasterGoal extends Goal {
 			supportedStates.addAll(goal.getSupportedStates());
 		}
 		return supportedStates;
+	}
+
+	@Override
+	public void initialize() {
+		//Initialize all Subgoals
+		for (Goal g : subGoals) {
+			g.initialize();
+		}
 	}
 	
 	

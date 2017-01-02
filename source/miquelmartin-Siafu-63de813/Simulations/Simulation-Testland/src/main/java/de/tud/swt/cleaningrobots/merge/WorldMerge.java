@@ -105,7 +105,7 @@ public class WorldMerge extends Merge {
 	private void importRobotKnowledgeWithoutModel (RobotKnowledge importRk, RobotCore exportR) {
 		//insert the new information from the robot
 		//add lastArrange
-		importRk.setLastArrange(configuration.wc.iteration);
+		importRk.setLastArrange(configuration.getWc().iteration);
 		em.addKnowledgeIntegerNumber(1);
 		//add destination
 		if (exportR.getDestinationContainer().getDestination() != null) {
@@ -125,8 +125,7 @@ public class WorldMerge extends Merge {
 		for (RobotRole r : exportR.getRoles()) {
 			if (r instanceof MasterRole) {
 				MasterRole m = (MasterRole) r;
-				MasterRoleModel mrm = new MasterRoleModel();
-				mrm.setRoleName(r.getClass().getName());
+				MasterRoleModel mrm = new MasterRoleModel(r.getClass().getName());
 				for (RobotRole s : m.getFollowers()) {
 					em.addKnowledgeStringByteNumber(s.getRobotCore().getName().getBytes().length);
 					mrm.getFollowers().add(s.getRobotCore().getName());
@@ -141,15 +140,13 @@ public class WorldMerge extends Merge {
 				em.addKnowledgeStringByteNumber(f.getMaster().getRobotCore().getName().getBytes().length);
 				em.addKnowledgeStringByteNumber(r.getClass().getName().getBytes().length);
 				//add FollowerRoleModel
-				FollowerRoleModel frm = new FollowerRoleModel();
+				FollowerRoleModel frm = new FollowerRoleModel(r.getClass().getName());
 				frm.setMaster(f.getMaster().getRobotCore().getName());
-				frm.setRoleName(r.getClass().getName());
 				roles.add(frm);
 			} else {
-				RoleModel rm = new RoleModel();
+				RoleModel rm = new RoleModel(r.getClass().getName());
 				em.addKnowledgeStringNumber(1);
 				em.addKnowledgeStringByteNumber(r.getClass().getName().getBytes().length);
-				rm.setRoleName(r.getClass().getName());
 				roles.add(rm);
 			}
 		}
@@ -280,7 +277,7 @@ public class WorldMerge extends Merge {
 				em3.addWorldPositionCount(1);
 			}*/
 			//real code
-			Field newField = modelField.exportWithoutModel(config, configuration.wc.iteration);
+			Field newField = modelField.exportWithoutModel(config, configuration.getWc().iteration);
 			if (newField == null)
 				continue;
 			

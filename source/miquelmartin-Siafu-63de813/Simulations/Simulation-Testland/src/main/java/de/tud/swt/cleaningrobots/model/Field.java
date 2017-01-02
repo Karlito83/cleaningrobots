@@ -55,7 +55,7 @@ public class Field {
 	
 	@Override
 	public String toString() {
-		return "Field: " + pos.toString() + "[" + states + "]";
+		return "Field: " + pos.toString() + " [" + states + "]";
 	}
 	
 	public Field exportWithoutModel (ImportExportConfiguration config, int iteration) {

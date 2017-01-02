@@ -16,7 +16,7 @@ public class WiperCalculateMergeMasterRole extends MergeMasterRole {
 	public boolean createGoals() {
 		boolean result = super.createGoals();
 		
-		CalculateWipeRobotPositionGoal crpg = new CalculateWipeRobotPositionGoal(core, this);
+		CalculateWipeRobotPositionGoal crpg = new CalculateWipeRobotPositionGoal(this);
 		if (crpg.isHardwareCorrect())
 		{
 			this.addGoals(crpg);

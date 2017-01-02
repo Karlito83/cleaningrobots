@@ -21,6 +21,10 @@ public class WorkingConfiguration {
 	public int iteration;
 	public List<ExchangeMeasurement> exchange; 
 	
+	public boolean pngSave;
+	public boolean xmlSave;
+	public boolean csvSave;
+	
 	public WorkingConfiguration (int explore, int hoove, int wipe, int run, int configuration, int newField, int map) {
 		this.iteration = 0;
 		this.exchange = new LinkedList<ExchangeMeasurement>();
@@ -32,6 +36,10 @@ public class WorkingConfiguration {
 		this.config = configuration;
 		this.new_field_count = newField;
 		this.map = map;
+		
+		this.pngSave = false;
+		this.xmlSave = false;
+		this.csvSave = false;
 	}
 	
 	public String toString () {

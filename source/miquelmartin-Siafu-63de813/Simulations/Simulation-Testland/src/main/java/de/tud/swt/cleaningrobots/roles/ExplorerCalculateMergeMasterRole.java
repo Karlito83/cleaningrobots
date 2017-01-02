@@ -16,7 +16,7 @@ public class ExplorerCalculateMergeMasterRole extends MergeMasterRole {
 	public boolean createGoals() {
 		boolean result = super.createGoals();
 		
-		CalculateExploreRobotPositionGoal crpg = new CalculateExploreRobotPositionGoal(core, this);
+		CalculateExploreRobotPositionGoal crpg = new CalculateExploreRobotPositionGoal(this);
 		if (crpg.isHardwareCorrect())
 		{
 			this.addGoals(crpg);

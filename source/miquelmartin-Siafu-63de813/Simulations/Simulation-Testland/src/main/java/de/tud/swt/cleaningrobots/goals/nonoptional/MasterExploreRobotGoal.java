@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.nonoptional;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.behaviours.MasterMoveBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.MasterSeeAroundBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.WlanOnBehaviour;
@@ -18,12 +18,12 @@ public class MasterExploreRobotGoal extends NonOptionalGoal {
 
 	private State WORLDSTATE_DISCOVERED;
 	
-	public MasterExploreRobotGoal(RobotCore robot) {
-		super(robot);
+	public MasterExploreRobotGoal(RobotRole role) {
+		super(role);
 		
-		this.WORLDSTATE_DISCOVERED = robot.configuration.createState("Discovered");
+		this.WORLDSTATE_DISCOVERED = getRobotCore().getConfiguration().createState("Discovered");
 		
-		WlanOnBehaviour w = new WlanOnBehaviour(robot);
+		WlanOnBehaviour w = new WlanOnBehaviour(getRobotCore());
 		System.out.println("Correct SeeAround: " + w.isHardwarecorrect());
 		if (w.isHardwarecorrect()) {
 			behaviours.add(w);
@@ -31,7 +31,7 @@ public class MasterExploreRobotGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MasterMoveBehaviour m = new MasterMoveBehaviour(robot);
+		MasterMoveBehaviour m = new MasterMoveBehaviour(getRobotCore());
 		System.out.println("Correct Move: " + m.isHardwarecorrect());
 		if (m.isHardwarecorrect()) {
 			behaviours.add(m);
@@ -39,7 +39,7 @@ public class MasterExploreRobotGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MasterSeeAroundBehaviour s = new MasterSeeAroundBehaviour(robot);
+		MasterSeeAroundBehaviour s = new MasterSeeAroundBehaviour(getRobotCore());
 		System.out.println("Correct Discover: " + s.isHardwarecorrect());
 		if (s.isHardwarecorrect()) {
 			behaviours.add(s);

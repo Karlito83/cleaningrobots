@@ -33,8 +33,8 @@ public class DiscoverAroundAtDestinationBehaviour extends Behaviour {
 	@Override
 	protected void addSupportedStates() {
 		//create and add the states
-		this.STATE_BLOCKED = robot.configuration.createState("Blocked");
-		this.STATE_FREE = robot.configuration.createState("Free");
+		this.STATE_BLOCKED = robot.getConfiguration().createState("Blocked");
+		this.STATE_FREE = robot.getConfiguration().createState("Free");
 				
 		this.supportedStates.add(STATE_BLOCKED);
 		this.supportedStates.add(STATE_FREE);		
@@ -99,17 +99,22 @@ public class DiscoverAroundAtDestinationBehaviour extends Behaviour {
 		boolean positionIsAtWall = robot.getICommunicationAdapter().isWall(row, col);
 		
 		//add new field
-		result = new Field(col, row, !positionIsAtWall, this.robot.configuration.wc.iteration);
+		result = new Field(col, row, !positionIsAtWall, this.robot.getConfiguration().getWc().iteration);
 		if(positionIsAtWall)
 		{
-			result.addState(STATE_BLOCKED, this.robot.configuration.wc.iteration);
+			result.addState(STATE_BLOCKED, this.robot.getConfiguration().getWc().iteration);
 		}
 		else
 		{
-			result.addState(STATE_FREE, this.robot.configuration.wc.iteration);
+			result.addState(STATE_FREE, this.robot.getConfiguration().getWc().iteration);
 		}
 		
 		
 		return result;
+	}
+
+	@Override
+	public void initialiseBehaviour() {
+		//do nothing before first start		
 	}
 }

@@ -31,14 +31,11 @@ public class MasterWipeAroundBehaviour extends Behaviour {
 	
 	private State STATE_HOOVE;
 	private State STATE_WIPE;
-	
-	private boolean firststart;
-	
+		
 	public MasterWipeAroundBehaviour(RobotCore robot) {
 		super(robot);
 		
-		this.merge = new FieldMerge(this.robot.configuration);
-		this.firststart = true;
+		this.merge = new FieldMerge(this.robot.getConfiguration());
 						
 		Wiper las = (Wiper) this.d.getHardwareComponent(ComponentTypes.WIPER);
 		this.visionRadius = las.getMeasurementRange();		
@@ -47,8 +44,8 @@ public class MasterWipeAroundBehaviour extends Behaviour {
 	@Override
 	protected void addSupportedStates() {
 		//create and add the states
-		this.STATE_HOOVE = robot.configuration.createState("Hoove");
-		this.STATE_WIPE = robot.configuration.createState("Wipe");
+		this.STATE_HOOVE = robot.getConfiguration().createState("Hoove");
+		this.STATE_WIPE = robot.getConfiguration().createState("Wipe");
 								
 		this.supportedStates.add(this.STATE_HOOVE);
 		this.supportedStates.add(this.STATE_WIPE);		
@@ -61,16 +58,6 @@ public class MasterWipeAroundBehaviour extends Behaviour {
 
 	@Override
 	public boolean action() throws Exception {
-		
-		if (firststart) {
-			//get the master object
-			for (RobotRole rr : robot.getRoles()) {
-				if (rr instanceof FollowerRole) {
-					master = ((FollowerRole) rr).getMaster().getRobotCore();
-				}
-			}
-			firststart = false;
-		}
 		
 		if (robot.getDestinationContainer().isAtDestination() && !robot.getDestinationContainer().isAtLoadDestination()) {
 			//start all hardware components
@@ -125,9 +112,19 @@ public class MasterWipeAroundBehaviour extends Behaviour {
 		//could only wipe position he knows about
 		if (master.getWorld().hasState(p, STATE_HOOVE))
 		{
-			result = new Field(x, y, true, this.robot.configuration.wc.iteration);
-			result.addState(STATE_WIPE, this.robot.configuration.wc.iteration);
+			result = new Field(x, y, true, this.robot.getConfiguration().getWc().iteration);
+			result.addState(STATE_WIPE, this.robot.getConfiguration().getWc().iteration);
 		}	
 		return result;		
+	}
+
+	@Override
+	public void initialiseBehaviour() {
+		//get the master object
+		for (RobotRole rr : robot.getRoles()) {
+			if (rr instanceof FollowerRole) {
+				master = ((FollowerRole) rr).getMaster().getRobotCore();
+			}
+		}		
 	}
 }

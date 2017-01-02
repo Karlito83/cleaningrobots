@@ -16,7 +16,7 @@ public class WiperRole extends RobotRole {
 	@Override
 	public boolean createGoals() {
 		
-		WithoutMasterWipeGoal wmg = new WithoutMasterWipeGoal(core);			
+		WithoutMasterWipeGoal wmg = new WithoutMasterWipeGoal(this);			
 		if (wmg.isHardwareCorrect())
 		{
 			this.addGoals(wmg);

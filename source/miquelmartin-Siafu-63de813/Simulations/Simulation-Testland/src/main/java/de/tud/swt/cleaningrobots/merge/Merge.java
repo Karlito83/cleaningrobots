@@ -15,12 +15,12 @@ public abstract class Merge {
 	
 	protected void preRun (String name1, String name2)
 	{
-		this.em = new ExchangeMeasurement(name1, name2, this.configuration.wc.iteration);
+		this.em = new ExchangeMeasurement(name1, name2, this.configuration.getWc().iteration);
 	}
 	
 	protected void postRun ()
 	{
-		this.configuration.wc.exchange.add(em);
+		this.configuration.getWc().exchange.add(em);
 	}
 	
 	public void run (RobotCore from, RobotCore to, Object object)

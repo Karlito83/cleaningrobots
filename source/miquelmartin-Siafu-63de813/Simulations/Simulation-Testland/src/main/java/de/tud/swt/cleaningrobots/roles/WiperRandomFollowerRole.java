@@ -17,8 +17,8 @@ public class WiperRandomFollowerRole extends FollowerRole {
 	@Override
 	public boolean createGoals() {
 		
-		WipeLoadGoal wlg = new WipeLoadGoal(core, false);
-		WlanLoadIfRobotWantMergeGoal wlmmg = new WlanLoadIfRobotWantMergeGoal(core);
+		WipeLoadGoal wlg = new WipeLoadGoal(this, false);
+		WlanLoadIfRobotWantMergeGoal wlmmg = new WlanLoadIfRobotWantMergeGoal(this);
 		
 		MasterGoal mg = new MasterGoal(core);
 		mg.subGoals.add(wlg);

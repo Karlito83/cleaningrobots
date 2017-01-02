@@ -36,8 +36,8 @@ public class MergeMasterFollower extends Behaviour {
 		super(robot);
 		
 		this.lastChange = new ArrayList<RobotRole>();
-		this.ma = new WorldEcoreModelMerge(this.robot.configuration);
-		this.informationMerge = new NewInformationFollowerMerge(this.robot.configuration);
+		this.ma = new WorldEcoreModelMerge(this.robot.getConfiguration());
+		this.informationMerge = new NewInformationFollowerMerge(this.robot.getConfiguration());
 		
 		Wlan wlan = (Wlan) this.d.getHardwareComponent(ComponentTypes.WLAN);
 		this.visionRadius = wlan.getMeasurementRange();			
@@ -163,5 +163,10 @@ public class MergeMasterFollower extends Behaviour {
 		}
 		
 		return false;
+	}
+
+	@Override
+	public void initialiseBehaviour() {
+		//do not need to initialize something			
 	}	
 }

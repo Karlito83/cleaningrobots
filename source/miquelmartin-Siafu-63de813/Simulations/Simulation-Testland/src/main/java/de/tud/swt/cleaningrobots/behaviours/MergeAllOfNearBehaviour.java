@@ -24,14 +24,12 @@ public class MergeAllOfNearBehaviour extends Behaviour {
 	private WorldEcoreModelMerge ma;	
 	private int maxCount;
 	private List<NearRobotInformation> robotInformation;
-	private boolean firstStart;
 	
 	public MergeAllOfNearBehaviour(RobotCore robot) {
 		super(robot);
 		
-		this.ma = new WorldEcoreModelMerge(this.robot.configuration);
+		this.ma = new WorldEcoreModelMerge(this.robot.getConfiguration());
 		this.maxCount = 200;
-		this.firstStart = true;
 		this.robotInformation = new LinkedList<NearRobotInformation>();
 		
 		Wlan wlan = (Wlan) this.d.getHardwareComponent(ComponentTypes.WLAN);
@@ -53,18 +51,7 @@ public class MergeAllOfNearBehaviour extends Behaviour {
 		
 		//start all hardware components
 		this.d.switchAllOn();
-		
-		if (this.firstStart) {
-			//create robot information map
-			List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getAllRobots();
-			nearRobots.remove(this.robot);
-			
-			for (RobotCore core : nearRobots) {
-				robotInformation.add(new NearRobotInformation(core.getName()));
-			}
-			this.firstStart = false;
-		}
-		
+				
 		//increment all counters or reset them
 		for (NearRobotInformation i: robotInformation) {
 			if (i.getCounter() > -1) {
@@ -74,7 +61,7 @@ public class MergeAllOfNearBehaviour extends Behaviour {
 			}
 		}		
 		
-		if (this.robot.isLoading)
+		if (this.robot.isLoading())
 			return false;
 						
 		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(this.visionRadius);
@@ -97,5 +84,16 @@ public class MergeAllOfNearBehaviour extends Behaviour {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void initialiseBehaviour() {
+		//create robot information map
+		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getAllRobots();
+		nearRobots.remove(this.robot);
+		
+		for (RobotCore core : nearRobots) {
+			robotInformation.add(new NearRobotInformation(core.getName()));
+		}
 	}
 }

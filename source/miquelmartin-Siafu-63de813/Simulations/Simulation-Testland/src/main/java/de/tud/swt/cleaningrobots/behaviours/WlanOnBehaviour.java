@@ -32,4 +32,9 @@ public class WlanOnBehaviour extends Behaviour {
 		this.d.switchAllOn();
 		return false;
 	}
+
+	@Override
+	public void initialiseBehaviour() {
+		//do nothing before first start		
+	}
 }

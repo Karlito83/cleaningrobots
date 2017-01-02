@@ -15,7 +15,7 @@ public class WiperControlMasterRole extends MasterRole {
 	@Override
 	public boolean createGoals() {
 		// TODO change relative
-		MasterWipeMasterGoal mmg = new MasterWipeMasterGoal(core, this, false);		
+		MasterWipeMasterGoal mmg = new MasterWipeMasterGoal(this, false);		
 		if (mmg.isHardwareCorrect())
 		{
 			this.addGoals(mmg);

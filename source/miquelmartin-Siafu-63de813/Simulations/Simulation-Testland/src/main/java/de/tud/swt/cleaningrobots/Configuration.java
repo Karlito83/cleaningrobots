@@ -19,7 +19,7 @@ public class Configuration {
 	/**
 	 * Values of the test case.
 	 */
-	public WorkingConfiguration wc;
+	private WorkingConfiguration wc;
 	private Map<String, State> states = new HashMap<String, State>();
 	private Map<String, SpecialHardware> specialHardware;
 	
@@ -27,6 +27,10 @@ public class Configuration {
 		ReadXMLInput r = new ReadXMLInput();
 		this.specialHardware = r.readHardwareComponents();
 		this.wc = wc;
+	}
+	
+	public WorkingConfiguration getWc () {
+		return this.wc;
 	}
 		
 	/**

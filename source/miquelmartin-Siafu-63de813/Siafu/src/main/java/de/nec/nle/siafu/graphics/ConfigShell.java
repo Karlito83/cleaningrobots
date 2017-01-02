@@ -357,7 +357,11 @@ public class ConfigShell {
 				FileDialog fd = new FileDialog(shell, SWT.OPEN);
 				fd.setText("Open a simulation");
 				fd.setFilterPath(csvPath.getText());
-				csvPath.setText(fd.open());
+				String value = fd.open();
+				if (value != null)
+				{
+					csvPath.setText(value);
+				}
 			}
 		});
 

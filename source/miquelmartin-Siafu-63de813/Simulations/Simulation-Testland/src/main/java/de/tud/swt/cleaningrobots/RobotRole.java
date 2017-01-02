@@ -21,6 +21,14 @@ public abstract class RobotRole extends Robot {
 		this.roleGoals = new ArrayList<Goal>();
 	}
 	
+	public void initializeGoals () {
+		//initialize all goals
+		for (Goal g : roleGoals)
+		{
+			g.initialize();
+		}			
+	}
+	
 	public abstract boolean createGoals();
 	
 	//public abstract void initializeGoals();

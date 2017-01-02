@@ -70,9 +70,9 @@ public class World {
 	private WorldHelper helper;
 
 	public World(RobotCore robot) {
-		this.DISCOVERED_WORLDSTATE = robot.configuration.createState("Discovered");
-		this.HOOVED_WORLDSTATE = robot.configuration.createState("Hooved");
-		this.WIPED_WORLDSTATE = robot.configuration.createState("Wiped");				
+		this.DISCOVERED_WORLDSTATE = robot.getConfiguration().createState("Discovered");
+		this.HOOVED_WORLDSTATE = robot.getConfiguration().createState("Hooved");
+		this.WIPED_WORLDSTATE = robot.getConfiguration().createState("Wiped");				
 		this.robot = robot;
 		this.worldStates = new HashSet<State>();
 		this.map = new HashMap<Position, Field>();
@@ -132,7 +132,7 @@ public class World {
 		
 		for (State newState : newField.getStates()) {
 			if (!oldField.containsState(newState)) {
-				oldField.addState(newState, robot.configuration.wc.iteration);
+				oldField.addState(newState, robot.getConfiguration().getWc().iteration);
 				newInformationCounter++;
 			}
 		}

@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.nonoptional;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.behaviours.MasterCalculateExploreBehaviour;
 import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
 import de.tud.swt.cleaningrobots.model.State;
@@ -17,12 +17,12 @@ public class MasterExploreMasterGoal extends NonOptionalGoal {
 	private MasterCalculateExploreBehaviour mceb;
 	private State WORLDSTATE_DISCOVERED;
 
-	public MasterExploreMasterGoal(RobotCore robot, MasterRole mr, boolean relative) {
-		super(robot);
+	public MasterExploreMasterGoal(RobotRole role, boolean relative) {
+		super(role);
 		
-		this.WORLDSTATE_DISCOVERED = robot.configuration.createState("Discovered");
+		this.WORLDSTATE_DISCOVERED = getRobotCore().getConfiguration().createState("Discovered");
 		
-		mceb = new MasterCalculateExploreBehaviour(robot, mr, relative);
+		mceb = new MasterCalculateExploreBehaviour(getRobotCore(), (MasterRole) role, relative);
 		System.out.println("Correct SeeAround: " +mceb.isHardwarecorrect());
 		if (mceb.isHardwarecorrect()) {
 			behaviours.add(mceb);

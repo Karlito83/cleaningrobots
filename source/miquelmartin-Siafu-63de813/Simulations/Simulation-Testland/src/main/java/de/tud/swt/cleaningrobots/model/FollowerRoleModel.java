@@ -10,6 +10,10 @@ public class FollowerRoleModel extends RoleModel{
 	
 	private String master;
 	
+	public FollowerRoleModel(String roleName) {
+		super(roleName);
+	}
+	
 	public String getMaster () {
 		return master;
 	}

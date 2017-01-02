@@ -15,7 +15,7 @@ public class WiperControlledFollowerRole extends FollowerRole {
 	@Override
 	public boolean createGoals() {
 		
-		MasterWipeRobotGoal mrg = new MasterWipeRobotGoal(core);		
+		MasterWipeRobotGoal mrg = new MasterWipeRobotGoal(this);		
 		if (mrg.isHardwareCorrect()) 
 		{
 			this.addGoals(mrg);

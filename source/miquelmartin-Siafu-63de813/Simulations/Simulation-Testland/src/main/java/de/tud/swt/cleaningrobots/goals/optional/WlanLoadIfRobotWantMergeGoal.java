@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.optional;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.behaviours.LoadIfAtLoadStationBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.LoadWlanActivateBehaviour;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
@@ -13,10 +13,10 @@ import de.tud.swt.cleaningrobots.goals.OptionalGoal;
  */
 public class WlanLoadIfRobotWantMergeGoal extends OptionalGoal {
 
-	public WlanLoadIfRobotWantMergeGoal(RobotCore robot) {
-		super(robot);
+	public WlanLoadIfRobotWantMergeGoal(RobotRole role) {
+		super(role);
 				
-		LoadIfAtLoadStationBehaviour lialsb = new LoadIfAtLoadStationBehaviour(robot);
+		LoadIfAtLoadStationBehaviour lialsb = new LoadIfAtLoadStationBehaviour(getRobotCore());
 		System.out.println("Correct LoadIfAtLoadStation: " + lialsb.isHardwarecorrect());
 		if (lialsb.isHardwarecorrect()) {
 			//robot.addBehaviour(b);
@@ -25,7 +25,7 @@ public class WlanLoadIfRobotWantMergeGoal extends OptionalGoal {
 			correct = false;
 		}
 		
-		LoadWlanActivateBehaviour lab = new LoadWlanActivateBehaviour(robot);
+		LoadWlanActivateBehaviour lab = new LoadWlanActivateBehaviour(getRobotCore());
 		System.out.println("Correct WlanActive: " + lab.isHardwarecorrect());
 		if (lab.isHardwarecorrect()) {
 			//robot.addBehaviour(b);

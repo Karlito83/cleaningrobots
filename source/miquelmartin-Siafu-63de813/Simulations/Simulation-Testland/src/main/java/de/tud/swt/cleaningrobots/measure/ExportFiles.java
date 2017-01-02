@@ -49,4 +49,27 @@ public class ExportFiles {
             return false;
         }
 	}
+	
+	public boolean addMatrixToFile(int[][] matrix, String path) {
+		try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(new File(path) , true));
+            String line = "";
+            for (int i = 0; i < matrix[0].length; i++)
+            {
+            	line = "";
+            	for (int j = 0; j < matrix.length; j++)
+            	{
+            		line = line + matrix[j][i] + ",";
+            	}
+            	bw.write(line);
+	    		bw.newLine();
+            }
+    		bw.close();
+    		return true;
+        }
+		catch (IOException e) 
+		{
+            return false;
+        }
+	}
 }

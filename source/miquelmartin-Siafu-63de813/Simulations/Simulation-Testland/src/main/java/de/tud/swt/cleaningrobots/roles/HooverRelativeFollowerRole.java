@@ -17,8 +17,8 @@ public class HooverRelativeFollowerRole extends FollowerRole {
 	@Override
 	public boolean createGoals() {
 		
-		HooveLoadGoal hlg = new HooveLoadGoal(core, true);
-		WlanLoadIfRobotWantMergeGoal wlmmg = new WlanLoadIfRobotWantMergeGoal(core);
+		HooveLoadGoal hlg = new HooveLoadGoal(this, true);
+		WlanLoadIfRobotWantMergeGoal wlmmg = new WlanLoadIfRobotWantMergeGoal(this);
 		
 		MasterGoal mg = new MasterGoal(core);
 		mg.subGoals.add(hlg);

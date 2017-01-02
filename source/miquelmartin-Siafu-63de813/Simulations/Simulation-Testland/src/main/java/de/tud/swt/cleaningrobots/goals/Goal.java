@@ -17,10 +17,16 @@ public abstract class Goal {
 	private RobotCore robot;
 	protected boolean optional;
 	
-	public Goal (RobotCore robot)
-	{
-		this.robot = robot;
+	public Goal (RobotCore core)
+	{		
+		this.robot = core;
 	}
+	
+	/*public Goal (RobotRole role)
+	{
+		this.robotRole = role;		
+		this.robot = role.getRobotCore();
+	}*/
 	
 	protected RobotCore getRobotCore() {
 		return robot;
@@ -60,4 +66,6 @@ public abstract class Goal {
 	 * @return
 	 */
 	public abstract Collection<State> getSupportedStates();
+	
+	public abstract void initialize ();
 }

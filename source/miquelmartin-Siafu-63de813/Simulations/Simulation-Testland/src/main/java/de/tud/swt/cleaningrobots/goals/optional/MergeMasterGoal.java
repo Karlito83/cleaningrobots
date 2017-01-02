@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.optional;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.behaviours.MergeMasterWithoutModel;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 import de.tud.swt.cleaningrobots.roles.MasterRole;
@@ -13,10 +13,10 @@ import de.tud.swt.cleaningrobots.roles.MasterRole;
  */
 public class MergeMasterGoal extends OptionalGoal {
 
-	public MergeMasterGoal(RobotCore robot, MasterRole mr) {
-		super(robot);
+	public MergeMasterGoal(RobotRole role) {
+		super(role);
 
-		MergeMasterWithoutModel mm = new MergeMasterWithoutModel(robot, mr);
+		MergeMasterWithoutModel mm = new MergeMasterWithoutModel(getRobotCore(), (MasterRole) role, false);
 		System.out.println("Correct Load: " + mm.isHardwarecorrect());
 		if (mm.isHardwarecorrect()) {
 			behaviours.add(mm);

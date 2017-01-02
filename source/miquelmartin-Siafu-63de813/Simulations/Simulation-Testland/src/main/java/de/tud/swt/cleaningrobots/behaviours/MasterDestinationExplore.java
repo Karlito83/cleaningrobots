@@ -24,7 +24,6 @@ public class MasterDestinationExplore extends Behaviour {
 	private MasterRole mr;
 	
 	private int visionRadius;
-	private boolean firstStart;
 	private int calculationAway;
 	private DestinationMerge merge;	
 	
@@ -35,9 +34,8 @@ public class MasterDestinationExplore extends Behaviour {
 		
 		//create and add the states
 		this.mr = mr;
-		this.merge = new DestinationMerge(this.robot.configuration);
+		this.merge = new DestinationMerge(this.robot.getConfiguration());
 		this.information = new HashMap<String, RobotDestinationCalculation>();
-		this.firstStart = true;
 		
 		Wlan wlan = (Wlan) this.d.getHardwareComponent(ComponentTypes.WLAN);
 		this.visionRadius = wlan.getMeasurementRange();
@@ -57,30 +55,7 @@ public class MasterDestinationExplore extends Behaviour {
 	public boolean action() throws Exception {
 		//start all hardware components
 		this.d.switchAllOn();
-		
-		if (this.firstStart)
-		{
-			double maxAway = 0;
-			//create information list with follower robots
-			List<RobotRole> follower = this.mr.getFollowers();
-				
-			for (RobotRole rr : follower) {
-				RobotCore core = rr.getRobotCore();
-				if (core.hasHardwareComponent(ComponentTypes.WLAN) && core.hasHardwareComponent(ComponentTypes.LOOKAROUNDSENSOR))
-				{
-					//add Robot to Map
-					information.put(core.getName(), new RobotDestinationCalculation(core.getName()));
-					double away = Math.sqrt(core.getAccu().getMaxFieldGoes(core.getMinEnergie()));
-					
-					if (maxAway < away)
-						maxAway = away;
-				}
-			}			
-			
-			this.calculationAway = (int) maxAway;
-			this.firstStart = false;
-		}
-				
+						
 		//search near Explore Robots
 		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(this.visionRadius);
 		nearRobots.remove(this.robot);
@@ -166,6 +141,28 @@ public class MasterDestinationExplore extends Behaviour {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void initialiseBehaviour() {
+		double maxAway = 0;
+		//create information list with follower robots
+		List<RobotRole> follower = this.mr.getFollowers();
+			
+		for (RobotRole rr : follower) {
+			RobotCore core = rr.getRobotCore();
+			if (core.hasHardwareComponent(ComponentTypes.WLAN) && core.hasHardwareComponent(ComponentTypes.LOOKAROUNDSENSOR))
+			{
+				//add Robot to Map
+				information.put(core.getName(), new RobotDestinationCalculation(core.getName()));
+				double away = Math.sqrt(core.getAccu().getMaxFieldGoes(core.getMinEnergie()));
+				
+				if (maxAway < away)
+					maxAway = away;
+			}
+		}			
+		
+		this.calculationAway = (int) maxAway;		
 	}
 
 }

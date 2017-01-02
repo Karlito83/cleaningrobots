@@ -16,7 +16,7 @@ public class LoadstationRole extends RobotRole {
 	@Override
 	public boolean createGoals() {
 		
-		LoadIfRobotWantGoal lirwg = new LoadIfRobotWantGoal(core);		
+		LoadIfRobotWantGoal lirwg = new LoadIfRobotWantGoal(this);		
 		if (lirwg.isHardwareCorrect())
 		{
 			this.addGoals(lirwg);

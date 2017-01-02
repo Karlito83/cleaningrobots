@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.nonoptional;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.behaviours.LoadIfAtLoadStationBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.MergeAllOfNearWithoutModel;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
@@ -20,12 +20,12 @@ public class WithoutMasterWipeGoal extends NonOptionalGoal {
 	private WipeBehaviour d;
 	private State WORLDSTATE_WIPED;
 	
-	public WithoutMasterWipeGoal(RobotCore robot) {
-		super(robot);
+	public WithoutMasterWipeGoal(RobotRole role) {
+		super(role);
 		
-		this.WORLDSTATE_WIPED = robot.configuration.createState("Wiped");
+		this.WORLDSTATE_WIPED = getRobotCore().getConfiguration().createState("Wiped");
 		
-		WipeAroundAtDestinationBehaviour s = new WipeAroundAtDestinationBehaviour(robot);
+		WipeAroundAtDestinationBehaviour s = new WipeAroundAtDestinationBehaviour(getRobotCore());
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
 		if (s.isHardwarecorrect()) {
 			behaviours.add(s);
@@ -33,7 +33,7 @@ public class WithoutMasterWipeGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		d = new WipeBehaviour(robot, false);
+		d = new WipeBehaviour(getRobotCore(), false);
 		System.out.println("Correct Discover: " + d.isHardwarecorrect());
 		if (d.isHardwarecorrect()) {
 			behaviours.add(d);
@@ -41,7 +41,7 @@ public class WithoutMasterWipeGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MoveBehaviour m = new MoveBehaviour(robot);
+		MoveBehaviour m = new MoveBehaviour(getRobotCore());
 		System.out.println("Correct Move: " + m.isHardwarecorrect());
 		if (m.isHardwarecorrect()) {
 			behaviours.add(m);
@@ -49,7 +49,7 @@ public class WithoutMasterWipeGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MergeAllOfNearWithoutModel mar = new MergeAllOfNearWithoutModel(robot);
+		MergeAllOfNearWithoutModel mar = new MergeAllOfNearWithoutModel(getRobotCore());
 		System.out.println("Correct MergeRonny: " + mar.isHardwarecorrect());
 		if (mar.isHardwarecorrect()) {
 			behaviours.add(mar);
@@ -57,7 +57,7 @@ public class WithoutMasterWipeGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		LoadIfAtLoadStationBehaviour lialsb = new LoadIfAtLoadStationBehaviour(robot);
+		LoadIfAtLoadStationBehaviour lialsb = new LoadIfAtLoadStationBehaviour(getRobotCore());
 		System.out.println("Correct LoadIfAtLoadStation: " + lialsb.isHardwarecorrect());
 		if (lialsb.isHardwarecorrect()) {
 			behaviours.add(lialsb);

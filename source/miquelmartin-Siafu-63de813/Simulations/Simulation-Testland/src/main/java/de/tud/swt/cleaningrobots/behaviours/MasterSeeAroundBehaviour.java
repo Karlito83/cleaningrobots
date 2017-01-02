@@ -30,14 +30,11 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 	
 	private State STATE_BLOCKED;
 	private State STATE_FREE;
-	
-	private boolean firststart;
-	
+		
 	public MasterSeeAroundBehaviour(RobotCore robot) {
 		super(robot);
 		
-		this.merge = new FieldMerge(this.robot.configuration);
-		this.firststart = true;
+		this.merge = new FieldMerge(this.robot.getConfiguration());
 						
 		LookAroundSensor las = (LookAroundSensor) this.d.getHardwareComponent(ComponentTypes.LOOKAROUNDSENSOR);
 		this.visionRadius = las.getMeasurementRange();		
@@ -46,8 +43,8 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 	@Override
 	protected void addSupportedStates() {
 		//create and add the states
-		this.STATE_BLOCKED = robot.configuration.createState("Blocked");
-		this.STATE_FREE = robot.configuration.createState("Free");	
+		this.STATE_BLOCKED = robot.getConfiguration().createState("Blocked");
+		this.STATE_FREE = robot.getConfiguration().createState("Free");	
 				
 		this.supportedStates.add(this.STATE_BLOCKED);
 		this.supportedStates.add(this.STATE_FREE);		
@@ -60,17 +57,7 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 
 	@Override
 	public boolean action() throws Exception {
-		
-		if (firststart) {
-			//get the master object
-			for (RobotRole rr : robot.getRoles()) {
-				if (rr instanceof FollowerRole) {
-					master = ((FollowerRole) rr).getMaster().getRobotCore();
-				}
-			}
-			firststart = false;
-		}
-		
+				
 		if (robot.getDestinationContainer().isAtDestination() && !robot.getDestinationContainer().isAtLoadDestination()) {
 			//start all hardware components
 			this.d.switchAllOn();
@@ -122,17 +109,27 @@ public class MasterSeeAroundBehaviour extends Behaviour {
 		boolean positionIsAtWall = robot.getICommunicationAdapter().isWall(row, col);
 		
 		//create new field
-		result = new Field(col, row, !positionIsAtWall, this.robot.configuration.wc.iteration);
+		result = new Field(col, row, !positionIsAtWall, this.robot.getConfiguration().getWc().iteration);
 		if(positionIsAtWall)
 		{
-			result.addState(STATE_BLOCKED, this.robot.configuration.wc.iteration);
+			result.addState(STATE_BLOCKED, this.robot.getConfiguration().getWc().iteration);
 		}
 		else
 		{
-			result.addState(STATE_FREE, this.robot.configuration.wc.iteration);
+			result.addState(STATE_FREE, this.robot.getConfiguration().getWc().iteration);
 		}
 		
 		
 		return result;
+	}
+
+	@Override
+	public void initialiseBehaviour() {
+		//get the master object
+		for (RobotRole rr : robot.getRoles()) {
+			if (rr instanceof FollowerRole) {
+				master = ((FollowerRole) rr).getMaster().getRobotCore();
+			}
+		}		
 	}
 }

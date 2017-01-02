@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.imageio.ImageIO;
 
 import org.eclipse.emf.common.util.URI;
@@ -35,12 +36,11 @@ import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
  */
 public class DumpModelBehaviour extends Behaviour {
 
-	private static final int CONST_FILENAME_NUMBERPREFIX = 1000000000;
-	private static final int CONST_PNG_DUMP_INTERVAL = 100;
-	private static final int CONST_XML_DUMP_INTERVAL = 10000;
-	private static final String CONST_PATH_DUMP_XML = "dump/xml";
-	private static final String CONST_PATH_DUMP_PNG = "dump/png";
-
+	private final int CONST_FILENAME_NUMBERPREFIX = 1000000000;
+	private final int CONST_PNG_DUMP_INTERVAL = 100;
+	private final String CONST_PATH_DUMP_PNG = "dump/png";
+	private final int CONST_XML_DUMP_INTERVAL = 10000;
+	private final String CONST_PATH_DUMP_XML = "dump/xml";
 	private int counter;
 
 	public DumpModelBehaviour(RobotCore robot) {
@@ -63,22 +63,22 @@ public class DumpModelBehaviour extends Behaviour {
 	public boolean action() throws Exception {
 		
 		counter++;
+		ImportExportConfiguration config = new ImportExportConfiguration();
+		config.world = true;
+		config.knownstates = true;
 		EObject model = null;
-		if (counter % CONST_PNG_DUMP_INTERVAL == 0 && counter > 0) {
-			ImportExportConfiguration config = new ImportExportConfiguration();
-			config.world = true;
-			config.knownstates = true;
+		if (counter % CONST_PNG_DUMP_INTERVAL == 0 && counter > 0) {			
 			model = robot.exportModel(config);
 			exportPNG(model);
 		}
-		/*if (counter % CONST_XML_DUMP_INTERVAL == 0 && counter > 0){
+		if (counter % CONST_XML_DUMP_INTERVAL == 0 && counter > 0){
 			System.out.println("ExportXML");
 			if (model == null){
-				model = robot.exportModel();
+				model = robot.exportModel(config);
 			}
 			exportXML(model);
 			System.out.println("ExportXMLFinish");
-		}*/
+		}
 		
 
 		// Always returns false, so that the following behaviours will be
@@ -109,11 +109,6 @@ public class DumpModelBehaviour extends Behaviour {
 			
 			try {
 				
-				if (model instanceof cleaningrobots.Robot) {
-					WorldPart world = ((cleaningrobots.Robot) model).getWorld();
-				} else {
-					throw new Exception("The model " + model + " is unknown!");
-				}
 				cleaningrobots.Robot robot = (cleaningrobots.Robot)model;
 				WorldPart world = robot.getWorld();
 				List<cleaningrobots.Field> fields = getFieldsFromWorldModel(world);
@@ -227,6 +222,12 @@ public class DumpModelBehaviour extends Behaviour {
 			result = true;
 		}
 		return result;
+	}
+
+	@Override
+	public void initialiseBehaviour() {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

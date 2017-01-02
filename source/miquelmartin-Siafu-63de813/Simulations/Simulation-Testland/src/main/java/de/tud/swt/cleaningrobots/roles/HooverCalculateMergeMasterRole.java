@@ -16,7 +16,7 @@ public class HooverCalculateMergeMasterRole extends MergeMasterRole {
 	public boolean createGoals() {
 		boolean result = super.createGoals();
 		
-		CalculateHooveRobotPositionGoal crpg = new CalculateHooveRobotPositionGoal(core, this);
+		CalculateHooveRobotPositionGoal crpg = new CalculateHooveRobotPositionGoal(this);
 		if (crpg.isHardwareCorrect())
 		{
 			this.addGoals(crpg);

@@ -31,8 +31,13 @@ public class LoadIfAtLoadStationBehaviour extends Behaviour {
 		//if at load destination activate loading
 		if (robot.getDestinationContainer().isAtLoadDestination())
 		{
-			robot.isLoading = true;
+			robot.setLoading(true);
 		}		
 		return false;
+	}
+
+	@Override
+	public void initialiseBehaviour() {
+		//do nothing before first start		
 	}
 }

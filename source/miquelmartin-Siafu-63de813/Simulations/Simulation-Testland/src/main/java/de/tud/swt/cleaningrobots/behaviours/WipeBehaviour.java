@@ -33,10 +33,10 @@ public class WipeBehaviour extends Behaviour{
 	@Override
 	protected void addSupportedStates() {
 		//create and add the states
-		this.STATE_HOOVE = robot.configuration.createState("Hoove");
-		this.STATE_WIPE = robot.configuration.createState("Wipe");		
-		this.WORLDSTATE_WIPED = robot.configuration.createState("Wiped");
-		this.WORLDSTATE_HOOVED = robot.configuration.createState("Hooved");
+		this.STATE_HOOVE = robot.getConfiguration().createState("Hoove");
+		this.STATE_WIPE = robot.getConfiguration().createState("Wipe");		
+		this.WORLDSTATE_WIPED = robot.getConfiguration().createState("Wiped");
+		this.WORLDSTATE_HOOVED = robot.getConfiguration().createState("Hooved");
 				
 		this.supportedStates.add(this.STATE_HOOVE);
 		this.supportedStates.add(this.STATE_WIPE);		
@@ -57,7 +57,7 @@ public class WipeBehaviour extends Behaviour{
 		if(robot.getDestinationContainer().isAtDestination()){
 			
 			//if you find more than the value of new field drive back to load station and give information to master
-			if (this.robot.configuration.wc.new_field_count > 0 && this.robot.getWorld().getNewInformationCounter() > this.robot.configuration.wc.new_field_count) {
+			if (this.robot.getConfiguration().getWc().new_field_count > 0 && this.robot.getWorld().getNewInformationCounter() > this.robot.getConfiguration().getWc().new_field_count) {
 				robot.getDestinationContainer().setDestinationLoadStation();
 				this.robot.getWorld().resetNewInformationCounter();
 				return false;
@@ -76,7 +76,7 @@ public class WipeBehaviour extends Behaviour{
 				//if there is a Accu proof if you can come to the next destination if not drive to load station
 				if (robot.getAccu() != null)
 				{
-					if (robot.isLoading)
+					if (robot.isLoading())
 						return false;
 					
 					//distance between robot and destination
@@ -130,6 +130,11 @@ public class WipeBehaviour extends Behaviour{
 			}
 		}
 		return false;		
+	}
+
+	@Override
+	public void initialiseBehaviour() {
+		//do nothing before first start		
 	}
 
 }

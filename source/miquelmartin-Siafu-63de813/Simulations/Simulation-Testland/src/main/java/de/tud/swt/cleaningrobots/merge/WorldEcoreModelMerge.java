@@ -82,7 +82,7 @@ public class WorldEcoreModelMerge extends Merge {
 						//insert the new information from the robot
 						List<State> knowns = new LinkedList<State>();
 						for (cleaningrobots.State s : robot.getKnownStates()) {
-							State st = to.configuration.createState(s.getName());
+							State st = to.getConfiguration().createState(s.getName());
 							knowns.add(st);
 							em.addStatesStringByteNumber(s.getName().getBytes().length);
 							em.addStatesStringNumber(1);
@@ -94,7 +94,7 @@ public class WorldEcoreModelMerge extends Merge {
 					RobotKnowledge rk = new RobotKnowledge(robot.getName());
 					List<State> knowns = new LinkedList<State>();
 					for (cleaningrobots.State s : robot.getKnownStates()) {
-						State st = to.configuration.createState(s.getName());
+						State st = to.getConfiguration().createState(s.getName());
 						knowns.add(st);
 						em.addStatesStringByteNumber(s.getName().getBytes().length);
 						em.addStatesStringNumber(1);
@@ -114,7 +114,7 @@ public class WorldEcoreModelMerge extends Merge {
 	
 	private void importRobotKnowledge (RobotKnowledge importRk, cleaningrobots.Robot exportR, RobotCore robot) {
 		//insert the new information from the robot
-		importRk.setLastArrange(configuration.wc.iteration);
+		importRk.setLastArrange(configuration.getWc().iteration);
 		em.addKnowledgeIntegerNumber(1);
 		if (exportR.getDestination() != null) {
 			Position dest = new Position(exportR.getDestination().getXpos(), exportR.getDestination().getYpos());
@@ -135,7 +135,7 @@ public class WorldEcoreModelMerge extends Merge {
 					em.addKnowledgeStringByteNumber(s.getBytes().length);
 				em.addKnowledgeStringNumber(m.getFollowerNames().size());
 				//add role to importKnowledge
-				MasterRoleModel mrm = new MasterRoleModel();
+				MasterRoleModel mrm = new MasterRoleModel("MasterRole");
 				mrm.getFollowers().addAll(m.getFollowerNames());
 				newOnes.add(mrm);				
 			} else {
@@ -143,7 +143,7 @@ public class WorldEcoreModelMerge extends Merge {
 				em.addKnowledgeStringNumber(1);
 				em.addKnowledgeStringByteNumber(f.getMasterName().getBytes().length);
 				//add role to importKnowledge
-				FollowerRoleModel frm = new FollowerRoleModel();
+				FollowerRoleModel frm = new FollowerRoleModel("FollowerRole");
 				frm.setMaster(f.getMasterName());
 				newOnes.add(frm);
 			}
@@ -152,7 +152,7 @@ public class WorldEcoreModelMerge extends Merge {
 		//add states to RobotKnowledge
 		List<State> knowns = new LinkedList<State>();
 		for (cleaningrobots.State s : exportR.getKnownStates()) {
-			State st = robot.configuration.createState(s.getName());
+			State st = robot.getConfiguration().createState(s.getName());
 			knowns.add(st);
 			em.addStatesStringByteNumber(s.getName().getBytes().length);
 			em.addStatesStringNumber(1);
@@ -187,7 +187,7 @@ public class WorldEcoreModelMerge extends Merge {
 						em.addKnowledgeStringByteNumber(s.getBytes().length);
 					em.addKnowledgeStringNumber(m.getFollowerNames().size());
 					//add role to importKnowledge
-					MasterRoleModel mrm = new MasterRoleModel();
+					MasterRoleModel mrm = new MasterRoleModel("MasterRole");
 					mrm.getFollowers().addAll(m.getFollowerNames());
 					newOnes.add(mrm);
 				} else {
@@ -195,7 +195,7 @@ public class WorldEcoreModelMerge extends Merge {
 					em.addKnowledgeStringNumber(1);
 					em.addKnowledgeStringByteNumber(f.getMasterName().getBytes().length);
 					//add role to importKnowledge
-					FollowerRoleModel frm = new FollowerRoleModel();
+					FollowerRoleModel frm = new FollowerRoleModel("FollowerRole");
 					frm.setMaster(f.getMasterName());
 					newOnes.add(frm);
 				}
@@ -204,7 +204,7 @@ public class WorldEcoreModelMerge extends Merge {
 			//add States to RobotKnowledge
 			List<State> knowns = new LinkedList<State>();
 			for (cleaningrobots.State s : exportRk.getKnowStates()) {
-				State st = robot.configuration.createState(s.getName());
+				State st = robot.getConfiguration().createState(s.getName());
 				knowns.add(st);
 				em.addKnowledgeStringByteNumber(s.getName().getBytes().length);
 				em.addKnowledgeStringNumber(1);
@@ -223,7 +223,7 @@ public class WorldEcoreModelMerge extends Merge {
 			blockedState.setName("Blocked");
 			
 			for (cleaningrobots.State worldState : worldPart.getWorldStates()) {
-				State state = importcore.configuration.createState(worldState.getName());
+				State state = importcore.getConfiguration().createState(worldState.getName());
 				importcore.getWorld().addWorldState(state);
 				em.addWorldStatesStringByteNumber(worldState.getName().getBytes().length);
 				em.addWorldStatesStringNumber(1);
@@ -235,10 +235,10 @@ public class WorldEcoreModelMerge extends Merge {
 				boolean isBlocked = EMFUtils.listContains(modelField.getStates(), blockedState);
 				//test about the supported states of the new robot
 				//core is the new robot
-				Field f = new Field(modelField.getPos().getXpos(), modelField.getPos().getYpos(), !isBlocked, configuration.wc.iteration);
+				Field f = new Field(modelField.getPos().getXpos(), modelField.getPos().getYpos(), !isBlocked, configuration.getWc().iteration);
 				for (cleaningrobots.State modelState : modelField.getStates()) {
-					State state = importcore.configuration.createState(modelState.getName());
-					f.addState(state, configuration.wc.iteration);
+					State state = importcore.getConfiguration().createState(modelState.getName());
+					f.addState(state, configuration.getWc().iteration);
 					em.addWorldStringByteNumber(modelState.getName().getBytes().length);
 					em.addWorldStringNumber(1);
 				}

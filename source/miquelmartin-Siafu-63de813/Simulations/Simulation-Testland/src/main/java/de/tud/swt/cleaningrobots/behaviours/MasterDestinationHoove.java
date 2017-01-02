@@ -28,7 +28,6 @@ public class MasterDestinationHoove extends Behaviour {
 	private State WORLDSTATE_HOOVED;
 	
 	private int visionRadius;
-	private boolean firstStart;
 	private int calculationAway;
 	private DestinationMerge merge;	
 	
@@ -38,9 +37,8 @@ public class MasterDestinationHoove extends Behaviour {
 		super(robot);
 			
 		this.mr = mr;
-		this.merge = new DestinationMerge(this.robot.configuration);
-		this.information = new HashMap<String, RobotDestinationCalculation>();		
-		this.firstStart = true;
+		this.merge = new DestinationMerge(this.robot.getConfiguration());
+		this.information = new HashMap<String, RobotDestinationCalculation>();	
 		
 		Wlan wlan = (Wlan) this.d.getHardwareComponent(ComponentTypes.WLAN);
 		this.visionRadius = wlan.getMeasurementRange();
@@ -49,8 +47,8 @@ public class MasterDestinationHoove extends Behaviour {
 	@Override
 	protected void addSupportedStates() {
 		//create and add the states
-		this.STATE_HOOVE = robot.configuration.createState("Hoove");
-		this.WORLDSTATE_HOOVED = robot.configuration.createState("Hooved");		
+		this.STATE_HOOVE = robot.getConfiguration().createState("Hoove");
+		this.WORLDSTATE_HOOVED = robot.getConfiguration().createState("Hooved");		
 	}
 
 	@Override
@@ -62,29 +60,6 @@ public class MasterDestinationHoove extends Behaviour {
 	public boolean action() throws Exception {
 		//start all hardware components
 		this.d.switchAllOn();
-		
-		if (firstStart)
-		{
-			double maxAway = 0;
-			//create information list with follower robots
-			List<RobotRole> follower = this.mr.getFollowers();
-				
-			for (RobotRole rr : follower) {
-				RobotCore core = rr.getRobotCore();
-				if (core.hasHardwareComponent(ComponentTypes.WLAN) && core.hasHardwareComponent(ComponentTypes.HOOVER))
-				{
-					//add Robot to Map
-					information.put(core.getName(), new RobotDestinationCalculation(core.getName()));
-					double away = Math.sqrt(core.getAccu().getMaxFieldGoes(core.getMinEnergie()));
-					
-					if (maxAway < away)
-						maxAway = away;
-				}
-			}			
-			
-			this.calculationAway = (int) maxAway;			
-			this.firstStart = false;
-		}
 				
 		//search near hoove Robots
 		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(this.visionRadius);
@@ -174,5 +149,29 @@ public class MasterDestinationHoove extends Behaviour {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void initialiseBehaviour() {
+		
+		double maxAway = 0;
+		//create information list with follower robots
+		List<RobotRole> follower = this.mr.getFollowers();
+			
+		for (RobotRole rr : follower) {
+			RobotCore core = rr.getRobotCore();
+			if (core.hasHardwareComponent(ComponentTypes.WLAN) && core.hasHardwareComponent(ComponentTypes.HOOVER))
+			{
+				//add Robot to Map
+				information.put(core.getName(), new RobotDestinationCalculation(core.getName()));
+				double away = Math.sqrt(core.getAccu().getMaxFieldGoes(core.getMinEnergie()));
+				
+				if (maxAway < away)
+					maxAway = away;
+			}
+		}			
+		
+		this.calculationAway = (int) maxAway;
+		
 	}
 }

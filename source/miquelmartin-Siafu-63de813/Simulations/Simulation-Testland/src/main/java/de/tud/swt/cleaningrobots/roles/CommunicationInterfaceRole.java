@@ -13,7 +13,7 @@ public class CommunicationInterfaceRole extends RobotRole {
 	@Override
 	public boolean createGoals() {
 		
-		WlanOnGoal wog = new WlanOnGoal(core);
+		WlanOnGoal wog = new WlanOnGoal(this);
 		
 		if (wog.isHardwareCorrect())
 		{

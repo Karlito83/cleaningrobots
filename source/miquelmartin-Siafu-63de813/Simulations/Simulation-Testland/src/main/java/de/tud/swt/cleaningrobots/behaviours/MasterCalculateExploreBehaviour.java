@@ -29,8 +29,7 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 	private State STATE_BLOCKED;
 	private State STATE_FREE;	
 	private State WORLDSTATE_DISCOVERED;	
-		
-	private boolean firstStart;
+	
 	private int calculationAway;
 	private PathDestinationMerge mfm;
 	
@@ -42,18 +41,17 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 		super(robot);
 				
 		this.mr = mr;
-		this.firstStart = true;
 		this.relative = relative;
-		this.mfm = new PathDestinationMerge(this.robot.configuration);
+		this.mfm = new PathDestinationMerge(this.robot.getConfiguration());
 		this.information = new HashMap<String, RobotDestinationCalculation>();		
 	}
 	
 	@Override
 	protected void addSupportedStates() {
 		//create and add the states
-		this.STATE_BLOCKED = robot.configuration.createState("Blocked");
-		this.STATE_FREE = robot.configuration.createState("Free");
-		this.WORLDSTATE_DISCOVERED = robot.configuration.createState("Discovered");
+		this.STATE_BLOCKED = robot.getConfiguration().createState("Blocked");
+		this.STATE_FREE = robot.getConfiguration().createState("Free");
+		this.WORLDSTATE_DISCOVERED = robot.getConfiguration().createState("Discovered");
 
 		supportedStates.add(STATE_BLOCKED);
 		supportedStates.add(STATE_FREE);		
@@ -69,33 +67,7 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 		
 		//start all hardware components
 		this.d.switchAllOn();
-		
-		if (firstStart)
-		{
-			double maxAway = 0;
-			//search near Explore Robots
-			List<RobotRole> follower = this.mr.getFollowers();
 				
-			for (RobotRole rr : follower) {
-				RobotCore core = rr.getRobotCore();
-				if (core.hasHardwareComponent(ComponentTypes.WLAN) && core.hasHardwareComponent(ComponentTypes.LOOKAROUNDSENSOR))
-				{
-					//add Robot to Map
-					RobotDestinationCalculation rdc = new RobotDestinationCalculation(core.getName());
-					rdc.actualPosition = core.getPosition();
-					information.put(core.getName(), rdc);
-					
-					double away = Math.sqrt(core.getAccu().getMaxFieldGoes(core.getMinEnergie()));
-					
-					if (maxAway < away)
-						maxAway = away;
-				}
-			}
-			
-			calculationAway = (int) maxAway;			
-			firstStart = false;
-		}
-		
 		//search all explore robots
 		List<RobotCore> allRobots = this.robot.getICommunicationAdapter().getAllRobots();
 		allRobots.remove(this.robot);
@@ -247,5 +219,30 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 			}*/
 		}
 		return false;
+	}
+
+	@Override
+	public void initialiseBehaviour() {
+		double maxAway = 0;
+		//search near Explore Robots
+		List<RobotRole> follower = this.mr.getFollowers();
+			
+		for (RobotRole rr : follower) {
+			RobotCore core = rr.getRobotCore();
+			if (core.hasHardwareComponent(ComponentTypes.WLAN) && core.hasHardwareComponent(ComponentTypes.LOOKAROUNDSENSOR))
+			{
+				//add Robot to Map
+				RobotDestinationCalculation rdc = new RobotDestinationCalculation(core.getName());
+				rdc.actualPosition = core.getPosition();
+				information.put(core.getName(), rdc);
+				
+				double away = Math.sqrt(core.getAccu().getMaxFieldGoes(core.getMinEnergie()));
+				
+				if (maxAway < away)
+					maxAway = away;
+			}
+		}
+		
+		this.calculationAway = (int) maxAway;		
 	}
 }

@@ -15,7 +15,7 @@ public class HooverControlledFollowerRole extends FollowerRole {
 	@Override
 	public boolean createGoals() {
 		
-		MasterHooveRobotGoal mrg = new MasterHooveRobotGoal(core);			
+		MasterHooveRobotGoal mrg = new MasterHooveRobotGoal(this);			
 		if (mrg.isHardwareCorrect()) 
 		{
 			this.addGoals(mrg);

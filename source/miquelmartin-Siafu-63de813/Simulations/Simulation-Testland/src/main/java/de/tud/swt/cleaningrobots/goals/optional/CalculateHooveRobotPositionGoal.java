@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.optional;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.behaviours.MasterDestinationHoove;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 import de.tud.swt.cleaningrobots.roles.MasterRole;
@@ -13,10 +13,10 @@ import de.tud.swt.cleaningrobots.roles.MasterRole;
  */
 public class CalculateHooveRobotPositionGoal extends OptionalGoal {
 
-	public CalculateHooveRobotPositionGoal(RobotCore robot, MasterRole mr) {
-		super(robot);
+	public CalculateHooveRobotPositionGoal(RobotRole role) {
+		super(role);
 		
-		MasterDestinationHoove mm = new MasterDestinationHoove(robot, mr);
+		MasterDestinationHoove mm = new MasterDestinationHoove(getRobotCore(), (MasterRole) role);
 		System.out.println("Correct Load: " + mm.isHardwarecorrect());
 		if (mm.isHardwarecorrect()) {
 			behaviours.add(mm);

@@ -1,6 +1,5 @@
 package de.tud.swt.cleaningrobots.goals.nonoptional;
 
-import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.behaviours.DiscoverBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
@@ -18,10 +17,10 @@ public class ExploreLoadGoal extends NonOptionalGoal {
 
 	private DiscoverBehaviour d;
 	
-	public ExploreLoadGoal(RobotCore robot, boolean relative) {
-		super(robot);
+	public ExploreLoadGoal(RobotRole role, boolean relative) {
+		super(role);
 		
-		DiscoverAroundAtDestinationBehaviour s = new DiscoverAroundAtDestinationBehaviour(robot);
+		DiscoverAroundAtDestinationBehaviour s = new DiscoverAroundAtDestinationBehaviour(getRobotCore());
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
 		if (s.isHardwarecorrect()) {
 			behaviours.add(s);
@@ -29,7 +28,7 @@ public class ExploreLoadGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		d = new DiscoverBehaviour(robot, relative);
+		d = new DiscoverBehaviour(getRobotCore(), relative);
 		System.out.println("Correct Discover: " + d.isHardwarecorrect());
 		if (d.isHardwarecorrect()) {
 			behaviours.add(d);
@@ -37,7 +36,7 @@ public class ExploreLoadGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MoveBehaviour m = new MoveBehaviour(robot);
+		MoveBehaviour m = new MoveBehaviour(getRobotCore());
 		System.out.println("Correct Move: " + m.isHardwarecorrect());
 		if (m.isHardwarecorrect()) {
 			behaviours.add(m);

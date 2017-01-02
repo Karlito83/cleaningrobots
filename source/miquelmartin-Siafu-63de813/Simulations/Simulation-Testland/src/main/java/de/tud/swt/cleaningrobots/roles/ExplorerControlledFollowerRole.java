@@ -15,7 +15,7 @@ public class ExplorerControlledFollowerRole extends FollowerRole {
 	@Override
 	public boolean createGoals() {
 		
-		MasterExploreRobotGoal merg = new MasterExploreRobotGoal(core);		
+		MasterExploreRobotGoal merg = new MasterExploreRobotGoal(this);		
 		if (merg.isHardwareCorrect()) 
 		{
 			this.addGoals(merg);

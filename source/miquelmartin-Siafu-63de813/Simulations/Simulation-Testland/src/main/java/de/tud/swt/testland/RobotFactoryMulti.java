@@ -30,7 +30,7 @@ public class RobotFactoryMulti implements ICreateAgents {
 		this.world = world;
 		//X: 139 Y: 133 hall / labyrinth
 		//X: 199 Y: 206 faculty
-		switch (configuration.wc.map) {
+		switch (configuration.getWc().map) {
 			case 0:  this.position = new Position(139, 133);
 					 break;
 	        case 1:  this.position = new Position(139, 133);

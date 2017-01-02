@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 
 /**
  * Is a specific sub goal which is optional and abstract and must be implemented.
@@ -10,8 +10,8 @@ import de.tud.swt.cleaningrobots.RobotCore;
  */
 public abstract class OptionalGoal extends SubGoal{
 
-	public OptionalGoal(RobotCore robot) {
-		super(robot, true);
+	public OptionalGoal(RobotRole role) {
+		super(role, true);
 	}
 
 	@Override

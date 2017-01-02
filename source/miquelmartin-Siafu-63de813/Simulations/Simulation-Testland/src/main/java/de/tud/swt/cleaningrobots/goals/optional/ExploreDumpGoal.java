@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.optional;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.behaviours.DumpModelBehaviour;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
@@ -12,10 +12,10 @@ import de.tud.swt.cleaningrobots.goals.OptionalGoal;
  */
 public class ExploreDumpGoal extends OptionalGoal {
 
-	public ExploreDumpGoal(RobotCore robot) {
-		super(robot);
+	public ExploreDumpGoal(RobotRole role) {
+		super(role);
 		
-		DumpModelBehaviour b = new DumpModelBehaviour(robot);
+		DumpModelBehaviour b = new DumpModelBehaviour(getRobotCore());
 		System.out.println("Correct Dump: " + b.isHardwarecorrect());
 		if (b.isHardwarecorrect()) {
 			behaviours.add(b);

@@ -41,20 +41,25 @@ public class LoadBehaviour extends Behaviour {
 		for (RobotCore nearRobot : nearRobots) {
 			if (nearRobot.getAccu() != null)
 			{
-				if (nearRobot.isLoading)
+				if (nearRobot.isLoading())
 					nearRobot.getAccu().load(loadStation.getLoadValue());
 				//if the Accu is less than half -> load
-				if (!nearRobot.isLoading && nearRobot.getAccu().getActualKWh() < nearRobot.getAccu().getMaxKWh()/2)
-					nearRobot.isLoading = true;
+				if (!nearRobot.isLoading() && nearRobot.getAccu().getActualKWh() < nearRobot.getAccu().getMaxKWh()/2)
+					nearRobot.setLoading(true);
 				//if the Accu is full -> stop loading
 				if (nearRobot.getAccu().isFull()) {
 					System.out.println("Accu Full");
-					nearRobot.isLoading = false;
+					nearRobot.setLoading(false);
 				}
 			}
 		}
 		
 		return false;
+	}
+
+	@Override
+	public void initialiseBehaviour() {
+		//do nothing before first start		
 	}
 
 }

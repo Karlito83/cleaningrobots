@@ -36,8 +36,8 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 	protected void addSupportedStates ()
 	{
 		//create and add the states
-		this.STATE_HOOVE = robot.configuration.createState("Hoove");
-		this.STATE_FREE = robot.configuration.createState("Free");
+		this.STATE_HOOVE = robot.getConfiguration().createState("Hoove");
+		this.STATE_FREE = robot.getConfiguration().createState("Free");
 						
 		this.supportedStates.add(this.STATE_HOOVE);
 		this.supportedStates.add(this.STATE_FREE);
@@ -106,9 +106,14 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 		if (robot.getWorld().hasState(p, STATE_FREE))
 		{
 			result = robot.getWorld().getField(p);
-			result.addState(STATE_HOOVE, this.robot.configuration.wc.iteration);
+			result.addState(STATE_HOOVE, this.robot.getConfiguration().getWc().iteration);
 		}	
 		return result;
+	}
+
+	@Override
+	public void initialiseBehaviour() {
+		//do nothing before first start		
 	}
 
 }

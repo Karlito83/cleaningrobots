@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.optional;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.behaviours.MergeMasterFollower;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
@@ -13,10 +13,10 @@ import de.tud.swt.cleaningrobots.goals.OptionalGoal;
  */
 public class MergeMasterFollowerGoal extends OptionalGoal {
 
-	public MergeMasterFollowerGoal(RobotCore robot) {
-		super(robot);
+	public MergeMasterFollowerGoal(RobotRole role) {
+		super(role);
 
-		MergeMasterFollower mm = new MergeMasterFollower(robot);
+		MergeMasterFollower mm = new MergeMasterFollower(getRobotCore());
 		System.out.println("Correct Load: " + mm.isHardwarecorrect());
 		if (mm.isHardwarecorrect()) {
 			behaviours.add(mm);

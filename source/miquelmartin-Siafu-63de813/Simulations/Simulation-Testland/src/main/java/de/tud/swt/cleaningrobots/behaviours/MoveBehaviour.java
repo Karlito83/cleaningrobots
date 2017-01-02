@@ -31,7 +31,7 @@ public class MoveBehaviour extends Behaviour {
 	public boolean action() throws Exception {
 		
 		//if he is not at the destination and not loading he should move
-		if (!robot.getDestinationContainer().isAtDestination() && !robot.isLoading){
+		if (!robot.getDestinationContainer().isAtDestination() && !robot.isLoading()){
 			//start all hardware components
 			this.d.switchAllOn();
 			
@@ -42,5 +42,10 @@ public class MoveBehaviour extends Behaviour {
 			this.d.switchAllOff();
 		}		
 		return false;
+	}
+
+	@Override
+	public void initialiseBehaviour() {
+		//do nothing before first start		
 	}
 }

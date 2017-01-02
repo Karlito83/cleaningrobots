@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.optional;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.behaviours.LoadWlanActivateBehaviour;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
@@ -12,10 +12,10 @@ import de.tud.swt.cleaningrobots.goals.OptionalGoal;
  */
 public class WlanLoadMasterMergeGoal extends OptionalGoal {
 
-	public WlanLoadMasterMergeGoal(RobotCore robot) {
-		super(robot);
+	public WlanLoadMasterMergeGoal(RobotRole role) {
+		super(role);
 		
-		LoadWlanActivateBehaviour lab = new LoadWlanActivateBehaviour(robot);
+		LoadWlanActivateBehaviour lab = new LoadWlanActivateBehaviour(getRobotCore());
 		System.out.println("Correct WlanActive: " + lab.isHardwarecorrect());
 		if (lab.isHardwarecorrect()) {
 			behaviours.add(lab);

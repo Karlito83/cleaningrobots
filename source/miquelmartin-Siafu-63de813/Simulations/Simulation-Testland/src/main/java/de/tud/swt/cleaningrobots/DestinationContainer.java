@@ -188,7 +188,7 @@ public class DestinationContainer {
 		this.destinationSet = true;
 		
 		if (this.loadDestination) {
-			robot.isLoading = true;
+			robot.setLoading(true);
 		}
 		
 		if (dest.equals(loadStationPosition)) {

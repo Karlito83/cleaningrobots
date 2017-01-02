@@ -16,7 +16,7 @@ public class ExplorerRole extends RobotRole {
 	@Override
 	public boolean createGoals() {
 
-		WithoutMasterExploreGoal wmg = new WithoutMasterExploreGoal(core);
+		WithoutMasterExploreGoal wmg = new WithoutMasterExploreGoal(this);
 		if (wmg.isHardwareCorrect())
 		{
 			this.addGoals(wmg);

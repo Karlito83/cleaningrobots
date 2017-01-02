@@ -31,14 +31,11 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 	
 	private State STATE_HOOVE;
 	private State STATE_FREE;
-	
-	private boolean firststart;
-	
+		
 	public MasterHooveAroundBehaviour(RobotCore robot) {
 		super(robot);
 
-		this.merge = new FieldMerge(this.robot.configuration);
-		this.firststart = true;
+		this.merge = new FieldMerge(this.robot.getConfiguration());
 		
 		Hoover las = (Hoover) this.d.getHardwareComponent(ComponentTypes.HOOVER);
 		this.visionRadius = las.getMeasurementRange();	
@@ -47,8 +44,8 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 	@Override
 	protected void addSupportedStates() {
 		//create and add the states
-		this.STATE_HOOVE = robot.configuration.createState("Hoove");
-		this.STATE_FREE = robot.configuration.createState("Free");
+		this.STATE_HOOVE = robot.getConfiguration().createState("Hoove");
+		this.STATE_FREE = robot.getConfiguration().createState("Free");
 						
 		this.supportedStates.add(this.STATE_HOOVE);
 		this.supportedStates.add(this.STATE_FREE);		
@@ -61,17 +58,7 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 
 	@Override
 	public boolean action() throws Exception {
-		
-		if (firststart) {
-			//get the master object
-			for (RobotRole rr : robot.getRoles()) {
-				if (rr instanceof FollowerRole) {
-					master = ((FollowerRole) rr).getMaster().getRobotCore();
-				}
-			}
-			firststart = false;
-		}
-		
+				
 		if (robot.getDestinationContainer().isAtDestination() && !robot.getDestinationContainer().isAtLoadDestination()) {
 			//start all hardware components
 			this.d.switchAllOn();
@@ -125,9 +112,20 @@ public class MasterHooveAroundBehaviour extends Behaviour {
 		//could only hoove position he knows about
 		if (master.getWorld().isPassable(p))
 		{
-			result = new Field(x, y, true, this.robot.configuration.wc.iteration);
-			result.addState(STATE_HOOVE, this.robot.configuration.wc.iteration);
+			result = new Field(x, y, true, this.robot.getConfiguration().getWc().iteration);
+			result.addState(STATE_HOOVE, this.robot.getConfiguration().getWc().iteration);
 		}	
 		return result;		
+	}
+
+	@Override
+	public void initialiseBehaviour() {
+		//get the master object
+		for (RobotRole rr : robot.getRoles()) {
+			if (rr instanceof FollowerRole) {
+				master = ((FollowerRole) rr).getMaster().getRobotCore();
+			}
+		}
+		
 	}
 }

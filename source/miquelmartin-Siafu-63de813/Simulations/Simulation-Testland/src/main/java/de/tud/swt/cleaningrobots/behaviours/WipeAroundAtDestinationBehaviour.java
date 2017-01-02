@@ -34,8 +34,8 @@ public class WipeAroundAtDestinationBehaviour extends Behaviour {
 	@Override
 	protected void addSupportedStates() {
 		//create and add the states
-		this.STATE_WIPE = robot.configuration.createState("Wipe");
-		this.STATE_HOOVE = robot.configuration.createState("Hoove");
+		this.STATE_WIPE = robot.getConfiguration().createState("Wipe");
+		this.STATE_HOOVE = robot.getConfiguration().createState("Hoove");
 						
 		this.supportedStates.add(this.STATE_WIPE);
 		this.supportedStates.add(this.STATE_HOOVE);		
@@ -104,9 +104,14 @@ public class WipeAroundAtDestinationBehaviour extends Behaviour {
 		if (robot.getWorld().hasState(p, STATE_HOOVE))
 		{
 			result = robot.getWorld().getField(p);
-			result.addState(STATE_WIPE, this.robot.configuration.wc.iteration);
+			result.addState(STATE_WIPE, this.robot.getConfiguration().getWc().iteration);
 		}	
 		return result;
+	}
+
+	@Override
+	public void initialiseBehaviour() {
+		//do nothing before first start		
 	}
 
 }

@@ -10,11 +10,15 @@ public class RoleModel {
 
 	private String roleName;
 	
+	public RoleModel (String roleName) {
+		this.roleName = roleName;
+	}
+	
 	public String getRoleName () {
 		return roleName;
 	}
 	
-	public void setRoleName (String roleName) {
+	/*public void setRoleName (String roleName) {
 		this.roleName = roleName;
-	}
+	}*/
 }

@@ -1,6 +1,5 @@
 package de.tud.swt.cleaningrobots.goals.nonoptional;
 
-import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.WipeAroundAtDestinationBehaviour;
@@ -21,13 +20,13 @@ public class WipeLoadGoal extends NonOptionalGoal {
 	private State STATE_WIPE;	
 	private State WORLDSTATE_DISCOVERED;
 	
-	public WipeLoadGoal(RobotCore robot, boolean relative) {
-		super(robot);
+	public WipeLoadGoal(RobotRole role, boolean relative) {
+		super(role);
 		
-		this.STATE_WIPE = robot.configuration.createState("Wipe");	
-		this.WORLDSTATE_DISCOVERED = robot.configuration.createState("Discovered");
+		this.STATE_WIPE = getRobotCore().getConfiguration().createState("Wipe");	
+		this.WORLDSTATE_DISCOVERED = getRobotCore().getConfiguration().createState("Discovered");
 		
-		WipeAroundAtDestinationBehaviour s = new WipeAroundAtDestinationBehaviour(robot);
+		WipeAroundAtDestinationBehaviour s = new WipeAroundAtDestinationBehaviour(getRobotCore());
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
 		if (s.isHardwarecorrect()) {
 			behaviours.add(s);
@@ -35,7 +34,7 @@ public class WipeLoadGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		d = new WipeBehaviour(robot, relative);
+		d = new WipeBehaviour(getRobotCore(), relative);
 		System.out.println("Correct Discover: " + d.isHardwarecorrect());
 		if (d.isHardwarecorrect()) {
 			behaviours.add(d);
@@ -43,7 +42,7 @@ public class WipeLoadGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MoveBehaviour m = new MoveBehaviour(robot);
+		MoveBehaviour m = new MoveBehaviour(getRobotCore());
 		System.out.println("Correct Move: " + m.isHardwarecorrect());
 		if (m.isHardwarecorrect()) {
 			behaviours.add(m);

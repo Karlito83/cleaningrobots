@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.nonoptional;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.behaviours.MasterCalculateHooveBehaviour;
 import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
 import de.tud.swt.cleaningrobots.model.State;
@@ -17,12 +17,12 @@ public class MasterHooveMasterGoal extends NonOptionalGoal {
 	private MasterCalculateHooveBehaviour mceb;
 	private State WORLDSTATE_HOOVED;
 
-	public MasterHooveMasterGoal(RobotCore robot, MasterRole mr, boolean relative) {
-		super(robot);
+	public MasterHooveMasterGoal(RobotRole role, boolean relative) {
+		super(role);
 		
-		this.WORLDSTATE_HOOVED = robot.configuration.createState("Hooved");
+		this.WORLDSTATE_HOOVED = getRobotCore().getConfiguration().createState("Hooved");
 		
-		mceb = new MasterCalculateHooveBehaviour(robot, mr, relative);
+		mceb = new MasterCalculateHooveBehaviour(getRobotCore(), (MasterRole) role, relative);
 		System.out.println("Correct SeeAround: " +mceb.isHardwarecorrect());
 		if (mceb.isHardwarecorrect()) {
 			behaviours.add(mceb);

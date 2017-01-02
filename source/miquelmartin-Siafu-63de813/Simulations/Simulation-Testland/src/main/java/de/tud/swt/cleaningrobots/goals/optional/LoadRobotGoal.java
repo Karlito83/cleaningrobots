@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.optional;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.behaviours.LoadBehaviour;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
@@ -12,10 +12,10 @@ import de.tud.swt.cleaningrobots.goals.OptionalGoal;
  */
 public class LoadRobotGoal extends OptionalGoal {
 
-	public LoadRobotGoal(RobotCore robot) {
-		super(robot);
+	public LoadRobotGoal(RobotRole role) {
+		super(role);
 				
-		LoadBehaviour l = new LoadBehaviour(robot);
+		LoadBehaviour l = new LoadBehaviour(getRobotCore());
 		System.out.println("Correct Load: " + l.isHardwarecorrect());
 		if (l.isHardwarecorrect()) {
 			behaviours.add(l);

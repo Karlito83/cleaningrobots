@@ -11,7 +11,9 @@ import de.tud.swt.cleaningrobots.RobotKnowledge;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
+import de.tud.swt.cleaningrobots.merge.Merge;
 import de.tud.swt.cleaningrobots.merge.NewInformationFollowerMerge;
+import de.tud.swt.cleaningrobots.merge.WorldEcoreModelMerge;
 import de.tud.swt.cleaningrobots.merge.WorldMerge;
 import de.tud.swt.cleaningrobots.roles.MasterRole;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
@@ -27,19 +29,25 @@ import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 public class MergeMasterWithoutModel extends Behaviour {
 	
 	private MasterRole mr;
-	private WorldMerge ma;
+	private Merge ma;
 	private NewInformationFollowerMerge informationMerge;
-	private int visionRadius;	
-	
+	private int visionRadius;		
 	private List<RobotRole> lastChange;
 	
-	public MergeMasterWithoutModel (RobotCore robot, MasterRole mr) {
+	public MergeMasterWithoutModel (RobotCore robot, MasterRole mr, boolean useModel) {
 		super(robot);
 		
 		this.mr = mr;
 		this.lastChange = new ArrayList<RobotRole>();
-		this.ma = new WorldMerge(this.robot.configuration);
-		this.informationMerge = new NewInformationFollowerMerge(this.robot.configuration);
+		if (useModel)
+		{
+			this.ma = new WorldEcoreModelMerge(this.robot.getConfiguration());
+		}
+		else
+		{
+			this.ma = new WorldMerge(this.robot.getConfiguration());
+		}
+		this.informationMerge = new NewInformationFollowerMerge(this.robot.getConfiguration());
 		
 		Wlan wlan = (Wlan) this.d.getHardwareComponent(ComponentTypes.WLAN);
 		this.visionRadius = wlan.getMeasurementRange();			
@@ -177,11 +185,17 @@ public class MergeMasterWithoutModel extends Behaviour {
 				for (RobotRole rr : nearsNoNewInformation.keySet()) {
 					//import the model to all near robots
 					ma.run(this.robot, rr.getRobotCore(), nearsNoNewInformation.get(rr));
+					lastChange.clear();
 					lastChange.addAll(nearsNoNewInformation.keySet());
 				}
 			}
 			//TODO: case when the robots comes without new information
 		}		
 		return false;
+	}
+
+	@Override
+	public void initialiseBehaviour() {
+		//do not need to initialize something			
 	}	
 }

@@ -15,7 +15,7 @@ public class MergeMasterRole extends MasterRole {
 	@Override
 	public boolean createGoals() {
 		
-		MergeMasterGoal mmg = new MergeMasterGoal(core, this);
+		MergeMasterGoal mmg = new MergeMasterGoal(this);
 		if (mmg.isHardwareCorrect())
 		{
 			this.addGoals(mmg);
