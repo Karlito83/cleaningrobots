@@ -16,7 +16,7 @@ public class WlanLoadIfRobotWantMergeGoal extends OptionalGoal {
 	public WlanLoadIfRobotWantMergeGoal(RobotRole role) {
 		super(role);
 				
-		LoadIfAtLoadStationBehaviour lialsb = new LoadIfAtLoadStationBehaviour(getRobotCore());
+		LoadIfAtLoadStationBehaviour lialsb = new LoadIfAtLoadStationBehaviour(role);
 		System.out.println("Correct LoadIfAtLoadStation: " + lialsb.isHardwarecorrect());
 		if (lialsb.isHardwarecorrect()) {
 			//robot.addBehaviour(b);
@@ -25,7 +25,7 @@ public class WlanLoadIfRobotWantMergeGoal extends OptionalGoal {
 			correct = false;
 		}
 		
-		LoadWlanActivateBehaviour lab = new LoadWlanActivateBehaviour(getRobotCore());
+		LoadWlanActivateBehaviour lab = new LoadWlanActivateBehaviour(role);
 		System.out.println("Correct WlanActive: " + lab.isHardwarecorrect());
 		if (lab.isHardwarecorrect()) {
 			//robot.addBehaviour(b);

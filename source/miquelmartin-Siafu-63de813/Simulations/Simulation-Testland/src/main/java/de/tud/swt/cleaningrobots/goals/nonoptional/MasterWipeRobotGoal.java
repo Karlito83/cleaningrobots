@@ -23,7 +23,7 @@ public class MasterWipeRobotGoal extends NonOptionalGoal {
 		
 		this.WORLDSTATE_WIPED = getRobotCore().getConfiguration().createState("Wiped");
 		
-		WlanOnBehaviour w = new WlanOnBehaviour(getRobotCore());
+		WlanOnBehaviour w = new WlanOnBehaviour(role);
 		System.out.println("Correct SeeAround: " + w.isHardwarecorrect());
 		if (w.isHardwarecorrect()) {
 			behaviours.add(w);
@@ -31,7 +31,7 @@ public class MasterWipeRobotGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MasterMoveBehaviour m = new MasterMoveBehaviour(getRobotCore());
+		MasterMoveBehaviour m = new MasterMoveBehaviour(role);
 		System.out.println("Correct Move: " + m.isHardwarecorrect());
 		if (m.isHardwarecorrect()) {
 			behaviours.add(m);
@@ -39,7 +39,7 @@ public class MasterWipeRobotGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MasterWipeAroundBehaviour s = new MasterWipeAroundBehaviour(getRobotCore());
+		MasterWipeAroundBehaviour s = new MasterWipeAroundBehaviour(role);
 		System.out.println("Correct Discover: " + s.isHardwarecorrect());
 		if (s.isHardwarecorrect()) {
 			behaviours.add(s);

@@ -15,7 +15,7 @@ public class ExploreDumpGoal extends OptionalGoal {
 	public ExploreDumpGoal(RobotRole role) {
 		super(role);
 		
-		DumpModelBehaviour b = new DumpModelBehaviour(getRobotCore());
+		DumpModelBehaviour b = new DumpModelBehaviour(role);
 		System.out.println("Correct Dump: " + b.isHardwarecorrect());
 		if (b.isHardwarecorrect()) {
 			behaviours.add(b);

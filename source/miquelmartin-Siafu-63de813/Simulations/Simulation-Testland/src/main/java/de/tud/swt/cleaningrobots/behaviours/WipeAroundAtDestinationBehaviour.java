@@ -3,7 +3,6 @@ package de.tud.swt.cleaningrobots.behaviours;
 import java.util.ArrayList;
 import java.util.Collection;
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.Wiper;
@@ -24,18 +23,18 @@ public class WipeAroundAtDestinationBehaviour extends Behaviour {
 	private State STATE_WIPE;
 	private State STATE_HOOVE;
 		
-	public WipeAroundAtDestinationBehaviour(RobotCore robot) {
-		super(robot);
+	public WipeAroundAtDestinationBehaviour(RobotRole role) {
+		super(role);
 		
-		Wiper las = (Wiper) this.d.getHardwareComponent(ComponentTypes.WIPER);
+		Wiper las = (Wiper) this.demand.getHardwareComponent(ComponentTypes.WIPER);
 		this.visionRadius = las.getMeasurementRange();
 	}
 	
 	@Override
 	protected void addSupportedStates() {
 		//create and add the states
-		this.STATE_WIPE = robot.getConfiguration().createState("Wipe");
-		this.STATE_HOOVE = robot.getConfiguration().createState("Hoove");
+		this.STATE_WIPE = agentCore.getConfiguration().createState("Wipe");
+		this.STATE_HOOVE = agentCore.getConfiguration().createState("Hoove");
 						
 		this.supportedStates.add(this.STATE_WIPE);
 		this.supportedStates.add(this.STATE_HOOVE);		
@@ -43,33 +42,31 @@ public class WipeAroundAtDestinationBehaviour extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(ComponentTypes.WIPER, 1);
+		this.demand.addDemandPair(ComponentTypes.WIPER, 1);
 	}
 
 	@Override
 	public boolean action() throws Exception {
 		
-		if (robot.getDestinationContainer().isAtDestination() && robot.getDestinationContainer().isDestinationSet() 
-				&& !robot.getDestinationContainer().isAtLoadDestination()) {
+		if (agentCore.getDestinationContainer().isAtDestination() && agentCore.getDestinationContainer().isDestinationSet() 
+				&& !agentCore.getDestinationContainer().isAtLoadDestination()) {
 			//start all hardware components
-			this.d.switchAllOn();
+			this.demand.switchAllOn();
 					
 			//Activate flag that he has new information
-			for (RobotRole rr : robot.getRoles()) {
-				rr.setNewInformation(true);
-			}
+			agentRole.setNewInformation(true);
 				
 			//wipe area
 			//add the new field to the world of the robot
 			try {
-				this.robot.getWorld().addFields(getData());
+				this.agentCore.getWorld().addFields(getData());
 			} catch (Exception e) {
 				throw e;
 			}
 					
 		} else {
 			//switch off the hardware components if not needed
-			this.d.switchAllOff();
+			this.demand.switchAllOff();
 		}
 		return false;
 	}
@@ -96,15 +93,15 @@ public class WipeAroundAtDestinationBehaviour extends Behaviour {
 		Field result = null;
 		
 		//set together the Offset with the Agent position
-		int y =  robot.getPosition().getY() + yOffset;
-		int x =  robot.getPosition().getX() + xOffset;
+		int y =  agentCore.getPosition().getY() + yOffset;
+		int x =  agentCore.getPosition().getX() + xOffset;
 		
 		Position p = new Position(x, y);
 		//could only wipe positions he knows about
-		if (robot.getWorld().hasState(p, STATE_HOOVE))
+		if (agentCore.getWorld().hasState(p, STATE_HOOVE))
 		{
-			result = robot.getWorld().getField(p);
-			result.addState(STATE_WIPE, this.robot.getConfiguration().getWc().iteration);
+			result = agentCore.getWorld().getField(p);
+			result.addState(STATE_WIPE, this.agentCore.getConfiguration().getWc().iteration);
 		}	
 		return result;
 	}

@@ -13,13 +13,24 @@ public abstract class HardwareComponent {
 	private EnergyState state;
 	private double actualEnergie;
 	
-	//Energy consumption when the component runs
+	/**
+	 * Energy consumption when the component runs
+	 */
 	protected double workEnergie;
-	//Energy consumption when the component is out
+	
+	/**
+	 * Energy consumption when the component is out
+	 */
 	protected double outEnergie;
-	//Energy consumption when the component turns on
+	
+	/**
+	 * Energy consumption when the component turns on
+	 */
 	protected double onEnergie;
-	//Energy consumption when the component turns off
+	
+	/**
+	 * Energy consumption when the component turns off
+	 */
 	protected double offEnergie;
 		
 	public HardwareComponent (String name)	{

@@ -3,10 +3,10 @@ package de.tud.swt.cleaningrobots;
 import java.util.HashMap;
 import java.util.Map;
 
-import test.ReadXMLInput;
 import de.tud.evaluation.WorkingConfiguration;
 import de.tud.swt.cleaningrobots.hardware.SpecialHardware;
 import de.tud.swt.cleaningrobots.model.State;
+import de.tud.swt.cleaningrobots.util.ReadXMLInput;
 
 /**
  * The configuration class contains the values of the test case and a map with all states in it.

@@ -15,7 +15,7 @@ public class WlanOnGoal extends OptionalGoal {
 	public WlanOnGoal(RobotRole role) {
 		super(role);
 		
-		WlanOnBehaviour wo = new WlanOnBehaviour(getRobotCore());
+		WlanOnBehaviour wo = new WlanOnBehaviour(role);
 		System.out.println("Correct WlanActive: " + wo.isHardwarecorrect());
 		if (wo.isHardwarecorrect()) {
 			behaviours.add(wo);

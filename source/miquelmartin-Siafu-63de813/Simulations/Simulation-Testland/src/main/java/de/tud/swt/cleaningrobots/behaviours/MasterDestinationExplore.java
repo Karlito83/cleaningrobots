@@ -29,15 +29,15 @@ public class MasterDestinationExplore extends Behaviour {
 	
 	private Map<String, RobotDestinationCalculation> information;
 	
-	public MasterDestinationExplore(RobotCore robot, MasterRole mr) {
-		super(robot);
+	public MasterDestinationExplore(RobotRole role) {
+		super(role);
 		
 		//create and add the states
-		this.mr = mr;
-		this.merge = new DestinationMerge(this.robot.getConfiguration());
+		this.mr = (MasterRole) role;
+		this.merge = new DestinationMerge(this.agentCore.getConfiguration());
 		this.information = new HashMap<String, RobotDestinationCalculation>();
 		
-		Wlan wlan = (Wlan) this.d.getHardwareComponent(ComponentTypes.WLAN);
+		Wlan wlan = (Wlan) this.demand.getHardwareComponent(ComponentTypes.WLAN);
 		this.visionRadius = wlan.getMeasurementRange();
 	}
 	
@@ -48,17 +48,17 @@ public class MasterDestinationExplore extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(ComponentTypes.WLAN, 1);
+		this.demand.addDemandPair(ComponentTypes.WLAN, 1);
 	}
 
 	@Override
 	public boolean action() throws Exception {
 		//start all hardware components
-		this.d.switchAllOn();
+		this.demand.switchAllOn();
 						
 		//search near Explore Robots
-		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(this.visionRadius);
-		nearRobots.remove(this.robot);
+		List<RobotCore> nearRobots = this.agentCore.getICommunicationAdapter().getNearRobots(this.visionRadius);
+		nearRobots.remove(this.agentCore);
 				
 		for (RobotDestinationCalculation rdc : information.values()) {
 			//set all NeedNew to false
@@ -114,7 +114,7 @@ public class MasterDestinationExplore extends Behaviour {
 		if (!newOneFind)
 			return false;
 		
-		Map<String, RobotDestinationCalculation> result = this.robot.getWorld().getNextUnknownFields(information, calculationAway); 
+		Map<String, RobotDestinationCalculation> result = this.agentCore.getWorld().getNextUnknownFields(information, calculationAway); 
 		
 		if (result == null) {
 			//set all destination to null that the robot could shut down
@@ -122,7 +122,7 @@ public class MasterDestinationExplore extends Behaviour {
 				for (RobotDestinationCalculation rdc : information.values()) {
 					if (rdc.getName().equals(nearRobot.getName()))
 					{
-						merge.run(this.robot, nearRobot, null);
+						merge.run(this.agentCore, nearRobot, null);
 					}
 				}
 			}
@@ -136,7 +136,7 @@ public class MasterDestinationExplore extends Behaviour {
 			for (RobotDestinationCalculation rdc : information.values()) {
 				if (rdc.getName().equals(nearRobot.getName()) && rdc.needNew)
 				{
-					merge.run(this.robot, nearRobot, rdc.newDest);
+					merge.run(this.agentCore, nearRobot, rdc.newDest);
 				}
 			}
 		}

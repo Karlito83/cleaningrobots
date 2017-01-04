@@ -13,27 +13,24 @@ import de.tud.swt.cleaningrobots.model.State;
  */
 public abstract class Behaviour {
 	
-	protected RobotCore robot;	
-	protected Demand d;
+	protected RobotCore agentCore;
+	protected RobotRole agentRole;
+	protected Demand demand;
 	protected boolean hardwarecorrect;	
 	protected Set<State> supportedStates;
 
-	/*public Behaviour(RobotRole role){
-		this.robot = role.getRobotCore();
-		this.supportedStates = new HashSet<State>();
-		this.d = new Demand(robot);
-		this.addSupportedStates();
-		this.addHardwareComponents();
-		this.hardwarecorrect = d.isCorrect();		
-	}*/
+	public Behaviour(RobotRole role){
+		this(role.getRobotCore());
+		this.agentRole = role;	
+	}
 	
-	public Behaviour(RobotCore robot){
-		this.robot = robot;
+	private Behaviour(RobotCore robot){
+		this.agentCore = robot;
 		this.supportedStates = new HashSet<State>();
-		this.d = new Demand(robot);
+		this.demand = new Demand(robot);
 		this.addSupportedStates();
 		this.addHardwareComponents();
-		this.hardwarecorrect = d.isCorrect();		
+		this.hardwarecorrect = demand.isCorrect();		
 	}
 	
 	/**

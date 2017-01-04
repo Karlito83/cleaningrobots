@@ -26,7 +26,7 @@ public class ImportExportConfiguration {
 	
 	@Override
 	public String toString() {
-		return "I: " + iteration + " KStates: " + knownStates;
+		return "Iteration: " + iteration + " KnownStates: " + knownStates;
 	}
 	
 	public ImportExportConfiguration getStateConfiguration () {

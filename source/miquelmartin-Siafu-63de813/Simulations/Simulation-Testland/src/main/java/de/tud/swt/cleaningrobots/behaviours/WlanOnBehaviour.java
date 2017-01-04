@@ -1,7 +1,7 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 
 /**
@@ -12,8 +12,8 @@ import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
  */
 public class WlanOnBehaviour extends Behaviour {
 	
-	public WlanOnBehaviour(RobotCore robot) {
-		super(robot);		
+	public WlanOnBehaviour(RobotRole role) {
+		super(role);		
 	}
 	
 	@Override
@@ -23,13 +23,13 @@ public class WlanOnBehaviour extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(ComponentTypes.WLAN, 1);
+		this.demand.addDemandPair(ComponentTypes.WLAN, 1);
 	}
 
 	@Override
 	public boolean action() {		
 		//activate WLAN component
-		this.d.switchAllOn();
+		this.demand.switchAllOn();
 		return false;
 	}
 

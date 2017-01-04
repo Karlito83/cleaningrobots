@@ -4,15 +4,18 @@ import de.tud.swt.cleaningrobots.Configuration;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.util.PathWayMergeInformation;
 
+/**
+ * Send the new Destination and the path to the Follower and measure the informations.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class PathDestinationMerge extends Merge {
 
 	public PathDestinationMerge(Configuration configuration) {
 		super(configuration);
 	}
 	
-	/**
-	 * Send the new Destination and the path to the Follower and measure the informations.
-	 */
 	@Override
 	protected void action(RobotCore from, RobotCore to, Object object) {
 		PathWayMergeInformation pathway = (PathWayMergeInformation) object;

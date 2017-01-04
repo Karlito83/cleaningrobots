@@ -32,20 +32,21 @@ public class MasterWipeAroundBehaviour extends Behaviour {
 	private State STATE_HOOVE;
 	private State STATE_WIPE;
 		
-	public MasterWipeAroundBehaviour(RobotCore robot) {
-		super(robot);
+	public MasterWipeAroundBehaviour(RobotRole role) {
+		super(role);
 		
-		this.merge = new FieldMerge(this.robot.getConfiguration());
+		this.merge = new FieldMerge(this.agentCore.getConfiguration());
+		this.master = ((FollowerRole)role).getMaster().getRobotCore();
 						
-		Wiper las = (Wiper) this.d.getHardwareComponent(ComponentTypes.WIPER);
+		Wiper las = (Wiper) this.demand.getHardwareComponent(ComponentTypes.WIPER);
 		this.visionRadius = las.getMeasurementRange();		
 	}
 	
 	@Override
 	protected void addSupportedStates() {
 		//create and add the states
-		this.STATE_HOOVE = robot.getConfiguration().createState("Hoove");
-		this.STATE_WIPE = robot.getConfiguration().createState("Wipe");
+		this.STATE_HOOVE = agentCore.getConfiguration().createState("Hoove");
+		this.STATE_WIPE = agentCore.getConfiguration().createState("Wipe");
 								
 		this.supportedStates.add(this.STATE_HOOVE);
 		this.supportedStates.add(this.STATE_WIPE);		
@@ -53,15 +54,15 @@ public class MasterWipeAroundBehaviour extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(ComponentTypes.WIPER, 1);
+		this.demand.addDemandPair(ComponentTypes.WIPER, 1);
 	}
 
 	@Override
 	public boolean action() throws Exception {
 		
-		if (robot.getDestinationContainer().isAtDestination() && !robot.getDestinationContainer().isAtLoadDestination()) {
+		if (agentCore.getDestinationContainer().isAtDestination() && !agentCore.getDestinationContainer().isAtLoadDestination()) {
 			//start all hardware components
-			this.d.switchAllOn();
+			this.demand.switchAllOn();
 			
 			//wipe area
 			//add the new field to the world of the master
@@ -69,18 +70,18 @@ public class MasterWipeAroundBehaviour extends Behaviour {
 				List<Field> fields = getData();
 				//send Field to Robot and ask for new destination and Path
 				FieldMergeInformation fmi = new FieldMergeInformation(fields);
-				merge.run(robot, master, fmi);
+				merge.run(agentCore, master, fmi);
 			} catch (Exception e) {
 				throw e;
 			}
 			
 		} else {
 			//switch off the hardware components if not needed
-			this.d.switchAllOff();
+			this.demand.switchAllOff();
 		}
-		if (robot.getDestinationContainer().isAtDestination())
+		if (agentCore.getDestinationContainer().isAtDestination())
 		{
-			robot.setNewInformation(true);
+			agentCore.setNewInformation(true);
 		}
 		return false;
 	}
@@ -105,26 +106,21 @@ public class MasterWipeAroundBehaviour extends Behaviour {
 		Field result = null;
 		
 		//Merge offset with Robot Position
-		int y =  robot.getPosition().getY() + yOffset;
-		int x =  robot.getPosition().getX() + xOffset;
+		int y =  agentCore.getPosition().getY() + yOffset;
+		int x =  agentCore.getPosition().getX() + xOffset;
 		
 		Position p = new Position(x, y);
 		//could only wipe position he knows about
 		if (master.getWorld().hasState(p, STATE_HOOVE))
 		{
-			result = new Field(x, y, true, this.robot.getConfiguration().getWc().iteration);
-			result.addState(STATE_WIPE, this.robot.getConfiguration().getWc().iteration);
+			result = new Field(x, y, true, this.agentCore.getConfiguration().getWc().iteration);
+			result.addState(STATE_WIPE, this.agentCore.getConfiguration().getWc().iteration);
 		}	
 		return result;		
 	}
 
 	@Override
 	public void initialiseBehaviour() {
-		//get the master object
-		for (RobotRole rr : robot.getRoles()) {
-			if (rr instanceof FollowerRole) {
-				master = ((FollowerRole) rr).getMaster().getRobotCore();
-			}
-		}		
+		//do nothing before first start			
 	}
 }

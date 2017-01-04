@@ -2,8 +2,9 @@ package de.tud.swt.cleaningrobots.behaviours;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.LookAroundSensor;
 import de.tud.swt.cleaningrobots.model.Field;
@@ -11,30 +12,30 @@ import de.tud.swt.cleaningrobots.model.State;
 
 /**
  * Old one.
- * Behavior that activate the laser scanner if the robot is at the destination and scan the place.
+ * Behavior that activate always the laser scanner and always scan the place.
  * 
  * @author Christopher Werner
  *
  */
-public class SeeAroundBehaviour extends Behaviour {
+public class DiscoverAlwaysBehaviour extends Behaviour {
 
 	private int visionRadius;
 	
 	private State STATE_BLOCKED;
 	private State STATE_FREE;
 		
-	public SeeAroundBehaviour(RobotCore robot) {
-		super(robot);
+	public DiscoverAlwaysBehaviour(RobotRole role) {
+		super(role);
 		
-		LookAroundSensor las = (LookAroundSensor) this.d.getHardwareComponent(ComponentTypes.LOOKAROUNDSENSOR);
+		LookAroundSensor las = (LookAroundSensor) this.demand.getHardwareComponent(ComponentTypes.LOOKAROUNDSENSOR);
 		this.visionRadius = las.getMeasurementRange();
 	}
 	
 	@Override
 	protected void addSupportedStates() {
 		//create and add the states
-		this.STATE_BLOCKED = robot.getConfiguration().createState("Blocked");
-		this.STATE_FREE = robot.getConfiguration().createState("Free");
+		this.STATE_BLOCKED = agentCore.getConfiguration().createState("Blocked");
+		this.STATE_FREE = agentCore.getConfiguration().createState("Free");
 						
 		this.supportedStates.add(this.STATE_BLOCKED);
 		this.supportedStates.add(this.STATE_FREE);		
@@ -42,18 +43,18 @@ public class SeeAroundBehaviour extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(ComponentTypes.LOOKAROUNDSENSOR, 1);
+		this.demand.addDemandPair(ComponentTypes.LOOKAROUNDSENSOR, 1);
 	}
 
 	@Override
 	public boolean action() throws Exception {
 		
 		//start all hardware components
-		this.d.switchAllOn();
+		this.demand.switchAllOn();
 		
 		//add the new field to the world of the robot
 		try {
-			this.robot.getWorld().addFields(getData());
+			this.agentCore.getWorld().addFields(getData());
 		} catch (Exception e) {
 			throw e;
 		}		
@@ -64,7 +65,8 @@ public class SeeAroundBehaviour extends Behaviour {
 		
 		Collection<Field> data = new ArrayList<Field>();
 		
-		for (int xOffset=-visionRadius; xOffset<=visionRadius; xOffset++){
+		for (int xOffset=-visionRadius; xOffset<=visionRadius; xOffset++)
+		{
 			for (int yOffset = -visionRadius; yOffset<=visionRadius; yOffset++ )
 			{
 				data.add(getField(xOffset, yOffset));
@@ -79,21 +81,21 @@ public class SeeAroundBehaviour extends Behaviour {
 		Field result = null;
 		
 		//set together the Offset with the Agent position
-		int row =  robot.getPosition().getY() + yOffset;
-		int col =  robot.getPosition().getX() + xOffset;
+		int row =  agentCore.getPosition().getY() + yOffset;
+		int col =  agentCore.getPosition().getX() + xOffset;
 		
 		//proof if it is a wall
-		boolean positionIsAtWall = robot.getICommunicationAdapter().isWall(row, col);
+		boolean positionIsAtWall = agentCore.getICommunicationAdapter().isWall(row, col);
 		
 		//add new field
-		result = new Field(col, row, !positionIsAtWall, this.robot.getConfiguration().getWc().iteration);
+		result = new Field(col, row, !positionIsAtWall, this.agentCore.getConfiguration().getWc().iteration);
 		if(positionIsAtWall)
 		{
-			result.addState(STATE_BLOCKED, this.robot.getConfiguration().getWc().iteration);
+			result.addState(STATE_BLOCKED, this.agentCore.getConfiguration().getWc().iteration);
 		}
 		else
 		{
-			result.addState(STATE_FREE, this.robot.getConfiguration().getWc().iteration);
+			result.addState(STATE_FREE, this.agentCore.getConfiguration().getWc().iteration);
 		}		
 		
 		return result;

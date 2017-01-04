@@ -1,8 +1,10 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import java.util.List;
+
 import de.tud.swt.cleaningrobots.Behaviour;
 import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.LoadStation;
 
@@ -16,10 +18,10 @@ public class LoadIfRobotWantBehaviour extends Behaviour {
 
 	private LoadStation loadStation;
 	
-	public LoadIfRobotWantBehaviour(RobotCore robot) {
-		super(robot);
+	public LoadIfRobotWantBehaviour(RobotRole role) {
+		super(role);
 
-		this.loadStation = (LoadStation) this.d.getHardwareComponent(ComponentTypes.LOADSTATION);
+		this.loadStation = (LoadStation) this.demand.getHardwareComponent(ComponentTypes.LOADSTATION);
 	}
 	
 	@Override
@@ -29,14 +31,14 @@ public class LoadIfRobotWantBehaviour extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(ComponentTypes.LOADSTATION, 1);		
+		this.demand.addDemandPair(ComponentTypes.LOADSTATION, 1);		
 	}
 
 	@Override
 	public boolean action() throws Exception {
 		
-		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(loadStation.getMeasurementRange());
-		nearRobots.remove(this.robot);
+		List<RobotCore> nearRobots = this.agentCore.getICommunicationAdapter().getNearRobots(loadStation.getMeasurementRange());
+		nearRobots.remove(this.agentCore);
 		for (RobotCore nearRobot : nearRobots) {
 			if (nearRobot.getAccu() != null)
 			{

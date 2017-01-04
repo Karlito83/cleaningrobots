@@ -23,7 +23,7 @@ public class MasterHooveRobotGoal extends NonOptionalGoal {
 		
 		this.WORLDSTATE_HOOVED = getRobotCore().getConfiguration().createState("Hooved");
 		
-		WlanOnBehaviour w = new WlanOnBehaviour(getRobotCore());
+		WlanOnBehaviour w = new WlanOnBehaviour(role);
 		System.out.println("Correct SeeAround: " + w.isHardwarecorrect());
 		if (w.isHardwarecorrect()) {
 			behaviours.add(w);
@@ -31,7 +31,7 @@ public class MasterHooveRobotGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MasterMoveBehaviour m = new MasterMoveBehaviour(getRobotCore());
+		MasterMoveBehaviour m = new MasterMoveBehaviour(role);
 		System.out.println("Correct Move: " + m.isHardwarecorrect());
 		if (m.isHardwarecorrect()) {
 			behaviours.add(m);
@@ -39,7 +39,7 @@ public class MasterHooveRobotGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MasterHooveAroundBehaviour s = new MasterHooveAroundBehaviour(getRobotCore());
+		MasterHooveAroundBehaviour s = new MasterHooveAroundBehaviour(role);
 		System.out.println("Correct Discover: " + s.isHardwarecorrect());
 		if (s.isHardwarecorrect()) {
 			behaviours.add(s);

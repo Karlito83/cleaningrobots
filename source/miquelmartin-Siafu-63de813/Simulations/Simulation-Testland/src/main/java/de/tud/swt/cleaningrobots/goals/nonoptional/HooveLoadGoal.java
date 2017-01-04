@@ -26,7 +26,7 @@ public class HooveLoadGoal extends NonOptionalGoal {
 		this.STATE_HOOVE = getRobotCore().getConfiguration().createState("Hoove");
 		this.WORLDSTATE_DISCOVERED = getRobotCore().getConfiguration().createState("Discovered");
 		
-		HooveAroundAtDestinationBehaviour s = new HooveAroundAtDestinationBehaviour(getRobotCore());
+		HooveAroundAtDestinationBehaviour s = new HooveAroundAtDestinationBehaviour(role);
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
 		if (s.isHardwarecorrect()) {
 			behaviours.add(s);
@@ -34,7 +34,7 @@ public class HooveLoadGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		d = new HooveBehaviour(getRobotCore(), relative);
+		d = new HooveBehaviour(role, relative);
 		System.out.println("Correct Discover: " + d.isHardwarecorrect());
 		if (d.isHardwarecorrect()) {
 			behaviours.add(d);
@@ -42,7 +42,7 @@ public class HooveLoadGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MoveBehaviour m = new MoveBehaviour(getRobotCore());
+		MoveBehaviour m = new MoveBehaviour(role);
 		System.out.println("Correct Move: " + m.isHardwarecorrect());
 		if (m.isHardwarecorrect()) {
 			behaviours.add(m);

@@ -1,7 +1,7 @@
 package de.tud.swt.cleaningrobots.goals.optional;
 
 import de.tud.swt.cleaningrobots.RobotRole;
-import de.tud.swt.cleaningrobots.behaviours.DumpXMLModelBehaviour;
+import de.tud.swt.cleaningrobots.behaviours.DumpXmlModelBehaviour;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
 /**
@@ -15,7 +15,7 @@ public class XmlDumpGoal extends OptionalGoal {
 	public XmlDumpGoal(RobotRole role) {
 		super(role);
 		
-		DumpXMLModelBehaviour b = new DumpXMLModelBehaviour(getRobotCore());
+		DumpXmlModelBehaviour b = new DumpXmlModelBehaviour(role);
 		System.out.println("Correct Dump: " + b.isHardwarecorrect());
 		if (b.isHardwarecorrect()) {
 			behaviours.add(b);

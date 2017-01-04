@@ -15,7 +15,7 @@ public class PngDumpGoal extends OptionalGoal {
 	public PngDumpGoal(RobotRole role) {
 		super(role);
 		
-		DumpPngModelBehaviour b = new DumpPngModelBehaviour(getRobotCore());
+		DumpPngModelBehaviour b = new DumpPngModelBehaviour(role);
 		System.out.println("Correct Dump: " + b.isHardwarecorrect());
 		if (b.isHardwarecorrect()) {
 			behaviours.add(b);

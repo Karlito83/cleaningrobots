@@ -4,8 +4,8 @@ import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.behaviours.HooveAroundAtDestinationBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.HooveBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.LoadIfAtLoadStationBehaviour;
-import de.tud.swt.cleaningrobots.behaviours.MergeAllOfNearWithoutModel;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
+import de.tud.swt.cleaningrobots.behaviours.merge.MergeAllNearBehaviour;
 import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
 import de.tud.swt.cleaningrobots.model.State;
 
@@ -25,7 +25,7 @@ public class WithoutMasterHooveGoal extends NonOptionalGoal {
 		
 		this.WORLDSTATE_HOOVED = getRobotCore().getConfiguration().createState("Hooved");
 		
-		HooveAroundAtDestinationBehaviour s = new HooveAroundAtDestinationBehaviour(getRobotCore());
+		HooveAroundAtDestinationBehaviour s = new HooveAroundAtDestinationBehaviour(role);
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
 		if (s.isHardwarecorrect()) {
 			behaviours.add(s);
@@ -33,7 +33,7 @@ public class WithoutMasterHooveGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		d = new HooveBehaviour(getRobotCore(), false);
+		d = new HooveBehaviour(role, false);
 		System.out.println("Correct Discover: " + d.isHardwarecorrect());
 		if (d.isHardwarecorrect()) {
 			behaviours.add(d);
@@ -41,7 +41,7 @@ public class WithoutMasterHooveGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MoveBehaviour m = new MoveBehaviour(getRobotCore());
+		MoveBehaviour m = new MoveBehaviour(role);
 		System.out.println("Correct Move: " + m.isHardwarecorrect());
 		if (m.isHardwarecorrect()) {
 			behaviours.add(m);
@@ -49,7 +49,7 @@ public class WithoutMasterHooveGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MergeAllOfNearWithoutModel mar = new MergeAllOfNearWithoutModel(getRobotCore());
+		MergeAllNearBehaviour mar = new MergeAllNearBehaviour(role, false);
 		System.out.println("Correct MergeRonny: " + mar.isHardwarecorrect());
 		if (mar.isHardwarecorrect()) {
 			behaviours.add(mar);
@@ -57,7 +57,7 @@ public class WithoutMasterHooveGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		LoadIfAtLoadStationBehaviour lialsb = new LoadIfAtLoadStationBehaviour(getRobotCore());
+		LoadIfAtLoadStationBehaviour lialsb = new LoadIfAtLoadStationBehaviour(role);
 		System.out.println("Correct LoadIfAtLoadStation: " + lialsb.isHardwarecorrect());
 		if (lialsb.isHardwarecorrect()) {
 			behaviours.add(lialsb);

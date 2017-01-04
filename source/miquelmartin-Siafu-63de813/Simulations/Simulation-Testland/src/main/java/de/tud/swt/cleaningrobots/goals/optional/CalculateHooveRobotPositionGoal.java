@@ -3,7 +3,6 @@ package de.tud.swt.cleaningrobots.goals.optional;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.behaviours.MasterDestinationHoove;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
-import de.tud.swt.cleaningrobots.roles.MasterRole;
 
 /**
  * Optional goal which calculate new hoove destinations for followers which divide the robots in the world. 
@@ -16,7 +15,7 @@ public class CalculateHooveRobotPositionGoal extends OptionalGoal {
 	public CalculateHooveRobotPositionGoal(RobotRole role) {
 		super(role);
 		
-		MasterDestinationHoove mm = new MasterDestinationHoove(getRobotCore(), (MasterRole) role);
+		MasterDestinationHoove mm = new MasterDestinationHoove(role);
 		System.out.println("Correct Load: " + mm.isHardwarecorrect());
 		if (mm.isHardwarecorrect()) {
 			behaviours.add(mm);

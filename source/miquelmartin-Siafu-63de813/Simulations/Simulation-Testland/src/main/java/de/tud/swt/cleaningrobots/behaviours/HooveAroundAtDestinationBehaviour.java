@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.Hoover;
@@ -25,10 +24,10 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 	private State STATE_HOOVE;
 	private State STATE_FREE;
 		
-	public HooveAroundAtDestinationBehaviour(RobotCore robot) {
-		super(robot);
+	public HooveAroundAtDestinationBehaviour(RobotRole role) {
+		super(role);
 		
-		Hoover las = (Hoover) d.getHardwareComponent(ComponentTypes.HOOVER);
+		Hoover las = (Hoover) demand.getHardwareComponent(ComponentTypes.HOOVER);
 		this.visionRadius = las.getMeasurementRange();
 	}
 	
@@ -36,8 +35,8 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 	protected void addSupportedStates ()
 	{
 		//create and add the states
-		this.STATE_HOOVE = robot.getConfiguration().createState("Hoove");
-		this.STATE_FREE = robot.getConfiguration().createState("Free");
+		this.STATE_HOOVE = agentCore.getConfiguration().createState("Hoove");
+		this.STATE_FREE = agentCore.getConfiguration().createState("Free");
 						
 		this.supportedStates.add(this.STATE_HOOVE);
 		this.supportedStates.add(this.STATE_FREE);
@@ -46,33 +45,31 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 	@Override
 	protected void addHardwareComponents ()
 	{
-		this.d.addDemandPair(ComponentTypes.HOOVER, 1);
+		this.demand.addDemandPair(ComponentTypes.HOOVER, 1);
 	}
 
 	@Override
 	public boolean action() throws Exception {
 		
-		if (robot.getDestinationContainer().isAtDestination() && robot.getDestinationContainer().isDestinationSet() 
-				&& !robot.getDestinationContainer().isAtLoadDestination()) {
+		if (agentCore.getDestinationContainer().isAtDestination() && agentCore.getDestinationContainer().isDestinationSet() 
+				&& !agentCore.getDestinationContainer().isAtLoadDestination()) {
 			//start all hardware components
-			this.d.switchAllOn();
+			this.demand.switchAllOn();
 			
 			//Activate flag that he has new information
-			for (RobotRole rr : robot.getRoles()) {
-				rr.setNewInformation(true);
-			}
+			agentRole.setNewInformation(true);
 					
 			//hoove area
 			//add the new field to the world of the robot
 			try {
-				this.robot.getWorld().addFields(getData());
+				this.agentCore.getWorld().addFields(getData());
 			} catch (Exception e) {
 				throw e;
 			}
 				
 		} else {
 			//switch off the hardware components if not needed
-			this.d.switchAllOff();
+			this.demand.switchAllOff();
 		}
 		return false;
 	}
@@ -98,15 +95,15 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 		Field result = null;
 		
 		//set together the Offset with the Agent position
-		int y =  robot.getPosition().getY() + yOffset;
-		int x =  robot.getPosition().getX() + xOffset;
+		int y =  agentCore.getPosition().getY() + yOffset;
+		int x =  agentCore.getPosition().getX() + xOffset;
 		
 		Position p = new Position(x, y);
 		//could only hoove positions he knows about
-		if (robot.getWorld().hasState(p, STATE_FREE))
+		if (agentCore.getWorld().hasState(p, STATE_FREE))
 		{
-			result = robot.getWorld().getField(p);
-			result.addState(STATE_HOOVE, this.robot.getConfiguration().getWc().iteration);
+			result = agentCore.getWorld().getField(p);
+			result.addState(STATE_HOOVE, this.agentCore.getConfiguration().getWc().iteration);
 		}	
 		return result;
 	}

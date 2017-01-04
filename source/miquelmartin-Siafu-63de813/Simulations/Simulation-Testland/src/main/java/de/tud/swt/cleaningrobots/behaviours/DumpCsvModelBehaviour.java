@@ -4,13 +4,13 @@ import java.io.File;
 import java.util.Collection;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.measure.ExportFiles;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.model.World;
 
-public class DumpCSVModelBehaviour extends Behaviour {
+public class DumpCsvModelBehaviour extends Behaviour {
 	
 	private final int CONST_FILENAME_NUMBERPREFIX = 1000000000;
 	private final int CONST_CSV_DUMP_INTERVAL = 10000;
@@ -23,8 +23,8 @@ public class DumpCSVModelBehaviour extends Behaviour {
 	
 	private int[][] mapValues; 
 
-	public DumpCSVModelBehaviour(RobotCore robot) {
-		super(robot);
+	public DumpCsvModelBehaviour(RobotRole role) {
+		super(role);
 
 		this.mapValues = new int[640][480];
 		this.counter = 0;
@@ -32,9 +32,9 @@ public class DumpCSVModelBehaviour extends Behaviour {
 
 	@Override
 	protected void addSupportedStates() {
-		this.STATE_BLOCKED = robot.getConfiguration().createState("Blocked");		
-		this.STATE_HOOVE = robot.getConfiguration().createState("Hoove");
-		this.STATE_WIPE = robot.getConfiguration().createState("Wipe");		
+		this.STATE_BLOCKED = agentCore.getConfiguration().createState("Blocked");		
+		this.STATE_HOOVE = agentCore.getConfiguration().createState("Hoove");
+		this.STATE_WIPE = agentCore.getConfiguration().createState("Wipe");		
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class DumpCSVModelBehaviour extends Behaviour {
 			
 			try {
 				
-				World world = this.robot.getWorld();
+				World world = this.agentCore.getWorld();
 				Collection<Field> fields = world.getFields();
 								
 				//iterates over all fields if has State make color
@@ -101,7 +101,7 @@ public class DumpCSVModelBehaviour extends Behaviour {
 		}
 		
 		fileName += (CONST_FILENAME_NUMBERPREFIX + counter);
-		fileName =  robot.getName() + "_" + fileName.substring(1) + extension;
+		fileName =  agentCore.getName() + "_" + fileName.substring(1) + extension;
 		
 		return fileName;
 	}

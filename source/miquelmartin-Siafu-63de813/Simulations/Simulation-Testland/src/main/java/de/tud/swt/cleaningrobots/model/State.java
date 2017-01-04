@@ -5,7 +5,7 @@ import cleaningrobots.CleaningrobotsFactory;
 /**
  * State of a field or of the world.
  * 
- * @author ChristopherMobil
+ * @author Christopher Werner
  *
  */
 public class State {

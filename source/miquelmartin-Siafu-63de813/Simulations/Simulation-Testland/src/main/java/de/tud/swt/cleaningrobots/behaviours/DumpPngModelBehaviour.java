@@ -5,10 +5,11 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Collection;
+
 import javax.imageio.ImageIO;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.model.World;
@@ -24,17 +25,17 @@ public class DumpPngModelBehaviour extends Behaviour {
 	private State STATE_HOOVE;	
 	private State STATE_WIPE;
 
-	public DumpPngModelBehaviour(RobotCore robot) {
-		super(robot);
+	public DumpPngModelBehaviour(RobotRole role) {
+		super(role);
 		
 		this.counter = 0;
 	}
 
 	@Override
 	protected void addSupportedStates() {
-		this.STATE_BLOCKED = robot.getConfiguration().createState("Blocked");		
-		this.STATE_HOOVE = robot.getConfiguration().createState("Hoove");
-		this.STATE_WIPE = robot.getConfiguration().createState("Wipe");	
+		this.STATE_BLOCKED = agentCore.getConfiguration().createState("Blocked");		
+		this.STATE_HOOVE = agentCore.getConfiguration().createState("Hoove");
+		this.STATE_WIPE = agentCore.getConfiguration().createState("Wipe");	
 	}
 
 	@Override
@@ -61,7 +62,7 @@ public class DumpPngModelBehaviour extends Behaviour {
 			
 			try {
 				
-				World world = this.robot.getWorld();
+				World world = this.agentCore.getWorld();
 				Collection<Field> fields = world.getFields();
 								
 				//Creates a gray scale image
@@ -108,7 +109,7 @@ public class DumpPngModelBehaviour extends Behaviour {
 		}
 		
 		fileName += (CONST_FILENAME_NUMBERPREFIX + counter);
-		fileName =  robot.getName() + "_" + fileName.substring(1) + extension;
+		fileName =  agentCore.getName() + "_" + fileName.substring(1) + extension;
 		
 		return fileName;
 	}

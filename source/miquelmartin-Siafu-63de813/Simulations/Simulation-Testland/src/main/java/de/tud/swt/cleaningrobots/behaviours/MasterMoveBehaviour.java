@@ -1,7 +1,7 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 
 /**
@@ -13,8 +13,8 @@ import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
  */
 public class MasterMoveBehaviour extends Behaviour {
 
-	public MasterMoveBehaviour(RobotCore robot) {
-		super(robot);
+	public MasterMoveBehaviour(RobotRole role) {
+		super(role);
 	}
 	
 	@Override
@@ -24,29 +24,28 @@ public class MasterMoveBehaviour extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(ComponentTypes.ACTUATOR, 1);
+		this.demand.addDemandPair(ComponentTypes.ACTUATOR, 1);
 	}
 
 	@Override
 	public boolean action() throws Exception {
 		
 		//if he is not at the destination and not loading he should move
-		if (!robot.getDestinationContainer().isAtDestination() && !robot.isLoading()){
+		if (!agentCore.getDestinationContainer().isAtDestination() && !agentCore.isLoading()){
 			//start all hardware components
-			this.d.switchAllOn();
+			this.demand.switchAllOn();
 			
 			//make the move
-			robot.getDestinationContainer().moveTowardsDestination(true);
+			agentCore.getDestinationContainer().moveTowardsDestination(true);
 		} else {
 			//switch off all hardware components
-			this.d.switchAllOff();
+			this.demand.switchAllOff();
 		}	
 		return false;
 	}
 
 	@Override
 	public void initialiseBehaviour() {
-		//do not need to initialize something	
-		
+		//do not need to initialize something			
 	}
 }

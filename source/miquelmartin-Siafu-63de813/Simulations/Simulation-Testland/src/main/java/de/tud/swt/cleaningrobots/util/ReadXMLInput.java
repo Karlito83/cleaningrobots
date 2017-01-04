@@ -1,4 +1,4 @@
-package test;
+package de.tud.swt.cleaningrobots.util;
 
 import java.io.File;
 import java.io.IOException;
@@ -115,7 +115,6 @@ public class ReadXMLInput {
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		ReadXMLInput r = new ReadXMLInput();
 		r.readHardwareComponents();
 	}

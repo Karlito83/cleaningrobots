@@ -21,16 +21,16 @@ public class DestinationContainer {
 	private boolean loadDestination;
 	private boolean destinationSet;
 	
-	private RobotCore robot;
+	private RobotCore agentCore;
 	
 	public DestinationContainer (RobotCore robotCore) {
 		
-		this.robot = robotCore;
+		this.agentCore = robotCore;
 		this.path = null;
 		this.destination = null;
 		this.lastLoadDestination = null;
 		
-		this.loadStationPosition = robot.getPosition();
+		this.loadStationPosition = agentCore.getPosition();
 		
 		//set Destination information
 		this.loadDestination = false;
@@ -86,7 +86,7 @@ public class DestinationContainer {
 	}
 	
 	public void setDestinationLoadStation () {
-		if (!robot.getPosition().equals(loadStationPosition)) {
+		if (!agentCore.getPosition().equals(loadStationPosition)) {
 			this.destination = loadStationPosition;
 			refreshPath();
 		} else {
@@ -107,7 +107,7 @@ public class DestinationContainer {
 		if (destination == null) {
 			this.path = null;
 			this.destinationSet = false;
-		} else if (destination.equals(robot.getPosition())) {
+		} else if (destination.equals(agentCore.getPosition())) {
 			this.destinationSet = true;
 			this.loadDestination = false;
 			this.path = null;
@@ -141,23 +141,23 @@ public class DestinationContainer {
 	}*/
 
 	private void refreshPath () {
-		this.path = robot.getWorld().getPath(destination);
+		this.path = agentCore.getWorld().getPath(destination);
 	}
 	
 	public List<Position> getPathFromTo (Position start, Position dest) {
-		return robot.getWorld().getPathFromTo(start, dest);
+		return agentCore.getWorld().getPathFromTo(start, dest);
 	}
 	
 	public void moveTowardsDestination (boolean withoutPassable) {		
 		if (this.path != null) {
 			Position nextPosition = this.path.get(0);
-			if (this.robot.getWorld().isPassable(nextPosition) || withoutPassable) {
+			if (this.agentCore.getWorld().isPassable(nextPosition) || withoutPassable) {
 				this.path.remove(nextPosition);
 				if (nextPosition.equals(this.destination)) {
 					//do not set destination to null because it is not needed
 					this.path = null;
 				}
-				this.robot.getICommunicationAdapter().setPosition(nextPosition);
+				this.agentCore.getICommunicationAdapter().setPosition(nextPosition);
 			} else {
 				//should not be, because the world do not changes
 				refreshPath();
@@ -188,7 +188,7 @@ public class DestinationContainer {
 		this.destinationSet = true;
 		
 		if (this.loadDestination) {
-			robot.setLoading(true);
+			agentCore.setLoading(true);
 		}
 		
 		if (dest.equals(loadStationPosition)) {

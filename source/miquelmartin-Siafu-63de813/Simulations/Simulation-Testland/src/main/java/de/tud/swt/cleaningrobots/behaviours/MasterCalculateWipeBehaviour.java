@@ -38,22 +38,22 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 	
 	private boolean relative;
 	
-	public MasterCalculateWipeBehaviour(RobotCore robot, MasterRole mr, boolean relative) {
-		super(robot);	
+	public MasterCalculateWipeBehaviour(RobotRole role, boolean relative) {
+		super(role);	
 		
-		this.mr = mr;
+		this.mr = (MasterRole) role;
 		this.relative = relative;
-		this.mfm = new PathDestinationMerge(this.robot.getConfiguration());
+		this.mfm = new PathDestinationMerge(this.agentCore.getConfiguration());
 		this.information = new HashMap<String, RobotDestinationCalculation>();		
 	}
 	
 	@Override
 	protected void addSupportedStates() {
 		//create and add the states
-		this.STATE_HOOVE = robot.getConfiguration().createState("Hoove");
-		this.STATE_WIPE = robot.getConfiguration().createState("Wipe");		
-		this.WORLDSTATE_WIPED = robot.getConfiguration().createState("Wiped");	
-		this.WORLDSTATE_HOOVED = robot.getConfiguration().createState("Hooved");
+		this.STATE_HOOVE = agentCore.getConfiguration().createState("Hoove");
+		this.STATE_WIPE = agentCore.getConfiguration().createState("Wipe");		
+		this.WORLDSTATE_WIPED = agentCore.getConfiguration().createState("Wiped");	
+		this.WORLDSTATE_HOOVED = agentCore.getConfiguration().createState("Hooved");
 
 		this.supportedStates.add(this.STATE_HOOVE);
 		this.supportedStates.add(this.STATE_WIPE);	
@@ -61,17 +61,17 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(ComponentTypes.WLAN, 1);
+		this.demand.addDemandPair(ComponentTypes.WLAN, 1);
 	}
 
 	@Override
 	public boolean action() throws Exception {
 		//start all hardware components
-		this.d.switchAllOn();
+		this.demand.switchAllOn();
 									
 		//search all wipe robots
-		List<RobotCore> allRobots = this.robot.getICommunicationAdapter().getAllRobots();
-		allRobots.remove(this.robot);
+		List<RobotCore> allRobots = this.agentCore.getICommunicationAdapter().getAllRobots();
+		allRobots.remove(this.agentCore);
 										
 		for (RobotDestinationCalculation rdc : information.values()) {
 			//set all NeedNew to false
@@ -105,7 +105,7 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 						
 		//if new one find then calculate new destination and set it
 		if (newOneFind) {
-			Map<String, RobotDestinationCalculation> result = this.robot.getWorld().getNextPassablePositionsByStateWithoutState(information, calculationAway, STATE_HOOVE, STATE_WIPE);
+			Map<String, RobotDestinationCalculation> result = this.agentCore.getWorld().getNextPassablePositionsByStateWithoutState(information, calculationAway, STATE_HOOVE, STATE_WIPE);
 							
 			if (result != null) {			
 				information = result; 
@@ -115,8 +115,8 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 					for (RobotDestinationCalculation rdc : information.values()) {
 						if (rdc.getName().equals(oneRobot.getName()) && rdc.needNew)
 						{
-							PathWayMergeInformation path = new PathWayMergeInformation(rdc.newDest, robot.getWorld().getPath(rdc.newDest));
-							mfm.run(this.robot, oneRobot, path);
+							PathWayMergeInformation path = new PathWayMergeInformation(rdc.newDest, agentCore.getWorld().getPath(rdc.newDest));
+							mfm.run(this.agentCore, oneRobot, path);
 							rdc.actualPosition = rdc.newDest;
 						}
 					}
@@ -139,56 +139,56 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 						Position nextWipePosition; 
 						//proof if you need relative or not relative position
 						if (relative)
-							nextWipePosition = this.robot.getWorld().getNextPassableRelativePositionByStateWithoutState(rdc.actualPosition, rdc.oldDest, STATE_HOOVE, STATE_WIPE); 
+							nextWipePosition = this.agentCore.getWorld().getNextPassableRelativePositionByStateWithoutState(rdc.actualPosition, rdc.oldDest, STATE_HOOVE, STATE_WIPE); 
 						else
-							nextWipePosition = this.robot.getWorld().getNextPassablePositionByStateWithoutState(rdc.actualPosition, STATE_HOOVE, STATE_WIPE);
+							nextWipePosition = this.agentCore.getWorld().getNextPassablePositionByStateWithoutState(rdc.actualPosition, STATE_HOOVE, STATE_WIPE);
 									
 						if(nextWipePosition != null){								
 							//if the robot has a Accu proof the destination
 							if (oneRobot.getAccu() != null)
 							{
 								//distance robot to destination
-								int sizeOne = robot.getWorld().getPathFromTo(rdc.actualPosition, nextWipePosition).size();
+								int sizeOne = agentCore.getWorld().getPathFromTo(rdc.actualPosition, nextWipePosition).size();
 								//distance destination to load station
-								int sizeThree = robot.getWorld().getPathFromTo(nextWipePosition, robot.getPosition()).size();
+								int sizeThree = agentCore.getWorld().getPathFromTo(nextWipePosition, agentCore.getPosition()).size();
 								int size = sizeOne + sizeThree;
 								size +=2;
 								//if Accu is to low
 								if (size * oneRobot.getActualEnergie() > oneRobot.getAccu().getRestKWh())
 								{
 									//Robot must load before drive to the destination
-									if (rdc.actualPosition.equals(robot.getPosition()))
+									if (rdc.actualPosition.equals(agentCore.getPosition()))
 									{
 										System.out.println("Robot erreicht keine Unknownposition mehr obwohl diese noch existiert!");
 										rdc.finish = true;
 									} else {
-										PathWayMergeInformation path = new PathWayMergeInformation(robot.getPosition(), robot.getWorld().getPathFromTo(rdc.actualPosition, robot.getPosition()));
-										mfm.run(this.robot, oneRobot, path);
-										rdc.actualPosition = robot.getPosition();
+										PathWayMergeInformation path = new PathWayMergeInformation(agentCore.getPosition(), agentCore.getWorld().getPathFromTo(rdc.actualPosition, agentCore.getPosition()));
+										mfm.run(this.agentCore, oneRobot, path);
+										rdc.actualPosition = agentCore.getPosition();
 									}
 								} else {
 									//robot has enough Accu he can drive to destination
-									PathWayMergeInformation path = new PathWayMergeInformation(nextWipePosition, robot.getWorld().getPathFromTo(rdc.actualPosition, nextWipePosition));
-									mfm.run(this.robot, oneRobot, path);
+									PathWayMergeInformation path = new PathWayMergeInformation(nextWipePosition, agentCore.getWorld().getPathFromTo(rdc.actualPosition, nextWipePosition));
+									mfm.run(this.agentCore, oneRobot, path);
 									rdc.actualPosition = nextWipePosition;
 								}
 							} else {
-								PathWayMergeInformation path = new PathWayMergeInformation(nextWipePosition, robot.getWorld().getPathFromTo(rdc.actualPosition, nextWipePosition));
-								mfm.run(this.robot, oneRobot, path);
+								PathWayMergeInformation path = new PathWayMergeInformation(nextWipePosition, agentCore.getWorld().getPathFromTo(rdc.actualPosition, nextWipePosition));
+								mfm.run(this.agentCore, oneRobot, path);
 								rdc.actualPosition = nextWipePosition;
 							}
 						}
 						else 
 						{
 							//proof if the world is complete hooved
-							if (this.robot.getWorld().containsWorldState(WORLDSTATE_HOOVED)) {
-								this.robot.getWorld().addWorldState(WORLDSTATE_WIPED);
-								if(!rdc.actualPosition.equals(robot.getPosition()))
+							if (this.agentCore.getWorld().containsWorldState(WORLDSTATE_HOOVED)) {
+								this.agentCore.getWorld().addWorldState(WORLDSTATE_WIPED);
+								if(!rdc.actualPosition.equals(agentCore.getPosition()))
 								{
 									//arrived at load station
-									PathWayMergeInformation path = new PathWayMergeInformation(robot.getPosition(), robot.getWorld().getPathFromTo(rdc.actualPosition, robot.getPosition()));
-									mfm.run(this.robot, oneRobot, path);
-									rdc.actualPosition = robot.getPosition();
+									PathWayMergeInformation path = new PathWayMergeInformation(agentCore.getPosition(), agentCore.getWorld().getPathFromTo(rdc.actualPosition, agentCore.getPosition()));
+									mfm.run(this.agentCore, oneRobot, path);
+									rdc.actualPosition = agentCore.getPosition();
 								} else {
 									rdc.finish = true;
 								}
@@ -208,9 +208,9 @@ public class MasterCalculateWipeBehaviour extends Behaviour {
 			if (!rdc.finish)
 				return false;
 		}
-		if (this.robot.getWorld().containsWorldState(WORLDSTATE_WIPED))
+		if (this.agentCore.getWorld().containsWorldState(WORLDSTATE_WIPED))
 		{
-			for (RobotCore core : this.robot.getICommunicationAdapter().getAllRobots())
+			for (RobotCore core : this.agentCore.getICommunicationAdapter().getAllRobots())
 				core.getWorld().addWorldState(WORLDSTATE_WIPED);
 			return true;
 		} else {

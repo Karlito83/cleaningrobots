@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.WorldPart;
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.util.EMFUtils;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
@@ -43,8 +43,8 @@ public class DumpModelBehaviour extends Behaviour {
 	private final String CONST_PATH_DUMP_XML = "dump/xml";
 	private int counter;
 
-	public DumpModelBehaviour(RobotCore robot) {
-		super(robot);
+	public DumpModelBehaviour(RobotRole role) {
+		super(role);
 		
 		this.counter = 0;
 	}
@@ -68,13 +68,13 @@ public class DumpModelBehaviour extends Behaviour {
 		config.knownstates = true;
 		EObject model = null;
 		if (counter % CONST_PNG_DUMP_INTERVAL == 0 && counter > 0) {			
-			model = robot.exportModel(config);
+			model = agentCore.exportModel(config);
 			exportPNG(model);
 		}
 		if (counter % CONST_XML_DUMP_INTERVAL == 0 && counter > 0){
 			System.out.println("ExportXML");
 			if (model == null){
-				model = robot.exportModel(config);
+				model = agentCore.exportModel(config);
 			}
 			exportXML(model);
 			System.out.println("ExportXMLFinish");
@@ -191,7 +191,7 @@ public class DumpModelBehaviour extends Behaviour {
 		}
 		
 		fileName += (CONST_FILENAME_NUMBERPREFIX + counter);
-		fileName =  robot.getName() + "_" + fileName.substring(1) + extension;
+		fileName =  agentCore.getName() + "_" + fileName.substring(1) + extension;
 		
 		return fileName;
 	}

@@ -4,6 +4,12 @@ import de.tud.swt.cleaningrobots.Configuration;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.model.Position;
 
+/**
+ * The Master send a new Destination Position to the Follower and saves the measurement.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class DestinationMerge extends Merge {
 
 	public DestinationMerge(Configuration configuration) {

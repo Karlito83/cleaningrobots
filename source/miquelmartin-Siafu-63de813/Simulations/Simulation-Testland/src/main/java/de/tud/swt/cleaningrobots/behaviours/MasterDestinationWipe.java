@@ -34,38 +34,38 @@ public class MasterDestinationWipe extends Behaviour {
 	
 	private Map<String, RobotDestinationCalculation> information;
 	
-	public MasterDestinationWipe(RobotCore robot, MasterRole mr) {
-		super(robot);
+	public MasterDestinationWipe(RobotRole role) {
+		super(role);
 				
-		this.mr = mr;
-		this.merge = new DestinationMerge(this.robot.getConfiguration());
+		this.mr = (MasterRole) role;
+		this.merge = new DestinationMerge(this.agentCore.getConfiguration());
 		this.information = new HashMap<String, RobotDestinationCalculation>();
 		
-		Wlan wlan = (Wlan) this.d.getHardwareComponent(ComponentTypes.WLAN);
+		Wlan wlan = (Wlan) this.demand.getHardwareComponent(ComponentTypes.WLAN);
 		this.visionRadius = wlan.getMeasurementRange();		
 	}
 	
 	@Override
 	protected void addSupportedStates() {
 		//create and add the states
-		this.STATE_HOOVE = robot.getConfiguration().createState("Hoove");
-		this.STATE_WIPE = robot.getConfiguration().createState("Wipe");
-		this.WORLDSTATE_WIPED = robot.getConfiguration().createState("Wiped");		
+		this.STATE_HOOVE = agentCore.getConfiguration().createState("Hoove");
+		this.STATE_WIPE = agentCore.getConfiguration().createState("Wipe");
+		this.WORLDSTATE_WIPED = agentCore.getConfiguration().createState("Wiped");		
 	}
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(ComponentTypes.WLAN, 1);
+		this.demand.addDemandPair(ComponentTypes.WLAN, 1);
 	}
 
 	@Override
 	public boolean action() throws Exception {
 		//start all hardware components
-		this.d.switchAllOn();
+		this.demand.switchAllOn();
 						
 		//search near wipe Robots
-		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(this.visionRadius);
-		nearRobots.remove(this.robot);
+		List<RobotCore> nearRobots = this.agentCore.getICommunicationAdapter().getNearRobots(this.visionRadius);
+		nearRobots.remove(this.agentCore);
 				
 		for (RobotDestinationCalculation rdc : information.values()) {
 			//set all NeedNew to false
@@ -121,9 +121,9 @@ public class MasterDestinationWipe extends Behaviour {
 		if (!newOneFind)
 			return false;
 		
-		Map<String, RobotDestinationCalculation> result = this.robot.getWorld().getNextPassablePositionsByStateWithoutState(information, calculationAway, STATE_HOOVE, STATE_WIPE); 
+		Map<String, RobotDestinationCalculation> result = this.agentCore.getWorld().getNextPassablePositionsByStateWithoutState(information, calculationAway, STATE_HOOVE, STATE_WIPE); 
 		
-		if (result == null && !this.robot.getWorld().containsWorldState(WORLDSTATE_WIPED))
+		if (result == null && !this.agentCore.getWorld().containsWorldState(WORLDSTATE_WIPED))
 			return false;
 		
 		if (result == null) {
@@ -132,7 +132,7 @@ public class MasterDestinationWipe extends Behaviour {
 				for (RobotDestinationCalculation rdc : information.values()) {
 					if (rdc.getName().equals(nearRobot.getName()))
 					{
-						merge.run(this.robot, nearRobot, null);
+						merge.run(this.agentCore, nearRobot, null);
 					}
 				}
 			}
@@ -146,7 +146,7 @@ public class MasterDestinationWipe extends Behaviour {
 			for (RobotDestinationCalculation rdc : information.values()) {
 				if (rdc.getName().equals(nearRobot.getName()) && rdc.needNew)
 				{
-					merge.run(this.robot, nearRobot, rdc.newDest);
+					merge.run(this.agentCore, nearRobot, rdc.newDest);
 				}
 			}
 		}

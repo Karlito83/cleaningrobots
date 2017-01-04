@@ -15,7 +15,7 @@ public class WlanLoadMasterMergeGoal extends OptionalGoal {
 	public WlanLoadMasterMergeGoal(RobotRole role) {
 		super(role);
 		
-		LoadWlanActivateBehaviour lab = new LoadWlanActivateBehaviour(getRobotCore());
+		LoadWlanActivateBehaviour lab = new LoadWlanActivateBehaviour(role);
 		System.out.println("Correct WlanActive: " + lab.isHardwarecorrect());
 		if (lab.isHardwarecorrect()) {
 			behaviours.add(lab);

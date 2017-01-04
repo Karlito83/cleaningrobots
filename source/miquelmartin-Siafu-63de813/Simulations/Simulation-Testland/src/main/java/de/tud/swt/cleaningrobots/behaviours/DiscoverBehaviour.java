@@ -1,7 +1,6 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
@@ -22,8 +21,8 @@ public class DiscoverBehaviour extends Behaviour {
 	private boolean noMoreDiscovering;	
 	private boolean relative;
 	
-	public DiscoverBehaviour(RobotCore robot, boolean relative) {
-		super(robot);
+	public DiscoverBehaviour(RobotRole role, boolean relative) {
+		super(role);
 				
 		this.relative = relative;
 		this.noMoreDiscovering = false;					
@@ -32,9 +31,9 @@ public class DiscoverBehaviour extends Behaviour {
 	@Override
 	protected void addSupportedStates() {
 		//create and add the states
-		this.STATE_BLOCKED = robot.getConfiguration().createState("Blocked");
-		this.STATE_FREE = robot.getConfiguration().createState("Free");		
-		this.WORLDSTATE_DISCOVERED = robot.getConfiguration().createState("Discovered");
+		this.STATE_BLOCKED = agentCore.getConfiguration().createState("Blocked");
+		this.STATE_FREE = agentCore.getConfiguration().createState("Free");		
+		this.WORLDSTATE_DISCOVERED = agentCore.getConfiguration().createState("Discovered");
 				
 		this.supportedStates.add(this.STATE_BLOCKED);
 		this.supportedStates.add(this.STATE_FREE);		
@@ -52,45 +51,45 @@ public class DiscoverBehaviour extends Behaviour {
 	@Override
 	public boolean action() throws Exception {
 			
-		if(robot.getDestinationContainer().isAtDestination()) {
+		if(agentCore.getDestinationContainer().isAtDestination()) {
 			
 			//if you find more than the value of new field drive back to load station and give information to master
-			if (this.robot.getConfiguration().getWc().new_field_count > 0 && this.robot.getWorld().getNewInformationCounter() > this.robot.getConfiguration().getWc().new_field_count) {
-				robot.getDestinationContainer().setDestinationLoadStation();
-				this.robot.getWorld().resetNewInformationCounter();
+			if (this.agentCore.getConfiguration().getWc().new_field_count > 0 && this.agentCore.getWorld().getNewInformationCounter() > this.agentCore.getConfiguration().getWc().new_field_count) {
+				agentCore.getDestinationContainer().setDestinationLoadStation();
+				this.agentCore.getWorld().resetNewInformationCounter();
 				return false;
 			}
 			
 			Position nextUnknownPosition;
 			//Look if you must use relative or non relative algorithm 
 			if (relative)
-				nextUnknownPosition = this.robot.getWorld().getNextUnknownRelativeFieldPosition(this.robot.getDestinationContainer().getLastLoadDestination()); 
+				nextUnknownPosition = this.agentCore.getWorld().getNextUnknownRelativeFieldPosition(this.agentCore.getDestinationContainer().getLastLoadDestination()); 
 			else
-				nextUnknownPosition = this.robot.getWorld().getNextUnknownFieldPosition(); 
+				nextUnknownPosition = this.agentCore.getWorld().getNextUnknownFieldPosition(); 
 			
 			if(nextUnknownPosition != null){
-				robot.getDestinationContainer().setDestination(nextUnknownPosition, false);
+				agentCore.getDestinationContainer().setDestination(nextUnknownPosition, false);
 				
 				//if there is a Accu proof if you can come to the next destination if not drive to load station
-				if (robot.getAccu() != null)
+				if (agentCore.getAccu() != null)
 				{
-					if (robot.isLoading())
+					if (agentCore.isLoading())
 						return false;
 					
 					//distance between robot and destination
-					int sizeOne = robot.getDestinationContainer().getPathFromTo(robot.getPosition(), nextUnknownPosition).size();
+					int sizeOne = agentCore.getDestinationContainer().getPathFromTo(agentCore.getPosition(), nextUnknownPosition).size();
 					//distance between robot and load station
 					//int sizeTwo = robot.getPath(robot.getPosition(), robot.loadStationPosition).size();
 					//distance between destination and load station
-					int sizeThree = robot.getDestinationContainer().getPathFromTo(nextUnknownPosition, robot.getDestinationContainer().getLoadStationPosition()).size();
+					int sizeThree = agentCore.getDestinationContainer().getPathFromTo(nextUnknownPosition, agentCore.getDestinationContainer().getLoadStationPosition()).size();
 					int size = sizeOne + sizeThree;
 					size +=2;
 					//proof Accu 
-					if (size * robot.getActualEnergie() > robot.getAccu().getRestKWh())
+					if (size * agentCore.getActualEnergie() > agentCore.getAccu().getRestKWh())
 					{
 						//drive back to load station
-						robot.getDestinationContainer().setDestinationLoadStation();
-						if (robot.getDestinationContainer().getLoadStationPosition().equals(robot.getPosition()))
+						agentCore.getDestinationContainer().setDestinationLoadStation();
+						if (agentCore.getDestinationContainer().getLoadStationPosition().equals(agentCore.getPosition()))
 						{
 							//robot can not come to any destination should finish
 							System.out.println("Robot erreicht keine Unknownposition mehr obwohl diese noch existiert!");
@@ -102,17 +101,18 @@ public class DiscoverBehaviour extends Behaviour {
 			}
 			else 
 			{
-				if (!this.robot.getWorld().containsWorldState(WORLDSTATE_DISCOVERED)) {
-					this.robot.getWorld().addWorldState(WORLDSTATE_DISCOVERED);
+				if (!this.agentCore.getWorld().containsWorldState(WORLDSTATE_DISCOVERED)) 
+				{
+					this.agentCore.getWorld().addWorldState(WORLDSTATE_DISCOVERED);
 					//Activate flag that he has new information
-					for (RobotRole rr : robot.getRoles()) {
-						rr.setNewInformation(true);
-					}
+					agentRole.setNewInformation(true);
 				}
-				if(!robot.getPosition().equals(robot.getDestinationContainer().getLoadStationPosition()))
+				if(!agentCore.getPosition().equals(agentCore.getDestinationContainer().getLoadStationPosition()))
 				{					
-					robot.getDestinationContainer().setDestinationLoadStation();
-				} else {
+					agentCore.getDestinationContainer().setDestinationLoadStation();
+				} 
+				else 
+				{
 					//return true if all is finish
 					//no unknown Position and at load station
 					noMoreDiscovering = true;

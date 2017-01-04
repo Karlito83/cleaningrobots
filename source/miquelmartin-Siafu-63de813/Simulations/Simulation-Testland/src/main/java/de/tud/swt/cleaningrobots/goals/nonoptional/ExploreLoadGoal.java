@@ -20,7 +20,7 @@ public class ExploreLoadGoal extends NonOptionalGoal {
 	public ExploreLoadGoal(RobotRole role, boolean relative) {
 		super(role);
 		
-		DiscoverAroundAtDestinationBehaviour s = new DiscoverAroundAtDestinationBehaviour(getRobotCore());
+		DiscoverAroundAtDestinationBehaviour s = new DiscoverAroundAtDestinationBehaviour(role);
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
 		if (s.isHardwarecorrect()) {
 			behaviours.add(s);
@@ -28,7 +28,7 @@ public class ExploreLoadGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		d = new DiscoverBehaviour(getRobotCore(), relative);
+		d = new DiscoverBehaviour(role, relative);
 		System.out.println("Correct Discover: " + d.isHardwarecorrect());
 		if (d.isHardwarecorrect()) {
 			behaviours.add(d);
@@ -36,7 +36,7 @@ public class ExploreLoadGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MoveBehaviour m = new MoveBehaviour(getRobotCore());
+		MoveBehaviour m = new MoveBehaviour(role);
 		System.out.println("Correct Move: " + m.isHardwarecorrect());
 		if (m.isHardwarecorrect()) {
 			behaviours.add(m);

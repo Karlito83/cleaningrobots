@@ -15,7 +15,7 @@ public class LoadRobotGoal extends OptionalGoal {
 	public LoadRobotGoal(RobotRole role) {
 		super(role);
 				
-		LoadBehaviour l = new LoadBehaviour(getRobotCore());
+		LoadBehaviour l = new LoadBehaviour(role);
 		System.out.println("Correct Load: " + l.isHardwarecorrect());
 		if (l.isHardwarecorrect()) {
 			behaviours.add(l);

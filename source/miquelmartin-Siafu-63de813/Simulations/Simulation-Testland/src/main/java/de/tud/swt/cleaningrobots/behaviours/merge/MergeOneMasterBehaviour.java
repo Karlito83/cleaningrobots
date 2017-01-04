@@ -1,4 +1,4 @@
-package de.tud.swt.cleaningrobots.behaviours;
+package de.tud.swt.cleaningrobots.behaviours.merge;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
  * @author Christopher Werner
  *
  */
-public class MergeMasterWithoutModel extends Behaviour {
+public class MergeOneMasterBehaviour extends Behaviour {
 	
 	private MasterRole mr;
 	private Merge ma;
@@ -34,22 +34,22 @@ public class MergeMasterWithoutModel extends Behaviour {
 	private int visionRadius;		
 	private List<RobotRole> lastChange;
 	
-	public MergeMasterWithoutModel (RobotCore robot, MasterRole mr, boolean useModel) {
-		super(robot);
+	public MergeOneMasterBehaviour (RobotRole role, boolean useModel) {
+		super(role);
 		
-		this.mr = mr;
+		this.mr = (MasterRole) role;
 		this.lastChange = new ArrayList<RobotRole>();
 		if (useModel)
 		{
-			this.ma = new WorldEcoreModelMerge(this.robot.getConfiguration());
+			this.ma = new WorldEcoreModelMerge(this.agentCore.getConfiguration());
 		}
 		else
 		{
-			this.ma = new WorldMerge(this.robot.getConfiguration());
+			this.ma = new WorldMerge(this.agentCore.getConfiguration());
 		}
-		this.informationMerge = new NewInformationFollowerMerge(this.robot.getConfiguration());
+		this.informationMerge = new NewInformationFollowerMerge(this.agentCore.getConfiguration());
 		
-		Wlan wlan = (Wlan) this.d.getHardwareComponent(ComponentTypes.WLAN);
+		Wlan wlan = (Wlan) this.demand.getHardwareComponent(ComponentTypes.WLAN);
 		this.visionRadius = wlan.getMeasurementRange();			
 	}
 	
@@ -60,17 +60,17 @@ public class MergeMasterWithoutModel extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(ComponentTypes.WLAN, 1);
+		this.demand.addDemandPair(ComponentTypes.WLAN, 1);
 	}
 
 	@Override
 	public boolean action() {
 		
 		//start all hardware components
-		this.d.switchAllOn();
+		this.demand.switchAllOn();
 		
-		List<RobotCore> nearRobots = this.robot.getICommunicationAdapter().getNearRobots(this.visionRadius);
-		nearRobots.remove(this.robot);
+		List<RobotCore> nearRobots = this.agentCore.getICommunicationAdapter().getNearRobots(this.visionRadius);
+		nearRobots.remove(this.agentCore);
 		
 		//if no nearRobots end this behavior
 		if (nearRobots.isEmpty())
@@ -91,7 +91,7 @@ public class MergeMasterWithoutModel extends Behaviour {
 						if (rr.hasNewInformation())
 						{
 							//reset new information to false
-							this.informationMerge.run(this.robot, nearRobot, rr);
+							this.informationMerge.run(this.agentCore, nearRobot, rr);
 							
 							//Robot say that he has new Information
 							//make the configuration file for export and import
@@ -100,17 +100,17 @@ public class MergeMasterWithoutModel extends Behaviour {
 							config.knownstates = true;
 							config.knowledge = true;																		
 							//search timestamp of last meeting
-							for (RobotKnowledge rk : robot.getKnowledge()) {
+							for (RobotKnowledge rk : agentCore.getKnowledge()) {
 								if (rk.getName().equals(nearRobot.getName())) {
 									config.iteration = rk.getLastArrange();
 								}											
 							}
 								
 							//export and Import the Models
-							ma.run(nearRobot, this.robot, config);
+							ma.run(nearRobot, this.agentCore, config);
 							
 							//change the config for later export and import
-							for (RobotKnowledge rk : robot.getKnowledge()) {
+							for (RobotKnowledge rk : agentCore.getKnowledge()) {
 								if (rk.getName().equals(nearRobot.getName())) {
 									config.knownStates = rk.getKnownStates();
 								}											
@@ -121,7 +121,7 @@ public class MergeMasterWithoutModel extends Behaviour {
 							config.world = true;
 							config.knownstates = true;
 							config.knowledge = true;
-							for (RobotKnowledge rk : robot.getKnowledge()) {
+							for (RobotKnowledge rk : agentCore.getKnowledge()) {
 								if (rk.getName().equals(nearRobot.getName())) {
 									config.iteration = rk.getLastArrange();
 									config.knownStates = rk.getKnownStates();
@@ -162,18 +162,18 @@ public class MergeMasterWithoutModel extends Behaviour {
 					//last change contains the follower
 					if(!lastChange.contains(rr))
 					{
-						ma.run(this.robot, rr.getRobotCore(), nearsNewInformation.get(rr));
+						ma.run(this.agentCore, rr.getRobotCore(), nearsNewInformation.get(rr));
 					}
 				}
 			} else {
 				for (RobotRole rr : nearsNewInformation.keySet()) {
 					//import the model to all near robots
-					ma.run(this.robot, rr.getRobotCore(), nearsNewInformation.get(rr));
+					ma.run(this.agentCore, rr.getRobotCore(), nearsNewInformation.get(rr));
 				}
 			}
 			for (RobotRole rr : nearsNoNewInformation.keySet()) {
 				//import the model to all near robots
-				ma.run(this.robot, rr.getRobotCore(), nearsNoNewInformation.get(rr));
+				ma.run(this.agentCore, rr.getRobotCore(), nearsNoNewInformation.get(rr));
 			}	
 			lastChange.clear();
 			lastChange.addAll(nearsNewInformation.keySet());
@@ -184,7 +184,7 @@ public class MergeMasterWithoutModel extends Behaviour {
 			{
 				for (RobotRole rr : nearsNoNewInformation.keySet()) {
 					//import the model to all near robots
-					ma.run(this.robot, rr.getRobotCore(), nearsNoNewInformation.get(rr));
+					ma.run(this.agentCore, rr.getRobotCore(), nearsNoNewInformation.get(rr));
 					lastChange.clear();
 					lastChange.addAll(nearsNoNewInformation.keySet());
 				}

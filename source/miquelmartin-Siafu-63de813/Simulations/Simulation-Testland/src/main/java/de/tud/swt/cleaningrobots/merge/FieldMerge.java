@@ -6,15 +6,18 @@ import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.util.FieldMergeInformation;
 
+/**
+ * The Follower send the new Field information to the Master and saves the measurement.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class FieldMerge extends Merge {
 
 	public FieldMerge(Configuration configuration) {
 		super(configuration);
 	}
-
-	/**
-	 * The Follower send the new Field information to the Master and saves the measurement.
-	 */
+	
 	@Override
 	protected void action(RobotCore from, RobotCore to, Object object) {
 		

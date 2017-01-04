@@ -1,7 +1,7 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 
 /**
  * Set loading if the robot arrived at load station.
@@ -11,8 +11,8 @@ import de.tud.swt.cleaningrobots.RobotCore;
  */
 public class LoadIfAtLoadStationBehaviour extends Behaviour {
 	
-	public LoadIfAtLoadStationBehaviour(RobotCore robot) {
-		super(robot);		
+	public LoadIfAtLoadStationBehaviour(RobotRole role) {
+		super(role);		
 	}
 	
 	@Override
@@ -29,9 +29,9 @@ public class LoadIfAtLoadStationBehaviour extends Behaviour {
 	public boolean action() throws Exception {
 
 		//if at load destination activate loading
-		if (robot.getDestinationContainer().isAtLoadDestination())
+		if (agentCore.getDestinationContainer().isAtLoadDestination())
 		{
-			robot.setLoading(true);
+			agentCore.setLoading(true);
 		}		
 		return false;
 	}

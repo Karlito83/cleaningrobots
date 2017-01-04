@@ -4,6 +4,12 @@ import de.tud.swt.cleaningrobots.Configuration;
 import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 
+/**
+ * An AgentCore say that he has new information for the master and reset his value.
+ * 
+ * @author Christopher Werner
+ *
+ */
 public class NewInformationFollowerMerge extends Merge {
 
 	public NewInformationFollowerMerge(Configuration configuration) {

@@ -1,7 +1,7 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 
 /**
@@ -13,8 +13,8 @@ import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
  */
 public class LoadWlanActivateBehaviour extends Behaviour {
 
-	public LoadWlanActivateBehaviour(RobotCore robot) {
-		super(robot);		
+	public LoadWlanActivateBehaviour(RobotRole role) {
+		super(role);		
 	}
 	
 	@Override
@@ -24,22 +24,22 @@ public class LoadWlanActivateBehaviour extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(ComponentTypes.WLAN, 1);		
+		this.demand.addDemandPair(ComponentTypes.WLAN, 1);		
 	}
 
 	@Override
 	public boolean action() throws Exception {
 
 		//isLoading switch on or off
-		if (robot.isLoading())
+		if (agentCore.isLoading())
 		{
 			//switch on hardware components
-			this.d.switchAllOn();
+			this.demand.switchAllOn();
 		} 
 		else 
 		{
 			//switch off hardware components
-			this.d.switchAllOff();
+			this.demand.switchAllOff();
 		}
 		
 		return false;

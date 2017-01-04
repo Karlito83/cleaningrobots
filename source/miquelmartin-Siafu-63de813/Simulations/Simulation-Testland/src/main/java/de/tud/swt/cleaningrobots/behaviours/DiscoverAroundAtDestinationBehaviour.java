@@ -3,7 +3,6 @@ package de.tud.swt.cleaningrobots.behaviours;
 import java.util.ArrayList;
 import java.util.Collection;
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.LookAroundSensor;
@@ -23,18 +22,18 @@ public class DiscoverAroundAtDestinationBehaviour extends Behaviour {
 	private State STATE_BLOCKED;
 	private State STATE_FREE;
 	
-	public DiscoverAroundAtDestinationBehaviour(RobotCore robot) {
-		super(robot);
+	public DiscoverAroundAtDestinationBehaviour(RobotRole role) {
+		super(role);
 				
-		LookAroundSensor las = (LookAroundSensor) d.getHardwareComponent(ComponentTypes.LOOKAROUNDSENSOR);
+		LookAroundSensor las = (LookAroundSensor) demand.getHardwareComponent(ComponentTypes.LOOKAROUNDSENSOR);
 		this.visionRadius = las.getMeasurementRange();
 	}
 	
 	@Override
 	protected void addSupportedStates() {
 		//create and add the states
-		this.STATE_BLOCKED = robot.getConfiguration().createState("Blocked");
-		this.STATE_FREE = robot.getConfiguration().createState("Free");
+		this.STATE_BLOCKED = agentCore.getConfiguration().createState("Blocked");
+		this.STATE_FREE = agentCore.getConfiguration().createState("Free");
 				
 		this.supportedStates.add(STATE_BLOCKED);
 		this.supportedStates.add(STATE_FREE);		
@@ -42,33 +41,31 @@ public class DiscoverAroundAtDestinationBehaviour extends Behaviour {
 
 	@Override
 	protected void addHardwareComponents() {
-		this.d.addDemandPair(ComponentTypes.LOOKAROUNDSENSOR, 1);		
+		this.demand.addDemandPair(ComponentTypes.LOOKAROUNDSENSOR, 1);		
 	}
 
 	@Override
 	public boolean action() throws Exception {
 		
-		if (robot.getDestinationContainer().isAtDestination() && robot.getDestinationContainer().isDestinationSet()
-				&& !robot.getDestinationContainer().isAtLoadDestination()) {
+		if (agentCore.getDestinationContainer().isAtDestination() && agentCore.getDestinationContainer().isDestinationSet()
+				&& !agentCore.getDestinationContainer().isAtLoadDestination()) {
 			//start all hardware components
-			this.d.switchAllOn();
+			this.demand.switchAllOn();
 			
 			//Activate flag that he has new information
-			for (RobotRole rr : robot.getRoles()) {
-				rr.setNewInformation(true);
-			}
+			agentRole.setNewInformation(true);
 			
 			//scan area
 			//add the new field to the world of the robot
 			try {
-				this.robot.getWorld().addFields(getData());
+				this.agentCore.getWorld().addFields(getData());
 			} catch (Exception e) {
 				throw e;
 			}
 			
 		} else {
 			//switch off the hardware components if not needed
-			this.d.switchAllOff();
+			this.demand.switchAllOff();
 		}
 		return false;
 	}
@@ -92,21 +89,21 @@ public class DiscoverAroundAtDestinationBehaviour extends Behaviour {
 		Field result = null;
 		
 		//set together the Offset with the Agent position
-		int row =  robot.getPosition().getY() + yOffset;
-		int col =  robot.getPosition().getX() + xOffset;
+		int row =  agentCore.getPosition().getY() + yOffset;
+		int col =  agentCore.getPosition().getX() + xOffset;
 		
 		//proof if it is a wall
-		boolean positionIsAtWall = robot.getICommunicationAdapter().isWall(row, col);
+		boolean positionIsAtWall = agentCore.getICommunicationAdapter().isWall(row, col);
 		
 		//add new field
-		result = new Field(col, row, !positionIsAtWall, this.robot.getConfiguration().getWc().iteration);
+		result = new Field(col, row, !positionIsAtWall, this.agentCore.getConfiguration().getWc().iteration);
 		if(positionIsAtWall)
 		{
-			result.addState(STATE_BLOCKED, this.robot.getConfiguration().getWc().iteration);
+			result.addState(STATE_BLOCKED, this.agentCore.getConfiguration().getWc().iteration);
 		}
 		else
 		{
-			result.addState(STATE_FREE, this.robot.getConfiguration().getWc().iteration);
+			result.addState(STATE_FREE, this.agentCore.getConfiguration().getWc().iteration);
 		}
 		
 		

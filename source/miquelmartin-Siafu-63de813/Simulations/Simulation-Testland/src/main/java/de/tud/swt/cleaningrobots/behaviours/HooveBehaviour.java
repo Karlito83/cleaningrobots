@@ -1,7 +1,6 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
 import de.tud.swt.cleaningrobots.RobotRole;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
@@ -23,8 +22,8 @@ public class HooveBehaviour extends Behaviour {
 	private boolean finishHooving;
 	private boolean relative;
 
-	public HooveBehaviour(RobotCore robot, boolean relative) {
-		super(robot);
+	public HooveBehaviour(RobotRole role, boolean relative) {
+		super(role);
 				
 		this.relative = relative;
 		this.finishHooving = false;		
@@ -33,10 +32,10 @@ public class HooveBehaviour extends Behaviour {
 	@Override
 	protected void addSupportedStates() {
 		//create and add the states
-		this.STATE_HOOVE = robot.getConfiguration().createState("Hoove");
-		this.STATE_FREE = robot.getConfiguration().createState("Free");		
-		this.WORLDSTATE_DISCOVERED = robot.getConfiguration().createState("Discovered");
-		this.WORLDSTATE_HOOVED = robot.getConfiguration().createState("Hooved");
+		this.STATE_HOOVE = agentCore.getConfiguration().createState("Hoove");
+		this.STATE_FREE = agentCore.getConfiguration().createState("Free");		
+		this.WORLDSTATE_DISCOVERED = agentCore.getConfiguration().createState("Discovered");
+		this.WORLDSTATE_HOOVED = agentCore.getConfiguration().createState("Hooved");
 				
 		this.supportedStates.add(this.STATE_HOOVE);
 		this.supportedStates.add(this.STATE_FREE);		
@@ -54,45 +53,45 @@ public class HooveBehaviour extends Behaviour {
 	@Override
 	public boolean action() throws Exception {
 											
-		if(robot.getDestinationContainer().isAtDestination()){
+		if(agentCore.getDestinationContainer().isAtDestination()){
 			
 			//if you find more than the value of new field drive back to load station and give information to master
-			if (this.robot.getConfiguration().getWc().new_field_count > 0 && this.robot.getWorld().getNewInformationCounter() > this.robot.getConfiguration().getWc().new_field_count) {
-				robot.getDestinationContainer().setDestinationLoadStation();
-				this.robot.getWorld().resetNewInformationCounter();
+			if (this.agentCore.getConfiguration().getWc().new_field_count > 0 && this.agentCore.getWorld().getNewInformationCounter() > this.agentCore.getConfiguration().getWc().new_field_count) {
+				agentCore.getDestinationContainer().setDestinationLoadStation();
+				this.agentCore.getWorld().resetNewInformationCounter();
 				return false;
 			}
 			
 			Position nextNotHoovePosition;
 			//Look if you must use relative or non relative algorithm 
 			if (relative)
-				nextNotHoovePosition = this.robot.getWorld().getNextPassablePositionRelativeWithoutState(this.robot.getDestinationContainer().getLastLoadDestination(), STATE_HOOVE);
+				nextNotHoovePosition = this.agentCore.getWorld().getNextPassablePositionRelativeWithoutState(this.agentCore.getDestinationContainer().getLastLoadDestination(), STATE_HOOVE);
 			else
-				nextNotHoovePosition = this.robot.getWorld().getNextPassablePositionWithoutState(STATE_HOOVE); 
+				nextNotHoovePosition = this.agentCore.getWorld().getNextPassablePositionWithoutState(STATE_HOOVE); 
 			
 			if(nextNotHoovePosition != null){
-				robot.getDestinationContainer().setDestination(nextNotHoovePosition, false);
+				agentCore.getDestinationContainer().setDestination(nextNotHoovePosition, false);
 				
 				//if there is a Accu proof if you can come to the next destination if not drive to load station
-				if (robot.getAccu() != null)
+				if (agentCore.getAccu() != null)
 				{
-					if (robot.isLoading())
+					if (agentCore.isLoading())
 						return false;
 					
 					//distance between robot and destination
-					int sizeOne = robot.getDestinationContainer().getPathFromTo(robot.getPosition(), nextNotHoovePosition).size();
+					int sizeOne = agentCore.getDestinationContainer().getPathFromTo(agentCore.getPosition(), nextNotHoovePosition).size();
 					//distance between robot and load station
 					//int sizeTwo = robot.getPath(robot.getPosition(), robot.loadStationPosition).size();
 					//distance between destination and load station
-					int sizeThree = robot.getDestinationContainer().getPathFromTo(nextNotHoovePosition, robot.getDestinationContainer().getLoadStationPosition()).size();
+					int sizeThree = agentCore.getDestinationContainer().getPathFromTo(nextNotHoovePosition, agentCore.getDestinationContainer().getLoadStationPosition()).size();
 					int size = sizeOne + sizeThree;
 					size +=2;
 					//proof Accu 
-					if (size * robot.getActualEnergie() > robot.getAccu().getRestKWh())
+					if (size * agentCore.getActualEnergie() > agentCore.getAccu().getRestKWh())
 					{
 						//drive back to load station
-						robot.getDestinationContainer().setDestinationLoadStation();
-						if (robot.getDestinationContainer().getLoadStationPosition().equals(robot.getPosition()))
+						agentCore.getDestinationContainer().setDestinationLoadStation();
+						if (agentCore.getDestinationContainer().getLoadStationPosition().equals(agentCore.getPosition()))
 						{
 							//robot can not come to any destination should finish
 							System.out.println("Robot erreicht keine Hooveposition mehr obwohl diese noch existiert!");
@@ -104,28 +103,30 @@ public class HooveBehaviour extends Behaviour {
 			} else {
 				//no more hoove position found
 				//need no blocked field and proof if the hole world is discovered
-				if (this.robot.getWorld().containsWorldState(WORLDSTATE_DISCOVERED))
+				if (this.agentCore.getWorld().containsWorldState(WORLDSTATE_DISCOVERED))
 				{
-					if (!this.robot.getWorld().containsWorldState(WORLDSTATE_HOOVED)) {
-						this.robot.getWorld().addWorldState(WORLDSTATE_HOOVED);
+					if (!this.agentCore.getWorld().containsWorldState(WORLDSTATE_HOOVED)) 
+					{
+						this.agentCore.getWorld().addWorldState(WORLDSTATE_HOOVED);
 						//Activate flag that he has new information
-						for (RobotRole rr : robot.getRoles()) {
-							rr.setNewInformation(true);
-						}
+						agentRole.setNewInformation(true);
 					}
 					//finish back to load station
-					if(!robot.getPosition().equals(robot.getDestinationContainer().getLoadStationPosition()))
+					if(!agentCore.getPosition().equals(agentCore.getDestinationContainer().getLoadStationPosition()))
 					{
 						//must drive to load station for end
-						robot.getDestinationContainer().setDestinationLoadStation();
-					} else {
+						agentCore.getDestinationContainer().setDestinationLoadStation();
+					} 
+					else 
+					{
 						//is at load station
 						finishHooving = true;
 						return true;
 					}
-				} else {
+				} else 
+				{
 					//not finish wait for new data, drive back to master
-					robot.getDestinationContainer().setDestinationLoadStation();
+					agentCore.getDestinationContainer().setDestinationLoadStation();
 				}
 			}
 		}		
