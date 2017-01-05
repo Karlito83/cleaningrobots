@@ -220,17 +220,13 @@ public class GUIProgress implements Progress {
 	 */
 	public synchronized void update(final Composite parent) {
 		if (bold == null) {
-			FontData fd =
-					Display.getCurrent().getSystemFont().getFontData()[0];
-			bold =
-					new Font(Display.getCurrent(), fd.getName(), fd.getHeight(),
+			FontData fd = Display.getCurrent().getSystemFont().getFontData()[0];
+			bold = new Font(Display.getCurrent(), fd.getName(), fd.getHeight(),
 							fd.getStyle() | SWT.BOLD);
 		}
 
 		if (worldCreationStarted) {
-			Label start =
-					addLabel("Creating world: " + worldName,
-						parent);
+			Label start = addLabel("Creating world: " + worldName, parent);
 			start.setFont(bold);
 			worldCreationStarted = false;
 		}
@@ -262,8 +258,7 @@ public class GUIProgress implements Progress {
 			if (placesFound.size() != 0) {
 				if (!firstRun) {
 					if (placesLabel == null) {
-						placesLabel =
-								addLabel(placesText, parent);
+						placesLabel = addLabel(placesText, parent);
 					}
 					for (String type : placesFound.keySet()) {
 						placesLabel.setText(placesLabel.getText() + "\n"
@@ -341,8 +336,8 @@ public class GUIProgress implements Progress {
 	}
 
 	/**
-	 * Initialize the progress to zero, taht is, the state when no simulation
-	 * is laoded at all.
+	 * Initialize the progress to zero, that is, the state when no simulation
+	 * is loaded at all.
 	 * 
 	 */
 	public synchronized void reset() {

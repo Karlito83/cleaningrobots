@@ -1,5 +1,7 @@
 package de.tud.evaluation;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Modification of the exchange measurement to reduce mistakes.
  * 
@@ -8,30 +10,46 @@ package de.tud.evaluation;
  */
 public class EvaluationMeasurement {
 
-	public double number;	
+	@SerializedName("Number")
+	public double number;
+	@SerializedName("AgentName1")
 	public String robotName1;
+	@SerializedName("AgentName2")
 	public String robotName2;
+	@SerializedName("Iteration")
 	public double iteration;
 		
 	//knowledge Information
+	@SerializedName("KnowledgeIntegerNumber")
 	public double knowledgeIntegerNumber;
+	@SerializedName("KnowledgeStringNumber")
 	public double knowledgeStringNumber;
+	@SerializedName("KnowledgeStringByteNumber")
 	public double knowledgeStringByteNumber;
 		
 	//states
+	@SerializedName("StateStringNumber")
 	public double statesStringNumber;
+	@SerializedName("StateStringByteNumber")
 	public double statesStringByteNumber;
 		
 	//world
+	@SerializedName("WorldPositionNumber")
 	public double worldPositionCount;
+	@SerializedName("WorldIntegerNumber")
 	public double worldIntegerNumber;
+	@SerializedName("WorldStringNumber")
 	public double worldStringNumber;
+	@SerializedName("WorldStringByteNumber")
 	public double worldStringByteNumber;
 		
+	@SerializedName("WStateStringNumber")
 	public double worldStatesStringNumber;
+	@SerializedName("WStateStringByteNumber")
 	public double worldStatesStringByteNumber;
 		
 	//Accu values
+	@SerializedName("AccuDoubleNumber")
 	public double accuDoubleNumber;
 		
 	public EvaluationMeasurement (String name1, String name2, double iteration) {

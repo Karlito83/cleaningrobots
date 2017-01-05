@@ -155,8 +155,20 @@ public class Painter {
 		this.display = Display.getDefault();
 		preloadPeopleImages();
 
-		backgroundData = new ImageData(control.getSimulationData()
-				.getBackgroundFile());
+		switch (control.getWorkingConfiguration().map) {
+			case 0:  backgroundData = new ImageData(control.getSimulationData().getBackgroundFile());
+					 break;
+	        case 1:  backgroundData = new ImageData(control.getSimulationData().getBackgroundLabFile());
+	                 break;	            
+	        case 2:  backgroundData = new ImageData(control.getSimulationData().getBackgroundFakKFile());
+	                 break;
+	        case 3:  backgroundData = new ImageData(control.getSimulationData().getBackgroundFakFile());
+	                 break;
+	        default: backgroundData = new ImageData(control.getSimulationData().getBackgroundFile());
+	                 break;
+	    }
+		
+		//backgroundData = new ImageData(control.getSimulationData().getBackgroundFile());
 
 		prepareBackgrounds();
 	}

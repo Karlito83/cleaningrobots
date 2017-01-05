@@ -252,7 +252,15 @@ public class World implements IWorld {
 	protected ArrayList<Place> createPlacesFromImages() {
 		Place.initialize(this);
 		ArrayList<Place> placesFromImg = new ArrayList<Place>();
-		Map<String, InputStream> fileList = simData.getPlaceFiles();
+		Map<String, InputStream> fileList;
+		if (configuration.map == 2 || configuration.map == 3)
+		{
+			fileList = simData.getFacultyPlaceFiles();
+		}
+		else
+		{
+			fileList = simData.getPlaceFiles();
+		}
 		Iterator<String> listIt = fileList.keySet().iterator();
 
 		//int total = 0;
@@ -899,7 +907,20 @@ public class World implements IWorld {
 	 * 
 	 */
 	private void buildWalls() {
-		InputStream wallsIS = simData.getWallsFile();
+		InputStream wallsIS;
+		switch (configuration.map) {
+			case 0:  wallsIS = simData.getWallsFile();
+					 break;
+	        case 1:  wallsIS = simData.getWallsLabFile();
+	                 break;	            
+	        case 2:  wallsIS = simData.getWallsFakKFile();
+	                 break;
+	        case 3:  wallsIS = simData.getWallsFakFile();
+	                 break;
+	        default: wallsIS = simData.getWallsFile();
+	                 break;
+	    }
+		//InputStream wallsIS = simData.getWallsFile();
 		ImageData img = new ImageData(wallsIS);
 		height = img.height;
 		width = img.width;

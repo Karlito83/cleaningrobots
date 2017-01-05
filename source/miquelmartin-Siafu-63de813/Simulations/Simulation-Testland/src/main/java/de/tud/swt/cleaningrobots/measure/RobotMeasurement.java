@@ -3,6 +3,8 @@ package de.tud.swt.cleaningrobots.measure;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gson.annotations.SerializedName;
+
 import de.tud.evaluation.EvaluationConstants;
 
 /**
@@ -13,15 +15,23 @@ import de.tud.evaluation.EvaluationConstants;
  */
 public class RobotMeasurement {
 	
+	@SerializedName("MemoryConsumption")
 	public int memory;	
+	@SerializedName("AgentName")
 	public String name;	
+	@SerializedName("BenchmarkTime")
 	public long benchmarkTime;
 	
+	@SerializedName("CompleteEnergyConsumption")
 	public double completeEnergie;
+	@SerializedName("CompleteIterations")
 	public int completeTicks;
+	@SerializedName("CompleteTime")
 	public double completeTime;
 	
+	@SerializedName("WattHourPerIteration")
 	public List<Double> energieProTick;
+	@SerializedName("NanoSecondsPerIteration")
 	public List<Double> timeProTick;
 	
 	public RobotMeasurement (String name) {

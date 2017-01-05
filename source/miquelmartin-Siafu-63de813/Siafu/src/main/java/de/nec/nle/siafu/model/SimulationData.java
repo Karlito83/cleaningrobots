@@ -60,6 +60,7 @@ public abstract class SimulationData {
 	 * certain type should be placed.
 	 */
 	public static final String PLACES_PATH = "places";
+	public static final String FACULTY_PLACES_PATH = "places/fakulty";
 
 	/**
 	 * Path to the walls image of the simulation data.
@@ -73,6 +74,9 @@ public abstract class SimulationData {
 	 * Path to the backgroundimage of the simulation data.
 	 */
 	public static final String BACKGROUND_FILE = "map/background.png";
+	public static final String BACKGROUND_FILE_LAB = "map/backgroundLab.png";
+	public static final String BACKGROUND_FILE_FAKK = "map/backgroundFakK.png";
+	public static final String BACKGROUND_FILE_FAK = "map/backgroundFak.png";
 
 	// FIXME: I'd like all the images to be png
 
@@ -125,9 +129,7 @@ public abstract class SimulationData {
 	 */
 	protected SimulationData(final File givenPath) {
 		try {
-			classLoader =
-					new URLClassLoader(new URL[] {givenPath.toURI()
-							.toURL()});
+			classLoader = new URLClassLoader(new URL[] {givenPath.toURI().toURL()});
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -205,6 +207,10 @@ public abstract class SimulationData {
 	 */
 	public HashMap<String, InputStream> getPlaceFiles() {
 		return getFilesByPath(PLACES_PATH);
+	}
+	
+	public HashMap<String, InputStream> getFacultyPlaceFiles() {
+		return getFilesByPath(FACULTY_PLACES_PATH);
 	}
 
 	/**
@@ -379,6 +385,18 @@ public abstract class SimulationData {
 	 */
 	public InputStream getBackgroundFile() {
 		return getFile(BACKGROUND_FILE);
+	}
+	
+	public InputStream getBackgroundLabFile() {
+		return getFile(BACKGROUND_FILE_LAB);
+	}
+	
+	public InputStream getBackgroundFakFile() {
+		return getFile(BACKGROUND_FILE_FAK);
+	}
+	
+	public InputStream getBackgroundFakKFile() {
+		return getFile(BACKGROUND_FILE_FAKK);
 	}
 
 	/**

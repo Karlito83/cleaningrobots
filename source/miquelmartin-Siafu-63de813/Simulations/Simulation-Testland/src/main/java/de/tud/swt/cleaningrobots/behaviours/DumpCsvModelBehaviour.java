@@ -13,7 +13,7 @@ import de.tud.swt.cleaningrobots.model.World;
 public class DumpCsvModelBehaviour extends Behaviour {
 	
 	private final int CONST_FILENAME_NUMBERPREFIX = 1000000000;
-	private final int CONST_CSV_DUMP_INTERVAL = 10000;
+	private final int CONST_CSV_DUMP_INTERVAL = 1000;
 	private final String CONST_PATH_DUMP_CSV = "dump/csv";
 	private int counter;
 	
@@ -57,7 +57,7 @@ public class DumpCsvModelBehaviour extends Behaviour {
 	
 	private void exportCSV() {
 		if (createDirectory(CONST_PATH_DUMP_CSV)){
-			String fileName = generateFilename("png");
+			String fileName = generateFilename("csv");
 			
 			try {
 				

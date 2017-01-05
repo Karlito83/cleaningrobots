@@ -35,7 +35,9 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 
 import de.nec.nle.siafu.control.Controller;
+import de.nec.nle.siafu.control.MultiSimulation;
 import de.nec.nle.siafu.control.progress.GUIProgress;
+import de.nec.nle.siafu.control.progress.MultiGUIProgress;
 import de.nec.nle.siafu.exceptions.PlaceTypeUndefinedException;
 import de.nec.nle.siafu.graphics.controlpanel.ControlPanel;
 import de.nec.nle.siafu.graphics.markers.SpotMarker;
@@ -45,8 +47,11 @@ import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.Overlay;
 import de.nec.nle.siafu.model.Place;
 import de.nec.nle.siafu.model.Position;
+import de.nec.nle.siafu.model.SimulationData;
 import de.nec.nle.siafu.model.Trackable;
 import de.nec.nle.siafu.model.World;
+import de.tud.evaluation.EvaluationConstants;
+import de.tud.evaluation.WorkingConfiguration;
 
 /**
  * The GUI class implements the simulator Graphical User Interface. It is a
@@ -114,9 +119,7 @@ public class GUI implements Runnable {
 	/** The status of the GUI, initially set to standby. */
 	private int status = STATE_STANDBY;
 
-	/**
-	 * Indicates that the simulation is paused.
-	 */
+	/** Indicates that the simulation is paused. */
 	private boolean paused;
 
 	/** If true, the sky will darken as night falls */
@@ -180,14 +183,10 @@ public class GUI implements Runnable {
 	 */
 	private Menu contextMenu;
 
-	/**
-	 * The trackable that's currently active.
-	 */
+	/** The trackable that's currently active. */
 	private Trackable activeTrackable;
 
-	/**
-	 * The display associated to the SWT thread.
-	 */
+	/** The display associated to the SWT thread. */
 	private Display display;
 
 	/** A reference to the Siafu controller. */
@@ -233,6 +232,12 @@ public class GUI implements Runnable {
 
 	/** The Menu on top of the GUI. */
 	private MainMenu mainMenu;
+	
+	private WorkingConfiguration configuration;
+	
+	public WorkingConfiguration getWorkingConfiguration () {
+		return this.configuration;
+	}
 
 	/**
 	 * Find out if the simulation data has changed, and so the old simulation
@@ -279,6 +284,9 @@ public class GUI implements Runnable {
 	 * canvas.
 	 */
 	private Runnable refreshSimulationRunnable = new Runnable() {
+		
+		private MultiSimulation ms;
+		
 		/**
 		 * This method is run everytime the timerExec method expires after
 		 * refreshSpeed. If the simulation is waiting for an iteration to be
@@ -292,22 +300,62 @@ public class GUI implements Runnable {
 			switch (status) {
 			case STATE_STANDBY:
 				if (simulationDataPath != null) {
-					try {
-						control.startSimulation(simulationDataPath);
-						mainMenu.simulationChangeMenuesEnabled(false);
-						status = STATE_AWAITING_SIMULATION;
-						resetSimulationDataChanged();
-						if(standByComposite!=null){
-							standByComposite.dispose();
+					control.setGuiProgressVariable();
+					if (EvaluationConstants.local_gui_use)
+					{
+						try {
+							control.startSimulation(simulationDataPath);
+							mainMenu.simulationChangeMenuesEnabled(false);
+							status = STATE_AWAITING_SIMULATION;
+							resetSimulationDataChanged();
+							if(standByComposite!=null){
+								standByComposite.dispose();
+							}
+							//open the gui element which show the progress bars
+							loadingComposite = new LoadingComposite(shell);
+						} catch(RuntimeException e) {
+							MessageDialog dialog = new MessageDialog(shell, "Oops",
+									null,
+								    e.getMessage(),
+								    MessageDialog.ERROR, new String[] { "Close" }, 0);
+							dialog.open();
+							reportSimulationDataChange(null);
 						}
-						loadingComposite = new LoadingComposite(shell);
-					} catch(RuntimeException e) {
-						MessageDialog dialog = new MessageDialog(shell, "Oops",
-								null,
-							    e.getMessage(),
-							    MessageDialog.ERROR, new String[] { "Close" }, 0);
-						dialog.open();
-						reportSimulationDataChange(null);
+					}
+					else
+					{
+						try {
+							mainMenu.simulationChangeMenuesEnabled(false);
+							resetSimulationDataChanged();
+							if(standByComposite!=null){
+								standByComposite.dispose();
+							}
+							//open the gui element which show the progress bars
+							loadingComposite = new LoadingComposite(shell);
+							shell.setText("Load and Run Simulation");
+							//start the multi simulation
+							SimulationData simData = SimulationData.getInstance(simulationDataPath);
+							Controller.getProgress().reportBackgroundCreated();
+							((MultiGUIProgress) Controller.getProgress()).update(loadingComposite);
+							simData.getConfigFile();
+							Controller.getProgress().reportPlaceCreated("Walls");
+							((MultiGUIProgress) Controller.getProgress()).update(loadingComposite);
+							simData.createWallFiles();
+							Controller.getProgress().reportWorldCreation("Testland");
+							((MultiGUIProgress) Controller.getProgress()).update(loadingComposite);
+							ms = new MultiSimulation(configuration, simData);
+							Controller.getProgress().reportSimulationStarted();
+							((MultiGUIProgress) Controller.getProgress()).update(loadingComposite);
+							mainMenu.simulationChangeMenuesEnabled(true);
+							status = STATE_SHOWING_SIMULATION;
+						} catch(RuntimeException e) {
+							MessageDialog dialog = new MessageDialog(shell, "Oops",
+									null,
+								    e.getMessage(),
+								    MessageDialog.ERROR, new String[] { "Close" }, 0);
+							dialog.open();
+							reportSimulationDataChange(null);
+						}
 					}
 				}
 				break;
@@ -323,11 +371,34 @@ public class GUI implements Runnable {
 				}
 				break;
 			case STATE_SHOWING_SIMULATION:
-				if (isSimulationDataChanged()) {
-					switchToStandByMode();
-					status = STATE_STANDBY;
-				} else {
-					updateSimulationGUI();
+				if (EvaluationConstants.local_gui_use)
+				{
+					if (isSimulationDataChanged()) {
+						switchToStandByMode();
+						status = STATE_STANDBY;
+					} else {
+						updateSimulationGUI();
+					}
+				}
+				else
+				{
+					if (isSimulationDataChanged()) {
+						switchToStandByModeFromMulti(ms);
+						status = STATE_STANDBY;
+					} else {
+						((MultiGUIProgress) Controller.getProgress()).iterationUpdata(loadingComposite, configuration.iteration);
+						if (!ms.isSimulationRunning())
+						{
+							MessageDialog dialog = new MessageDialog(shell, "Finish",
+									null,
+								    "The Simulation is finished. Choose a new one!",
+								    MessageDialog.INFORMATION, new String[] { "Close" }, 0);
+							dialog.open();
+							reportSimulationDataChange(null);
+							switchToStandByModeFromMulti(ms);
+							status = STATE_STANDBY;
+						}
+					}
 				}
 				break;
 			default:
@@ -338,6 +409,29 @@ public class GUI implements Runnable {
 		}
 
 	};
+	
+	/**
+	 * Go from simulation mode to stand by, showing a label to indicate the user
+	 * to load a simulation.
+	 * 
+	 */
+	private void switchToStandByModeFromMulti(MultiSimulation ms) {
+		// End the simulation
+		if (ms.isSimulationRunning()) {
+			ms.endSimulation();
+		}
+
+		// Destroy the simulation gui
+		loadingComposite.dispose();
+		
+		shell.pack();
+
+		// Create Stand By gui
+		createStandByGUI();
+		refreshSpeed = MIN_REFRESH;
+		shell.pack();
+
+	}
 
 	/**
 	 * Update all of the gui components according to the simulation status.
@@ -426,7 +520,7 @@ public class GUI implements Runnable {
 	 */
 	private void createStandByGUI() {
 		shell.setText("Siafu");
-		standByComposite= new StandbyComposite(shell);
+		standByComposite= new StandbyComposite(shell, this);
 	}
 
 	/**
@@ -438,7 +532,8 @@ public class GUI implements Runnable {
 	 * @param simulationPath
 	 *            the path to the simulation data
 	 */
-	public GUI(final Controller control, final String simulationPath) {
+	public GUI(final Controller control, final String simulationPath, WorkingConfiguration configuration) {
+		this.configuration = configuration;
 		this.control = control;
 		reportSimulationDataChange(simulationPath);
 		// Force the first redraw

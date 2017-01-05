@@ -48,12 +48,19 @@ public class WorkingConfiguration {
 	}
 	
 	public void setConfig () {
+		this.iteration = 0;
+		this.exchange = new LinkedList<ExchangeMeasurement>();
+		
 		this.config = 1;
 		this.run = 1;
 		this.new_field_count = 0;
-		this.number_explore_agents = 5;
-		this.number_hoove_agents = 3;
-		this.number_wipe_agents = 0;
-		this.map = 0;	
+		this.number_explore_agents = 1;
+		this.number_hoove_agents = 1;
+		this.number_wipe_agents = 1;
+		this.map = 0;
+		
+		this.pngSave = false;
+		this.xmlSave = false;
+		this.csvSave = false;
 	}
 }

@@ -11,6 +11,12 @@ public class MultiSimulation implements Runnable {
 	 * Whether the simulation is already running.
 	 */
 	private boolean simulationRunning;
+	
+	private boolean endSimulation;
+	
+	public void endSimulation () {
+		this.endSimulation = true;
+	}
 
 	/**
 	 * Find out if the simulation is already running.
@@ -33,6 +39,7 @@ public class MultiSimulation implements Runnable {
 	 */
 	public MultiSimulation(WorkingConfiguration configuration, SimulationData simData) {
 		this.simulationRunning = true;
+		this.endSimulation = false;
 		
 		this.world = new MultiWorld(simData, configuration);
 		System.out.println("World created: " + configuration.toString());
@@ -45,9 +52,11 @@ public class MultiSimulation implements Runnable {
 	 */
 	public void run() {
 		BaseAgentModelMulti agentModel = world.getAgentModel();
-		while (!agentModel.isRunFinish()) {
+		while (!agentModel.isRunFinish() && !this.endSimulation) {
 			world.wander();
 		}
 		simulationRunning = false;
 	}
+	
+	
 }

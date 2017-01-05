@@ -10,9 +10,11 @@ import com.google.gson.Gson;
  */
 public class EvaluationConstants {
 	
-	public static final boolean USE_GUI = true;
+	public static final boolean GLOBAL_USE_GUI = true;
 	public static final Gson gson = new Gson();
 	
 	public static final int maxThreadCount = 1;
 	public static final String simulationPathpfad = "..\\Simulations\\Simulation-Testland\\target\\classes";
+		
+	public static boolean local_gui_use = true;
 }

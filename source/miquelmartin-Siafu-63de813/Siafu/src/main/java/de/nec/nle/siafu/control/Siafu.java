@@ -92,7 +92,7 @@ public final class Siafu {
 		}
 		
 		//Simulation Run Multithreaded
-		if (!EvaluationConstants.USE_GUI) {
+		if (!EvaluationConstants.GLOBAL_USE_GUI) {
 			int maxThreadCounter = EvaluationConstants.maxThreadCount;
 			Queue<WorkingConfiguration> configurations = new LinkedList<WorkingConfiguration>();
 			boolean running = true;
@@ -183,7 +183,9 @@ public final class Siafu {
 		}
 		else 
 		{
-			new Controller(configPath, simulationPath, new WorkingConfiguration(1, 0, 0, 1, 0, 0, 0));
+			WorkingConfiguration wc = new WorkingConfiguration(1, 0, 0, 1, 0, 0, 0);
+			wc.setConfig();
+			new Controller(configPath, simulationPath, wc);
 		}
 		//new Controller(configPath, simulationPath);
 	}

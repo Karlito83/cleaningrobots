@@ -18,7 +18,7 @@ import de.tud.swt.cleaningrobots.model.World;
 public class DumpXmlModelBehaviour extends Behaviour {
 	
 	private final int CONST_FILENAME_NUMBERPREFIX = 1000000000;
-	private final int CONST_XML_DUMP_INTERVAL = 10000;
+	private final int CONST_XML_DUMP_INTERVAL = 1000;
 	private final String CONST_PATH_DUMP_XML = "dump/xml";
 	private int counter;
 	
@@ -96,9 +96,9 @@ public class DumpXmlModelBehaviour extends Behaviour {
 					if (field.containsState(STATE_WIPE)){
 						fieldElement.addContent(STATE_WIPE.getName());
 					} else if (field.containsState(STATE_HOOVE)){
-						fieldElement.addContent(STATE_WIPE.getName());
+						fieldElement.addContent(STATE_HOOVE.getName());
 					} else if (field.containsState(STATE_BLOCKED)){
-						fieldElement.addContent(STATE_WIPE.getName());
+						fieldElement.addContent(STATE_BLOCKED.getName());
 					} else {
 						fieldElement.addContent(STATE_FREE.getName());
 					}					

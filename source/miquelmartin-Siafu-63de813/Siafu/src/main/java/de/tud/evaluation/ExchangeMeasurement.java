@@ -1,5 +1,7 @@
 package de.tud.evaluation;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Information about one data exchange between two robots.
  * 
@@ -8,31 +10,47 @@ package de.tud.evaluation;
  */
 public class ExchangeMeasurement {
 	
-	private int number;
-	private String robotName1;
-	private String robotName2;
-	private int iteration;
-	
+	@SerializedName("Number")
+	public int number;
+	@SerializedName("AgentName1")
+	public String robotName1;
+	@SerializedName("AgentName2")
+	public String robotName2;
+	@SerializedName("Iteration")
+	public int iteration;
+		
 	//knowledge Information
-	private int knowledgeIntegerNumber;
-	private int knowledgeStringNumber;
-	private int knowledgeStringByteNumber;
-	
+	@SerializedName("KnowledgeIntegerNumber")
+	public int knowledgeIntegerNumber;
+	@SerializedName("KnowledgeStringNumber")
+	public int knowledgeStringNumber;
+	@SerializedName("KnowledgeStringByteNumber")
+	public int knowledgeStringByteNumber;
+		
 	//states
-	private int statesStringNumber;
-	private int statesStringByteNumber;
-	
+	@SerializedName("StateStringNumber")
+	public int statesStringNumber;
+	@SerializedName("StateStringByteNumber")
+	public int statesStringByteNumber;
+		
 	//world
-	private int worldPositionCount;
-	private int worldIntegerNumber;
-	private int worldStringNumber;
-	private int worldStringByteNumber;
-	
-	private int worldStatesStringNumber;
-	private int worldStatesStringByteNumber;
-	
+	@SerializedName("WorldPositionNumber")
+	public int worldPositionCount;
+	@SerializedName("WorldIntegerNumber")
+	public int worldIntegerNumber;
+	@SerializedName("WorldStringNumber")
+	public int worldStringNumber;
+	@SerializedName("WorldStringByteNumber")
+	public int worldStringByteNumber;
+		
+	@SerializedName("WStateStringNumber")
+	public int worldStatesStringNumber;
+	@SerializedName("WStateStringByteNumber")
+	public int worldStatesStringByteNumber;
+		
 	//Accu values
-	private int accuDoubleNumber;
+	@SerializedName("AccuDoubleNumber")
+	public int accuDoubleNumber;
 	
 	public ExchangeMeasurement (String name1, String name2, int iteration) {
 		this.robotName1 = name1;

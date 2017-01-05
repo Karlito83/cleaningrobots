@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Display;
 
 import de.nec.nle.siafu.control.progress.ConsoleProgress;
 import de.nec.nle.siafu.control.progress.GUIProgress;
+import de.nec.nle.siafu.control.progress.MultiGUIProgress;
 import de.nec.nle.siafu.control.progress.Progress;
 import de.nec.nle.siafu.exceptions.GUINotReadyException;
 import de.nec.nle.siafu.externalCommand.CommandListener;
@@ -135,6 +136,10 @@ public class Controller {
 	}
 	
 	private WorkingConfiguration configuration;
+	
+	public WorkingConfiguration getWorkingConfiguration () {
+		return this.configuration;
+	}
 
 	/**
 	 * Initialize the simulator itself, and run the simulation.
@@ -145,7 +150,7 @@ public class Controller {
 	 */
 	public Controller(final String configPath, String simulationPath, WorkingConfiguration configuration) {
 		this.configuration = configuration;
-		this.guiUsed = EvaluationConstants.USE_GUI;
+		this.guiUsed = EvaluationConstants.GLOBAL_USE_GUI;
 		
 		String verifiedConfigPath = configPath;
 
@@ -181,10 +186,7 @@ public class Controller {
 				}
 			}
 		}
-		
-		if (!guiUsed)
-			simulationPath = "C:\\Users\\ChrissiMobil\\git\\cleaningrobots\\source\\miquelmartin-Siafu-63de813\\Simulations\\Simulation-Testland\\target\\classes";
-		
+				
 		//guiUsed = false;		
 		//guiUsed = config.getBoolean("ui.usegui");
 
@@ -194,7 +196,7 @@ public class Controller {
 
 			// If there's a GUI, let it load the
 			// simulation, if it's avaialble
-			gui = new GUI(this, simulationPath);
+			gui = new GUI(this, simulationPath, configuration);
 			Display display = new Display();
 			display.syncExec(gui);
 		} else if (simulationPath != null) {
@@ -212,6 +214,17 @@ public class Controller {
 			System.exit(1);
 		}
 
+	}
+	
+	public void setGuiProgressVariable () {
+		if (EvaluationConstants.local_gui_use)
+		{
+			progress = new GUIProgress();
+		}
+		else
+		{
+			progress = new MultiGUIProgress();
+		}
 	}
 
 	/**

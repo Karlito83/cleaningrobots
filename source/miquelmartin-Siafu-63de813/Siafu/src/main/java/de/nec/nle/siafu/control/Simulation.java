@@ -36,7 +36,6 @@ import de.nec.nle.siafu.model.World;
 import de.nec.nle.siafu.output.CSVPrinter;
 import de.nec.nle.siafu.output.NullPrinter;
 import de.nec.nle.siafu.output.SimulatorOutputPrinter;
-import de.tud.evaluation.EvaluationConstants;
 import de.tud.evaluation.WorkingConfiguration;
 
 /**
@@ -153,8 +152,8 @@ public class Simulation implements Runnable {
 	public Simulation(final String simulationPath, final Controller control, WorkingConfiguration configuration) {
 		this.configuration = configuration;
 		
-		if (!EvaluationConstants.USE_GUI)
-			this.simulationRunning = true;
+		//if (!EvaluationConstants.USE_GUI)
+		//	this.simulationRunning = true;
 		
 		this.simData = SimulationData.getInstance(simulationPath);
 		this.siafuConfig = control.getSiafuConfig();
@@ -166,10 +165,7 @@ public class Simulation implements Runnable {
 
 		World.setCacheSize(control.getSiafuConfig().getInt(
 			"ui.gradientcache.size"));
-
-		
-		
-		
+			
 		new Thread(this, "Simulation thread").start();
 	}
 
@@ -210,11 +206,36 @@ public class Simulation implements Runnable {
 	 * Starts the Evaluation phase. With Console.
 	 */
 	public void run() {
-		if (EvaluationConstants.USE_GUI) {
-			
-			configuration.setConfig();		
-			
-			this.world = new World(this, simData, configuration);
+		
+		this.world = new World(this, simData, configuration);
+		this.time = world.getTime();
+		this.iterationStep = simulationConfig.getInt("iterationstep");
+		this.agentModel = world.getAgentModel();
+		this.worldModel = world.getWorldModel();
+		this.contextModel = world.getContextModel();
+		this.outputPrinter = createOutputPrinter(siafuConfig.getString("output.type"));
+
+		Controller.getProgress().reportSimulationStarted();
+		simulationRunning = true;
+		while (!isEnded() && !agentModel.isRunFinish()) {
+			if (!isPaused()) {
+				tickTime();
+				worldModel.doIteration(world.getPlaces());
+				agentModel.doIteration(world.getPeople());
+				contextModel.doIteration(world.getOverlays());
+			}
+			//moveAgents();
+			control.scheduleDrawing();
+			outputPrinter.notifyIterationConcluded();
+		}
+		simulationRunning = false;
+
+		outputPrinter.cleanup();
+		Controller.getProgress().reportSimulationEnded();
+		
+		//if (EvaluationConstants.USE_GUI) {
+						
+			/*this.world = new World(this, simData, configuration);
 			this.time = world.getTime();
 			this.iterationStep = simulationConfig.getInt("iterationstep");
 			this.agentModel = world.getAgentModel();
@@ -234,9 +255,9 @@ public class Simulation implements Runnable {
 				control.scheduleDrawing();				
 			}
 			simulationRunning = false;
-			Controller.getProgress().reportSimulationEnded();
-		} else {
-			configuration.setConfig();
+			Controller.getProgress().reportSimulationEnded();*/
+		
+		/*} else {
 			
 			this.world = new World(this, simData, configuration);
 			this.time = world.getTime();
@@ -253,7 +274,7 @@ public class Simulation implements Runnable {
 				contextModel.doIteration(world.getOverlays());
 			}
 			simulationRunning = false;				
-		}
+		}*/
 	}
 	
 	/**

@@ -63,8 +63,7 @@ public class DirectorySimulationData extends SimulationData {
 		HashMap<String, InputStream> foundFiles;
 		foundFiles = new HashMap<String, InputStream>();
 
-		String overlayPathString =
-				dir.getAbsolutePath() + File.separator + path;
+		String overlayPathString = dir.getAbsolutePath() + File.separator + path;
 		File absolutePath = new File(overlayPathString);
 
 		String[] files = absolutePath.list(new FilenameFilter() {
@@ -77,13 +76,11 @@ public class DirectorySimulationData extends SimulationData {
 			for (int i = 0; i < files.length; i++) {
 				int end = files[i].lastIndexOf(".");
 				String name = files[i].substring(0, end);
-				String fileName =
-						overlayPathString + File.separator + files[i];
+				String fileName = overlayPathString + File.separator + files[i];
 				try {
 					foundFiles.put(name, new FileInputStream(fileName));
 				} catch (FileNotFoundException e) {
-					throw new RuntimeException("Can't find " + fileName
-							+ ".");
+					throw new RuntimeException("Can't find " + fileName	+ ".");
 				}
 			}
 		}

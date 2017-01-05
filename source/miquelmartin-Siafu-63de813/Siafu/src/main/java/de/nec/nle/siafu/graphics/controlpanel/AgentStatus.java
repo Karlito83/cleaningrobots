@@ -120,7 +120,7 @@ public class AgentStatus extends BaseStatus {
 		createAgentLabels(agentComposite);
 		createOverlayLabels(overlayComposite);
 		createInfoLabels(infoComposite);
-		addMovesFreelyButton(parent);
+		//addMovesFreelyButton(parent);
 
 	}
 
@@ -249,7 +249,7 @@ public class AgentStatus extends BaseStatus {
 		refreshAgentLabels();
 		refreshInfoLabels();
 		refreshOvLabels();
-		refreshMovesFreelyButton();
+		//refreshMovesFreelyButton();
 	}
 
 	/**
