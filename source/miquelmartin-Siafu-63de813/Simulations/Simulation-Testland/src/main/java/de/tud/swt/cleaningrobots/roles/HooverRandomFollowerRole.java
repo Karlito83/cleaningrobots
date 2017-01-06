@@ -1,16 +1,16 @@
 package de.tud.swt.cleaningrobots.roles;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.AgentCore;
 import de.tud.swt.cleaningrobots.goals.MasterGoal;
 import de.tud.swt.cleaningrobots.goals.nonoptional.HooveLoadGoal;
-import de.tud.swt.cleaningrobots.goals.optional.WlanLoadIfRobotWantMergeGoal;
+import de.tud.swt.cleaningrobots.goals.optional.WlanLoadIfAgentWantMergeGoal;
 
 /**
  * Add the goals for search a new random destination.
  */
 public class HooverRandomFollowerRole extends FollowerRole {
 
-	public HooverRandomFollowerRole(RobotCore robotCore, MasterRole master) {
+	public HooverRandomFollowerRole(AgentCore robotCore, MasterRole master) {
 		super(robotCore, master);
 	}
 
@@ -18,7 +18,7 @@ public class HooverRandomFollowerRole extends FollowerRole {
 	public boolean createGoals() {
 		
 		HooveLoadGoal hlg = new HooveLoadGoal(this, false);
-		WlanLoadIfRobotWantMergeGoal wlmmg = new WlanLoadIfRobotWantMergeGoal(this);
+		WlanLoadIfAgentWantMergeGoal wlmmg = new WlanLoadIfAgentWantMergeGoal(this);
 		
 		MasterGoal mg = new MasterGoal(core);
 		mg.subGoals.add(hlg);

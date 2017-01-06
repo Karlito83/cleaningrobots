@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.WorldPart;
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.util.EMFUtils;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
 
@@ -43,7 +43,7 @@ public class DumpModelBehaviour extends Behaviour {
 	private final String CONST_PATH_DUMP_XML = "dump/xml";
 	private int counter;
 
-	public DumpModelBehaviour(RobotRole role) {
+	public DumpModelBehaviour(AgentRole role) {
 		super(role);
 		
 		this.counter = 0;

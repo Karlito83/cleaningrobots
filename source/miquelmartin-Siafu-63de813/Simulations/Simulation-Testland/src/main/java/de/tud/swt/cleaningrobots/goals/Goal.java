@@ -2,7 +2,7 @@ package de.tud.swt.cleaningrobots.goals;
 
 import java.util.Collection;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.AgentCore;
 import de.tud.swt.cleaningrobots.model.State;
 
 /**
@@ -14,12 +14,12 @@ import de.tud.swt.cleaningrobots.model.State;
 public abstract class Goal {
 
 	//Robot
-	private RobotCore robot;
+	private AgentCore agent;
 	protected boolean optional;
 	
-	public Goal (RobotCore core)
+	public Goal (AgentCore core)
 	{		
-		this.robot = core;
+		this.agent = core;
 	}
 	
 	/*public Goal (RobotRole role)
@@ -28,8 +28,8 @@ public abstract class Goal {
 		this.robot = role.getRobotCore();
 	}*/
 	
-	protected RobotCore getRobotCore() {
-		return robot;
+	protected AgentCore getAgentCore() {
+		return agent;
 	}
 	
 	/**

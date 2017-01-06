@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.tud.swt.cleaningrobots.RobotKnowledge;
+import de.tud.swt.cleaningrobots.AgentKnowledge;
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentCore;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
 import de.tud.swt.cleaningrobots.merge.Merge;
@@ -32,12 +32,12 @@ public class MergeAllMasterBehaviour extends Behaviour {
 	private Merge ma;
 	private NewInformationFollowerMerge informationMerge;
 	private int visionRadius;		
-	private List<RobotRole> lastChange;
+	private List<AgentRole> lastChange;
 	
-	public MergeAllMasterBehaviour(RobotRole role, boolean useModel) {
+	public MergeAllMasterBehaviour(AgentRole role, boolean useModel) {
 		super(role);
 		
-		this.lastChange = new ArrayList<RobotRole>();
+		this.lastChange = new ArrayList<AgentRole>();
 		if (useModel)
 		{
 			this.ma = new WorldEcoreModelMerge(this.agentCore.getConfiguration());
@@ -69,26 +69,26 @@ public class MergeAllMasterBehaviour extends Behaviour {
 		//start all hardware components
 		this.demand.switchAllOn();
 				
-		List<RobotCore> nearRobots = this.agentCore.getICommunicationAdapter().getNearRobots(this.visionRadius);
+		List<AgentCore> nearRobots = this.agentCore.getICommunicationAdapter().getNearRobots(this.visionRadius);
 		nearRobots.remove(this.agentCore);
 		
 		//if no nearRobots end this behavior
 		if (nearRobots.isEmpty())
 			return false;
 		
-		Map<RobotRole, ImportExportConfiguration> nearsNewInformation = new HashMap<RobotRole, ImportExportConfiguration>();
-		Map<RobotRole, ImportExportConfiguration> nearsNoNewInformation = new HashMap<RobotRole, ImportExportConfiguration>();
-		for (RobotCore nearRobot : nearRobots) {
+		Map<AgentRole, ImportExportConfiguration> nearsNewInformation = new HashMap<AgentRole, ImportExportConfiguration>();
+		Map<AgentRole, ImportExportConfiguration> nearsNoNewInformation = new HashMap<AgentRole, ImportExportConfiguration>();
+		for (AgentCore nearRobot : nearRobots) {
 			//could only communicate with near robots if they have active WLAN
 			if (nearRobot.hasActiveHardwareComponent(ComponentTypes.WLAN)) {
 				//near robot must be a follower
-				List<RobotRole> lrr = agentCore.getRoles();
-				for (RobotRole rr : lrr)
+				List<AgentRole> lrr = agentCore.getRoles();
+				for (AgentRole rr : lrr)
 				{
 					if (rr instanceof MasterRole)
 					{
-						List<RobotRole> frr = ((MasterRole)rr).getFollowers();
-						for (RobotRole fr : frr)
+						List<AgentRole> frr = ((MasterRole)rr).getFollowers();
+						for (AgentRole fr : frr)
 						{
 							if (fr.getRobotCore().equals(nearRobot))
 							{
@@ -104,7 +104,7 @@ public class MergeAllMasterBehaviour extends Behaviour {
 									config.knownstates = true;
 									config.knowledge = true;																		
 									//search timestamp of last meeting
-									for (RobotKnowledge rk : agentCore.getKnowledge()) {
+									for (AgentKnowledge rk : agentCore.getKnowledge()) {
 										if (rk.getName().equals(nearRobot.getName())) {
 											config.iteration = rk.getLastArrange();
 										}											
@@ -114,7 +114,7 @@ public class MergeAllMasterBehaviour extends Behaviour {
 									ma.run(nearRobot, this.agentCore, config);
 									
 									//change the configuration for later export and import
-									for (RobotKnowledge rk : agentCore.getKnowledge()) {
+									for (AgentKnowledge rk : agentCore.getKnowledge()) {
 										if (rk.getName().equals(nearRobot.getName())) {
 											System.out.println(rk.getName() + " RK KnownStates: " + rk.getKnownStates());
 											config.knownStates = rk.getKnownStates();
@@ -127,7 +127,7 @@ public class MergeAllMasterBehaviour extends Behaviour {
 									config.world = true;
 									config.knownstates = true;
 									config.knowledge = true;
-									for (RobotKnowledge rk : agentCore.getKnowledge()) {
+									for (AgentKnowledge rk : agentCore.getKnowledge()) {
 										if (rk.getName().equals(nearRobot.getName())) {
 											config.iteration = rk.getLastArrange();
 											config.knownStates = rk.getKnownStates();
@@ -150,19 +150,19 @@ public class MergeAllMasterBehaviour extends Behaviour {
 			if (nearsNewInformation.size() == 1)
 			{
 				//only import if not in last change list
-				for (RobotRole fr : nearsNewInformation.keySet()) {
+				for (AgentRole fr : nearsNewInformation.keySet()) {
 					if(!lastChange.contains(fr))
 					{
 						ma.run(this.agentCore, fr.getRobotCore(), nearsNewInformation.get(fr));
 					}
 				}
 			} else {
-				for (RobotRole fr : nearsNewInformation.keySet()) {
+				for (AgentRole fr : nearsNewInformation.keySet()) {
 					//import all near robots the new model
 					ma.run(this.agentCore, fr.getRobotCore(), nearsNewInformation.get(fr));
 				}
 			}
-			for (RobotRole fr : nearsNoNewInformation.keySet()) {
+			for (AgentRole fr : nearsNoNewInformation.keySet()) {
 				//import all near robots the new model
 				ma.run(this.agentCore, fr.getRobotCore(), nearsNoNewInformation.get(fr));
 			}	

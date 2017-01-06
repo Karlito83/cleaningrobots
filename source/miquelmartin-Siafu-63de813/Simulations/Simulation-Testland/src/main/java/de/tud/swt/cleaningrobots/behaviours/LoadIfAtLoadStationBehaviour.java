@@ -1,7 +1,7 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 
 /**
  * Set loading if the robot arrived at load station.
@@ -11,7 +11,7 @@ import de.tud.swt.cleaningrobots.RobotRole;
  */
 public class LoadIfAtLoadStationBehaviour extends Behaviour {
 	
-	public LoadIfAtLoadStationBehaviour(RobotRole role) {
+	public LoadIfAtLoadStationBehaviour(AgentRole role) {
 		super(role);		
 	}
 	

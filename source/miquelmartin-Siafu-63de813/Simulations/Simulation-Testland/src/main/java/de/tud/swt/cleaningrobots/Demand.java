@@ -20,11 +20,11 @@ import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 public class Demand {
 
 	private Map<ComponentTypes, Integer> hardware;
-	private RobotCore robot;
+	private AgentCore robot;
 	private List<HardwareComponent> hcList;
 	private boolean correct;
 	
-	public Demand (RobotCore robotCore)
+	public Demand (AgentCore robotCore)
 	{
 		this.robot = robotCore;	
 		this.correct = true;

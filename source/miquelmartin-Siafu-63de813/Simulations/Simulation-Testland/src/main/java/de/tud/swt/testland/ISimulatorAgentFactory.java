@@ -1,7 +1,7 @@
 package de.tud.swt.testland;
 
 
-public interface ICreateAgents {
+public interface ISimulatorAgentFactory {
 
 	/**
 	 * Create a loadstation without computational hardware agent.
@@ -10,7 +10,7 @@ public interface ICreateAgents {
 	 *            the world to create it in
 	 * @return the new agent
 	 */
-	public IRobotAgent createLoadStation();
+	public ISimulatorAgent createLoadStation();
 	
 	/**
 	 * Create a loadstation agent.
@@ -19,7 +19,7 @@ public interface ICreateAgents {
 	 *            the world to create it in
 	 * @return the new agent
 	 */
-	public IRobotAgent createLoadStationAgent();
+	public ISimulatorAgent createLoadStationAgent();
 	
 	/**
 	 * Create a explore agent.
@@ -28,7 +28,7 @@ public interface ICreateAgents {
 	 *            the world to create it in
 	 * @return the new agent
 	 */
-	public IRobotAgent createExploreAgent();
+	public ISimulatorAgent createExploreAgent();
 	
 	/**
 	 * Create a wipe agent.
@@ -37,7 +37,7 @@ public interface ICreateAgents {
 	 *            the world to create it in
 	 * @return the new agent
 	 */
-	public IRobotAgent createWipeAgent();
+	public ISimulatorAgent createWipeAgent();
 	
 	/**
 	 * Create a hoove agent.
@@ -46,6 +46,6 @@ public interface ICreateAgents {
 	 *            the world to create it in
 	 * @return the new agent
 	 */
-	public IRobotAgent createHooveAgent();
+	public ISimulatorAgent createHooveAgent();
 	
 }

@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.optional;
 
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.behaviours.merge.MergeAllNearBehaviour;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
@@ -10,9 +10,9 @@ import de.tud.swt.cleaningrobots.goals.OptionalGoal;
  * @author Christopher Werner
  *
  */
-public class MergeNearRobotsGoal extends OptionalGoal {
+public class MergeNearAgentsGoal extends OptionalGoal {
 
-	public MergeNearRobotsGoal(RobotRole role) {
+	public MergeNearAgentsGoal(AgentRole role) {
 		super(role);
 		
 		MergeAllNearBehaviour a = new MergeAllNearBehaviour(role, false);

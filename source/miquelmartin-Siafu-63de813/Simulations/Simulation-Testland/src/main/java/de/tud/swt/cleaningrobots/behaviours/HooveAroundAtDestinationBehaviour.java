@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.Hoover;
 import de.tud.swt.cleaningrobots.model.Field;
@@ -24,7 +24,7 @@ public class HooveAroundAtDestinationBehaviour extends Behaviour {
 	private State STATE_HOOVE;
 	private State STATE_FREE;
 		
-	public HooveAroundAtDestinationBehaviour(RobotRole role) {
+	public HooveAroundAtDestinationBehaviour(AgentRole role) {
 		super(role);
 		
 		Hoover las = (Hoover) demand.getHardwareComponent(ComponentTypes.HOOVER);

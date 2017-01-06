@@ -9,8 +9,8 @@ import org.eclipse.emf.ecore.EObject;
 import cleaningrobots.CleaningrobotsFactory;
 import cleaningrobots.WorldPart;
 import de.tud.swt.cleaningrobots.Configuration;
-import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.RobotKnowledge;
+import de.tud.swt.cleaningrobots.AgentCore;
+import de.tud.swt.cleaningrobots.AgentKnowledge;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.FollowerRoleModel;
 import de.tud.swt.cleaningrobots.model.MasterRoleModel;
@@ -39,7 +39,7 @@ public class WorldEcoreModelMerge extends Merge {
 	 * @param object (Data or information about what should be send)
 	 */
 	@Override
-	protected void action(RobotCore from, RobotCore to, Object object) {
+	protected void action(AgentCore from, AgentCore to, Object object) {
 		ImportExportConfiguration config = (ImportExportConfiguration) object;
 		EObject model = from.exportModel(config);
 		if (model instanceof cleaningrobots.Robot) {
@@ -54,27 +54,27 @@ public class WorldEcoreModelMerge extends Merge {
 				//run over all robot knowledge and own knowledge and insert information
 				for (cleaningrobots.RobotKnowledge exportRk : robot.getRobotKnowledge()) {
 					boolean isIn = false;
-					for (RobotKnowledge importRk : to.getKnowledge()) {
+					for (AgentKnowledge importRk : to.getKnowledge()) {
 						if (exportRk.getName().equals(importRk.getName())) {
 							isIn = true;
 							importRobotKnowledge(importRk, exportRk, to);							
 						}
 					}
 					if (!isIn) {
-						RobotKnowledge rk = new RobotKnowledge(exportRk.getName());
+						AgentKnowledge rk = new AgentKnowledge(exportRk.getName());
 						to.getKnowledge().add(rk);
 						importRobotKnowledge(rk, exportRk, to);
 					}
 				}
 				boolean isIn = false;
-				for (RobotKnowledge importRk : to.getKnowledge()) {
+				for (AgentKnowledge importRk : to.getKnowledge()) {
 					if (importRk.getName().equals(robot.getName())) {
 						isIn = true;			
 						importRobotKnowledge(importRk, robot, to);
 					}
 				}
 				if (!isIn) {
-					RobotKnowledge rk = new RobotKnowledge(robot.getName());
+					AgentKnowledge rk = new AgentKnowledge(robot.getName());
 					to.getKnowledge().add(rk);
 					importRobotKnowledge(rk, robot, to);
 				}
@@ -82,7 +82,7 @@ public class WorldEcoreModelMerge extends Merge {
 			if (config.knownstates && !config.knowledge)
 			{
 				boolean isIn = false;
-				for (RobotKnowledge hisRk : to.getKnowledge()) {					
+				for (AgentKnowledge hisRk : to.getKnowledge()) {					
 					if (hisRk.getName().equals(robot.getName())) {
 						isIn = true;
 						//insert the new information from the robot
@@ -97,7 +97,7 @@ public class WorldEcoreModelMerge extends Merge {
 					}
 				}
 				if (!isIn) {
-					RobotKnowledge rk = new RobotKnowledge(robot.getName());
+					AgentKnowledge rk = new AgentKnowledge(robot.getName());
 					List<State> knowns = new LinkedList<State>();
 					for (cleaningrobots.State s : robot.getKnownStates()) {
 						State st = to.getConfiguration().createState(s.getName());
@@ -118,7 +118,7 @@ public class WorldEcoreModelMerge extends Merge {
 		}
 	}
 	
-	private void importRobotKnowledge (RobotKnowledge importRk, cleaningrobots.Robot exportR, RobotCore robot) {
+	private void importRobotKnowledge (AgentKnowledge importRk, cleaningrobots.Robot exportR, AgentCore robot) {
 		//insert the new information from the robot
 		importRk.setLastArrange(configuration.getWc().iteration);
 		em.addKnowledgeIntegerNumber(1);
@@ -166,7 +166,7 @@ public class WorldEcoreModelMerge extends Merge {
 		importRk.setKnownStates(knowns);	
 	}
 	
-	private void importRobotKnowledge (RobotKnowledge importRk, cleaningrobots.RobotKnowledge exportRk, RobotCore robot) {		
+	private void importRobotKnowledge (AgentKnowledge importRk, cleaningrobots.RobotKnowledge exportRk, AgentCore robot) {		
 		if (importRk.getLastArrange() < exportRk.getLastArrange()) {
 			em.addKnowledgeStringByteNumber(exportRk.getName().getBytes().length);
 			em.addKnowledgeStringNumber(1);
@@ -219,7 +219,7 @@ public class WorldEcoreModelMerge extends Merge {
 		}
 	}
 	
-	private void importFieldsFromWorldModel(cleaningrobots.WorldPart worldPart, RobotCore importcore) {
+	private void importFieldsFromWorldModel(cleaningrobots.WorldPart worldPart, AgentCore importcore) {
 		// Maybe an arrayList is better here?
 		if (worldPart instanceof cleaningrobots.Map) {
 			//x and yDim

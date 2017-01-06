@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.optional;
 
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.behaviours.LoadBehaviour;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
@@ -10,9 +10,9 @@ import de.tud.swt.cleaningrobots.goals.OptionalGoal;
  * @author Christopher Werner
  *
  */
-public class LoadRobotGoal extends OptionalGoal {
+public class LoadAgentGoal extends OptionalGoal {
 
-	public LoadRobotGoal(RobotRole role) {
+	public LoadAgentGoal(AgentRole role) {
 		super(role);
 				
 		LoadBehaviour l = new LoadBehaviour(role);

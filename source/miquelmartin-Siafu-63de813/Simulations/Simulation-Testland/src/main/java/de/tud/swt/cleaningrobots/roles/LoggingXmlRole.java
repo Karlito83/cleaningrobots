@@ -1,15 +1,15 @@
 package de.tud.swt.cleaningrobots.roles;
 
-import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentCore;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.goals.optional.XmlDumpGoal;
 
 /**
  * Add the goal for a XML output of the current map.
  */
-public class LoggingXmlRole extends RobotRole {
+public class LoggingXmlRole extends AgentRole {
 
-	public LoggingXmlRole(RobotCore robotCore) {
+	public LoggingXmlRole(AgentCore robotCore) {
 		super(robotCore);
 	}
 

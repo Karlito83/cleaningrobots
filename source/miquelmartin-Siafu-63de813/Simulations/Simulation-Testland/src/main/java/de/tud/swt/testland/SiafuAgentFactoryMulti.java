@@ -18,14 +18,14 @@ import de.tud.swt.cleaningrobots.model.Position;
  * @author Christopher Werner
  *
  */
-public class RobotFactoryMulti implements ICreateAgents {
+public class SiafuAgentFactoryMulti implements ISimulatorAgentFactory {
 	
 	private int counter;
 	protected Configuration configuration;
 	private Position position;
 	private MultiWorld world;
 	
-	public RobotFactoryMulti (Configuration configuration, MultiWorld world) {
+	public SiafuAgentFactoryMulti (Configuration configuration, MultiWorld world) {
 		this.configuration = configuration;
 		this.world = world;
 		//X: 139 Y: 133 hall / labyrinth
@@ -52,9 +52,9 @@ public class RobotFactoryMulti implements ICreateAgents {
 	 *            the world to create it in
 	 * @return the new agent
 	 */
-	public IRobotAgent createLoadStationAgent() {
+	public ISimulatorAgent createLoadStationAgent() {
 		counter++;
-		RobotAgentMulti agent = new RobotAgentMulti("Robbi_" + counter, position, world, configuration);
+		SiafuAgentMulti agent = new SiafuAgentMulti("Robbi_" + counter, position, world, configuration);
 		
 		//add hardware components
 		agent.getRobot().addHardwareComponent(new Rechner());
@@ -71,9 +71,9 @@ public class RobotFactoryMulti implements ICreateAgents {
 	 *            the world to create it in
 	 * @return the new agent
 	 */
-	public IRobotAgent createLoadStation() {
+	public ISimulatorAgent createLoadStation() {
 		counter++;
-		RobotAgentMulti agent = new RobotAgentMulti("Robbi_" + counter, position, world, configuration);
+		SiafuAgentMulti agent = new SiafuAgentMulti("Robbi_" + counter, position, world, configuration);
 		
 		//add hardware components
 		agent.getRobot().addHardwareComponent(new LoadStation());
@@ -88,9 +88,9 @@ public class RobotFactoryMulti implements ICreateAgents {
 	 *            the world to create it in
 	 * @return the new agent
 	 */
-	public IRobotAgent createExploreAgent() {
+	public ISimulatorAgent createExploreAgent() {
 		counter++;
-		RobotAgentMulti agent = new RobotAgentMulti("Robbi_" + counter, position, world, configuration);
+		SiafuAgentMulti agent = new SiafuAgentMulti("Robbi_" + counter, position, world, configuration);
 		
 		//add hardware components
 		agent.getRobot().addHardwareComponent(new Rechner());
@@ -108,9 +108,9 @@ public class RobotFactoryMulti implements ICreateAgents {
 	 *            the world to create it in
 	 * @return the new agent
 	 */
-	public IRobotAgent createWipeAgent() {
+	public ISimulatorAgent createWipeAgent() {
 		counter++;
-		RobotAgentMulti agent = new RobotAgentMulti("Robbi_" + counter, position, world, configuration);
+		SiafuAgentMulti agent = new SiafuAgentMulti("Robbi_" + counter, position, world, configuration);
 		
 		//add hardware components
 		agent.getRobot().addHardwareComponent(new Rechner());
@@ -128,9 +128,9 @@ public class RobotFactoryMulti implements ICreateAgents {
 	 *            the world to create it in
 	 * @return the new agent
 	 */
-	public IRobotAgent createHooveAgent() {
+	public ISimulatorAgent createHooveAgent() {
 		counter++;
-		RobotAgentMulti agent = new RobotAgentMulti("Robbi_" + counter, position, world, configuration);
+		SiafuAgentMulti agent = new SiafuAgentMulti("Robbi_" + counter, position, world, configuration);
 		
 		//add hardware components
 		agent.getRobot().addHardwareComponent(new Rechner());

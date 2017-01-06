@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Simulation>
+	<!-- Path for the directory where the Simulations Values are in -->
+	<Path>..\Simulations\Simulation-Testland\target\classes</Path>
+	<!-- Integer Value bigger than Zero for the number of parallel Simulations -->
+	<ThreadCount>3</ThreadCount>
+	<Configurations>
+		<Configuration>
+			<!-- Integer Value bigger than Zero -->
+			<NumberExploreAgents>5</NumberExploreAgents>
+			<!-- Integer Value bigger than Zero -->
+			<NumberHooveAgents>0</NumberHooveAgents>
+			<!-- Integer Value bigger than Zero -->
+			<NumberWipeAgents>0</NumberWipeAgents>
+			<!-- Integer Value 
+				0 for quadratic Area
+				1 for Labyrintgh Area
+				2 for TU Dresden Computerscience Full Area
+				3 for TU Dresden Computerscience Half Area -->
+			<Map>1</Map>
+			<!-- Integer Value 
+				0 for Master hast complete control Strategy
+				1 for No Master only communication between agents Strategy
+				2 for Master make the communication of near agents Strategy
+				3 for Master make the communication and deviding of near agents Strategy -->
+			<Strategy>1</Strategy>
+			<!-- Number of runs a configuration should run -->
+			<Runs>5</Runs>			
+		</Configuration>
+		<Configuration>
+			<NumberExploreAgents>4</NumberExploreAgents>
+			<NumberHooveAgents>0</NumberHooveAgents>
+			<NumberWipeAgents>0</NumberWipeAgents>
+			<Map>1</Map>
+			<Strategy>1</Strategy>
+			<Runs>5</Runs>			
+		</Configuration>
+	</Configurations>
+</Simulation>

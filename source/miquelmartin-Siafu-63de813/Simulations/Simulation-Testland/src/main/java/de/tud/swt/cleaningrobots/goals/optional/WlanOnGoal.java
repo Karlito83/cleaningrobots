@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.optional;
 
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.behaviours.WlanOnBehaviour;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
@@ -12,7 +12,7 @@ import de.tud.swt.cleaningrobots.goals.OptionalGoal;
  */
 public class WlanOnGoal extends OptionalGoal {
 
-	public WlanOnGoal(RobotRole role) {
+	public WlanOnGoal(AgentRole role) {
 		super(role);
 		
 		WlanOnBehaviour wo = new WlanOnBehaviour(role);

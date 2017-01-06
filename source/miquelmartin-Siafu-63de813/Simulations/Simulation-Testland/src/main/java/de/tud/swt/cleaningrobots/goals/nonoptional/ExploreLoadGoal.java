@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.nonoptional;
 
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.behaviours.DiscoverBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.DiscoverAroundAtDestinationBehaviour;
@@ -17,7 +17,7 @@ public class ExploreLoadGoal extends NonOptionalGoal {
 
 	private DiscoverBehaviour d;
 	
-	public ExploreLoadGoal(RobotRole role, boolean relative) {
+	public ExploreLoadGoal(AgentRole role, boolean relative) {
 		super(role);
 		
 		DiscoverAroundAtDestinationBehaviour s = new DiscoverAroundAtDestinationBehaviour(role);
@@ -47,7 +47,7 @@ public class ExploreLoadGoal extends NonOptionalGoal {
 
 	@Override
 	public boolean preCondition() {		
-		if (this.getRobotCore().getWorld().getNextUnknownFieldPosition() != null)
+		if (this.getAgentCore().getWorld().getNextUnknownFieldPosition() != null)
 			return true;
 		return false;
 	}
@@ -58,7 +58,7 @@ public class ExploreLoadGoal extends NonOptionalGoal {
 			return false;
 		else {
 			boolean proof = true;
-			for (RobotRole rr : getRobotCore().getRoles()) {
+			for (AgentRole rr : getAgentCore().getRoles()) {
 				if (rr.hasNewInformation())
 					proof = false;
 			}

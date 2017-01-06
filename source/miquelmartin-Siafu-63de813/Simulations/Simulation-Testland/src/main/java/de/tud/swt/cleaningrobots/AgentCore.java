@@ -27,7 +27,7 @@ import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
  * @author Christopher Werner
  *
  */
-public class RobotCore extends Robot {
+public class AgentCore extends Agent {
 	
 	private Configuration configuration;
 	private RobotMeasurement measure;
@@ -36,8 +36,8 @@ public class RobotCore extends Robot {
 	private World world;
 	private boolean shutDown;
 	
-	private List<RobotRole> roles;
-	private List<RobotKnowledge> knowledge;
+	private List<AgentRole> roles;
+	private List<AgentKnowledge> knowledge;
 	private List<Goal> goals;
 	private List<HardwareComponent> hardwarecomponents;
 	private Set<State> supportedStates;
@@ -47,7 +47,7 @@ public class RobotCore extends Robot {
 	private double minEnergieNeed;
 	private double actualEnergieNeed;	
 	
-	private ICommunicationAdapter communicationAdapter;	
+	private ISimulatorAdapter communicationAdapter;	
 	private DestinationContainer destinationContainer;
 		
 	//say if it is a load station
@@ -55,11 +55,11 @@ public class RobotCore extends Robot {
 	//is the robot loading
 	private boolean loading;
 	
-	public RobotCore(ICommunicationAdapter communicationAdapter, Accu accu, Configuration configuration) {
+	public AgentCore(ISimulatorAdapter communicationAdapter, Accu accu, Configuration configuration) {
 		this("Empty", communicationAdapter, accu, configuration);
 	}
 
-	public RobotCore(String name, ICommunicationAdapter communicationAdapter, Accu accu, Configuration configuration) {
+	public AgentCore(String name, ISimulatorAdapter communicationAdapter, Accu accu, Configuration configuration) {
 
 		this.configuration = configuration;
 		this.name = name;
@@ -73,11 +73,11 @@ public class RobotCore extends Robot {
 		this.loading = false;
 		this.shutDown = false;
 		
-		this.roles = new ArrayList<RobotRole>();
+		this.roles = new ArrayList<AgentRole>();
 		this.hardwarecomponents = new LinkedList<HardwareComponent>();
 		this.goals = new LinkedList<Goal>();
 		this.supportedStates = new HashSet<State>();
-		this.knowledge = new LinkedList<RobotKnowledge>();
+		this.knowledge = new LinkedList<AgentKnowledge>();
 		
 		this.communicationAdapter = communicationAdapter;
 		this.destinationContainer = new DestinationContainer(this);		
@@ -102,7 +102,7 @@ public class RobotCore extends Robot {
 	{
 		boolean result = true;
 		//create the goals first
-		for (RobotRole rr : roles)
+		for (AgentRole rr : roles)
 		{
 			result = result && rr.createGoals();
 		}
@@ -110,7 +110,7 @@ public class RobotCore extends Robot {
 			return false;
 
 		//initialize them after
-		for (RobotRole rr : roles)
+		for (AgentRole rr : roles)
 		{
 			rr.initializeGoals();
 		}
@@ -244,7 +244,7 @@ public class RobotCore extends Robot {
 		return accu;
 	}
 	
-	public ICommunicationAdapter getICommunicationAdapter () {
+	public ISimulatorAdapter getICommunicationAdapter () {
 		return this.communicationAdapter;
 	}
 	
@@ -340,35 +340,35 @@ public class RobotCore extends Robot {
 		return this.name;
 	}
 	
-	public List<RobotRole> getRoles () {
+	public List<AgentRole> getRoles () {
 		return this.roles;
 	}
 	
-	public List<RobotKnowledge> getKnowledge () {
+	public List<AgentKnowledge> getKnowledge () {
 		return this.knowledge;
 	}
 	
 	//functions of abstract class robot
 	@Override
-	public boolean hasRole(RobotRole role) {
+	public boolean hasRole(AgentRole role) {
 		return roles.contains(role);
 	}
 
 	@Override
-	public boolean removeRole(RobotRole role) {
+	public boolean removeRole(AgentRole role) {
 		return this.roles.remove(role);		
 	}
 
 	@Override
-	public boolean addRole(RobotRole role) {
+	public boolean addRole(AgentRole role) {
 		return this.roles.add(role);	
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
 		boolean result = false;
-		if(obj!=null && obj instanceof RobotCore){
-			RobotCore tmp = (RobotCore)obj;
+		if(obj!=null && obj instanceof AgentCore){
+			AgentCore tmp = (AgentCore)obj;
 			result = tmp.getName().equals(this.getName());
 		}
 		return result;
@@ -391,16 +391,16 @@ public class RobotCore extends Robot {
 		em.addKnowledgeIntegerNumber(6);
 		//3 Positions + list Positions
 		//knowledge
-		for (RobotKnowledge rk : this.knowledge) {
+		for (AgentKnowledge rk : this.knowledge) {
 			em.addMeasurement(rk.getMeasurement());
 		}
 		//roles
-		for (RobotRole r : roles) {
+		for (AgentRole r : roles) {
 			if (r instanceof MasterRole) {
 				MasterRole m = (MasterRole)r;
 				em.addKnowledgeStringNumber(m.getFollowers().size() + 1);
 				em.addKnowledgeStringByteNumber(r.getClass().getName().getBytes().length);
-				for (RobotRole rr : m.getFollowers()) {
+				for (AgentRole rr : m.getFollowers()) {
 					em.addKnowledgeStringByteNumber(rr.getRobotCore().getName().getBytes().length);
 				}
 			} else if (r instanceof FollowerRole) {
@@ -436,14 +436,14 @@ public class RobotCore extends Robot {
 				for (HardwareComponent hc : getHardwarecomponents()) {
 					robot.getComponents().add(hc.getName());
 				}
-				for (RobotKnowledge rk : knowledge) {
+				for (AgentKnowledge rk : knowledge) {
 					robot.getRobotKnowledge().add(rk.exportModel());
 				}
 				// add roles
-				for (RobotRole rr : getRoles()) {
+				for (AgentRole rr : getRoles()) {
 					if (rr instanceof MasterRole) {
 						cleaningrobots.MasterRole master = CleaningrobotsFactory.eINSTANCE.createMasterRole();
-						for (RobotRole fr : ((MasterRole)rr).getFollowers()) {
+						for (AgentRole fr : ((MasterRole)rr).getFollowers()) {
 							master.getFollowerNames().add(fr.getRobotCore().getName());
 						}
 						robot.getRoles().add(master);

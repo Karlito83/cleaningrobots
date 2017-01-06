@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals;
 
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 
 /**
  * Is a specific sub goal which is non optional and must be implemented.
@@ -10,7 +10,7 @@ import de.tud.swt.cleaningrobots.RobotRole;
  */
 public abstract class NonOptionalGoal extends SubGoal{
 
-	public NonOptionalGoal(RobotRole role) {
+	public NonOptionalGoal(AgentRole role) {
 		super(role, false);
 	}
 

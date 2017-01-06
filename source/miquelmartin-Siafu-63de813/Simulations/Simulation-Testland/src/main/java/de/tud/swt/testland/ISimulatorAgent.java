@@ -1,14 +1,14 @@
 package de.tud.swt.testland;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.AgentCore;
 
-public interface IRobotAgent {
+public interface ISimulatorAgent {
 
 	public void wander();
 	
 	public boolean isFinish ();
 
-	public RobotCore getRobot();
+	public AgentCore getRobot();
 
 	public void setName(String name);
 	

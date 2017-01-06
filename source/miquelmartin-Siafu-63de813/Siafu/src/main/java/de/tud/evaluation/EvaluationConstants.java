@@ -17,4 +17,5 @@ public class EvaluationConstants {
 	public static final String simulationPathpfad = "..\\Simulations\\Simulation-Testland\\target\\classes";
 		
 	public static boolean local_gui_use = true;
+	public static final boolean MULTISIMULATION_XML = true;
 }

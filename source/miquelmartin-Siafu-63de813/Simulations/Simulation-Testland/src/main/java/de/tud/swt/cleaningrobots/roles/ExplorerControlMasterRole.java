@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.roles;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.AgentCore;
 import de.tud.swt.cleaningrobots.goals.nonoptional.MasterExploreMasterGoal;
 
 /**
@@ -8,7 +8,7 @@ import de.tud.swt.cleaningrobots.goals.nonoptional.MasterExploreMasterGoal;
  */
 public class ExplorerControlMasterRole extends MasterRole {
 
-	public ExplorerControlMasterRole(RobotCore robotCore) {
+	public ExplorerControlMasterRole(AgentCore robotCore) {
 		super(robotCore);
 	}
 

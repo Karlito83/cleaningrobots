@@ -8,7 +8,7 @@ import de.tud.swt.cleaningrobots.model.Position;
  * @author Christopher Werner
  *
  */
-public class RobotDestinationCalculation {
+public class AgentDestinationCalculation {
 	
 	public Position actualPosition;
 	public boolean finish;
@@ -19,7 +19,7 @@ public class RobotDestinationCalculation {
 	public int distMax;
 	private String robotName;
 	
-	public RobotDestinationCalculation (String name) {
+	public AgentDestinationCalculation (String name) {
 		finish = false;
 		robotName = name;
 		oldDest = null;

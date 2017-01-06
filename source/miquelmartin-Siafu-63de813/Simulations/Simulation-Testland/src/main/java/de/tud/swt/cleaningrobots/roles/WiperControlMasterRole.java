@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.roles;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.AgentCore;
 import de.tud.swt.cleaningrobots.goals.nonoptional.MasterWipeMasterGoal;
 
 /**
@@ -8,7 +8,7 @@ import de.tud.swt.cleaningrobots.goals.nonoptional.MasterWipeMasterGoal;
  */
 public class WiperControlMasterRole extends MasterRole {
 
-	public WiperControlMasterRole(RobotCore robotCore) {
+	public WiperControlMasterRole(AgentCore robotCore) {
 		super(robotCore);
 	}
 

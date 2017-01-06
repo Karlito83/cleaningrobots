@@ -10,7 +10,7 @@ import de.tud.swt.cleaningrobots.model.Position;
  * @author Christopher Werner
  *
  */
-public interface ICommunicationAdapter {
+public interface ISimulatorAdapter {
 
 	/**
 	 * Set the postion of the robot in the simulation.
@@ -37,11 +37,11 @@ public interface ICommunicationAdapter {
 	 * @param visionRadius
 	 * @return
 	 */
-	public List<RobotCore> getNearRobots(int visionRadius);
+	public List<AgentCore> getNearRobots(int visionRadius);
 	
 	/**
 	 * Get all robot core from the test case.
 	 * @return
 	 */
-	public List<RobotCore> getAllRobots();
+	public List<AgentCore> getAllRobots();
 }

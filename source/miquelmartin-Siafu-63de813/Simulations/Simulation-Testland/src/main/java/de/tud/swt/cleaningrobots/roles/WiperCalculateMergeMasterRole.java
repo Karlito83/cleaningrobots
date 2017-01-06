@@ -1,14 +1,14 @@
 package de.tud.swt.cleaningrobots.roles;
 
-import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.goals.optional.CalculateWipeRobotPositionGoal;
+import de.tud.swt.cleaningrobots.AgentCore;
+import de.tud.swt.cleaningrobots.goals.optional.CalculateWipeAgentPositionGoal;
 
 /**
  * Add the goal to calculate new wipe destinations for all followers.
  */
 public class WiperCalculateMergeMasterRole extends MergeMasterRole {
 
-	public WiperCalculateMergeMasterRole(RobotCore robotCore) {
+	public WiperCalculateMergeMasterRole(AgentCore robotCore) {
 		super(robotCore);
 	}
 	
@@ -16,7 +16,7 @@ public class WiperCalculateMergeMasterRole extends MergeMasterRole {
 	public boolean createGoals() {
 		boolean result = super.createGoals();
 		
-		CalculateWipeRobotPositionGoal crpg = new CalculateWipeRobotPositionGoal(this);
+		CalculateWipeAgentPositionGoal crpg = new CalculateWipeAgentPositionGoal(this);
 		if (crpg.isHardwareCorrect())
 		{
 			this.addGoals(crpg);

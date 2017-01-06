@@ -6,7 +6,6 @@ import java.util.Map;
 import de.tud.evaluation.WorkingConfiguration;
 import de.tud.swt.cleaningrobots.hardware.SpecialHardware;
 import de.tud.swt.cleaningrobots.model.State;
-import de.tud.swt.cleaningrobots.util.ReadXMLInput;
 
 /**
  * The configuration class contains the values of the test case and a map with all states in it.
@@ -24,8 +23,8 @@ public class Configuration {
 	private Map<String, SpecialHardware> specialHardware;
 	
 	public Configuration (WorkingConfiguration wc) {
-		ReadXMLInput r = new ReadXMLInput();
-		this.specialHardware = r.readHardwareComponents();
+		//ReadXMLInput r = new ReadXMLInput();
+		//this.specialHardware = r.readHardwareComponents();
 		this.wc = wc;
 	}
 	
@@ -56,6 +55,8 @@ public class Configuration {
 	public SpecialHardware getHardware (String name)
 	{
 		SpecialHardware s = specialHardware.get(name);
+		if (s == null)
+			return null;
 		return s.copy();
 	}
 }

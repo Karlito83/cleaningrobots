@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.model.State;
 
 /**
@@ -20,9 +20,9 @@ public abstract class SubGoal extends Goal {
 
 	protected boolean correct;
 	protected List<Behaviour> behaviours;
-	protected RobotRole robotRole;
+	protected AgentRole robotRole;
 	
-	public SubGoal(RobotRole role, boolean optional) {
+	public SubGoal(AgentRole role, boolean optional) {
 		super(role.getRobotCore());
 		this.optional = optional;
 		this.correct = true;

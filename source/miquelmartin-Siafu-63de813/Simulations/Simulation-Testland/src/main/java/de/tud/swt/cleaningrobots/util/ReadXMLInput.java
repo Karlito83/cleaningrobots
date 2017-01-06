@@ -114,8 +114,8 @@ public class ReadXMLInput {
         return componentMap;
 	}
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		ReadXMLInput r = new ReadXMLInput();
 		r.readHardwareComponents();
-	}
+	}*/
 }

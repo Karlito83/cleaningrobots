@@ -13,18 +13,18 @@ import de.tud.swt.cleaningrobots.model.State;
  */
 public abstract class Behaviour {
 	
-	protected RobotCore agentCore;
-	protected RobotRole agentRole;
+	protected AgentCore agentCore;
+	protected AgentRole agentRole;
 	protected Demand demand;
 	protected boolean hardwarecorrect;	
 	protected Set<State> supportedStates;
 
-	public Behaviour(RobotRole role){
+	public Behaviour(AgentRole role){
 		this(role.getRobotCore());
 		this.agentRole = role;	
 	}
 	
-	private Behaviour(RobotCore robot){
+	private Behaviour(AgentCore robot){
 		this.agentCore = robot;
 		this.supportedStates = new HashSet<State>();
 		this.demand = new Demand(robot);

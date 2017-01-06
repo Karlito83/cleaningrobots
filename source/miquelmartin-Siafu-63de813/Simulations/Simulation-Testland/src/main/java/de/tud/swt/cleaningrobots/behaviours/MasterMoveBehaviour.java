@@ -1,7 +1,7 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 
 /**
@@ -13,7 +13,7 @@ import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
  */
 public class MasterMoveBehaviour extends Behaviour {
 
-	public MasterMoveBehaviour(RobotRole role) {
+	public MasterMoveBehaviour(AgentRole role) {
 		super(role);
 	}
 	

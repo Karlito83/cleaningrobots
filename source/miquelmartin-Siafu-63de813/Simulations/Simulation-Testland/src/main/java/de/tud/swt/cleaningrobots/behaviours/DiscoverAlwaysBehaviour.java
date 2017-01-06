@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.LookAroundSensor;
 import de.tud.swt.cleaningrobots.model.Field;
@@ -24,7 +24,7 @@ public class DiscoverAlwaysBehaviour extends Behaviour {
 	private State STATE_BLOCKED;
 	private State STATE_FREE;
 		
-	public DiscoverAlwaysBehaviour(RobotRole role) {
+	public DiscoverAlwaysBehaviour(AgentRole role) {
 		super(role);
 		
 		LookAroundSensor las = (LookAroundSensor) this.demand.getHardwareComponent(ComponentTypes.LOOKAROUNDSENSOR);

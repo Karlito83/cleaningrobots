@@ -2,7 +2,7 @@ package de.tud.swt.cleaningrobots.merge;
 
 import de.tud.evaluation.ExchangeMeasurement;
 import de.tud.swt.cleaningrobots.Configuration;
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.AgentCore;
 
 /**
  * Abstract Merge class which must be implemented for the exchange of data.
@@ -43,7 +43,7 @@ public abstract class Merge {
 	 * @param to (AgentCore where the data goes to)
 	 * @param object (Data or information about what should be send)
 	 */
-	public void run (RobotCore from, RobotCore to, Object object)
+	public void run (AgentCore from, AgentCore to, Object object)
 	{
 		this.preRun(from.getName(), to.getName());
 		this.action(from, to, object);
@@ -56,5 +56,5 @@ public abstract class Merge {
 	 * @param to (AgentCore where the data goes to)
 	 * @param object (Data or information about what should be send)
 	 */
-	protected abstract void action (RobotCore from, RobotCore to, Object object);
+	protected abstract void action (AgentCore from, AgentCore to, Object object);
 }

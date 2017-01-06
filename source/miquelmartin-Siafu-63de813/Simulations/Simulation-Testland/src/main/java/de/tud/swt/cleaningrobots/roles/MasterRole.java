@@ -3,8 +3,8 @@ package de.tud.swt.cleaningrobots.roles;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentCore;
+import de.tud.swt.cleaningrobots.AgentRole;
 
 /**
  * The master role has a number of followers under him.
@@ -12,16 +12,16 @@ import de.tud.swt.cleaningrobots.RobotRole;
  * @author Christopher Werner
  *
  */
-public abstract class MasterRole extends RobotRole {
+public abstract class MasterRole extends AgentRole {
 	
-	private List<RobotRole> followers;
+	private List<AgentRole> followers;
 
-	public MasterRole(RobotCore robotCore) {
+	public MasterRole(AgentCore robotCore) {
 		super(robotCore);		
-		this.followers = new ArrayList<RobotRole>();
+		this.followers = new ArrayList<AgentRole>();
 	}
 	
-	public List<RobotRole> getFollowers () {
+	public List<AgentRole> getFollowers () {
 		return this.followers;
 	}
 	

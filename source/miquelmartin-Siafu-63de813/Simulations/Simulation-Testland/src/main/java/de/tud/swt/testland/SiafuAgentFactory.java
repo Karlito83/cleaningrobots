@@ -18,13 +18,13 @@ import de.tud.swt.cleaningrobots.hardware.Wlan;
  * @author Christopher Werner
  *
  */
-public class RobotFactory implements ICreateAgents {
+public class SiafuAgentFactory implements ISimulatorAgentFactory {
 	
 	private int counter;
 	private Configuration configuration;
 	private World world;
 	
-	public RobotFactory (Configuration configuration, World world) {
+	public SiafuAgentFactory (Configuration configuration, World world) {
 		this.world = world;
 		this.configuration = configuration;
 		this.counter = 0;
@@ -38,10 +38,10 @@ public class RobotFactory implements ICreateAgents {
 	 * @return the new agent
 	 */
 	@Override
-	public IRobotAgent createLoadStation() {
+	public ISimulatorAgent createLoadStation() {
 		try {
 			counter++;
-			RobotAgent agent = new RobotAgent("Robbi_" + counter, world
+			SiafuAgent agent = new SiafuAgent("Robbi_" + counter, world
 					.getRandomPlaceOfType("Center").getPos(), "Master",
 					world, configuration);
 
@@ -63,10 +63,10 @@ public class RobotFactory implements ICreateAgents {
 	 * @return the new agent
 	 */
 	@Override
-	public IRobotAgent createLoadStationAgent() {
+	public ISimulatorAgent createLoadStationAgent() {
 		try {
 			counter++;
-			RobotAgent agent = new RobotAgent("Robbi_" + counter, world
+			SiafuAgent agent = new SiafuAgent("Robbi_" + counter, world
 					.getRandomPlaceOfType("Center").getPos(), "Master",
 					world, configuration);
 			
@@ -90,10 +90,10 @@ public class RobotFactory implements ICreateAgents {
 	 * @return the new agent
 	 */
 	@Override
-	public IRobotAgent createExploreAgent() {
+	public ISimulatorAgent createExploreAgent() {
 		try {
 			counter++;
-			RobotAgent agent = new RobotAgent("Robbi_" + counter, world
+			SiafuAgent agent = new SiafuAgent("Robbi_" + counter, world
 					.getRandomPlaceOfType("Center").getPos(), "HumanMagenta",
 					world, configuration);
 
@@ -118,10 +118,10 @@ public class RobotFactory implements ICreateAgents {
 	 * @return the new agent
 	 */
 	@Override
-	public IRobotAgent createWipeAgent() {
+	public ISimulatorAgent createWipeAgent() {
 		try {
 			counter++;
-			RobotAgent agent = new RobotAgent("Robbi_" + counter, world
+			SiafuAgent agent = new SiafuAgent("Robbi_" + counter, world
 					.getRandomPlaceOfType("Center").getPos(), "HumanYellow",
 					world, configuration);
 			
@@ -146,10 +146,10 @@ public class RobotFactory implements ICreateAgents {
 	 * @return the new agent
 	 */
 	@Override
-	public IRobotAgent createHooveAgent() {
+	public ISimulatorAgent createHooveAgent() {
 		try {
 			counter++;
-			RobotAgent agent = new RobotAgent("Robbi_" + counter, world
+			SiafuAgent agent = new SiafuAgent("Robbi_" + counter, world
 					.getRandomPlaceOfType("Center").getPos(), "HumanGreen",
 					world, configuration);
 

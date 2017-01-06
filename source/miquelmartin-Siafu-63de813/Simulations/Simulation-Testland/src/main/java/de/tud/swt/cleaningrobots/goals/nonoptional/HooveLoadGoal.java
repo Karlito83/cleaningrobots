@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.nonoptional;
 
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.behaviours.HooveAroundAtDestinationBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.HooveBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
@@ -20,11 +20,11 @@ public class HooveLoadGoal extends NonOptionalGoal {
 	private State STATE_HOOVE;	
 	private State WORLDSTATE_DISCOVERED;
 	
-	public HooveLoadGoal(RobotRole role, boolean relative) {
+	public HooveLoadGoal(AgentRole role, boolean relative) {
 		super(role);
 		
-		this.STATE_HOOVE = getRobotCore().getConfiguration().createState("Hoove");
-		this.WORLDSTATE_DISCOVERED = getRobotCore().getConfiguration().createState("Discovered");
+		this.STATE_HOOVE = getAgentCore().getConfiguration().createState("Hoove");
+		this.WORLDSTATE_DISCOVERED = getAgentCore().getConfiguration().createState("Discovered");
 		
 		HooveAroundAtDestinationBehaviour s = new HooveAroundAtDestinationBehaviour(role);
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
@@ -53,8 +53,8 @@ public class HooveLoadGoal extends NonOptionalGoal {
 
 	@Override
 	public boolean preCondition() {		
-		boolean discovered = this.getRobotCore().getWorld().containsWorldState(WORLDSTATE_DISCOVERED);
-		if (!discovered || this.getRobotCore().getWorld().getNextPassablePositionWithoutState(STATE_HOOVE) != null)
+		boolean discovered = this.getAgentCore().getWorld().containsWorldState(WORLDSTATE_DISCOVERED);
+		if (!discovered || this.getAgentCore().getWorld().getNextPassablePositionWithoutState(STATE_HOOVE) != null)
 			return true;
 		return false;
 	}
@@ -66,7 +66,7 @@ public class HooveLoadGoal extends NonOptionalGoal {
 			return false;
 		else {
 			boolean proof = true;
-			for (RobotRole rr : getRobotCore().getRoles()) {
+			for (AgentRole rr : getAgentCore().getRoles()) {
 				if (rr.hasNewInformation())
 					proof = false;
 			}

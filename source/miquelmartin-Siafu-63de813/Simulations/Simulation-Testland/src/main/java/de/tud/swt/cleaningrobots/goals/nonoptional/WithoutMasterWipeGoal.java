@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.nonoptional;
 
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.behaviours.LoadIfAtLoadStationBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.WipeAroundAtDestinationBehaviour;
@@ -20,10 +20,10 @@ public class WithoutMasterWipeGoal extends NonOptionalGoal {
 	private WipeBehaviour d;
 	private State WORLDSTATE_WIPED;
 	
-	public WithoutMasterWipeGoal(RobotRole role) {
+	public WithoutMasterWipeGoal(AgentRole role) {
 		super(role);
 		
-		this.WORLDSTATE_WIPED = getRobotCore().getConfiguration().createState("Wiped");
+		this.WORLDSTATE_WIPED = getAgentCore().getConfiguration().createState("Wiped");
 		
 		WipeAroundAtDestinationBehaviour s = new WipeAroundAtDestinationBehaviour(role);
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
@@ -68,7 +68,7 @@ public class WithoutMasterWipeGoal extends NonOptionalGoal {
 
 	@Override
 	public boolean preCondition() {		
-		if (getRobotCore().getWorld().containsWorldState(WORLDSTATE_WIPED))
+		if (getAgentCore().getWorld().containsWorldState(WORLDSTATE_WIPED))
 			return false;
 		return true;
 	}

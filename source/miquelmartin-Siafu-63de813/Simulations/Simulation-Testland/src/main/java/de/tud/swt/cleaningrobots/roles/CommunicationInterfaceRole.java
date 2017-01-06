@@ -1,12 +1,12 @@
 package de.tud.swt.cleaningrobots.roles;
 
-import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentCore;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.goals.optional.WlanOnGoal;
 
-public class CommunicationInterfaceRole extends RobotRole {
+public class CommunicationInterfaceRole extends AgentRole {
 
-	public CommunicationInterfaceRole(RobotCore robotCore) {
+	public CommunicationInterfaceRole(AgentCore robotCore) {
 		super(robotCore);
 	}
 

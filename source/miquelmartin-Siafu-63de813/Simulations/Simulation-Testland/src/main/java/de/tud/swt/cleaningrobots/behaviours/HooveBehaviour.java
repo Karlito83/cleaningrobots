@@ -1,7 +1,7 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
 
@@ -22,7 +22,7 @@ public class HooveBehaviour extends Behaviour {
 	private boolean finishHooving;
 	private boolean relative;
 
-	public HooveBehaviour(RobotRole role, boolean relative) {
+	public HooveBehaviour(AgentRole role, boolean relative) {
 		super(role);
 				
 		this.relative = relative;

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentCore;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.LookAroundSensor;
 import de.tud.swt.cleaningrobots.merge.FieldMerge;
@@ -23,7 +23,7 @@ import de.tud.swt.cleaningrobots.util.FieldMergeInformation;
  */
 public class MasterDiscoverAroundBehaviour extends Behaviour {
 
-	private RobotCore master;
+	private AgentCore master;
 	
 	private int visionRadius;
 	private FieldMerge merge;
@@ -31,7 +31,7 @@ public class MasterDiscoverAroundBehaviour extends Behaviour {
 	private State STATE_BLOCKED;
 	private State STATE_FREE;
 		
-	public MasterDiscoverAroundBehaviour(RobotRole role) {
+	public MasterDiscoverAroundBehaviour(AgentRole role) {
 		super(role);
 		
 		this.merge = new FieldMerge(this.agentCore.getConfiguration());

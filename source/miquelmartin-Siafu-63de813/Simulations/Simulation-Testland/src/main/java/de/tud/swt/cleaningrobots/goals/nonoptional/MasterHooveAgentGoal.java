@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.nonoptional;
 
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.behaviours.MasterHooveAroundBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.MasterMoveBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.WlanOnBehaviour;
@@ -14,14 +14,14 @@ import de.tud.swt.cleaningrobots.model.State;
  * @author Christopher Werner
  *
  */
-public class MasterHooveRobotGoal extends NonOptionalGoal {
+public class MasterHooveAgentGoal extends NonOptionalGoal {
 
 	private State WORLDSTATE_HOOVED;
 	
-	public MasterHooveRobotGoal(RobotRole role) {
+	public MasterHooveAgentGoal(AgentRole role) {
 		super(role);
 		
-		this.WORLDSTATE_HOOVED = getRobotCore().getConfiguration().createState("Hooved");
+		this.WORLDSTATE_HOOVED = getAgentCore().getConfiguration().createState("Hooved");
 		
 		WlanOnBehaviour w = new WlanOnBehaviour(role);
 		System.out.println("Correct SeeAround: " + w.isHardwarecorrect());
@@ -50,15 +50,15 @@ public class MasterHooveRobotGoal extends NonOptionalGoal {
 
 	@Override
 	public boolean preCondition() {
-		if (getRobotCore().getWorld().containsWorldState(WORLDSTATE_HOOVED))
+		if (getAgentCore().getWorld().containsWorldState(WORLDSTATE_HOOVED))
 			return false;
 		return true;
 	}
 
 	@Override
 	public boolean postCondition() {
-		if (getRobotCore().getPosition().equals(getRobotCore().getDestinationContainer().getLoadStationPosition()) && 
-				getRobotCore().getWorld().containsWorldState(WORLDSTATE_HOOVED))
+		if (getAgentCore().getPosition().equals(getAgentCore().getDestinationContainer().getLoadStationPosition()) && 
+				getAgentCore().getWorld().containsWorldState(WORLDSTATE_HOOVED))
 			return true;
 		return false;
 	}

@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.optional;
 
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.behaviours.merge.MergeOneMasterBehaviour;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
@@ -12,7 +12,7 @@ import de.tud.swt.cleaningrobots.goals.OptionalGoal;
  */
 public class MergeMasterGoal extends OptionalGoal {
 
-	public MergeMasterGoal(RobotRole role) {
+	public MergeMasterGoal(AgentRole role) {
 		super(role);
 
 		MergeOneMasterBehaviour mm = new MergeOneMasterBehaviour(role, false);

@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.roles;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.AgentCore;
 import de.tud.swt.cleaningrobots.goals.nonoptional.MasterHooveMasterGoal;
 
 /**
@@ -8,7 +8,7 @@ import de.tud.swt.cleaningrobots.goals.nonoptional.MasterHooveMasterGoal;
  */
 public class HooverControlMasterRole extends MasterRole {
 
-	public HooverControlMasterRole(RobotCore robotCore) {
+	public HooverControlMasterRole(AgentCore robotCore) {
 		super(robotCore);
 	}
 

@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentCore;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.merge.PathDestinationMerge;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.roles.MasterRole;
 import de.tud.swt.cleaningrobots.util.PathWayMergeInformation;
-import de.tud.swt.cleaningrobots.util.RobotDestinationCalculation;
+import de.tud.swt.cleaningrobots.util.AgentDestinationCalculation;
 
 /**
  * Behavior for master which search new destinations for explorer.
@@ -33,17 +33,17 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 	private int calculationAway;
 	private PathDestinationMerge mfm;
 	
-	private Map<String, RobotDestinationCalculation> information;
+	private Map<String, AgentDestinationCalculation> information;
 	
 	private boolean relative;
 	
-	public MasterCalculateExploreBehaviour(RobotRole role, boolean relative) {
+	public MasterCalculateExploreBehaviour(AgentRole role, boolean relative) {
 		super(role);
 				
 		this.mr = (MasterRole) role;
 		this.relative = relative;
 		this.mfm = new PathDestinationMerge(this.agentCore.getConfiguration());
-		this.information = new HashMap<String, RobotDestinationCalculation>();		
+		this.information = new HashMap<String, AgentDestinationCalculation>();		
 	}
 	
 	@Override
@@ -69,10 +69,10 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 		this.demand.switchAllOn();
 				
 		//search all explore robots
-		List<RobotCore> allRobots = this.agentCore.getICommunicationAdapter().getAllRobots();
+		List<AgentCore> allRobots = this.agentCore.getICommunicationAdapter().getAllRobots();
 		allRobots.remove(this.agentCore);
 						
-		for (RobotDestinationCalculation rdc : information.values()) {
+		for (AgentDestinationCalculation rdc : information.values()) {
 			//set all NeedNew to false
 			rdc.needNew = false;
 			//change new and old destination
@@ -87,9 +87,9 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 		//search robots which are loading and not have a newDest and set Variable				
 		boolean newOneFind = false;
 				
-		for (RobotCore oneRobot : allRobots) {
+		for (AgentCore oneRobot : allRobots) {
 			//run Values and search the same robot
-			for (RobotDestinationCalculation rdc : information.values()) {
+			for (AgentDestinationCalculation rdc : information.values()) {
 				if (oneRobot.getName().equals(rdc.getName())) 
 				{
 					if (oneRobot.hasNewInformation() && oneRobot.getDestinationContainer().isAtLoadDestination())
@@ -104,14 +104,14 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 		
 		//if new one find then calculate new destination and set it
 		if (newOneFind) {
-			Map<String, RobotDestinationCalculation> result = this.agentCore.getWorld().getNextUnknownFields(information, calculationAway);
+			Map<String, AgentDestinationCalculation> result = this.agentCore.getWorld().getNextUnknownFields(information, calculationAway);
 			
 			if (result != null) {			
 				information = result; 
 				
 				//send new information
-				for (RobotCore oneRobot : allRobots) {
-					for (RobotDestinationCalculation rdc : information.values()) {
+				for (AgentCore oneRobot : allRobots) {
+					for (AgentDestinationCalculation rdc : information.values()) {
 						if (rdc.getName().equals(oneRobot.getName()) && rdc.needNew)
 						{
 							PathWayMergeInformation path = new PathWayMergeInformation(rdc.newDest, agentCore.getWorld().getPath(rdc.newDest));
@@ -121,16 +121,16 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 					}
 				}
 			} else {
-				for (RobotDestinationCalculation rdc : information.values()) {
+				for (AgentDestinationCalculation rdc : information.values()) {
 					if (rdc.needNew)
 						rdc.finish = true;
 				}
 			}
 		}
 		
-		for (RobotCore oneRobot : allRobots) {
+		for (AgentCore oneRobot : allRobots) {
 			//search the same robot
-			for (RobotDestinationCalculation rdc : information.values()) {
+			for (AgentDestinationCalculation rdc : information.values()) {
 				if (oneRobot.getName().equals(rdc.getName())) 
 				{
 					if (oneRobot.hasNewInformation())
@@ -201,13 +201,13 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 	}
 	
 	public boolean isFinishDisscovering () {
-		for (RobotDestinationCalculation rdc : information.values()) {
+		for (AgentDestinationCalculation rdc : information.values()) {
 			if (!rdc.finish)
 				return false;
 		}
 		if (this.agentCore.getWorld().containsWorldState(WORLDSTATE_DISCOVERED))
 		{
-			for (RobotCore core : this.agentCore.getICommunicationAdapter().getAllRobots())
+			for (AgentCore core : this.agentCore.getICommunicationAdapter().getAllRobots())
 				core.getWorld().addWorldState(WORLDSTATE_DISCOVERED);
 			return true;
 		} else {
@@ -225,14 +225,14 @@ public class MasterCalculateExploreBehaviour extends Behaviour{
 	public void initialiseBehaviour() {
 		double maxAway = 0;
 		//search near Explore Robots
-		List<RobotRole> follower = this.mr.getFollowers();
+		List<AgentRole> follower = this.mr.getFollowers();
 			
-		for (RobotRole rr : follower) {
-			RobotCore core = rr.getRobotCore();
+		for (AgentRole rr : follower) {
+			AgentCore core = rr.getRobotCore();
 			if (core.hasHardwareComponent(ComponentTypes.WLAN) && core.hasHardwareComponent(ComponentTypes.LOOKAROUNDSENSOR))
 			{
 				//add Robot to Map
-				RobotDestinationCalculation rdc = new RobotDestinationCalculation(core.getName());
+				AgentDestinationCalculation rdc = new AgentDestinationCalculation(core.getName());
 				rdc.actualPosition = core.getPosition();
 				information.put(core.getName(), rdc);
 				

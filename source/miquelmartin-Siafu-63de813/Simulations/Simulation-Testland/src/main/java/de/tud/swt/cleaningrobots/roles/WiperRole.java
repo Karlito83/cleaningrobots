@@ -1,15 +1,15 @@
 package de.tud.swt.cleaningrobots.roles;
 
-import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentCore;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.goals.nonoptional.WithoutMasterWipeGoal;
 
 /**
  * Add the goals where no master is needed.
  */
-public class WiperRole extends RobotRole {
+public class WiperRole extends AgentRole {
 
-	public WiperRole(RobotCore robotCore) {
+	public WiperRole(AgentCore robotCore) {
 		super(robotCore);
 	}
 

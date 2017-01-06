@@ -1,27 +1,27 @@
 package de.tud.swt.cleaningrobots.goals.nonoptional;
 
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.behaviours.MasterMoveBehaviour;
-import de.tud.swt.cleaningrobots.behaviours.MasterWipeAroundBehaviour;
+import de.tud.swt.cleaningrobots.behaviours.MasterDiscoverAroundBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.WlanOnBehaviour;
 import de.tud.swt.cleaningrobots.goals.NonOptionalGoal;
 import de.tud.swt.cleaningrobots.model.State;
 
 /**
  * Non optional goal for a follower which get information from a master.
- * Drive to a place wipe it and give the information back to the master. 
+ * Drive to a place discover it and give the information back to the master. 
  * 
  * @author Christopher Werner
  *
  */
-public class MasterWipeRobotGoal extends NonOptionalGoal {
+public class MasterExploreAgentGoal extends NonOptionalGoal {
 
-	private State WORLDSTATE_WIPED;
+	private State WORLDSTATE_DISCOVERED;
 	
-	public MasterWipeRobotGoal(RobotRole role) {
+	public MasterExploreAgentGoal(AgentRole role) {
 		super(role);
 		
-		this.WORLDSTATE_WIPED = getRobotCore().getConfiguration().createState("Wiped");
+		this.WORLDSTATE_DISCOVERED = getAgentCore().getConfiguration().createState("Discovered");
 		
 		WlanOnBehaviour w = new WlanOnBehaviour(role);
 		System.out.println("Correct SeeAround: " + w.isHardwarecorrect());
@@ -39,7 +39,7 @@ public class MasterWipeRobotGoal extends NonOptionalGoal {
 			correct = false;
 		}
 		
-		MasterWipeAroundBehaviour s = new MasterWipeAroundBehaviour(role);
+		MasterDiscoverAroundBehaviour s = new MasterDiscoverAroundBehaviour(role);
 		System.out.println("Correct Discover: " + s.isHardwarecorrect());
 		if (s.isHardwarecorrect()) {
 			behaviours.add(s);
@@ -50,16 +50,17 @@ public class MasterWipeRobotGoal extends NonOptionalGoal {
 
 	@Override
 	public boolean preCondition() {
-		if (getRobotCore().getWorld().containsWorldState(WORLDSTATE_WIPED))
+		if (getAgentCore().getWorld().containsWorldState(WORLDSTATE_DISCOVERED))
 			return false;
 		return true;
 	}
 
 	@Override
 	public boolean postCondition() {
-		if (getRobotCore().getPosition().equals(getRobotCore().getDestinationContainer().getLoadStationPosition()) && 
-				getRobotCore().getWorld().containsWorldState(WORLDSTATE_WIPED))
+		if (getAgentCore().getPosition().equals(getAgentCore().getDestinationContainer().getLoadStationPosition()) && 
+				getAgentCore().getWorld().containsWorldState(WORLDSTATE_DISCOVERED))
 			return true;
 		return false;
 	}
+
 }

@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.nonoptional;
 
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.behaviours.MoveBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.WipeAroundAtDestinationBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.WipeBehaviour;
@@ -20,11 +20,11 @@ public class WipeLoadGoal extends NonOptionalGoal {
 	private State STATE_WIPE;	
 	private State WORLDSTATE_DISCOVERED;
 	
-	public WipeLoadGoal(RobotRole role, boolean relative) {
+	public WipeLoadGoal(AgentRole role, boolean relative) {
 		super(role);
 		
-		this.STATE_WIPE = getRobotCore().getConfiguration().createState("Wipe");	
-		this.WORLDSTATE_DISCOVERED = getRobotCore().getConfiguration().createState("Discovered");
+		this.STATE_WIPE = getAgentCore().getConfiguration().createState("Wipe");	
+		this.WORLDSTATE_DISCOVERED = getAgentCore().getConfiguration().createState("Discovered");
 		
 		WipeAroundAtDestinationBehaviour s = new WipeAroundAtDestinationBehaviour(role);
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
@@ -53,8 +53,8 @@ public class WipeLoadGoal extends NonOptionalGoal {
 
 	@Override
 	public boolean preCondition() {		
-		boolean discovered = this.getRobotCore().getWorld().containsWorldState(WORLDSTATE_DISCOVERED);
-		if (!discovered || this.getRobotCore().getWorld().getNextPassablePositionWithoutState(STATE_WIPE) != null)
+		boolean discovered = this.getAgentCore().getWorld().containsWorldState(WORLDSTATE_DISCOVERED);
+		if (!discovered || this.getAgentCore().getWorld().getNextPassablePositionWithoutState(STATE_WIPE) != null)
 			return true;
 		return false;
 	}
@@ -65,7 +65,7 @@ public class WipeLoadGoal extends NonOptionalGoal {
 			return false;
 		else {
 			boolean proof = true;
-			for (RobotRole rr : getRobotCore().getRoles()) {
+			for (AgentRole rr : getAgentCore().getRoles()) {
 				if (rr.hasNewInformation())
 					proof = false;
 			}

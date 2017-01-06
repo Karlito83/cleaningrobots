@@ -1,14 +1,14 @@
 package de.tud.swt.cleaningrobots.roles;
 
-import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.goals.optional.CalculateHooveRobotPositionGoal;
+import de.tud.swt.cleaningrobots.AgentCore;
+import de.tud.swt.cleaningrobots.goals.optional.CalculateHooveAgentPositionGoal;
 
 /**
  * Add the goal to calculate new hoove destinations for all followers.
  */
 public class HooverCalculateMergeMasterRole extends MergeMasterRole {
 
-	public HooverCalculateMergeMasterRole(RobotCore robotCore) {
+	public HooverCalculateMergeMasterRole(AgentCore robotCore) {
 		super(robotCore);
 	}
 	
@@ -16,7 +16,7 @@ public class HooverCalculateMergeMasterRole extends MergeMasterRole {
 	public boolean createGoals() {
 		boolean result = super.createGoals();
 		
-		CalculateHooveRobotPositionGoal crpg = new CalculateHooveRobotPositionGoal(this);
+		CalculateHooveAgentPositionGoal crpg = new CalculateHooveAgentPositionGoal(this);
 		if (crpg.isHardwareCorrect())
 		{
 			this.addGoals(crpg);

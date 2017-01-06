@@ -1,7 +1,7 @@
 package de.tud.swt.cleaningrobots.merge;
 
 import de.tud.swt.cleaningrobots.Configuration;
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.AgentCore;
 import de.tud.swt.cleaningrobots.util.PathWayMergeInformation;
 
 /**
@@ -17,7 +17,7 @@ public class PathDestinationMerge extends Merge {
 	}
 	
 	@Override
-	protected void action(RobotCore from, RobotCore to, Object object) {
+	protected void action(AgentCore from, AgentCore to, Object object) {
 		PathWayMergeInformation pathway = (PathWayMergeInformation) object;
 		to.getDestinationContainer().setDestinationAndPath(pathway.getPath(), pathway.getDestination());
 		//measurement

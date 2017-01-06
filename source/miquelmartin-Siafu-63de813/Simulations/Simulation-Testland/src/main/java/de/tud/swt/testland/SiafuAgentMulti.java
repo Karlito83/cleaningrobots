@@ -6,8 +6,8 @@ import java.util.List;
 import de.nec.nle.siafu.model.MultiAgent;
 import de.nec.nle.siafu.model.MultiWorld;
 import de.tud.swt.cleaningrobots.Configuration;
-import de.tud.swt.cleaningrobots.ICommunicationAdapter;
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.ISimulatorAdapter;
+import de.tud.swt.cleaningrobots.AgentCore;
 import de.tud.swt.cleaningrobots.hardware.Accu;
 import de.tud.swt.cleaningrobots.model.Position;
 
@@ -18,16 +18,16 @@ import de.tud.swt.cleaningrobots.model.Position;
  * @author Christopher Werner
  *
  */
-public class RobotAgentMulti extends MultiAgent implements ICommunicationAdapter, IRobotAgent {
+public class SiafuAgentMulti extends MultiAgent implements ISimulatorAdapter, ISimulatorAgent {
 
 	private boolean finish;
 	
-	protected RobotCore cleaningRobot;	
+	protected AgentCore cleaningRobot;	
 	
-	public RobotAgentMulti (String name, Position start, MultiWorld world, Configuration configuration) {
+	public SiafuAgentMulti (String name, Position start, MultiWorld world, Configuration configuration) {
 		super(name, start.getX(), start.getY(), world);
 		
-		this.cleaningRobot = new RobotCore(name, this, new Accu(48.0), configuration);
+		this.cleaningRobot = new AgentCore(name, this, new Accu(48.0), configuration);
 	}
 	
 	public void wander() {
@@ -42,7 +42,7 @@ public class RobotAgentMulti extends MultiAgent implements ICommunicationAdapter
 		return this.finish;
 	}
 
-	public RobotCore getRobot() {
+	public AgentCore getRobot() {
 		return this.cleaningRobot;
 	}
 	
@@ -69,27 +69,27 @@ public class RobotAgentMulti extends MultiAgent implements ICommunicationAdapter
 	}
 
 	@Override
-	public List<RobotCore> getNearRobots(int visionRadius) {
-		List <RobotCore> result = new LinkedList<RobotCore>(); 
+	public List<AgentCore> getNearRobots(int visionRadius) {
+		List <AgentCore> result = new LinkedList<AgentCore>(); 
 		
 		for (MultiAgent nearAgent : this.siafuWorld.getPeople())
 		{
 			//If there are near Robots
 			if (Math.abs(this.getCol() - nearAgent.getCol()) <= visionRadius 
 					&& Math.abs(this.getRow() - nearAgent.getRow()) <= visionRadius){
-				result.add(((RobotAgentMulti)nearAgent).getRobot());
+				result.add(((SiafuAgentMulti)nearAgent).getRobot());
 			}
 		}
 		return result;
 	}
 	
 	@Override
-	public List<RobotCore> getAllRobots() {
-		List <RobotCore> result = new LinkedList<RobotCore>(); 
+	public List<AgentCore> getAllRobots() {
+		List <AgentCore> result = new LinkedList<AgentCore>(); 
 				
 		for (MultiAgent nearAgent : this.siafuWorld.getPeople())
 		{
-			result.add(((RobotAgentMulti)nearAgent).getRobot());
+			result.add(((SiafuAgentMulti)nearAgent).getRobot());
 		}
 		return result;
 	}

@@ -9,7 +9,7 @@ import java.util.Collection;
 import javax.imageio.ImageIO;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.model.World;
@@ -25,7 +25,7 @@ public class DumpPngModelBehaviour extends Behaviour {
 	private State STATE_HOOVE;	
 	private State STATE_WIPE;
 
-	public DumpPngModelBehaviour(RobotRole role) {
+	public DumpPngModelBehaviour(AgentRole role) {
 		super(role);
 		
 		this.counter = 0;

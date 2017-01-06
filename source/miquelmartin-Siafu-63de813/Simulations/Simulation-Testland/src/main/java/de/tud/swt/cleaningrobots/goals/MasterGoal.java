@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.AgentCore;
 import de.tud.swt.cleaningrobots.model.State;
 
 /**
@@ -19,7 +19,7 @@ public class MasterGoal extends Goal {
 
 	public List<Goal> subGoals;
 
-	public MasterGoal(RobotCore core) {
+	public MasterGoal(AgentCore core) {
 		super(core);
 
 		this.subGoals = new ArrayList<Goal>();

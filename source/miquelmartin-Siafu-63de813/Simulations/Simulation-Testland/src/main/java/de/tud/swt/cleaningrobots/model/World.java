@@ -13,9 +13,9 @@ import java.util.Set;
 
 import cleaningrobots.CleaningrobotsFactory;
 import de.tud.evaluation.ExchangeMeasurement;
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.AgentCore;
 import de.tud.swt.cleaningrobots.util.ImportExportConfiguration;
-import de.tud.swt.cleaningrobots.util.RobotDestinationCalculation;
+import de.tud.swt.cleaningrobots.util.AgentDestinationCalculation;
 
 /**
  * The World a robot has about the map in the test case.
@@ -51,7 +51,7 @@ public class World {
 
 	private final Random random = new Random();
 
-	private RobotCore robot;
+	private AgentCore robot;
 	private Map<Position, Field> map;
 	private Set<State> worldStates;
 	//Coordinations of the big map 
@@ -69,7 +69,7 @@ public class World {
 	
 	private WorldHelper helper;
 
-	public World(RobotCore robot) {
+	public World(AgentCore robot) {
 		this.DISCOVERED_WORLDSTATE = robot.getConfiguration().createState("Discovered");
 		this.HOOVED_WORLDSTATE = robot.getConfiguration().createState("Hooved");
 		this.WIPED_WORLDSTATE = robot.getConfiguration().createState("Wiped");				
@@ -294,7 +294,7 @@ public class World {
 	 * @param maxAway
 	 * @return
 	 */
-	public Map<String, RobotDestinationCalculation> getNextPassablePositionsWithoutState(Map<String, RobotDestinationCalculation> information, int maxAway, State state) {
+	public Map<String, AgentDestinationCalculation> getNextPassablePositionsWithoutState(Map<String, AgentDestinationCalculation> information, int maxAway, State state) {
 
 		if (this.containsWorldState(HOOVED_WORLDSTATE)) {
 			System.out.println("Welt schon gesaugt!");
@@ -309,7 +309,7 @@ public class World {
 		
 		boolean changeFlag = false;
 		
-		for (RobotDestinationCalculation rdc : information.values()) {
+		for (AgentDestinationCalculation rdc : information.values()) {
 			if (rdc.needNew) {
 				rdc.distMax = -1;
 				
@@ -326,7 +326,7 @@ public class World {
 						//field not contains the state and can be result
 						boolean proofDist = true;
 						int minDistToOther = maxAway;
-						for (RobotDestinationCalculation proof : information.values())
+						for (AgentDestinationCalculation proof : information.values())
 						{
 							if (!proof.getName().equals(rdc.getName()))
 							{
@@ -527,7 +527,7 @@ public class World {
 	 * @param maxAway
 	 * @return
 	 */
-	public Map<String, RobotDestinationCalculation> getNextPassablePositionsByStateWithoutState(Map<String, RobotDestinationCalculation> information, int maxAway, State state, State without) {
+	public Map<String, AgentDestinationCalculation> getNextPassablePositionsByStateWithoutState(Map<String, AgentDestinationCalculation> information, int maxAway, State state, State without) {
 
 		if (this.containsWorldState(WIPED_WORLDSTATE)) {
 			System.out.println("Welt schon gewischt!");
@@ -542,7 +542,7 @@ public class World {
 		
 		boolean changeFlag = false;
 		
-		for (RobotDestinationCalculation rdc : information.values()) {
+		for (AgentDestinationCalculation rdc : information.values()) {
 			if (rdc.needNew) {
 				rdc.distMax = -1;
 				
@@ -559,7 +559,7 @@ public class World {
 						//field not contains the state, Position can be result
 						boolean proofDist = true;
 						int minDistToOther = maxAway;
-						for (RobotDestinationCalculation proof : information.values())
+						for (AgentDestinationCalculation proof : information.values())
 						{
 							if (!proof.getName().equals(rdc.getName()))
 							{
@@ -637,7 +637,7 @@ public class World {
 	 * @param maxAway
 	 * @return
 	 */
-	public Map<String, RobotDestinationCalculation> getNextUnknownFields(Map<String, RobotDestinationCalculation> information, int maxAway) {
+	public Map<String, AgentDestinationCalculation> getNextUnknownFields(Map<String, AgentDestinationCalculation> information, int maxAway) {
 
 		if (this.containsWorldState(DISCOVERED_WORLDSTATE)) {
 			System.out.println("Welt schon erkundet!");
@@ -649,7 +649,7 @@ public class World {
 		
 		boolean changeFlag = false;
 		
-		for (RobotDestinationCalculation rdc : information.values()) {
+		for (AgentDestinationCalculation rdc : information.values()) {
 			if (rdc.needNew) {
 				rdc.distMax = -1;
 				
@@ -668,7 +668,7 @@ public class World {
 						if (!map.containsKey(neighbour)) {
 							boolean proofDist = true;
 							int minDistToOther = maxAway;
-							for (RobotDestinationCalculation proof : information.values())
+							for (AgentDestinationCalculation proof : information.values())
 							{
 								if (!proof.getName().equals(rdc.getName()))
 								{

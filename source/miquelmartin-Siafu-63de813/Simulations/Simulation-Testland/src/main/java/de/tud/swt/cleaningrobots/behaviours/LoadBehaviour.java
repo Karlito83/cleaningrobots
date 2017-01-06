@@ -3,8 +3,8 @@ package de.tud.swt.cleaningrobots.behaviours;
 import java.util.List;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentCore;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.LoadStation;
 
@@ -19,7 +19,7 @@ public class LoadBehaviour extends Behaviour {
 
 	private LoadStation loadStation;
 	
-	public LoadBehaviour(RobotRole role) {
+	public LoadBehaviour(AgentRole role) {
 		super(role);
 
 		this.loadStation = (LoadStation) this.demand.getHardwareComponent(ComponentTypes.LOADSTATION);
@@ -38,9 +38,9 @@ public class LoadBehaviour extends Behaviour {
 	@Override
 	public boolean action() throws Exception {
 
-		List<RobotCore> nearRobots = this.agentCore.getICommunicationAdapter().getNearRobots(loadStation.getMeasurementRange());
+		List<AgentCore> nearRobots = this.agentCore.getICommunicationAdapter().getNearRobots(loadStation.getMeasurementRange());
 		nearRobots.remove(this.agentCore);
-		for (RobotCore nearRobot : nearRobots) {
+		for (AgentCore nearRobot : nearRobots) {
 			if (nearRobot.getAccu() != null)
 			{
 				if (nearRobot.isLoading())

@@ -3,7 +3,7 @@ package de.tud.swt.cleaningrobots.factory;
 import java.util.ArrayList;
 
 import de.tud.swt.cleaningrobots.Configuration;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.roles.CommunicationInterfaceRole;
 import de.tud.swt.cleaningrobots.roles.ExplorerRole;
 import de.tud.swt.cleaningrobots.roles.HooverRole;
@@ -12,8 +12,8 @@ import de.tud.swt.cleaningrobots.roles.LoggingCsvRole;
 import de.tud.swt.cleaningrobots.roles.LoggingPictureRole;
 import de.tud.swt.cleaningrobots.roles.LoggingXmlRole;
 import de.tud.swt.cleaningrobots.roles.WiperRole;
-import de.tud.swt.testland.ICreateAgents;
-import de.tud.swt.testland.IRobotAgent;
+import de.tud.swt.testland.ISimulatorAgentFactory;
+import de.tud.swt.testland.ISimulatorAgent;
 
 /**
  * Without user interface from Siafu. 
@@ -38,16 +38,16 @@ public class ExploreWithoutMasterFactory extends IAgentFactory {
 	 * @return an ArrayList with the created agents
 	 */
 	@Override
-	public ArrayList<IRobotAgent> createRobots(ICreateAgents factory) {
+	public ArrayList<ISimulatorAgent> createRobots(ISimulatorAgentFactory factory) {
 		
-		ArrayList<IRobotAgent> population = new ArrayList<IRobotAgent>();	
+		ArrayList<ISimulatorAgent> population = new ArrayList<ISimulatorAgent>();	
 		
 		//loadstation agent
-		IRobotAgent lsa = factory.createLoadStation();
+		ISimulatorAgent lsa = factory.createLoadStation();
 		population.add(lsa);
 		
 		//load if robot want role
-		RobotRole rr = new LoadstationRole(lsa.getRobot());
+		AgentRole rr = new LoadstationRole(lsa.getRobot());
 		rr.addRole(rr);
 		
 		boolean proof;
@@ -61,14 +61,14 @@ public class ExploreWithoutMasterFactory extends IAgentFactory {
 			
 			//explore agents
 			for (int i = 0; i < configuration.getWc().number_explore_agents; i++) {
-				IRobotAgent era = factory.createExploreAgent();
+				ISimulatorAgent era = factory.createExploreAgent();
 				population.add(era);
 				
-				RobotRole exr = new ExplorerRole(era.getRobot());
+				AgentRole exr = new ExplorerRole(era.getRobot());
 				exr.addRole(exr);
 				
 				if (proof) {
-					RobotRole exw = new CommunicationInterfaceRole(era.getRobot());
+					AgentRole exw = new CommunicationInterfaceRole(era.getRobot());
 					exw.addRole(exw);
 					proof = false;
 				}
@@ -83,14 +83,14 @@ public class ExploreWithoutMasterFactory extends IAgentFactory {
 				
 				//hoove agents
 				for (int i = 0; i < configuration.getWc().number_hoove_agents; i++) {
-					IRobotAgent hra = factory.createHooveAgent();
+					ISimulatorAgent hra = factory.createHooveAgent();
 					population.add(hra);
 					
-					RobotRole hor = new HooverRole(hra.getRobot());
+					AgentRole hor = new HooverRole(hra.getRobot());
 					hor.addRole(hor);
 					
 					if (proof) {
-						RobotRole how = new CommunicationInterfaceRole(hra.getRobot());
+						AgentRole how = new CommunicationInterfaceRole(hra.getRobot());
 						how.addRole(how);
 						proof = false;
 					}
@@ -100,10 +100,10 @@ public class ExploreWithoutMasterFactory extends IAgentFactory {
 					
 					//wipe agents
 					for (int i = 0; i < configuration.getWc().number_wipe_agents; i++) {
-						IRobotAgent wra = factory.createWipeAgent();
+						ISimulatorAgent wra = factory.createWipeAgent();
 						population.add(wra);
 						
-						RobotRole wir = new WiperRole(wra.getRobot());
+						AgentRole wir = new WiperRole(wra.getRobot());
 						wir.addRole(wir);
 					}
 				}
@@ -113,7 +113,7 @@ public class ExploreWithoutMasterFactory extends IAgentFactory {
 		//add the logging roles to every agent
 		if (configuration.getWc().csvSave)
 		{
-			for (IRobotAgent a: population)
+			for (ISimulatorAgent a: population)
 			{
 				LoggingCsvRole csvRole = new LoggingCsvRole(a.getRobot());
 				csvRole.addRole(csvRole);
@@ -121,7 +121,7 @@ public class ExploreWithoutMasterFactory extends IAgentFactory {
 		}
 		if (configuration.getWc().pngSave)
 		{
-			for (IRobotAgent a: population)
+			for (ISimulatorAgent a: population)
 			{
 				LoggingPictureRole pngRole = new LoggingPictureRole(a.getRobot());
 				pngRole.addRole(pngRole);
@@ -129,7 +129,7 @@ public class ExploreWithoutMasterFactory extends IAgentFactory {
 		}
 		if (configuration.getWc().xmlSave)
 		{
-			for (IRobotAgent a: population)
+			for (ISimulatorAgent a: population)
 			{
 				LoggingXmlRole xmlRole = new LoggingXmlRole(a.getRobot());
 				xmlRole.addRole(xmlRole);
@@ -137,7 +137,7 @@ public class ExploreWithoutMasterFactory extends IAgentFactory {
 		}
 		
 		//example output for master follower relation
-		for (IRobotAgent a: population)
+		for (ISimulatorAgent a: population)
 		{
 			a.getRobot().createAndInitializeRoleGoals();
 			System.out.println("Name: " + a.getRobot().getName() + " Roles: " + a.getRobot().getRoles() + " States: " + a.getRobot().getSupportedStates());

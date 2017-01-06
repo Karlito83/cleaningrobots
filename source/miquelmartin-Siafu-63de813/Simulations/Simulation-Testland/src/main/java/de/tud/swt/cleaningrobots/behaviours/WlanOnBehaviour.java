@@ -1,7 +1,7 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 
 /**
@@ -12,7 +12,7 @@ import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
  */
 public class WlanOnBehaviour extends Behaviour {
 	
-	public WlanOnBehaviour(RobotRole role) {
+	public WlanOnBehaviour(AgentRole role) {
 		super(role);		
 	}
 	

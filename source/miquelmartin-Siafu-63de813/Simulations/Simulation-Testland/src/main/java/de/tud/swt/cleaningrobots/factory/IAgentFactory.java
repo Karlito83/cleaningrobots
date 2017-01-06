@@ -3,8 +3,8 @@ package de.tud.swt.cleaningrobots.factory;
 import java.util.ArrayList;
 
 import de.tud.swt.cleaningrobots.Configuration;
-import de.tud.swt.testland.ICreateAgents;
-import de.tud.swt.testland.IRobotAgent;
+import de.tud.swt.testland.ISimulatorAgentFactory;
+import de.tud.swt.testland.ISimulatorAgent;
 
 public abstract class IAgentFactory {
 	
@@ -22,5 +22,5 @@ public abstract class IAgentFactory {
 	 *            the world where the agents will dwell
 	 * @return an ArrayList with the created agents
 	 */
-	public abstract ArrayList<IRobotAgent> createRobots(ICreateAgents factory);
+	public abstract ArrayList<ISimulatorAgent> createRobots(ISimulatorAgentFactory factory);
 }

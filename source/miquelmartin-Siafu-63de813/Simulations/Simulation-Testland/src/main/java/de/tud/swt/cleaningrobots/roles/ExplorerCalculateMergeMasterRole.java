@@ -1,14 +1,14 @@
 package de.tud.swt.cleaningrobots.roles;
 
-import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.goals.optional.CalculateExploreRobotPositionGoal;
+import de.tud.swt.cleaningrobots.AgentCore;
+import de.tud.swt.cleaningrobots.goals.optional.CalculateExploreAgentPositionGoal;
 
 /**
  * Add the goal to calculate new discover destinations for all followers.
  */
 public class ExplorerCalculateMergeMasterRole extends MergeMasterRole {
 
-	public ExplorerCalculateMergeMasterRole(RobotCore robotCore) {
+	public ExplorerCalculateMergeMasterRole(AgentCore robotCore) {
 		super(robotCore);
 	}
 	
@@ -16,7 +16,7 @@ public class ExplorerCalculateMergeMasterRole extends MergeMasterRole {
 	public boolean createGoals() {
 		boolean result = super.createGoals();
 		
-		CalculateExploreRobotPositionGoal crpg = new CalculateExploreRobotPositionGoal(this);
+		CalculateExploreAgentPositionGoal crpg = new CalculateExploreAgentPositionGoal(this);
 		if (crpg.isHardwareCorrect())
 		{
 			this.addGoals(crpg);

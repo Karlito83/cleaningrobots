@@ -17,7 +17,7 @@ import de.tud.swt.cleaningrobots.model.State;
  * @author Christopher Werner
  *
  */
-public class RobotKnowledge {
+public class AgentKnowledge {
 	
 	private String name;
 	private int lastArrange;
@@ -26,7 +26,7 @@ public class RobotKnowledge {
 	private List<RoleModel> roles;
 	private List<State> knownStates;	
 	
-	public RobotKnowledge (String name) {
+	public AgentKnowledge (String name) {
 		this.name = name;
 		components = new LinkedList<String>();
 		roles = new LinkedList<RoleModel>();

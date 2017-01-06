@@ -3,7 +3,7 @@ package de.tud.swt.cleaningrobots.factory;
 import java.util.ArrayList;
 
 import de.tud.swt.cleaningrobots.Configuration;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.roles.ExplorerControlMasterRole;
 import de.tud.swt.cleaningrobots.roles.ExplorerControlledFollowerRole;
 import de.tud.swt.cleaningrobots.roles.FollowerRole;
@@ -16,8 +16,8 @@ import de.tud.swt.cleaningrobots.roles.LoggingXmlRole;
 import de.tud.swt.cleaningrobots.roles.MasterRole;
 import de.tud.swt.cleaningrobots.roles.WiperControlMasterRole;
 import de.tud.swt.cleaningrobots.roles.WiperControlledFollowerRole;
-import de.tud.swt.testland.ICreateAgents;
-import de.tud.swt.testland.IRobotAgent;
+import de.tud.swt.testland.ISimulatorAgentFactory;
+import de.tud.swt.testland.ISimulatorAgent;
 
 /**
  * Without user interface from Siafu. 
@@ -42,12 +42,12 @@ public class MasterExploreFactory extends IAgentFactory {
 	 * @return an ArrayList with the created agents
 	 */
 	@Override
-	public ArrayList<IRobotAgent> createRobots(ICreateAgents factory) {
+	public ArrayList<ISimulatorAgent> createRobots(ISimulatorAgentFactory factory) {
 		
-		ArrayList<IRobotAgent> population = new ArrayList<IRobotAgent>();	
+		ArrayList<ISimulatorAgent> population = new ArrayList<ISimulatorAgent>();	
 		
 		//loadstation agent
-		IRobotAgent lsa = factory.createLoadStationAgent();
+		ISimulatorAgent lsa = factory.createLoadStationAgent();
 		population.add(lsa);
 		
 		if (configuration.getWc().number_explore_agents > 0) {
@@ -56,7 +56,7 @@ public class MasterExploreFactory extends IAgentFactory {
 			
 			//explore agents
 			for (int i = 0; i < configuration.getWc().number_explore_agents; i++) {
-				IRobotAgent era = factory.createExploreAgent();
+				ISimulatorAgent era = factory.createExploreAgent();
 				population.add(era);		
 				
 				FollowerRole fre = new ExplorerControlledFollowerRole(era.getRobot(), mre);
@@ -70,7 +70,7 @@ public class MasterExploreFactory extends IAgentFactory {
 				
 				//hoove agents
 				for (int i = 0; i < configuration.getWc().number_hoove_agents; i++) {
-					IRobotAgent hra = factory.createHooveAgent();
+					ISimulatorAgent hra = factory.createHooveAgent();
 					population.add(hra);
 					
 					FollowerRole frh = new HooverControlledFollowerRole(hra.getRobot(), mrh);
@@ -84,7 +84,7 @@ public class MasterExploreFactory extends IAgentFactory {
 					
 					//wipe agents
 					for (int i = 0; i < configuration.getWc().number_wipe_agents; i++) {
-						IRobotAgent wra = factory.createWipeAgent();
+						ISimulatorAgent wra = factory.createWipeAgent();
 						population.add(wra);
 						
 						FollowerRole frw = new WiperControlledFollowerRole(wra.getRobot(), mrw);
@@ -94,14 +94,14 @@ public class MasterExploreFactory extends IAgentFactory {
 				}
 				
 			}			
-			RobotRole rr = new LoadstationRole(lsa.getRobot());
+			AgentRole rr = new LoadstationRole(lsa.getRobot());
 			rr.addRole(rr);
 		}	
 		
 		//add the logging roles to every agent
 		if (configuration.getWc().csvSave)
 		{
-			for (IRobotAgent a: population)
+			for (ISimulatorAgent a: population)
 			{
 				LoggingCsvRole csvRole = new LoggingCsvRole(a.getRobot());
 				csvRole.addRole(csvRole);
@@ -109,7 +109,7 @@ public class MasterExploreFactory extends IAgentFactory {
 		}
 		if (configuration.getWc().pngSave)
 		{
-			for (IRobotAgent a: population)
+			for (ISimulatorAgent a: population)
 			{
 				LoggingPictureRole pngRole = new LoggingPictureRole(a.getRobot());
 				pngRole.addRole(pngRole);
@@ -117,14 +117,14 @@ public class MasterExploreFactory extends IAgentFactory {
 		}
 		if (configuration.getWc().xmlSave)
 		{
-			for (IRobotAgent a: population)
+			for (ISimulatorAgent a: population)
 			{
 				LoggingXmlRole xmlRole = new LoggingXmlRole(a.getRobot());
 				xmlRole.addRole(xmlRole);
 			}
 		}
 				
-		for (IRobotAgent a: population)
+		for (ISimulatorAgent a: population)
 		{
 			a.getRobot().createAndInitializeRoleGoals();
 			System.out.println("Name: " + a.getRobot().getName() + " Roles: " + a.getRobot().getRoles() + " States: " + a.getRobot().getSupportedStates());

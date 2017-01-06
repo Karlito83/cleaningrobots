@@ -10,7 +10,7 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.model.World;
@@ -27,7 +27,7 @@ public class DumpXmlModelBehaviour extends Behaviour {
 	private State STATE_WIPE;
 	private State STATE_FREE;
 
-	public DumpXmlModelBehaviour(RobotRole role) {
+	public DumpXmlModelBehaviour(AgentRole role) {
 		super(role);
 		
 		this.counter = 0;

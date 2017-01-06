@@ -1,15 +1,15 @@
 package de.tud.swt.cleaningrobots.roles;
 
-import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentCore;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.goals.optional.LoadIfRobotWantGoal;
 
 /**
  * Add the goal to load robots.
  */
-public class LoadstationRole extends RobotRole {
+public class LoadstationRole extends AgentRole {
 
-	public LoadstationRole(RobotCore robotCore) {
+	public LoadstationRole(AgentCore robotCore) {
 		super(robotCore);
 	}
 

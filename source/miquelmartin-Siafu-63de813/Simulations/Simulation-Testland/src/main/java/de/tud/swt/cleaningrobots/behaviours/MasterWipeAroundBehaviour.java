@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentCore;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.Wiper;
 import de.tud.swt.cleaningrobots.merge.FieldMerge;
@@ -24,7 +24,7 @@ import de.tud.swt.cleaningrobots.util.FieldMergeInformation;
  */
 public class MasterWipeAroundBehaviour extends Behaviour {
 
-	private RobotCore master;
+	private AgentCore master;
 	
 	private int visionRadius;
 	private FieldMerge merge;
@@ -32,7 +32,7 @@ public class MasterWipeAroundBehaviour extends Behaviour {
 	private State STATE_HOOVE;
 	private State STATE_WIPE;
 		
-	public MasterWipeAroundBehaviour(RobotRole role) {
+	public MasterWipeAroundBehaviour(AgentRole role) {
 		super(role);
 		
 		this.merge = new FieldMerge(this.agentCore.getConfiguration());

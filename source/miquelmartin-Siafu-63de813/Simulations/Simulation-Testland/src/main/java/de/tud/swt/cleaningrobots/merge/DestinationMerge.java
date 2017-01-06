@@ -1,7 +1,7 @@
 package de.tud.swt.cleaningrobots.merge;
 
 import de.tud.swt.cleaningrobots.Configuration;
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.AgentCore;
 import de.tud.swt.cleaningrobots.model.Position;
 
 /**
@@ -17,7 +17,7 @@ public class DestinationMerge extends Merge {
 	}
 
 	@Override
-	protected void action(RobotCore from, RobotCore to, Object object) {
+	protected void action(AgentCore from, AgentCore to, Object object) {
 		if (object == null)
 		{
 			to.getDestinationContainer().setDestination(null, true);

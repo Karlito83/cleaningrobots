@@ -27,7 +27,7 @@ import de.nec.nle.siafu.model.MultiAgent;
 import de.nec.nle.siafu.model.MultiWorld;
 import de.tud.evaluation.WorkingConfiguration;
 import de.tud.swt.cleaningrobots.Configuration;
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.AgentCore;
 import de.tud.swt.cleaningrobots.factory.ExploreMergeMasterCalculateFactory;
 import de.tud.swt.cleaningrobots.factory.ExploreMergeMasterCalculateRelativeFactory;
 import de.tud.swt.cleaningrobots.factory.ExploreMergeMasterFactory;
@@ -71,9 +71,9 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 	@Override
 	public ArrayList<MultiAgent> createAgents() {
 
-		ArrayList<IRobotAgent> iAgents = new ArrayList<IRobotAgent>();
+		ArrayList<ISimulatorAgent> iAgents = new ArrayList<ISimulatorAgent>();
 		ArrayList<MultiAgent> agents = new ArrayList<MultiAgent>();
-		RobotFactoryMulti rfm = new RobotFactoryMulti(config, world);
+		SiafuAgentFactoryMulti rfm = new SiafuAgentFactoryMulti(config, world);
 
 		try {
 			switch (configuration.config) {
@@ -93,7 +93,7 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 		} catch (Exception ex) {
 		}
 		
-		for (IRobotAgent a : iAgents)
+		for (ISimulatorAgent a : iAgents)
 		{
 			agents.add((MultiAgent)a);
 		}
@@ -106,7 +106,7 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 		boolean finish = true;
 		//do that for each robot
 		for (MultiAgent agent : agents) {
-			IRobotAgent a = (IRobotAgent) agent;
+			ISimulatorAgent a = (ISimulatorAgent) agent;
 			//only if robot is on
 			if (!a.getRobot().isShutDown()) {
 				a.wander();
@@ -135,12 +135,12 @@ public class AgentModelMulti extends BaseAgentModelMulti {
 			long endTime = System.nanoTime();
 			
 			for (MultiAgent a : agents) {
-				((IRobotAgent)a).getRobot().addLastMeasurement();				
+				((ISimulatorAgent)a).getRobot().addLastMeasurement();				
 			}
 			
 			//make data output for all measurements
 			for (MultiAgent a : agents) {
-				RobotCore rc = ((IRobotAgent)a).getRobot();
+				AgentCore rc = ((ISimulatorAgent)a).getRobot();
 				
 				//save JSON document in .txt
 				rc.getMeasurement().benchmarkTime = (endTime - startTime);

@@ -1,15 +1,15 @@
 package de.tud.swt.cleaningrobots.roles;
 
-import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentCore;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.goals.optional.CsvDumpGoal;
 
 /**
  * Add the goal for an PNG output of the current map.
  */
-public class LoggingCsvRole extends RobotRole {
+public class LoggingCsvRole extends AgentRole {
 
-	public LoggingCsvRole(RobotCore robotCore) {
+	public LoggingCsvRole(AgentCore robotCore) {
 		super(robotCore);
 	}
 

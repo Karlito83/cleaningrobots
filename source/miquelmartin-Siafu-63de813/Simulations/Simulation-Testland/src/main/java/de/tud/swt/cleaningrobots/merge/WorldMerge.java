@@ -4,9 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.tud.swt.cleaningrobots.Configuration;
-import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.RobotKnowledge;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentCore;
+import de.tud.swt.cleaningrobots.AgentKnowledge;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.hardware.HardwareComponent;
 import de.tud.swt.cleaningrobots.model.Field;
 import de.tud.swt.cleaningrobots.model.FollowerRoleModel;
@@ -37,7 +37,7 @@ public class WorldMerge extends Merge {
 	 * @param object (Data or information about what should be send)
 	 */
 	@Override
-	protected void action(RobotCore from, RobotCore to, Object object) {
+	protected void action(AgentCore from, AgentCore to, Object object) {
 		ImportExportConfiguration config = (ImportExportConfiguration) object;
 		//name information which always send
 		em.addKnowledgeStringNumber(1);
@@ -46,29 +46,29 @@ public class WorldMerge extends Merge {
 		if (config.knowledge)
 		{
 			//run over all robot knowledge and own knowledge and insert information
-			for (RobotKnowledge exportRk : from.getKnowledge()) {
+			for (AgentKnowledge exportRk : from.getKnowledge()) {
 				boolean isIn = false;
-				for (RobotKnowledge importRk : to.getKnowledge()) {
+				for (AgentKnowledge importRk : to.getKnowledge()) {
 					if (exportRk.getName().equals(importRk.getName())) {
 						isIn = true;
 						importRobotKnowledgeWithoutModel(importRk, exportRk);							
 					}
 				}
 				if (!isIn) {
-					RobotKnowledge importRk = new RobotKnowledge(exportRk.getName());
+					AgentKnowledge importRk = new AgentKnowledge(exportRk.getName());
 					to.getKnowledge().add(importRk);
 					importRobotKnowledgeWithoutModel(importRk, exportRk);
 				}
 			}
 			boolean isIn = false;
-			for (RobotKnowledge importRk : to.getKnowledge()) {
+			for (AgentKnowledge importRk : to.getKnowledge()) {
 				if (importRk.getName().equals(from.getName())) {
 					isIn = true;			
 					importRobotKnowledgeWithoutModel(importRk, from);
 				}
 			}
 			if (!isIn) {
-				RobotKnowledge importRk = new RobotKnowledge(from.getName());
+				AgentKnowledge importRk = new AgentKnowledge(from.getName());
 				to.getKnowledge().add(importRk);
 				importRobotKnowledgeWithoutModel(importRk, from);
 			}
@@ -76,7 +76,7 @@ public class WorldMerge extends Merge {
 		if (config.knownstates && !config.knowledge)
 		{
 			boolean isIn = false;
-			for (RobotKnowledge hisRk : to.getKnowledge()) {					
+			for (AgentKnowledge hisRk : to.getKnowledge()) {					
 				if (hisRk.getName().equals(from.getName())) {
 					isIn = true;
 					//insert the new information from the robot
@@ -90,7 +90,7 @@ public class WorldMerge extends Merge {
 				}
 			}
 			if (!isIn) {
-				RobotKnowledge rk = new RobotKnowledge(from.getName());
+				AgentKnowledge rk = new AgentKnowledge(from.getName());
 				List<State> knowns = new LinkedList<State>();
 				for (State s : from.getSupportedStates()) {
 					knowns.add(s);
@@ -108,7 +108,7 @@ public class WorldMerge extends Merge {
 		}
 	}
 	
-	private void importRobotKnowledgeWithoutModel (RobotKnowledge importRk, RobotCore exportR) {
+	private void importRobotKnowledgeWithoutModel (AgentKnowledge importRk, AgentCore exportR) {
 		//insert the new information from the robot
 		//add lastArrange
 		importRk.setLastArrange(configuration.getWc().iteration);
@@ -128,11 +128,11 @@ public class WorldMerge extends Merge {
 		importRk.setComponents(components);
 		//add roles
 		List<RoleModel> roles = new LinkedList<RoleModel>();
-		for (RobotRole r : exportR.getRoles()) {
+		for (AgentRole r : exportR.getRoles()) {
 			if (r instanceof MasterRole) {
 				MasterRole m = (MasterRole) r;
 				MasterRoleModel mrm = new MasterRoleModel(r.getClass().getName());
-				for (RobotRole s : m.getFollowers()) {
+				for (AgentRole s : m.getFollowers()) {
 					em.addKnowledgeStringByteNumber(s.getRobotCore().getName().getBytes().length);
 					mrm.getFollowers().add(s.getRobotCore().getName());
 				}
@@ -167,7 +167,7 @@ public class WorldMerge extends Merge {
 		importRk.setKnownStates(knowns);	
 	}
 	
-	private void importRobotKnowledgeWithoutModel (RobotKnowledge importRk, RobotKnowledge exportRk) {		
+	private void importRobotKnowledgeWithoutModel (AgentKnowledge importRk, AgentKnowledge exportRk) {		
 		if (importRk.getLastArrange() < exportRk.getLastArrange()) {
 			em.addKnowledgeStringByteNumber(exportRk.getName().getBytes().length);
 			em.addKnowledgeStringNumber(1);
@@ -244,7 +244,7 @@ public class WorldMerge extends Merge {
 		}
 	}
 	
-	private void importFieldsFromWorld(RobotCore from, RobotCore to, ImportExportConfiguration config) {
+	private void importFieldsFromWorld(AgentCore from, AgentCore to, ImportExportConfiguration config) {
 		World world = from.getWorld();
 		//x and yDim
 		em.addWorldIntegerNumber(2);

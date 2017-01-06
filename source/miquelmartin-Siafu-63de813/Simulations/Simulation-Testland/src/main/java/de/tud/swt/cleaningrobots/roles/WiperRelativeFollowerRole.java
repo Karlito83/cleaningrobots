@@ -1,16 +1,16 @@
 package de.tud.swt.cleaningrobots.roles;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.AgentCore;
 import de.tud.swt.cleaningrobots.goals.MasterGoal;
 import de.tud.swt.cleaningrobots.goals.nonoptional.WipeLoadGoal;
-import de.tud.swt.cleaningrobots.goals.optional.WlanLoadIfRobotWantMergeGoal;
+import de.tud.swt.cleaningrobots.goals.optional.WlanLoadIfAgentWantMergeGoal;
 
 /**
  * Add the goals for search a new relative destination.
  */
 public class WiperRelativeFollowerRole extends FollowerRole {
 
-	public WiperRelativeFollowerRole(RobotCore robotCore, MasterRole master) {
+	public WiperRelativeFollowerRole(AgentCore robotCore, MasterRole master) {
 		super(robotCore, master);
 	}
 
@@ -18,7 +18,7 @@ public class WiperRelativeFollowerRole extends FollowerRole {
 	public boolean createGoals() {
 		
 		WipeLoadGoal wlg = new WipeLoadGoal(this, true);
-		WlanLoadIfRobotWantMergeGoal wlmmg = new WlanLoadIfRobotWantMergeGoal(this);
+		WlanLoadIfAgentWantMergeGoal wlmmg = new WlanLoadIfAgentWantMergeGoal(this);
 		
 		MasterGoal mg = new MasterGoal(core);
 		mg.subGoals.add(wlg);

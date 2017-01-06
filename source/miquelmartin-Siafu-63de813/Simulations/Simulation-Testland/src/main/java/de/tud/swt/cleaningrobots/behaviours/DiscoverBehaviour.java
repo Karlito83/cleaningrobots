@@ -1,7 +1,7 @@
 package de.tud.swt.cleaningrobots.behaviours;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.model.Position;
 import de.tud.swt.cleaningrobots.model.State;
 
@@ -21,7 +21,7 @@ public class DiscoverBehaviour extends Behaviour {
 	private boolean noMoreDiscovering;	
 	private boolean relative;
 	
-	public DiscoverBehaviour(RobotRole role, boolean relative) {
+	public DiscoverBehaviour(AgentRole role, boolean relative) {
 		super(role);
 				
 		this.relative = relative;

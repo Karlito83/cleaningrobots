@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.optional;
 
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.behaviours.DumpModelBehaviour;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
 
@@ -12,7 +12,7 @@ import de.tud.swt.cleaningrobots.goals.OptionalGoal;
  */
 public class ExploreDumpGoal extends OptionalGoal {
 
-	public ExploreDumpGoal(RobotRole role) {
+	public ExploreDumpGoal(AgentRole role) {
 		super(role);
 		
 		DumpModelBehaviour b = new DumpModelBehaviour(role);

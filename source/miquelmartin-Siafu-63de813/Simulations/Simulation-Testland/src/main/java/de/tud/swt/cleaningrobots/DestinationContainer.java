@@ -21,9 +21,9 @@ public class DestinationContainer {
 	private boolean loadDestination;
 	private boolean destinationSet;
 	
-	private RobotCore agentCore;
+	private AgentCore agentCore;
 	
-	public DestinationContainer (RobotCore robotCore) {
+	public DestinationContainer (AgentCore robotCore) {
 		
 		this.agentCore = robotCore;
 		this.path = null;

@@ -7,8 +7,8 @@ import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.Position;
 import de.nec.nle.siafu.model.World;
 import de.tud.swt.cleaningrobots.Configuration;
-import de.tud.swt.cleaningrobots.ICommunicationAdapter;
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.ISimulatorAdapter;
+import de.tud.swt.cleaningrobots.AgentCore;
 import de.tud.swt.cleaningrobots.hardware.Accu;
 
 /**
@@ -18,16 +18,16 @@ import de.tud.swt.cleaningrobots.hardware.Accu;
  * @author Christopher Werner
  *
  */
-public class RobotAgent extends Agent implements ICommunicationAdapter, IRobotAgent {
+public class SiafuAgent extends Agent implements ISimulatorAdapter, ISimulatorAgent {
 
 	private boolean finish;	
-	protected RobotCore cleaningRobot;
+	protected AgentCore cleaningRobot;
 	private World siafuWorld;
 	
-	public RobotAgent(String name, Position start, String image, World world, Configuration configuration) {		
+	public SiafuAgent(String name, Position start, String image, World world, Configuration configuration) {		
 		super(name, start, image, world);
 		
-		this.cleaningRobot = new RobotCore(name, this, new Accu(48.0), configuration);
+		this.cleaningRobot = new AgentCore(name, this, new Accu(48.0), configuration);
 		this.siafuWorld = world;
 	}	
 		
@@ -44,7 +44,7 @@ public class RobotAgent extends Agent implements ICommunicationAdapter, IRobotAg
 		return this.finish;
 	}
 
-	public RobotCore getRobot() {
+	public AgentCore getRobot() {
 		return this.cleaningRobot;
 	}
 
@@ -60,16 +60,16 @@ public class RobotAgent extends Agent implements ICommunicationAdapter, IRobotAg
 	}
 
 	@Override
-	public List<RobotCore> getNearRobots(int visionRadius) {
-		List <RobotCore> result = new LinkedList<RobotCore>(); 
+	public List<AgentCore> getNearRobots(int visionRadius) {
+		List <AgentCore> result = new LinkedList<AgentCore>(); 
 		
 		for (Agent nearAgent : this.siafuWorld.getPeople())
 		{
 			//If there are near Robots
-			if (nearAgent instanceof RobotAgent){
+			if (nearAgent instanceof SiafuAgent){
 				if (Math.abs(this.getPos().getCol() - nearAgent.getPos().getCol()) <= visionRadius 
 						&& Math.abs(this.getPos().getRow() - nearAgent.getPos().getRow()) <= visionRadius){
-					result.add(((RobotAgent) nearAgent).getRobot());
+					result.add(((SiafuAgent) nearAgent).getRobot());
 				}
 			}
 		}
@@ -77,13 +77,13 @@ public class RobotAgent extends Agent implements ICommunicationAdapter, IRobotAg
 	}
 	
 	@Override
-	public List<RobotCore> getAllRobots() {
-		List <RobotCore> result = new LinkedList<RobotCore>(); 
+	public List<AgentCore> getAllRobots() {
+		List <AgentCore> result = new LinkedList<AgentCore>(); 
 				
 		for (Agent nearAgent : this.siafuWorld.getPeople())
 		{
-			if (nearAgent instanceof RobotAgent){
-				result.add(((RobotAgent) nearAgent).getRobot());
+			if (nearAgent instanceof SiafuAgent){
+				result.add(((SiafuAgent) nearAgent).getRobot());
 			}
 		}
 		return result;

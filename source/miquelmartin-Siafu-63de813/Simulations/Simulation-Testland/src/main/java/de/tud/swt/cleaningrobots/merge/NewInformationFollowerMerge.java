@@ -1,8 +1,8 @@
 package de.tud.swt.cleaningrobots.merge;
 
 import de.tud.swt.cleaningrobots.Configuration;
-import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentCore;
+import de.tud.swt.cleaningrobots.AgentRole;
 
 /**
  * An AgentCore say that he has new information for the master and reset his value.
@@ -17,8 +17,8 @@ public class NewInformationFollowerMerge extends Merge {
 	}
 
 	@Override
-	protected void action(RobotCore from, RobotCore to, Object object) {
-		RobotRole rr = (RobotRole) object;	
+	protected void action(AgentCore from, AgentCore to, Object object) {
+		AgentRole rr = (AgentRole) object;	
 		rr.setNewInformation(false);
 		//measurement
 		em.addKnowledgeIntegerNumber(1);

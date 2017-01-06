@@ -6,7 +6,7 @@ package de.tud.swt.cleaningrobots;
  * @author Christopher Werner
  *
  */
-public abstract class Robot {
+public abstract class Agent {
 	
 	private boolean newInformation;	
 
@@ -26,9 +26,9 @@ public abstract class Robot {
 		this.newInformation = newInformation;
 	}
 	
-	public abstract boolean addRole (RobotRole role);	
-	public abstract boolean hasRole(RobotRole role);
-	public abstract boolean removeRole (RobotRole role);
+	public abstract boolean addRole (AgentRole role);	
+	public abstract boolean hasRole(AgentRole role);
+	public abstract boolean removeRole (AgentRole role);
 	
 	@Override
 	public String toString() {

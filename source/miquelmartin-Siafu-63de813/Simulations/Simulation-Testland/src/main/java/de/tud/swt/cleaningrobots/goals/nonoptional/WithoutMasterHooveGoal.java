@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.nonoptional;
 
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.behaviours.HooveAroundAtDestinationBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.HooveBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.LoadIfAtLoadStationBehaviour;
@@ -20,10 +20,10 @@ public class WithoutMasterHooveGoal extends NonOptionalGoal {
 	private HooveBehaviour d;
 	private State WORLDSTATE_HOOVED;
 	
-	public WithoutMasterHooveGoal(RobotRole role) {
+	public WithoutMasterHooveGoal(AgentRole role) {
 		super(role);
 		
-		this.WORLDSTATE_HOOVED = getRobotCore().getConfiguration().createState("Hooved");
+		this.WORLDSTATE_HOOVED = getAgentCore().getConfiguration().createState("Hooved");
 		
 		HooveAroundAtDestinationBehaviour s = new HooveAroundAtDestinationBehaviour(role);
 		System.out.println("Correct SeeAround: " + s.isHardwarecorrect());
@@ -68,7 +68,7 @@ public class WithoutMasterHooveGoal extends NonOptionalGoal {
 
 	@Override
 	public boolean preCondition() {		
-		if (getRobotCore().getWorld().containsWorldState(WORLDSTATE_HOOVED))
+		if (getAgentCore().getWorld().containsWorldState(WORLDSTATE_HOOVED))
 			return false;
 		return true;
 	}

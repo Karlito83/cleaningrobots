@@ -3,7 +3,7 @@ package de.tud.swt.cleaningrobots.behaviours;
 import java.util.ArrayList;
 import java.util.Collection;
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.Wiper;
 import de.tud.swt.cleaningrobots.model.Field;
@@ -23,7 +23,7 @@ public class WipeAroundAtDestinationBehaviour extends Behaviour {
 	private State STATE_WIPE;
 	private State STATE_HOOVE;
 		
-	public WipeAroundAtDestinationBehaviour(RobotRole role) {
+	public WipeAroundAtDestinationBehaviour(AgentRole role) {
 		super(role);
 		
 		Wiper las = (Wiper) this.demand.getHardwareComponent(ComponentTypes.WIPER);

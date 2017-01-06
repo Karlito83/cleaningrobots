@@ -27,7 +27,7 @@ import de.nec.nle.siafu.model.Agent;
 import de.nec.nle.siafu.model.World;
 import de.tud.evaluation.WorkingConfiguration;
 import de.tud.swt.cleaningrobots.Configuration;
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.AgentCore;
 import de.tud.swt.cleaningrobots.factory.ExploreMergeMasterCalculateFactory;
 import de.tud.swt.cleaningrobots.factory.ExploreMergeMasterCalculateRelativeFactory;
 import de.tud.swt.cleaningrobots.factory.ExploreMergeMasterFactory;
@@ -71,9 +71,9 @@ public class AgentModel extends BaseAgentModel {
 	@Override
 	public ArrayList<Agent> createAgents() {
 		
-		ArrayList<IRobotAgent> iAgents = new ArrayList<IRobotAgent>();
+		ArrayList<ISimulatorAgent> iAgents = new ArrayList<ISimulatorAgent>();
 		ArrayList<Agent> agents = new ArrayList<Agent>();
-		RobotFactory rf = new RobotFactory(config, world);
+		SiafuAgentFactory rf = new SiafuAgentFactory(config, world);
 
 		try {
 			switch (configuration.config) {
@@ -93,7 +93,7 @@ public class AgentModel extends BaseAgentModel {
 		} catch (Exception ex) {
 		}
 		
-		for (IRobotAgent a : iAgents)
+		for (ISimulatorAgent a : iAgents)
 		{
 			agents.add((Agent)a);
 		}
@@ -107,9 +107,9 @@ public class AgentModel extends BaseAgentModel {
 		//do that for each robot
 		for (Agent a : agents) {
 			//only if robot is on
-			if (!((IRobotAgent)a).getRobot().isShutDown()) {
+			if (!((ISimulatorAgent)a).getRobot().isShutDown()) {
 				a.wander();
-				if (!((IRobotAgent)a).isFinish())
+				if (!((ISimulatorAgent)a).isFinish())
 					finish = false;
 			}
 		}
@@ -134,12 +134,12 @@ public class AgentModel extends BaseAgentModel {
 			
 			//do evaluation output
 			for (Agent a : agents) {
-				((IRobotAgent)a).getRobot().addLastMeasurement();				
+				((ISimulatorAgent)a).getRobot().addLastMeasurement();				
 			}
 			
 			//make data output for all measurements
 			for (Agent a : agents) {
-				RobotCore rc = ((IRobotAgent)a).getRobot();
+				AgentCore rc = ((ISimulatorAgent)a).getRobot();
 				
 				//save JSON document in .txt
 				rc.getMeasurement().benchmarkTime = (endTime - startTime);

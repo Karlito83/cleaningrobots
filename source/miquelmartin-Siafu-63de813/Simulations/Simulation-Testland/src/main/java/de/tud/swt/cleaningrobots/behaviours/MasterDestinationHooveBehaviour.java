@@ -5,52 +5,50 @@ import java.util.List;
 import java.util.Map;
 
 import de.tud.swt.cleaningrobots.Behaviour;
-import de.tud.swt.cleaningrobots.RobotCore;
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentCore;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.hardware.ComponentTypes;
 import de.tud.swt.cleaningrobots.hardware.Wlan;
 import de.tud.swt.cleaningrobots.merge.DestinationMerge;
 import de.tud.swt.cleaningrobots.model.State;
 import de.tud.swt.cleaningrobots.roles.MasterRole;
-import de.tud.swt.cleaningrobots.util.RobotDestinationCalculation;
+import de.tud.swt.cleaningrobots.util.AgentDestinationCalculation;
 
 /**
- * Behavior that calculate new destinations for the wiper and has contact if the followers are loading.
+ * Behavior that calculate new destinations for the hoover and has contact if the followers are loading.
  * 
  * @author Christopher Werner
  *
  */
-public class MasterDestinationWipe extends Behaviour {
+public class MasterDestinationHooveBehaviour extends Behaviour {
 
 	private MasterRole mr;
-
+	
 	private State STATE_HOOVE;
-	private State STATE_WIPE;
-	private State WORLDSTATE_WIPED;
+	private State WORLDSTATE_HOOVED;
 	
 	private int visionRadius;
 	private int calculationAway;
 	private DestinationMerge merge;	
 	
-	private Map<String, RobotDestinationCalculation> information;
+	private Map<String, AgentDestinationCalculation> information;
 	
-	public MasterDestinationWipe(RobotRole role) {
+	public MasterDestinationHooveBehaviour(AgentRole role) {
 		super(role);
-				
+			
 		this.mr = (MasterRole) role;
 		this.merge = new DestinationMerge(this.agentCore.getConfiguration());
-		this.information = new HashMap<String, RobotDestinationCalculation>();
+		this.information = new HashMap<String, AgentDestinationCalculation>();	
 		
 		Wlan wlan = (Wlan) this.demand.getHardwareComponent(ComponentTypes.WLAN);
-		this.visionRadius = wlan.getMeasurementRange();		
+		this.visionRadius = wlan.getMeasurementRange();
 	}
 	
 	@Override
 	protected void addSupportedStates() {
 		//create and add the states
 		this.STATE_HOOVE = agentCore.getConfiguration().createState("Hoove");
-		this.STATE_WIPE = agentCore.getConfiguration().createState("Wipe");
-		this.WORLDSTATE_WIPED = agentCore.getConfiguration().createState("Wiped");		
+		this.WORLDSTATE_HOOVED = agentCore.getConfiguration().createState("Hooved");		
 	}
 
 	@Override
@@ -62,12 +60,12 @@ public class MasterDestinationWipe extends Behaviour {
 	public boolean action() throws Exception {
 		//start all hardware components
 		this.demand.switchAllOn();
-						
-		//search near wipe Robots
-		List<RobotCore> nearRobots = this.agentCore.getICommunicationAdapter().getNearRobots(this.visionRadius);
+				
+		//search near hoove Robots
+		List<AgentCore> nearRobots = this.agentCore.getICommunicationAdapter().getNearRobots(this.visionRadius);
 		nearRobots.remove(this.agentCore);
 				
-		for (RobotDestinationCalculation rdc : information.values()) {
+		for (AgentDestinationCalculation rdc : information.values()) {
 			//set all NeedNew to false
 			rdc.needNew = false;
 			//change new and old destination if not near
@@ -75,7 +73,7 @@ public class MasterDestinationWipe extends Behaviour {
 			{
 				boolean change = true;
 				//look if in nearRobots
-				for (RobotCore nearRobot : nearRobots) 
+				for (AgentCore nearRobot : nearRobots) 
 				{
 					if (nearRobot.getName().equals(rdc.getName()))
 					{
@@ -99,12 +97,12 @@ public class MasterDestinationWipe extends Behaviour {
 		//search robots that need new destination		
 		boolean newOneFind = false;
 		
-		for (RobotCore nearRobot : nearRobots) {
+		for (AgentCore nearRobot : nearRobots) {
 			//look if near robot has active WLAN and is in information and need new destination
 			if (nearRobot.hasActiveHardwareComponent(ComponentTypes.WLAN))// && nearRobot.hasHardwareComponent(Components.LOOKAROUNDSENSOR)) 
 			{
 				//search same Robot
-				for (RobotDestinationCalculation rdc : information.values()) {
+				for (AgentDestinationCalculation rdc : information.values()) {
 					if (nearRobot.getName().equals(rdc.getName())) 
 					{
 						if (rdc.newDest == null)
@@ -121,15 +119,15 @@ public class MasterDestinationWipe extends Behaviour {
 		if (!newOneFind)
 			return false;
 		
-		Map<String, RobotDestinationCalculation> result = this.agentCore.getWorld().getNextPassablePositionsByStateWithoutState(information, calculationAway, STATE_HOOVE, STATE_WIPE); 
+		Map<String, AgentDestinationCalculation> result = this.agentCore.getWorld().getNextPassablePositionsWithoutState(information, calculationAway, STATE_HOOVE); 
 		
-		if (result == null && !this.agentCore.getWorld().containsWorldState(WORLDSTATE_WIPED))
+		if (result == null && !this.agentCore.getWorld().containsWorldState(WORLDSTATE_HOOVED))
 			return false;
 		
 		if (result == null) {
 			//set all destination to null that the robot could shut down
-			for (RobotCore nearRobot : nearRobots) {
-				for (RobotDestinationCalculation rdc : information.values()) {
+			for (AgentCore nearRobot : nearRobots) {
+				for (AgentDestinationCalculation rdc : information.values()) {
 					if (rdc.getName().equals(nearRobot.getName()))
 					{
 						merge.run(this.agentCore, nearRobot, null);
@@ -142,8 +140,8 @@ public class MasterDestinationWipe extends Behaviour {
 		information = result; 
 		
 		//send new Information to nearRobots which needed new Information
-		for (RobotCore nearRobot : nearRobots) {
-			for (RobotDestinationCalculation rdc : information.values()) {
+		for (AgentCore nearRobot : nearRobots) {
+			for (AgentDestinationCalculation rdc : information.values()) {
 				if (rdc.getName().equals(nearRobot.getName()) && rdc.needNew)
 				{
 					merge.run(this.agentCore, nearRobot, rdc.newDest);
@@ -158,14 +156,14 @@ public class MasterDestinationWipe extends Behaviour {
 		
 		double maxAway = 0;
 		//create information list with follower robots
-		List<RobotRole> follower = this.mr.getFollowers();
+		List<AgentRole> follower = this.mr.getFollowers();
 			
-		for (RobotRole rr : follower) {
-			RobotCore core = rr.getRobotCore();
-			if (core.hasHardwareComponent(ComponentTypes.WLAN) && core.hasHardwareComponent(ComponentTypes.WIPER))
+		for (AgentRole rr : follower) {
+			AgentCore core = rr.getRobotCore();
+			if (core.hasHardwareComponent(ComponentTypes.WLAN) && core.hasHardwareComponent(ComponentTypes.HOOVER))
 			{
 				//add Robot to Map
-				information.put(core.getName(), new RobotDestinationCalculation(core.getName()));
+				information.put(core.getName(), new AgentDestinationCalculation(core.getName()));
 				double away = Math.sqrt(core.getAccu().getMaxFieldGoes(core.getMinEnergie()));
 				
 				if (maxAway < away)
@@ -173,6 +171,7 @@ public class MasterDestinationWipe extends Behaviour {
 			}
 		}			
 		
-		this.calculationAway = (int) maxAway;		
+		this.calculationAway = (int) maxAway;
+		
 	}
 }

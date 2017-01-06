@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.roles;
 
-import de.tud.swt.cleaningrobots.RobotCore;
+import de.tud.swt.cleaningrobots.AgentCore;
 import de.tud.swt.cleaningrobots.goals.optional.MergeMasterGoal;
 
 /**
@@ -8,7 +8,7 @@ import de.tud.swt.cleaningrobots.goals.optional.MergeMasterGoal;
  */
 public class MergeMasterRole extends MasterRole {
 
-	public MergeMasterRole(RobotCore robotCore) {
+	public MergeMasterRole(AgentCore robotCore) {
 		super(robotCore);
 	}
 

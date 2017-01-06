@@ -1,6 +1,6 @@
 package de.tud.swt.cleaningrobots.goals.optional;
 
-import de.tud.swt.cleaningrobots.RobotRole;
+import de.tud.swt.cleaningrobots.AgentRole;
 import de.tud.swt.cleaningrobots.behaviours.LoadIfAtLoadStationBehaviour;
 import de.tud.swt.cleaningrobots.behaviours.LoadWlanActivateBehaviour;
 import de.tud.swt.cleaningrobots.goals.OptionalGoal;
@@ -11,9 +11,9 @@ import de.tud.swt.cleaningrobots.goals.OptionalGoal;
  * @author Christopher Werner
  *
  */
-public class WlanLoadIfRobotWantMergeGoal extends OptionalGoal {
+public class WlanLoadIfAgentWantMergeGoal extends OptionalGoal {
 
-	public WlanLoadIfRobotWantMergeGoal(RobotRole role) {
+	public WlanLoadIfAgentWantMergeGoal(AgentRole role) {
 		super(role);
 				
 		LoadIfAtLoadStationBehaviour lialsb = new LoadIfAtLoadStationBehaviour(role);

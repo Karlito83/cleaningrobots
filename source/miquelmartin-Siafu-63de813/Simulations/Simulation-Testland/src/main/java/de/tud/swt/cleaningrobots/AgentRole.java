@@ -11,12 +11,12 @@ import de.tud.swt.cleaningrobots.goals.Goal;
  * @author Christopher Werner
  *
  */
-public abstract class RobotRole extends Robot {
+public abstract class AgentRole extends Agent {
 	
-	protected RobotCore core;
+	protected AgentCore core;
 	private List<Goal> roleGoals;
 	
-	public RobotRole (RobotCore robotCore) {
+	public AgentRole (AgentCore robotCore) {
 		this.core = robotCore;
 		this.roleGoals = new ArrayList<Goal>();
 	}
@@ -42,23 +42,23 @@ public abstract class RobotRole extends Robot {
 	 * Get the RobotCore object of this role.
 	 * @return
 	 */
-	public RobotCore getRobotCore() {
+	public AgentCore getRobotCore() {
 		return core;
 	}	
 
 	@Override
-	public boolean addRole(RobotRole role) {
+	public boolean addRole(AgentRole role) {
 		return this.core.addRole(role);
 		
 	}
 
 	@Override
-	public boolean hasRole(RobotRole role) {
+	public boolean hasRole(AgentRole role) {
 		return this.core.hasRole(role);
 	}
 
 	@Override
-	public boolean removeRole(RobotRole role) {
+	public boolean removeRole(AgentRole role) {
 		return this.core.removeRole(role);		
 	}
 	
